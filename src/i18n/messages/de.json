@@ -3,16 +3,122 @@
     "siteDescription": "Erlangen Cricket Club — Cricket in Erlangen, Bayern. Spielplan, Ergebnisse, Spieler und Mitgliedschaft."
   },
   "common": {
-    "skipToContent": "Zum Hauptinhalt springen"
+    "skipToContent": "Zum Hauptinhalt springen",
+    "loading": "Wird geladen …"
+  },
+  "navigation": {
+    "label": "Hauptnavigation",
+    "home": "Startseite",
+    "fixtures": "Spielplan & Ergebnisse",
+    "fixturesOverview": "Alle Spiele & Ergebnisse",
+    "languageLabel": "Sprache"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
     "intro": "Cricket im Herzen Frankens. Spieler, Spielplan und Geschichten aus unserem Verein — bald verfügbar."
+  },
+  "fixtures": {
+    "metaTitle": "Spielplan & Ergebnisse",
+    "metaDescription": "Kommende Spiele und Ergebnisse des Erlangen Cricket Club in den bayerischen Cricket-Ligen.",
+    "heading": "Spielplan & Ergebnisse",
+    "recordLabel": "Vereinsbilanz",
+    "record": {
+      "played": "Spiele",
+      "won": "Siege",
+      "lost": "Niederlagen",
+      "tied": "Unentschieden",
+      "winRate": "Siegquote"
+    },
+    "matchTitle": "{team1} gegen {team2}",
+    "stage": {
+      "league": "Liga",
+      "qualifier": "Qualifikation",
+      "semi-final": "Halbfinale",
+      "final": "Finale"
+    },
+    "status": {
+      "scheduled": "Angesetzt",
+      "completed": "Beendet",
+      "abandoned": "Abgebrochen",
+      "cancelled": "Abgesagt"
+    },
+    "startTime": "Beginn {time} Uhr",
+    "didNotBat": "Nicht geschlagen",
+    "oversShort": "{overs}/{maxOvers} Ov.",
+    "oversLong": "{overs} von {maxOvers} Overs",
+    "outcome": {
+      "won": "Sieg",
+      "lost": "Niederlage",
+      "tied": "Unentschieden",
+      "no-result": "Kein Ergebnis"
+    },
+    "result": {
+      "wonByRuns": "{team} gewann mit {margin, plural, one {# Run} other {# Runs}}",
+      "wonByWickets": "{team} gewann mit {margin, plural, one {# Wicket} other {# Wickets}}",
+      "won": "{team} gewann",
+      "tied": "Unentschieden",
+      "forfeit": "Spiel für {team} gewertet (Forfeit)",
+      "noResult": "Kein Ergebnis",
+      "dlsSuffix": "{result} (DLS)",
+      "walkover": "{team} gewann durch Walkover"
+    },
+    "competitionMetaDescription": "Spielplan, Ergebnisse und Bilanz von {teams} im Wettbewerb {competition}.",
+    "empty": "Noch keine Spiele. Spiele erscheinen hier, sobald der Spielplan veröffentlicht ist.",
+    "filters": {
+      "label": "Spiele filtern",
+      "competition": "Wettbewerb",
+      "allCompetitions": "Alle Wettbewerbe",
+      "status": "Status",
+      "category": {
+        "all": "Alle",
+        "upcoming": "Kommend",
+        "completed": "Gespielt",
+        "abandoned": "Abgebrochen",
+        "walkover": "Walkover",
+        "forfeit": "Forfeit"
+      },
+      "count": "{count, plural, =0 {Keine Spiele} one {# Spiel} other {# Spiele}}",
+      "noMatches": "Keine Spiele entsprechen diesen Filtern.",
+      "clear": "Filter zurücksetzen",
+      "result": "Ergebnis",
+      "outcome": {
+        "all": "Alle",
+        "won": "Gewonnen",
+        "lost": "Verloren"
+      },
+      "active": "Aktive Filter",
+      "removeFilter": "Filter entfernen: {filter}",
+      "clearAll": "Alle entfernen"
+    },
+    "nextMatch": "Nächstes Spiel",
+    "versus": "gegen",
+    "when": "Wann",
+    "where": "Wo",
+    "competition": "Wettbewerb"
+  },
+  "error": {
+    "heading": "Etwas ist schiefgelaufen",
+    "description": "Diese Seite konnte nicht geladen werden. Bitte versuche es gleich noch einmal.",
+    "retry": "Erneut versuchen"
   },
   "notFound": {
     "title": "Seite nicht gefunden",
     "heading": "Diese Seite konnten wir nicht finden",
     "description": "Die Seite wurde möglicherweise verschoben oder hat nie existiert.",
     "backHome": "Zur Startseite"
+  },
+  "breadcrumbs": {
+    "label": "Navigationspfad"
+  },
+  "footer": {
+    "legalLabel": "Rechtliches",
+    "impressum": "Impressum",
+    "privacy": "Datenschutz",
+    "copyright": "© {year} {club}"
+  },
+  "legal": {
+    "impressumTitle": "Impressum",
+    "privacyTitle": "Datenschutzerklärung",
+    "pending": "Diese Seite wird gerade vorbereitet und in Kürze veröffentlicht."
   }
 }

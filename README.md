@@ -12,28 +12,36 @@ Prerequisites: Node.js 24 (`.nvmrc`), Corepack-enabled pnpm, Docker.
 corepack enable
 pnpm install
 cp .env.example .env.local   # then set PAYLOAD_SECRET
-pnpm db:up                   # local PostgreSQL in Docker
+pnpm db:up                   # local PostgreSQL in Docker (host port 5433)
+pnpm db:migrate              # create the schema
+pnpm db:seed                 # optional: 2026 results of ECC-I and ECC-II
 pnpm dev
 ```
 
 - Website: http://localhost:3000 (German: http://localhost:3000/de)
+- Fixtures & Results: http://localhost:3000/fixtures (all fixtures, filterable by competition and status, e.g. `?status=forfeit`); one page per competition, e.g. /fixtures/bcv-regionalliga-bayern-2026
 - Admin: http://localhost:3000/admin — create the first user on first visit
+
+The Docker database uses host port **5433** so it does not clash with a locally installed PostgreSQL on 5432.
 
 ## Scripts
 
-| Script                   | Purpose                                                    |
-| ------------------------ | ---------------------------------------------------------- |
-| `pnpm dev`               | Development server (Turbopack)                             |
-| `pnpm build` / `start`   | Production build / server                                  |
-| `pnpm lint`              | ESLint (typescript-eslint strict, jsx-a11y strict)         |
-| `pnpm typecheck`         | Generate route types and run `tsc`                         |
-| `pnpm depcruise`         | Check architecture rules (`.dependency-cruiser.cjs`)       |
-| `pnpm test`              | Unit and component tests (Vitest)                          |
-| `pnpm test:coverage`     | Tests with coverage (100% required for `src/domain`)       |
-| `pnpm test:e2e`          | Playwright E2E + axe (set `E2E_PORT` to change the port)   |
-| `pnpm storybook`         | Component workshop on http://localhost:6006                |
-| `pnpm generate:types`    | Regenerate `src/payload-types.ts` after collection changes |
-| `pnpm db:up` / `db:down` | Start / stop local PostgreSQL                              |
+| Script                          | Purpose                                                                                                                                      |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                      | Development server (Turbopack)                                                                                                               |
+| `pnpm build` / `start`          | Production build / server                                                                                                                    |
+| `pnpm lint`                     | ESLint (typescript-eslint strict, jsx-a11y strict)                                                                                           |
+| `pnpm typecheck`                | Generate route types and run `tsc`                                                                                                           |
+| `pnpm depcruise`                | Check architecture rules (`.dependency-cruiser.cjs`)                                                                                         |
+| `pnpm test`                     | Unit and component tests (Vitest)                                                                                                            |
+| `pnpm test:coverage`            | Tests with coverage (100% required for `src/domain`)                                                                                         |
+| `pnpm test:e2e`                 | Playwright E2E + axe (set `E2E_PORT` to change the port)                                                                                     |
+| `pnpm storybook`                | Component workshop on http://localhost:6006                                                                                                  |
+| `pnpm generate:types`           | Regenerate `src/payload-types.ts` after collection changes                                                                                   |
+| `pnpm db:up` / `db:down`        | Start / stop local PostgreSQL                                                                                                                |
+| `pnpm db:migrate`               | Apply pending migrations                                                                                                                     |
+| `pnpm db:migrate:create <name>` | Create a migration after changing collections ([ADR-0004](docs/arc42/09-architecture-decisions/0004-database-schema-via-migrations-only.md)) |
+| `pnpm db:seed`                  | Import seed data (idempotent; never overwrites admin edits)                                                                                  |
 
 ## Architecture
 

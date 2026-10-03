@@ -1,13 +1,14 @@
 import type { MetadataRoute } from 'next'
 
+import { FIXTURES_PATH, getCompetitionPath, getCompetitionSlugs } from '@/features/fixtures'
+import { LEGAL_PATHS } from '@/features/legal'
 import { getLocalizedPath, routing } from '@/i18n/routing'
 import { siteConfig } from '@/shared/config/site'
 
-// Static routes only for now; CMS-driven entries (players, stories, fixtures) join as features land.
-const STATIC_PATHS = ['/'] as const
+const STATIC_PATHS = ['/', FIXTURES_PATH, LEGAL_PATHS.impressum, LEGAL_PATHS.privacy] as const
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return STATIC_PATHS.map((pathname) => ({
+function toEntry(pathname: string): MetadataRoute.Sitemap[number] {
+  return {
     url: `${siteConfig.url}${getLocalizedPath(pathname, routing.defaultLocale)}`,
     alternates: {
       languages: Object.fromEntries(
@@ -17,5 +18,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ]),
       ),
     },
-  }))
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const competitionSlugs = await getCompetitionSlugs()
+
+  return [...STATIC_PATHS, ...competitionSlugs.map(getCompetitionPath)].map(toEntry)
 }

@@ -3,16 +3,122 @@
     "siteDescription": "Erlangen Cricket Club — cricket in Erlangen, Bavaria. Fixtures, results, players and how to join."
   },
   "common": {
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "loading": "Loading…"
+  },
+  "navigation": {
+    "label": "Main",
+    "home": "Home",
+    "fixtures": "Fixtures & Results",
+    "fixturesOverview": "All fixtures & results",
+    "languageLabel": "Language"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
     "intro": "Cricket in the heart of Franconia. Players, fixtures and stories from our club — coming soon."
+  },
+  "fixtures": {
+    "metaTitle": "Fixtures & Results",
+    "metaDescription": "Upcoming matches and results of Erlangen Cricket Club in the Bavarian cricket leagues.",
+    "heading": "Fixtures & Results",
+    "recordLabel": "Club record",
+    "record": {
+      "played": "Played",
+      "won": "Won",
+      "lost": "Lost",
+      "tied": "Tied",
+      "winRate": "Win rate"
+    },
+    "matchTitle": "{team1} v {team2}",
+    "stage": {
+      "league": "League",
+      "qualifier": "Qualifier",
+      "semi-final": "Semi-final",
+      "final": "Final"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "abandoned": "Abandoned",
+      "cancelled": "Cancelled"
+    },
+    "startTime": "Start {time}",
+    "didNotBat": "Did not bat",
+    "oversShort": "{overs}/{maxOvers} ov",
+    "oversLong": "{overs} of {maxOvers} overs",
+    "outcome": {
+      "won": "Won",
+      "lost": "Lost",
+      "tied": "Tied",
+      "no-result": "No result"
+    },
+    "result": {
+      "wonByRuns": "{team} won by {margin, plural, one {# run} other {# runs}}",
+      "wonByWickets": "{team} won by {margin, plural, one {# wicket} other {# wickets}}",
+      "won": "{team} won",
+      "tied": "Match tied",
+      "forfeit": "{team} awarded the match (forfeit)",
+      "noResult": "No result",
+      "dlsSuffix": "{result} (DLS)",
+      "walkover": "{team} won by walkover"
+    },
+    "competitionMetaDescription": "Fixtures, results and record of {teams} in the {competition}.",
+    "empty": "No fixtures yet. Matches appear here as soon as the schedule is published.",
+    "filters": {
+      "label": "Filter fixtures",
+      "competition": "Competition",
+      "allCompetitions": "All competitions",
+      "status": "Status",
+      "category": {
+        "all": "All",
+        "upcoming": "Upcoming",
+        "completed": "Completed",
+        "abandoned": "Abandoned",
+        "walkover": "Walkover",
+        "forfeit": "Forfeit"
+      },
+      "count": "{count, plural, =0 {No fixtures} one {# fixture} other {# fixtures}}",
+      "noMatches": "No fixtures match these filters.",
+      "clear": "Clear filters",
+      "result": "Result",
+      "outcome": {
+        "all": "All",
+        "won": "Won",
+        "lost": "Lost"
+      },
+      "active": "Active filters",
+      "removeFilter": "Remove filter: {filter}",
+      "clearAll": "Clear all"
+    },
+    "nextMatch": "Next match",
+    "versus": "v",
+    "when": "When",
+    "where": "Where",
+    "competition": "Competition"
+  },
+  "error": {
+    "heading": "Something went wrong",
+    "description": "This page could not be loaded. Please try again in a moment.",
+    "retry": "Try again"
   },
   "notFound": {
     "title": "Page not found",
     "heading": "We couldn't find that page",
     "description": "The page may have moved or never existed.",
     "backHome": "Back to the home page"
+  },
+  "breadcrumbs": {
+    "label": "Breadcrumb"
+  },
+  "footer": {
+    "legalLabel": "Legal",
+    "impressum": "Legal notice",
+    "privacy": "Privacy policy",
+    "copyright": "© {year} {club}"
+  },
+  "legal": {
+    "impressumTitle": "Legal notice (Impressum)",
+    "privacyTitle": "Privacy policy",
+    "pending": "This page is being prepared and will be published shortly."
   }
 }

@@ -10,6 +10,8 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
+    // next-intl imports "next/navigation" without an extension, which Node's ESM loader rejects.
+    server: { deps: { inline: ['next-intl'] } },
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{ts,tsx}'],

@@ -67,8 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    fixtures: Fixture;
+    teams: Team;
+    competitions: Competition;
     media: Media;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,8 +79,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    fixtures: FixturesSelect<false> | FixturesSelect<true>;
+    teams: TeamsSelect<false> | TeamsSelect<true>;
+    competitions: CompetitionsSelect<false> | CompetitionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +93,14 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de') | ('en' | 'de')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    impressum: Impressum;
+    'privacy-policy': PrivacyPolicy;
+  };
+  globalsSelect: {
+    impressum: ImpressumSelect<false> | ImpressumSelect<true>;
+    'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
+  };
   locale: 'en' | 'de';
   widgets: {
     collections: CollectionsWidget;
@@ -118,6 +130,132 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Matches and results. List teams in batting order for completed matches — winner and margin are calculated from the innings.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fixtures".
+ */
+export interface Fixture {
+  id: number;
+  /**
+   * Generated from date and teams.
+   */
+  title?: string | null;
+  competition: number | Competition;
+  stage: 'league' | 'qualifier' | 'semi-final' | 'final';
+  date: string;
+  /**
+   * Local time, HH:mm (optional).
+   */
+  startTime?: string | null;
+  /**
+   * Ground name (optional).
+   */
+  venue?: string | null;
+  team1: number | Team;
+  team2: number | Team;
+  status: 'scheduled' | 'completed' | 'abandoned' | 'cancelled';
+  /**
+   * In batting order.
+   */
+  innings?:
+    | {
+        battingTeam: number | Team;
+        runs: number;
+        wickets: number;
+        overs: string;
+        /**
+         * Allotted overs (reduced if shortened).
+         */
+        maxOvers: number;
+        id?: string | null;
+      }[]
+    | null;
+  result?: {
+    method: 'normal' | 'dls' | 'forfeit' | 'walkover' | 'no-result';
+    /**
+     * For DLS: leave empty if the match was tied.
+     */
+    winner?: (number | null) | Team;
+    marginValue?: number | null;
+    marginUnit?: ('runs' | 'wickets') | null;
+  };
+  /**
+   * Set by data imports to avoid duplicates.
+   */
+  importKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "competitions".
+ */
+export interface Competition {
+  id: number;
+  /**
+   * e.g. "BCV T20 Regionalliga Bayern".
+   */
+  name: string;
+  /**
+   * e.g. "2026".
+   */
+  season: string;
+  /**
+   * Scheduled overs per innings (20 for T20).
+   */
+  maxOvers: number;
+  /**
+   * URL segment, e.g. "bcv-t20-regionalliga-bayern-2026". Generated if left empty.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teams".
+ */
+export interface Team {
+  id: number;
+  /**
+   * Full team name, e.g. "Erlangen Cricket Club I".
+   */
+  name: string;
+  /**
+   * Code used by the league, e.g. "ECC-I".
+   */
+  shortName: string;
+  /**
+   * Tick for Erlangen Cricket Club teams; results are shown from their perspective.
+   */
+  isClubTeam?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describe the image for people who cannot see it (required for accessibility).
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -145,28 +283,6 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Describe the image for people who cannot see it (required for accessibility).
-   */
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -190,12 +306,24 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'fixtures';
+        value: number | Fixture;
+      } | null)
+    | ({
+        relationTo: 'teams';
+        value: number | Team;
+      } | null)
+    | ({
+        relationTo: 'competitions';
+        value: number | Competition;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -241,6 +369,83 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fixtures_select".
+ */
+export interface FixturesSelect<T extends boolean = true> {
+  title?: T;
+  competition?: T;
+  stage?: T;
+  date?: T;
+  startTime?: T;
+  venue?: T;
+  team1?: T;
+  team2?: T;
+  status?: T;
+  innings?:
+    | T
+    | {
+        battingTeam?: T;
+        runs?: T;
+        wickets?: T;
+        overs?: T;
+        maxOvers?: T;
+        id?: T;
+      };
+  result?:
+    | T
+    | {
+        method?: T;
+        winner?: T;
+        marginValue?: T;
+        marginUnit?: T;
+      };
+  importKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teams_select".
+ */
+export interface TeamsSelect<T extends boolean = true> {
+  name?: T;
+  shortName?: T;
+  isClubTeam?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "competitions_select".
+ */
+export interface CompetitionsSelect<T extends boolean = true> {
+  name?: T;
+  season?: T;
+  maxOvers?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -261,24 +466,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -319,6 +506,78 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Legal notice (§ 5 DDG): association name, address, board, register court and number, contact.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "impressum".
+ */
+export interface Impressum {
+  id: number;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Privacy policy (GDPR): controller, data processed, hosting, rights of data subjects.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-policy".
+ */
+export interface PrivacyPolicy {
+  id: number;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "impressum_select".
+ */
+export interface ImpressumSelect<T extends boolean = true> {
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-policy_select".
+ */
+export interface PrivacyPolicySelect<T extends boolean = true> {
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
