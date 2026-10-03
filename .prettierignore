@@ -7,3 +7,4 @@ storybook-static
 src/payload-types.ts
 src/app/(payload)/admin/importMap.js
 CHANGELOG.md
+src/cms/migrations/

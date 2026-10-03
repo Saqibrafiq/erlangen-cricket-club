@@ -1,0 +1,101 @@
+/**
+ * ECC-II in the BCV Regionalliga Bayern 2026 (50 overs), transcribed from the league's
+ * CricClubs team results page. Teams are listed in batting order.
+ */
+import type { SeedCompetitionData, SeedFixture } from '../types'
+
+const COMPETITION = {
+  name: 'BCV Regionalliga Bayern',
+  season: '2026',
+  maxOvers: 50,
+}
+
+const KEY_PREFIX = 'bcv-rl-2026'
+
+const FIXTURES: SeedFixture[] = [
+  {
+    importKey: `${KEY_PREFIX}-2026-07-26-1`,
+    date: '2026-07-26',
+    stage: 'league',
+    innings: [
+      { team: 'ECC-II', runs: 167, wickets: 10, overs: '44.3', maxOvers: 50 },
+      { team: 'BATCC-I', runs: 169, wickets: 6, overs: '17.3', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+  {
+    importKey: `${KEY_PREFIX}-2026-07-18-1`,
+    date: '2026-07-18',
+    stage: 'league',
+    innings: [
+      { team: 'COCC', runs: 115, wickets: 10, overs: '17.2', maxOvers: 50 },
+      { team: 'ECC-II', runs: 116, wickets: 6, overs: '22', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+  {
+    importKey: `${KEY_PREFIX}-2026-07-12-1`,
+    date: '2026-07-12',
+    stage: 'league',
+    innings: [
+      { team: 'ECC-II', runs: 249, wickets: 10, overs: '49.5', maxOvers: 50 },
+      { team: 'NCC-II', runs: 192, wickets: 10, overs: '36', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+  {
+    importKey: `${KEY_PREFIX}-2026-07-04-1`,
+    date: '2026-07-04',
+    stage: 'league',
+    innings: [
+      { team: 'INRS', runs: 338, wickets: 10, overs: '49.4', maxOvers: 50 },
+      { team: 'ECC-II', runs: 148, wickets: 10, overs: '26.1', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+  {
+    importKey: `${KEY_PREFIX}-2026-06-27-1`,
+    date: '2026-06-27',
+    stage: 'league',
+    innings: [
+      { team: 'ECC-II', runs: 195, wickets: 10, overs: '40.3', maxOvers: 50 },
+      { team: 'SGMC', runs: 197, wickets: 7, overs: '37', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+  {
+    importKey: `${KEY_PREFIX}-2026-05-02-1`,
+    date: '2026-05-02',
+    stage: 'league',
+    innings: [
+      { team: 'ECC-II', runs: 200, wickets: 10, overs: '45', maxOvers: 50 },
+      { team: 'SWCC', runs: 185, wickets: 10, overs: '37.4', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+  {
+    importKey: `${KEY_PREFIX}-2026-04-26-1`,
+    date: '2026-04-26',
+    stage: 'league',
+    innings: [
+      { team: 'ECC-II', runs: 214, wickets: 9, overs: '50', maxOvers: 50 },
+      { team: 'SVL-II', runs: 101, wickets: 10, overs: '26.2', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+  {
+    importKey: `${KEY_PREFIX}-2026-04-11-1`,
+    date: '2026-04-11',
+    stage: 'league',
+    innings: [
+      { team: 'ECC-II', runs: 254, wickets: 10, overs: '44.4', maxOvers: 50 },
+      { team: 'WUC', runs: 196, wickets: 10, overs: '44', maxOvers: 50 },
+    ],
+    result: { method: 'normal' },
+  },
+]
+
+export const BCV_REGIONALLIGA_2026: SeedCompetitionData = {
+  competition: COMPETITION,
+  fixtures: FIXTURES,
+}

@@ -26,11 +26,13 @@ flowchart TB
   cdn --> fn
 ```
 
-| Environment | Where                           | Database                       | Media            |
-| ----------- | ------------------------------- | ------------------------------ | ---------------- |
-| Local       | `pnpm dev`                      | Docker Postgres (`pnpm db:up`) | `./media` folder |
-| CI          | GitHub Actions                  | none (build placeholders)      | —                |
-| Preview     | Vercel preview per PR (planned) | Neon branch (planned)          | Vercel Blob      |
-| Production  | Vercel                          | Neon (EU region)               | Vercel Blob      |
+| Environment | Where                           | Database                                                     | Media            |
+| ----------- | ------------------------------- | ------------------------------------------------------------ | ---------------- |
+| Local       | `pnpm dev`                      | Docker Postgres on host port 5433 (`pnpm db:up`)             | `./media` folder |
+| CI          | GitHub Actions                  | Ephemeral Postgres service, migrated and seeded before build | —                |
+| Preview     | Vercel preview per PR (planned) | Neon branch (planned)                                        | Vercel Blob      |
+| Production  | Vercel                          | Neon (EU region)                                             | Vercel Blob      |
+
+Schema changes ship as migrations in `src/cms/migrations/`; production applies pending migrations on startup ([ADR-0004](09-architecture-decisions/0004-database-schema-via-migrations-only.md)). Because pages are prerendered from the database, every build needs a reachable, migrated database.
 
 Configuration is provided through environment variables, validated at startup ([`src/shared/config/env.ts`](../../src/shared/config/env.ts)); see [`.env.example`](../../.env.example).
