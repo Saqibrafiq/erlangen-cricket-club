@@ -7,8 +7,13 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
+import { competitions } from './cms/collections/competitions'
+import { fixtures } from './cms/collections/fixtures'
 import { media } from './cms/collections/media'
+import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
+import { impressum, privacyPolicy } from './cms/globals/legal-pages'
+import { migrations } from './cms/migrations'
 import { routing } from './i18n/routing'
 import { parseServerEnv } from './shared/config/env'
 
@@ -20,7 +25,8 @@ export default buildConfig({
     user: users.slug,
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [users, media],
+  collections: [fixtures, teams, competitions, media, users],
+  globals: [impressum, privacyPolicy],
   editor: lexicalEditor(),
   // Content fields opt in with `localized: true`; untranslated German falls back to English.
   localization: {
@@ -32,6 +38,11 @@ export default buildConfig({
   secret: env.PAYLOAD_SECRET,
   db: postgresAdapter({
     pool: { connectionString: env.DATABASE_URI },
+    migrationDir: path.resolve(dirname, 'cms/migrations'),
+    // Schema changes always go through migrations, locally too, so dev and production never drift.
+    push: false,
+    // Applied on startup in production (Vercel has no separate release step).
+    prodMigrations: migrations,
   }),
   sharp,
   plugins: [

@@ -52,11 +52,38 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 
 ### Current contents
 
-| Path               | Contents                                                |
-| ------------------ | ------------------------------------------------------- |
-| `domain/cricket/`  | `calculateBattingAverage`, `calculateStrikeRate`        |
-| `shared/ui/`       | `Button`, `SkipLink`, `JsonLd`                          |
-| `shared/lib/`      | `cn`, SEO helpers (`buildAlternates`, JSON-LD builders) |
-| `shared/config/`   | `parseServerEnv` (Zod), `siteConfig`                    |
-| `cms/collections/` | `users`, `media`                                        |
-| `features/`        | Empty — features arrive in follow-up PRs                |
+| Path                 | Contents                                                                                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain/cricket/`    | Batting average, strike rate, overs notation, `resolveMatchResult`, `getTeamOutcome`                                                                                |
+| `shared/ui/`         | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram` |
+| `shared/lib/`        | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                    |
+| `shared/config/`     | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                             |
+| `cms/collections/`   | `fixtures`, `teams`, `competitions` (with `slug`), `media`, `users`                                                                                                 |
+| `cms/globals/`       | `impressum`, `privacy-policy` (localised rich text)                                                                                                                 |
+| `cms/hooks/`         | Fixture title, on-demand revalidation of all localised pages                                                                                                        |
+| `cms/seed/`          | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                          |
+| `features/fixtures/` | Fixtures & Results — see below                                                                                                                                      |
+| `features/legal/`    | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                 |
+
+### `features/fixtures`
+
+Routes ([ADR-0005](09-architecture-decisions/0005-fixtures-pages-per-competition.md)):
+
+| Route                       | Content                                                                                                                                       |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/fixtures`                 | All fixtures together; filters: competition (grouped by team), status (upcoming, completed, abandoned, walkover, forfeit), result (won, lost) |
+| `/fixtures/[competition]`   | One competition: record, fixtures filterable by status and result, breadcrumbs                                                                |
+| Header menu (locale layout) | Latest season's competitions grouped by club team                                                                                             |
+
+```mermaid
+flowchart LR
+  pages["app/[locale]/fixtures/*<br/>layout.tsx (header menu)"] --> index["features/fixtures/index.ts"]
+  index --> queries["server/queries.ts<br/>Payload Local API"]
+  queries --> mapper["server/map-fixture.ts<br/>doc → FixtureSummary"]
+  mapper --> domain["domain/cricket<br/>resolveMatchResult"]
+  queries --> fdomain["domain/<br/>summariseCompetitions, groupCompetitionsByTeam,<br/>fixture-filters (category, URL state)"]
+  index --> components["components/<br/>FixturesOverview, CompetitionFixtures,<br/>FilterableFixtures → FixtureFilters (client),<br/>FixtureCard, ClubRecord"]
+  index --> menu["domain/build-fixtures-menu<br/>→ shared/ui NavMenu groups"]
+```
+
+The mapper is the anti-corruption layer between Payload's document shape and the UI's view model; components never see Payload types.

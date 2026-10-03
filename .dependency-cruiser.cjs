@@ -64,6 +64,9 @@ module.exports = {
       },
       to: {
         path: ['(^|/)node_modules/(payload|@payloadcms)/', '^src/payload\\.config\\.ts$'],
+        // Exception: the Lexical JSX renderer only turns stored rich-text JSON into markup — no
+        // data access — so presentational components may use it.
+        pathNot: '(^|/)node_modules/@payloadcms/richtext-lexical/dist/exports/react/',
         dependencyTypesNot: ['type-only'],
       },
     },
