@@ -21,8 +21,8 @@
     "db:migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "db:migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "db:seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/cms/seed/run.ts",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "next typegen && eslint .",
+    "lint:fix": "next typegen && eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "next typegen && tsc --noEmit",
@@ -33,7 +33,7 @@
     "test:e2e": "playwright test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "husky"
+    "prepare": "husky && next typegen"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
