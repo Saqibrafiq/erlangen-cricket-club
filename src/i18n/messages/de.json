@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "siteDescription": "Erlangen Cricket Club — Cricket in Erlangen, Bayern. Spielplan, Ergebnisse, Spieler und Mitgliedschaft."
+  },
+  "common": {
+    "skipToContent": "Zum Hauptinhalt springen"
+  },
+  "home": {
+    "heading": "Erlangen Cricket Club",
+    "intro": "Cricket im Herzen Frankens. Spieler, Spielplan und Geschichten aus unserem Verein — bald verfügbar."
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "heading": "Diese Seite konnten wir nicht finden",
+    "description": "Die Seite wurde möglicherweise verschoben oder hat nie existiert.",
+    "backHome": "Zur Startseite"
+  }
+}

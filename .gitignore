@@ -1,0 +1,36 @@
+# dependencies
+/node_modules
+/.pnpm-store
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# env files
+.env
+.env*.local
+
+# testing
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# storybook
+/storybook-static
+*storybook.log
+
+# payload local media (production uses Vercel Blob)
+/media
+
+# vercel
+.vercel
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+pnpm-debug.log*
