@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  # Build-time placeholders only; nothing in CI talks to a real database.
+  # Points at the ephemeral Postgres service of the build-and-e2e job; other jobs never connect.
   DATABASE_URI: postgres://postgres:postgres@localhost:5432/ecc
   PAYLOAD_SECRET: ci-only-secret-not-used-in-any-deployment-000000
   NEXT_PUBLIC_SITE_URL: http://localhost:3000
@@ -45,6 +45,20 @@ jobs:
   build-and-e2e:
     name: Build, E2E and accessibility
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ecc
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d ecc"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
@@ -53,6 +67,9 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Static pages read from the database at build time, so schema and data must exist first.
+      - run: pnpm db:migrate
+      - run: pnpm db:seed
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e

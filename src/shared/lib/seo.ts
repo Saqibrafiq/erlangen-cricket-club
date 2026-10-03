@@ -26,6 +26,26 @@ export function buildAlternates(
   }
 }
 
+export type BreadcrumbEntry = {
+  name: string
+  /** Unlocalised path, e.g. "/fixtures". */
+  pathname: string
+}
+
+/** schema.org `BreadcrumbList` with absolute, localised URLs. */
+export function buildBreadcrumbJsonLd(entries: readonly BreadcrumbEntry[], locale: Locale) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: entries.map((entry, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: entry.name,
+      item: `${siteConfig.url}${getLocalizedPath(entry.pathname, locale)}`,
+    })),
+  }
+}
+
 /** schema.org `SportsOrganization` describing the club, rendered site-wide as JSON-LD. */
 export function buildSportsOrganizationJsonLd() {
   return {

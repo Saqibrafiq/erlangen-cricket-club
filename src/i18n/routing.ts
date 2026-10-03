@@ -9,6 +9,9 @@ export const routing = defineRouting({
 
 export type Locale = (typeof routing.locales)[number]
 
+/** All dates and times are shown in the club's local time, on server and client alike. */
+export const TIME_ZONE = 'Europe/Berlin'
+
 /** Returns the public path of `pathname` for `locale`, following the `as-needed` prefix strategy. */
 export function getLocalizedPath(pathname: string, locale: Locale): string {
   const normalizedPath = pathname.startsWith('/') ? pathname : `/${pathname}`

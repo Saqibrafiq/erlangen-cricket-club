@@ -7,6 +7,8 @@
 - Messages in `src/i18n/messages/{en,de}.json`; a unit test ensures both catalogues have identical keys, and `AppConfig` typing makes unknown keys a type error.
 - Payload content localisation uses the same locales; German falls back to English.
 - Each localised route calls `resolveLocale(params)` (404 for unsupported locales, enables static rendering). See [ADR-0002](09-architecture-decisions/0002-keep-set-request-locale-until-root-params-support.md).
+- **Pitfall — files without params:** `loading.tsx` and `not-found.tsx` render without route params, so server-side translations there fall back to `headers()` and make a static route dynamic (or fail with "static to dynamic" at runtime). Their translated content is therefore a client component reading messages from the layout's `NextIntlClientProvider` (`FixturesSkeleton`, `[locale]/not-found.tsx`).
+- **Pitfall — notFound() under Suspense:** a `notFound()` thrown inside a `loading.tsx` boundary streams a 200 status. Validate dynamic segments in a segment `layout.tsx` instead (see runtime view 6.4).
 
 ## 8.2 Accessibility
 
@@ -26,6 +28,11 @@
 - Tailwind CSS v4 with tokens in `@theme` (`src/app/(frontend)/globals.css`), named `--{category}-{role}-{variant}`.
 - Dark mode reassigns token values under `prefers-color-scheme: dark`; components never need `dark:` variants.
 - Components in `src/shared/ui/` follow shadcn/ui conventions: `cva` variants, `cn()` merging, Radix primitives, a story and a test for each.
+- **Typography:** Inter (body) and Barlow Condensed (`font-display`: h1/h2, scores, stats), both self-hosted via `next/font`.
+- **Match cards:** the winner is emphasised (losing team and score muted), team monograms identify clubs (brand colour for ECC teams). The club outcome is shown by a text badge (Won/Lost/Tied), never by colour alone.
+- **Header:** sticky from `md` with a translucent blur; on phones it scrolls away. Contains the EN/DE switcher (each language named in itself).
+- **Page width:** every page uses `Container`. `wide` (full width with gutters, no maximum) is the default for layout — header, lists, grids — so all pages share one left edge. `prose` (max 768 px, ~65–75 characters per line) is only for long-form reading such as stories and legal pages. Data views use the width: e.g. fixtures show a fixed 16rem filter sidebar from `lg` (`grid-cols-sidebar`) and a card grid that fits as many ≥20rem columns as the space allows (`grid-cols-cards`): one on phones, five or six on wide monitors.
+- **Cards look the same with less or more data:** a card always renders the same sections (fixture card: header, teams, result, meta), filling gaps with a status text instead of omitting a section, and rows have a minimum height. In grids, cards use CSS subgrid (`row-span-4 grid-rows-subgrid`) so sections line up across every card in a row.
 
 ## 8.5 Configuration and error handling
 
