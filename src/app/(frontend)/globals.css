@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens — naming: --{category}-{role}-{variant}.
+ * Brand hues are provisional until derived from the club logo (see arc42 §11, risk R-3).
+ * Values in @theme generate Tailwind utilities (bg-brand-primary, text-text-muted, ...);
+ * dark mode only reassigns the variables, so components never need `dark:` variants.
+ */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-primary: oklch(0.45 0.12 155);
+  --color-brand-primary-hover: oklch(0.4 0.12 155);
+  --color-brand-on-primary: oklch(0.99 0 0);
+
+  --color-surface-default: oklch(0.99 0.003 155);
+  --color-surface-muted: oklch(0.95 0.01 155);
+
+  --color-text-default: oklch(0.21 0.02 155);
+  --color-text-muted: oklch(0.46 0.02 155);
+
+  --color-border-default: oklch(0.87 0.01 155);
+  --color-focus-ring: oklch(0.55 0.17 250);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-brand-primary: oklch(0.74 0.13 155);
+    --color-brand-primary-hover: oklch(0.8 0.12 155);
+    --color-brand-on-primary: oklch(0.18 0.02 155);
+
+    --color-surface-default: oklch(0.17 0.01 155);
+    --color-surface-muted: oklch(0.23 0.015 155);
+
+    --color-text-default: oklch(0.96 0.005 155);
+    --color-text-muted: oklch(0.76 0.015 155);
+
+    --color-border-default: oklch(0.34 0.015 155);
+    --color-focus-ring: oklch(0.75 0.14 250);
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-surface-default font-sans text-text-default antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-focus-ring;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
