@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "siteDescription": "Erlangen Cricket Club — cricket in Erlangen, Bavaria. Fixtures, results, players and how to join."
+  },
+  "common": {
+    "skipToContent": "Skip to main content"
+  },
+  "home": {
+    "heading": "Erlangen Cricket Club",
+    "intro": "Cricket in the heart of Franconia. Players, fixtures and stories from our club — coming soon."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "heading": "We couldn't find that page",
+    "description": "The page may have moved or never existed.",
+    "backHome": "Back to the home page"
+  }
+}
