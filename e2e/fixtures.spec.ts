@@ -75,10 +75,14 @@ test.describe('all fixtures', () => {
   test('filters by competition and status, keeping filters in the URL', async ({ page }) => {
     await page.goto('/fixtures')
 
-    await page
-      .getByRole('combobox', { name: 'Competition' })
-      .selectOption({ label: VERBANDSLIGA.title })
-    await expect(page.getByRole('article')).toHaveCount(16)
+    // The pre-hydration fallback renders an identical (inert) select, so retry until the
+    // hydrated filter has taken the choice.
+    await expect(async () => {
+      await page
+        .getByRole('combobox', { name: 'Competition' })
+        .selectOption({ label: VERBANDSLIGA.title })
+      await expect(page.getByRole('article')).toHaveCount(16, { timeout: 1000 })
+    }).toPass()
 
     // Visitors click the visible pill (the label); the native radio is visually hidden.
     await page.locator('label', { hasText: 'Walkover (2)' }).click()

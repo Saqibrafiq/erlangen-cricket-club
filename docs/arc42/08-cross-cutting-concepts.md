@@ -34,19 +34,28 @@
 - **Page width:** every page uses `Container`. `wide` (full width with gutters, no maximum) is the default for layout — header, lists, grids — so all pages share one left edge. `prose` (max 768 px, ~65–75 characters per line) is only for long-form reading such as stories and legal pages. Data views use the width: e.g. fixtures show a fixed 16rem filter sidebar from `lg` (`grid-cols-sidebar`) and a card grid that fits as many ≥20rem columns as the space allows (`grid-cols-cards`): one on phones, five or six on wide monitors.
 - **Cards look the same with less or more data:** a card always renders the same sections (fixture card: header, teams, result, meta), filling gaps with a status text instead of omitting a section, and rows have a minimum height. In grids, cards use CSS subgrid (`row-span-4 grid-rows-subgrid`) so sections line up across every card in a row.
 
-## 8.5 Configuration and error handling
+- **Data tables:** standings are plain server-rendered tables in published order and columns (no sorting: the ranking is the content). Numbers right-aligned with tabular figures; points in the display face; win % with a decorative bar; overs muted next to runs; position chips (brand colour for the club). Row labels are `th scope="row"` in a sticky first column. On phones, cells are compact and teams show their league code (full name kept for screen readers), so position through points fit without scrolling; the rest scrolls inside a focusable, named region. A legend explains the abbreviations.
+- **Summary cards ("Our teams"):** a club team's place in a table (ordinal position, points, won, lost, NRR) above the tables. Cards use a container query (`@container`) to switch to a one-row banner when the card itself is wide, so the same component works in a grid and full width; `grid-cols-cards-fit` lets fewer cards stretch to fill the row.
+- **Header dropdowns:** on phones the logo and language switcher share the first row and the nav takes a full-width second row; dropdown panels then span the nav row, so they never leave the viewport or cover the language links (WCAG 2.5.8 target size).
+
+## 8.5 Cricket calculations
+
+- All cricket maths lives in `domain/cricket` (pure, 100% branch coverage) and is **derived** from stored results: margins and outcomes, later player statistics.
+- Exception: standings are the leagues' published tables, entered by editors ([ADR-0006](09-architecture-decisions/0006-standings-from-published-tables.md)).
+
+## 8.6 Configuration and error handling
 
 - Server env validated by Zod at startup (`parseServerEnv`) — misconfiguration fails the deployment, not a request.
 - Public env (`NEXT_PUBLIC_SITE_URL`) validated with a safe default in `siteConfig`.
 - Errors: typed results or domain errors (e.g. `RangeError` for invalid stats input); route-level `error.tsx` boundaries arrive with the first data-driven feature.
 
-## 8.6 Security
+## 8.7 Security
 
 - Payload access control per collection (`src/cms/access/`); public read only where content is public.
 - JSON-LD output escapes `<` to prevent script injection from CMS content.
 - Secrets only in `.env.local` / Vercel environment variables.
 
-## 8.7 Testing
+## 8.8 Testing
 
 | Level         | Tool                                | Scope                                                     |
 | ------------- | ----------------------------------- | --------------------------------------------------------- |

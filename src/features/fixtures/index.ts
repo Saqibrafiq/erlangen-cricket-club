@@ -5,7 +5,7 @@ export {
 export { FixtureCard, type FixtureCardProps } from './components/fixture-card'
 export { FixturesOverview, type FixturesOverviewProps } from './components/fixtures-overview'
 export { FixturesSkeleton } from './components/fixtures-skeleton'
-export { buildFixturesMenu } from './domain/build-fixtures-menu'
+export { buildCompetitionMenu, type CompetitionMenuOptions } from './domain/build-competition-menu'
 export { FIXTURES_PATH, getCompetitionPath } from './domain/paths'
 export { buildFixturesJsonLd } from './domain/sports-event-json-ld'
 export {
