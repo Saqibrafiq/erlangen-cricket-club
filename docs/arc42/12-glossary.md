@@ -17,7 +17,7 @@ Code uses the English term (camelCase where applicable).
 | Century              | Century (Hundert)           | `century`         | 100 or more runs in one innings.                                                                           |
 | Five-wicket haul     | Five-Wicket-Haul            | `fiveWicketHaul`  | Five or more wickets by one bowler in one innings.                                                         |
 | Net run rate         | Netto-Run-Rate              | `netRunRate`      | Tie-breaker in standings: run rate scored minus run rate conceded.                                         |
-| Standings            | Tabelle                     | `standings`       | League table derived from results.                                                                         |
+| Standings            | Tabelle                     | `standings`       | League table as published by the league; entered in the CMS.                                               |
 | Result margin        | Siegvorsprung               | `ResultMargin`    | Runs (team batting first wins) or wickets in hand (chasing team wins). Derived from innings.               |
 | DLS method           | DLS-Methode                 | `dls`             | Duckworth–Lewis–Stern: revises targets in rain-shortened matches; result is entered as published.          |
 | Forfeit              | Kampflose Wertung (Forfeit) | `forfeit`         | A team concedes; the match is awarded to the opponent ("Forfeited. Winner: X" on CricClubs).               |

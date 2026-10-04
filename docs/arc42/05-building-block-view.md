@@ -52,18 +52,19 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 
 ### Current contents
 
-| Path                 | Contents                                                                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `domain/cricket/`    | Batting average, strike rate, overs notation, `resolveMatchResult`, `getTeamOutcome`                                                                                |
-| `shared/ui/`         | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram` |
-| `shared/lib/`        | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                    |
-| `shared/config/`     | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                             |
-| `cms/collections/`   | `fixtures`, `teams`, `competitions` (with `slug`), `media`, `users`                                                                                                 |
-| `cms/globals/`       | `impressum`, `privacy-policy` (localised rich text)                                                                                                                 |
-| `cms/hooks/`         | Fixture title, on-demand revalidation of all localised pages                                                                                                        |
-| `cms/seed/`          | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                          |
-| `features/fixtures/` | Fixtures & Results — see below                                                                                                                                      |
-| `features/legal/`    | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                 |
+| Path                  | Contents                                                                                                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain/cricket/`     | Batting average, strike rate, overs notation, `resolveMatchResult`, `getTeamOutcome`                                                                                |
+| `shared/ui/`          | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram` |
+| `shared/lib/`         | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                    |
+| `shared/config/`      | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                             |
+| `cms/collections/`    | `fixtures`, `teams`, `competitions` (with `slug`, `points`), `media`, `users`                                                                                       |
+| `cms/globals/`        | `impressum`, `privacy-policy` (localised rich text)                                                                                                                 |
+| `cms/hooks/`          | Fixture title, on-demand revalidation of all localised pages                                                                                                        |
+| `cms/seed/`           | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                          |
+| `features/standings/` | League tables — see below                                                                                                                                           |
+| `features/fixtures/`  | Fixtures & Results — see below                                                                                                                                      |
+| `features/legal/`     | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                 |
 
 ### `features/fixtures`
 
@@ -83,7 +84,29 @@ flowchart LR
   mapper --> domain["domain/cricket<br/>resolveMatchResult"]
   queries --> fdomain["domain/<br/>summariseCompetitions, groupCompetitionsByTeam,<br/>fixture-filters (category, URL state)"]
   index --> components["components/<br/>FixturesOverview, CompetitionFixtures,<br/>FilterableFixtures → FixtureFilters (client),<br/>FixtureCard, ClubRecord"]
-  index --> menu["domain/build-fixtures-menu<br/>→ shared/ui NavMenu groups"]
+  index --> menu["domain/build-competition-menu<br/>→ shared/ui NavMenu groups"]
 ```
 
 The mapper is the anti-corruption layer between Payload's document shape and the UI's view model; components never see Payload types.
+
+`buildCompetitionMenu` is shared with standings: the header's Fixtures and Standings dropdowns list the same competitions, each linking to its own section.
+
+### `features/standings`
+
+Routes ([ADR-0006](09-architecture-decisions/0006-standings-from-published-tables.md)):
+
+| Route                       | Content                                                         |
+| --------------------------- | --------------------------------------------------------------- |
+| `/standings`                | One table per competition (latest season first)                 |
+| `/standings/[competition]`  | One table, link to the competition's fixtures, breadcrumbs      |
+| Header menu (locale layout) | Same competitions as the Fixtures menu (`buildCompetitionMenu`) |
+
+```mermaid
+flowchart LR
+  pages["app/[locale]/standings/*"] --> index["features/standings/index.ts"]
+  index --> queries["server/queries.ts"]
+  queries --> mapper["server/map-standings.ts<br/>competition.standings → rows"]
+  index --> components["components/<br/>StandingsTable (server, published order),<br/>CompetitionStandingsView, StandingsOverview"]
+```
+
+Standings are the published table stored on the competition (`competitions.standings`); they do not read fixtures.

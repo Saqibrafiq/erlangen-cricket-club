@@ -206,6 +206,33 @@ export interface Competition {
    */
   maxOvers: number;
   /**
+   * The league table exactly as published on CricClubs, one row per team in published order (row 1 = position 1).
+   */
+  standings?:
+    | {
+        team: number | Team;
+        played: number;
+        won: number;
+        lost: number;
+        noResult: number;
+        tied: number;
+        points: number;
+        /**
+         * As published, e.g. 71.43.
+         */
+        winRate: number;
+        /**
+         * As published, e.g. 1.1694 or -0.2636.
+         */
+        netRunRate: number;
+        runsFor: number;
+        oversFaced: string;
+        runsAgainst: number;
+        oversBowled: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * URL segment, e.g. "bcv-t20-regionalliga-bayern-2026". Generated if left empty.
    */
   slug: string;
@@ -422,6 +449,24 @@ export interface CompetitionsSelect<T extends boolean = true> {
   name?: T;
   season?: T;
   maxOvers?: T;
+  standings?:
+    | T
+    | {
+        team?: T;
+        played?: T;
+        won?: T;
+        lost?: T;
+        noResult?: T;
+        tied?: T;
+        points?: T;
+        winRate?: T;
+        netRunRate?: T;
+        runsFor?: T;
+        oversFaced?: T;
+        runsAgainst?: T;
+        oversBowled?: T;
+        id?: T;
+      };
   slug?: T;
   updatedAt?: T;
   createdAt?: T;

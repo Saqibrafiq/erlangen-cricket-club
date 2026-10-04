@@ -1,7 +1,8 @@
 import type { CollectionConfig, Validate } from 'payload'
 
-import { isValidOvers, WICKETS_PER_INNINGS } from '../../domain/cricket'
+import { WICKETS_PER_INNINGS } from '../../domain/cricket'
 import { anyone } from '../access/anyone'
+import { validateOvers } from '../fields/validate-overs'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 import { setFixtureTitle } from '../hooks/set-fixture-title'
 
@@ -32,9 +33,6 @@ function battingTeamOf(row: unknown): unknown {
 
 const validateStartTime: Validate<string | null | undefined> = (value) =>
   !value || START_TIME_PATTERN.test(value) || 'Use 24-hour format HH:mm, e.g. 13:30.'
-
-const validateOvers: Validate<string | null | undefined> = (value) =>
-  (typeof value === 'string' && isValidOvers(value)) || 'Use cricket notation, e.g. "20" or "19.2".'
 
 const validateTeam2: Validate<unknown, FixtureFormData> = (value, { data }) =>
   !value || relationId(value) !== relationId(data.team1) || 'A team cannot play against itself.'

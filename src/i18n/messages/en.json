@@ -11,7 +11,9 @@
     "home": "Home",
     "fixtures": "Fixtures & Results",
     "fixturesOverview": "All fixtures & results",
-    "languageLabel": "Language"
+    "languageLabel": "Language",
+    "standings": "Standings",
+    "standingsOverview": "All standings"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -120,5 +122,74 @@
     "impressumTitle": "Legal notice (Impressum)",
     "privacyTitle": "Privacy policy",
     "pending": "This page is being prepared and will be published shortly."
+  },
+  "standings": {
+    "title": "Standings",
+    "metaDescription": "League tables of every competition Erlangen Cricket Club plays in: points, net run rate and results.",
+    "competitionMetaDescription": "League table of the {competition}: points, net run rate and runs for and against of every team.",
+    "empty": "The table for this competition has not been published yet.",
+    "noCompetitions": "No competitions yet.",
+    "viewFixtures": "Fixtures & results",
+    "columns": {
+      "position": {
+        "short": "#",
+        "long": "Position"
+      },
+      "team": {
+        "short": "Team",
+        "long": "Team"
+      },
+      "played": {
+        "short": "M",
+        "long": "Matches played"
+      },
+      "won": {
+        "short": "W",
+        "long": "Won"
+      },
+      "lost": {
+        "short": "L",
+        "long": "Lost"
+      },
+      "tied": {
+        "short": "T",
+        "long": "Tied"
+      },
+      "noResult": {
+        "short": "NR",
+        "long": "No result"
+      },
+      "points": {
+        "short": "Pts",
+        "long": "Points"
+      },
+      "winRate": {
+        "short": "Win %",
+        "long": "Win rate"
+      },
+      "netRunRate": {
+        "short": "NRR",
+        "long": "Net run rate"
+      },
+      "runsFor": {
+        "short": "For",
+        "long": "Runs scored and overs faced"
+      },
+      "runsAgainst": {
+        "short": "Against",
+        "long": "Runs conceded and overs bowled"
+      }
+    },
+    "tableRegion": "{caption} table",
+    "legendLabel": "Abbreviations",
+    "club": {
+      "heading": "Our teams",
+      "position": "{position, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",
+      "ofTeams": "of {count} teams",
+      "points": "Points",
+      "won": "Won",
+      "lost": "Lost",
+      "netRunRate": "NRR"
+    }
   }
 }
