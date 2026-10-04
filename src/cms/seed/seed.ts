@@ -3,7 +3,7 @@ import type { Payload } from 'payload'
 import { slugify } from '../../shared/lib/slugify'
 import type { RevalidateContext } from '../hooks/revalidate-pages'
 import { SEED_COMPETITIONS, SEED_TEAMS } from './data'
-import type { SeedCompetition, SeedFixture, SeedResult } from './types'
+import type { SeedCompetition, SeedFixture, SeedResult, SeedStandingsRow } from './types'
 
 const SEED_CONTEXT: RevalidateContext = { disableRevalidate: true }
 // Payload stores day-only dates at noon UTC so they never shift across time zones.
@@ -58,6 +58,38 @@ async function upsertCompetition(payload: Payload, competition: SeedCompetition)
     }))
 
   return doc.id
+}
+
+/** Fills in a published table only while the competition has none, so editor changes win. */
+async function seedStandingsIfEmpty(
+  payload: Payload,
+  competitionId: number,
+  standings: SeedStandingsRow[],
+  teamIds: TeamIds,
+): Promise<boolean> {
+  const competition = await payload.findByID({
+    collection: 'competitions',
+    id: competitionId,
+    depth: 0,
+  })
+
+  if (standings.length === 0 || (competition.standings ?? []).length > 0) {
+    return false
+  }
+
+  await payload.update({
+    collection: 'competitions',
+    id: competitionId,
+    context: SEED_CONTEXT,
+    data: {
+      standings: standings.map(({ team, ...row }) => ({
+        ...row,
+        team: requireTeamId(teamIds, team),
+      })),
+    },
+  })
+
+  return true
 }
 
 function toResultData(result: SeedResult, teamIds: TeamIds) {
@@ -133,15 +165,19 @@ async function createFixtureIfMissing(
 }
 
 /**
- * Imports the 2026 ECC-I results of all seeded competitions. Idempotent: existing teams,
+ * Imports the 2026 results and published standings of all seeded competitions. Idempotent: existing teams,
  * competitions and fixtures (matched by short name, slug and import key) are left
  * untouched, so editor changes in the admin are never overwritten.
  */
 export async function seed(payload: Payload): Promise<void> {
   const teamIds = await upsertTeams(payload)
 
-  for (const { competition, fixtures } of SEED_COMPETITIONS) {
+  for (const { competition, fixtures, standings = [] } of SEED_COMPETITIONS) {
     const competitionId = await upsertCompetition(payload, competition)
+
+    if (await seedStandingsIfEmpty(payload, competitionId, standings, teamIds)) {
+      payload.logger.info(`${competition.name} ${competition.season}: standings created.`)
+    }
 
     let created = 0
     for (const fixture of fixtures) {

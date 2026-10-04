@@ -31,6 +31,8 @@
    * min() keeps a single column from overflowing screens narrower than 20rem.
    */
   --grid-template-columns-cards: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+  /* Same, but fewer cards stretch to fill the row (e.g. one summary card spans the page). */
+  --grid-template-columns-cards-fit: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
   --grid-template-columns-sidebar: 16rem minmax(0, 1fr);
   --grid-template-columns-hero: minmax(0, 1fr) auto;
 
@@ -40,6 +42,8 @@
 
   --color-surface-default: oklch(0.99 0.003 155);
   --color-surface-muted: oklch(0.95 0.01 155);
+  /* Opaque highlight (e.g. the club's rows in tables); must stay solid for sticky cells. */
+  --color-surface-highlight: oklch(0.93 0.035 155);
 
   --color-text-default: oklch(0.21 0.02 155);
   --color-text-muted: oklch(0.46 0.02 155);
@@ -61,6 +65,7 @@
 
     --color-surface-default: oklch(0.17 0.01 155);
     --color-surface-muted: oklch(0.23 0.015 155);
+    --color-surface-highlight: oklch(0.27 0.04 155);
 
     --color-text-default: oklch(0.96 0.005 155);
     --color-text-muted: oklch(0.76 0.015 155);

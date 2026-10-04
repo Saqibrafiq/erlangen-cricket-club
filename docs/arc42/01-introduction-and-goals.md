@@ -9,7 +9,7 @@ Erlangen Cricket Club (Erlangen, Bavaria) needs a modern website and a content p
 | Home               | First impression, club identity, primary call to action (join)     |
 | Team / Players     | Player profiles with career stats derived from scorecards          |
 | Fixtures & Results | Upcoming matches (date, venue) and scorecards of completed matches |
-| Standings          | League tables derived from results                                 |
+| Standings          | League tables as published by the leagues (ADR-0006)               |
 | Stories            | Blog: match reports, season reviews, club news                     |
 | Hall of Fame       | Milestones (centuries, five-wicket hauls) derived from scorecards  |
 | Membership         | How to join; enquiry form                                          |
