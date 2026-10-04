@@ -66,7 +66,7 @@ export function NavMenu({ label, href, groups }: NavMenuProps) {
   }, [isOpen])
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="sm:relative">
       <button
         ref={buttonRef}
         type="button"
@@ -91,8 +91,10 @@ export function NavMenu({ label, href, groups }: NavMenuProps) {
       <div
         id={panelId}
         hidden={!isOpen}
-        // Width capped to the viewport so the panel never causes horizontal scrolling on phones.
-        className="absolute right-0 z-40 mt-1 w-72 max-w-[calc(100vw-2rem)] rounded-lg border border-border-default bg-surface-default p-2 shadow-lg"
+        // Phones: anchored to the full-width nav row (the nearest positioned ancestor), so it spans
+        // the screen instead of overflowing it. From sm up: a fixed-width panel under the button,
+        // left-aligned while the nav starts the row, right-aligned once it sits at the right (md).
+        className="absolute inset-x-0 z-40 mt-1 rounded-lg border border-border-default bg-surface-default p-2 shadow-lg sm:right-auto sm:w-72 md:right-0 md:left-auto"
       >
         {groups.map((group, index) => {
           const groupId = `${panelId}-group-${index}`

@@ -3,8 +3,15 @@ import { Barlow_Condensed, Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
 
-import { buildFixturesMenu, FIXTURES_PATH, getCompetitionNavigation } from '@/features/fixtures'
+import {
+  buildCompetitionMenu,
+  type CompetitionMenuOptions,
+  FIXTURES_PATH,
+  getCompetitionNavigation,
+  getCompetitionPath,
+} from '@/features/fixtures'
 import { LEGAL_PATHS } from '@/features/legal'
+import { getStandingsPath, STANDINGS_PATH } from '@/features/standings'
 import { resolveLocale } from '@/i18n/locale'
 import { routing } from '@/i18n/routing'
 import { MAIN_NAVIGATION } from '@/shared/config/navigation'
@@ -57,14 +64,25 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
     getTranslations({ locale, namespace: 'footer' }),
     getCompetitionNavigation(),
   ])
-  const navigationItems: SiteNavigationItem[] = MAIN_NAVIGATION.map((item) => ({
-    href: item.href,
-    label: tNavigation(item.labelKey),
-    groups:
-      item.href === FIXTURES_PATH
-        ? buildFixturesMenu(competitionNavigation, tNavigation('fixturesOverview'))
-        : undefined,
-  }))
+  // Sections organised by competition get a dropdown: overview first, then competitions per team.
+  const competitionMenus: Partial<Record<string, CompetitionMenuOptions>> = {
+    [FIXTURES_PATH]: {
+      overview: { href: FIXTURES_PATH, label: tNavigation('fixturesOverview') },
+      competitionHref: getCompetitionPath,
+    },
+    [STANDINGS_PATH]: {
+      overview: { href: STANDINGS_PATH, label: tNavigation('standingsOverview') },
+      competitionHref: getStandingsPath,
+    },
+  }
+  const navigationItems: SiteNavigationItem[] = MAIN_NAVIGATION.map((item) => {
+    const menu = competitionMenus[item.href]
+    return {
+      href: item.href,
+      label: tNavigation(item.labelKey),
+      groups: menu ? buildCompetitionMenu(competitionNavigation, menu) : undefined,
+    }
+  })
 
   return (
     <html lang={locale} className={`${inter.variable} ${barlowCondensed.variable}`}>

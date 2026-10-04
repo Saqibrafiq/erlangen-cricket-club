@@ -27,26 +27,31 @@ export function SiteHeader({ items }: SiteHeaderProps) {
       <Container className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-2">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center rounded-md font-display text-xl font-bold tracking-tight uppercase"
+          className="order-1 inline-flex min-h-11 items-center rounded-md font-display text-xl font-bold tracking-tight uppercase"
         >
           {siteConfig.name}
         </Link>
-        <div className="flex flex-wrap items-center gap-x-4">
-          <nav aria-label={t('label')}>
-            <ul className="flex flex-wrap gap-1">
-              {items.map((item) => (
-                <li key={item.href}>
-                  {item.groups ? (
-                    <NavMenu label={item.label} href={item.href} groups={item.groups} />
-                  ) : (
-                    <NavLink href={item.href}>{item.label}</NavLink>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
+        {/* Phones: logo and languages share the first row, the nav gets a full-width second row,
+            so an open dropdown never covers the language links. From md up: one row. */}
+        <div className="order-2 md:order-3">
           <LocaleSwitcher />
         </div>
+        <nav
+          aria-label={t('label')}
+          className="relative order-3 basis-full md:order-2 md:ml-auto md:basis-auto"
+        >
+          <ul className="flex flex-wrap gap-1">
+            {items.map((item) => (
+              <li key={item.href}>
+                {item.groups ? (
+                  <NavMenu label={item.label} href={item.href} groups={item.groups} />
+                ) : (
+                  <NavLink href={item.href}>{item.label}</NavLink>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
       </Container>
     </header>
   )

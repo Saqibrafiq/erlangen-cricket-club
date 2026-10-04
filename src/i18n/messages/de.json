@@ -11,7 +11,9 @@
     "home": "Startseite",
     "fixtures": "Spielplan & Ergebnisse",
     "fixturesOverview": "Alle Spiele & Ergebnisse",
-    "languageLabel": "Sprache"
+    "languageLabel": "Sprache",
+    "standings": "Tabellen",
+    "standingsOverview": "Alle Tabellen"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -120,5 +122,74 @@
     "impressumTitle": "Impressum",
     "privacyTitle": "Datenschutzerklärung",
     "pending": "Diese Seite wird gerade vorbereitet und in Kürze veröffentlicht."
+  },
+  "standings": {
+    "title": "Tabellen",
+    "metaDescription": "Tabellen aller Wettbewerbe des Erlangen Cricket Club: Punkte, Netto-Run-Rate und Ergebnisse.",
+    "competitionMetaDescription": "Tabelle des Wettbewerbs {competition}: Punkte, Netto-Run-Rate sowie Runs für und gegen jede Mannschaft.",
+    "empty": "Die Tabelle für diesen Wettbewerb wurde noch nicht veröffentlicht.",
+    "noCompetitions": "Noch keine Wettbewerbe.",
+    "viewFixtures": "Spielplan & Ergebnisse",
+    "columns": {
+      "position": {
+        "short": "Pl.",
+        "long": "Platz"
+      },
+      "team": {
+        "short": "Mannschaft",
+        "long": "Mannschaft"
+      },
+      "played": {
+        "short": "Sp",
+        "long": "Spiele"
+      },
+      "won": {
+        "short": "S",
+        "long": "Siege"
+      },
+      "lost": {
+        "short": "N",
+        "long": "Niederlagen"
+      },
+      "tied": {
+        "short": "U",
+        "long": "Unentschieden"
+      },
+      "noResult": {
+        "short": "KE",
+        "long": "Kein Ergebnis"
+      },
+      "points": {
+        "short": "Pkt",
+        "long": "Punkte"
+      },
+      "winRate": {
+        "short": "Quote",
+        "long": "Siegquote"
+      },
+      "netRunRate": {
+        "short": "NRR",
+        "long": "Netto-Run-Rate"
+      },
+      "runsFor": {
+        "short": "Für",
+        "long": "Erzielte Runs und gespielte Overs"
+      },
+      "runsAgainst": {
+        "short": "Gegen",
+        "long": "Zugelassene Runs und gebowlte Overs"
+      }
+    },
+    "tableRegion": "Tabelle {caption}",
+    "legendLabel": "Abkürzungen",
+    "club": {
+      "heading": "Unsere Mannschaften",
+      "position": "{position}.",
+      "ofTeams": "von {count} Mannschaften",
+      "points": "Punkte",
+      "won": "Siege",
+      "lost": "Niederl.",
+      "netRunRate": "NRR"
+    }
   }
 }
