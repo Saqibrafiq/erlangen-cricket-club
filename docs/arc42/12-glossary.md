@@ -29,5 +29,8 @@ Code uses the English term (camelCase where applicable).
 | Club team            | Vereinsmannschaft           | `isClubTeam`      | An Erlangen Cricket Club team; results are shown from its perspective.                                     |
 | Hall of Fame         | Ruhmeshalle                 | `hallOfFame`      | Milestones derived from scorecards.                                                                        |
 | News article         | Neuigkeit / Beitrag         | `news`            | Club news (sponsors, events, reports) maintained by editors; published or draft.                           |
+| Active membership    | Aktive Mitgliedschaft       | `active`          | Membership including league and tournament matches (plus a fee per tournament match).                      |
+| Passive membership   | Passive Mitgliedschaft      | `passive`         | Membership for training, indoor cricket and friendlies, without league matches.                            |
+| Honeypot             | Honeypot                    | `HONEYPOT_FIELD`  | Form field hidden from people; bots that fill it in are ignored. Replaces a captcha.                       |
 | Impressum            | Impressum                   | —                 | Legally required provider identification (§ 5 DDG).                                                        |
 | Datenschutzerklärung | Datenschutzerklärung        | —                 | Privacy policy required by GDPR.                                                                           |

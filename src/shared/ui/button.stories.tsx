@@ -22,6 +22,23 @@ export const Secondary: Story = { args: { variant: 'secondary' } }
 
 export const Ghost: Story = { args: { variant: 'ghost' } }
 
+/** For photos and dark bands; shown on the media overlay colour. */
+export const OnMedia: Story = {
+  args: { variant: 'on-media' },
+  decorators: [
+    (Story) => (
+      <div className="bg-media-overlay p-6">
+        <Story />
+      </div>
+    ),
+  ],
+}
+
+export const OnMediaOutline: Story = {
+  args: { variant: 'on-media-outline' },
+  decorators: OnMedia.decorators,
+}
+
 export const Small: Story = { args: { size: 'sm' } }
 
 export const Large: Story = { args: { size: 'lg' } }

@@ -65,3 +65,33 @@ sequenceDiagram
 ```
 
 The slug is validated in the segment **layout**, outside the page's `loading.tsx` Suspense boundary; throwing `notFound()` inside that boundary would already have streamed a 200 status. `getCompetitionDetail` is wrapped in React `cache()`, so layout, metadata and page share one query.
+
+## 6.6 Visitor sends a contact message
+
+```mermaid
+sequenceDiagram
+  participant V as Visitor
+  participant F as ContactForm (client)
+  participant A as submitContactMessageAction
+  participant D as domain/contact-message
+  participant P as Payload (contact-messages)
+
+  V->>F: fills in and sends the form
+  F->>A: FormData (useActionState)
+  A->>D: isSpam (honeypot)?
+  alt honeypot filled
+    A-->>F: success (nothing stored)
+  else
+    A->>D: parseContactMessage (Zod)
+    alt invalid
+      A-->>F: field error codes + typed values
+      F->>V: messages, focus on first invalid field
+    else valid
+      A->>P: create (overrideAccess, status "new")
+      A-->>F: success
+      F->>V: confirmation (focused)
+    end
+  end
+```
+
+The form works without JavaScript too: the server action is the form's `action`, so a plain POST renders the result.
