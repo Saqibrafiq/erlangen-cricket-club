@@ -18,4 +18,6 @@ export const siteConfig = {
     region: 'Bavaria',
     countryCode: 'DE',
   },
+  /** Fallback until the contact page is filled in the admin. */
+  email: 'erlangencricketclub@gmail.com',
 } as const

@@ -14,7 +14,9 @@
     "languageLabel": "Language",
     "standings": "Standings",
     "standingsOverview": "All standings",
-    "news": "News"
+    "news": "News",
+    "membership": "Membership",
+    "contact": "Contact"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -199,5 +201,145 @@
     "empty": "No news yet. Check back soon.",
     "readMore": "Read more",
     "gallery": "Photos"
+  },
+  "membership": {
+    "title": "Membership",
+    "metaDescription": "Join Erlangen Cricket Club: why join, membership fees, training and match days, and how to become a member. Players of every level are welcome.",
+    "hero": {
+      "eyebrow": "Membership",
+      "heading": "Play cricket in Erlangen",
+      "lead": "Whether you have played for years or never held a bat: join a friendly, multinational club playing league cricket in Bavaria.",
+      "join": "Become a member",
+      "contact": "Contact us",
+      "stats": {
+        "since": {
+          "label": "Playing since",
+          "value": "2010"
+        },
+        "teams": {
+          "label": "Teams",
+          "value": "2"
+        },
+        "levels": {
+          "label": "Levels welcome",
+          "value": "All"
+        }
+      }
+    },
+    "benefits": {
+      "eyebrow": "Why join us",
+      "heading": "More than a game",
+      "league": {
+        "title": "League cricket",
+        "text": "Two teams in the DCB-Bundesliga, the BCV Regionalliga and the Bavarian T20 leagues."
+      },
+      "training": {
+        "title": "Training all year",
+        "text": "Outdoor training in summer and indoor sessions in winter."
+      },
+      "social": {
+        "title": "New friends, new contacts",
+        "text": "Socialise with players from many countries, make new friends and build new contacts while playing cricket."
+      },
+      "ground": {
+        "title": "A proper ground",
+        "text": "A permanent artificial turf pitch, a bowling machine and plenty more equipment."
+      }
+    },
+    "fees": {
+      "eyebrow": "Fees",
+      "heading": "Choose your membership",
+      "intro": "Annual fees, with reduced fees for youth (up to 18) and students.",
+      "perYear": "/ year",
+      "reduced": "{amount} for youth (up to 18) and students",
+      "perMatch": "+ {amount} per tournament match",
+      "highlight": "Play league cricket",
+      "choose": "Join as {membership}",
+      "terms": "Payment and cancellation terms",
+      "empty": "Fees will be published here soon."
+    },
+    "schedule": {
+      "eyebrow": "Training and matches",
+      "heading": "When we play",
+      "intro": "Your week at the club at a glance.",
+      "time": "{start} – {end}",
+      "directions": "How to get to the ground"
+    },
+    "join": {
+      "eyebrow": "How to join",
+      "heading": "Three steps to your first match",
+      "steps": {
+        "contact": {
+          "title": "Get in touch",
+          "text": "Contact us or come along to a training session."
+        },
+        "apply": {
+          "title": "Fill in the application form",
+          "text": "Download the form, fill it in and hand it to the board."
+        },
+        "play": {
+          "title": "Play",
+          "text": "Welcome to the club. See you on the pitch!"
+        }
+      },
+      "contact": "Contact us"
+    },
+    "questions": {
+      "heading": "Questions before you sign up?",
+      "text": "Write to us, we are happy to help.",
+      "contact": "Contact us"
+    }
+  },
+  "contact": {
+    "title": "Contact us",
+    "metaDescription": "Contact Erlangen Cricket Club: send us a message, find our email and social media, and directions to our ground in Erlangen.",
+    "lead": "Questions about membership, sponsorship or our matches? We would love to hear from you.",
+    "form": {
+      "heading": "Send us a message",
+      "intro": "The board will reply by email.",
+      "name": "Name",
+      "email": "Email",
+      "topic": {
+        "label": "What is it about?",
+        "options": {
+          "membership": "Membership",
+          "sponsorship": "Sponsorship",
+          "matches": "Matches and fixtures",
+          "other": "Something else"
+        }
+      },
+      "message": "Message",
+      "choose": "Please choose…",
+      "honeypot": "Leave this field empty",
+      "privacy": "We only use your details to reply to your message. See our <link>privacy policy</link>.",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "success": {
+        "heading": "Thank you!",
+        "text": "We have received your message and will reply by email."
+      },
+      "errors": {
+        "summary": "Please check the highlighted fields.",
+        "required": "Please fill in this field.",
+        "invalidEmail": "Please enter a valid email address.",
+        "tooLong": "This is too long.",
+        "server": "Sorry, your message could not be sent. Please try again or email us at {email}."
+      }
+    },
+    "email": {
+      "heading": "Email and social media",
+      "intro": "Prefer to write directly? Use our email or find us on social media."
+    },
+    "ground": {
+      "heading": "Our ground",
+      "openMap": "Open in maps",
+      "directions": "Getting there"
+    },
+    "map": {
+      "title": "Map of {place}",
+      "load": "Show map",
+      "notice": "The map is loaded from OpenStreetMap. Your IP address is then sent to the OpenStreetMap Foundation.",
+      "larger": "View larger map"
+    }
   }
 }

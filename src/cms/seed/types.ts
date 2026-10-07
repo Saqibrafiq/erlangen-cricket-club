@@ -81,3 +81,51 @@ export type SeedNewsArticle = {
   gallery: SeedImage[]
   body: SeedBlock[]
 }
+
+/** A text in every site locale. */
+export type SeedLocalized = Record<'en' | 'de', string>
+
+export type SeedWeekday =
+  'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
+
+export type SeedMembership = {
+  /** Filename of an image already in the media library (seeded with the news). */
+  heroImage: string
+  /** A PDF in `seed/assets/membership/`. */
+  applicationForm: { file: string; title: SeedLocalized }
+  fees: {
+    name: SeedLocalized
+    /** One item per line. */
+    includes: SeedLocalized
+    annualFee: number
+    reducedFee?: number
+    perMatchFee?: number
+    isHighlighted?: boolean
+  }[]
+  feesNote: SeedLocalized
+  terms: SeedLocalized
+  sessions: {
+    title: SeedLocalized
+    days: SeedWeekday[]
+    /** HH:mm */
+    startTime: string
+    endTime: string
+    venue: SeedLocalized
+  }[]
+  sessionsNote: SeedLocalized
+}
+
+export type SeedContact = {
+  email: string
+  facebookUrl: string
+  instagramUrl: string
+  ground: {
+    name: SeedLocalized
+    street: string
+    postalCode: string
+    city: string
+    latitude: number
+    longitude: number
+    directions: SeedLocalized
+  }
+}

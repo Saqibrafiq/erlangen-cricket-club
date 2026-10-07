@@ -14,7 +14,9 @@
     "languageLabel": "Sprache",
     "standings": "Tabellen",
     "standingsOverview": "Alle Tabellen",
-    "news": "Neuigkeiten"
+    "news": "Neuigkeiten",
+    "membership": "Mitgliedschaft",
+    "contact": "Kontakt"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -199,5 +201,145 @@
     "empty": "Noch keine Neuigkeiten. Schau bald wieder vorbei.",
     "readMore": "Weiterlesen",
     "gallery": "Fotos"
+  },
+  "membership": {
+    "title": "Mitgliedschaft",
+    "metaDescription": "Werde Mitglied im Erlangen Cricket Club: Gründe, Beiträge, Trainings- und Spieltage und der Weg in den Verein. Spieler jeder Stärke sind willkommen.",
+    "hero": {
+      "eyebrow": "Mitgliedschaft",
+      "heading": "Cricket spielen in Erlangen",
+      "lead": "Ob du seit Jahren spielst oder noch nie einen Schläger in der Hand hattest: Werde Teil eines freundlichen, internationalen Vereins im bayerischen Ligabetrieb.",
+      "join": "Mitglied werden",
+      "contact": "Kontakt",
+      "stats": {
+        "since": {
+          "label": "Wir spielen seit",
+          "value": "2010"
+        },
+        "teams": {
+          "label": "Mannschaften",
+          "value": "2"
+        },
+        "levels": {
+          "label": "Spielstärken willkommen",
+          "value": "Alle"
+        }
+      }
+    },
+    "benefits": {
+      "eyebrow": "Warum zu uns",
+      "heading": "Mehr als ein Spiel",
+      "league": {
+        "title": "Ligacricket",
+        "text": "Zwei Mannschaften in der DCB-Bundesliga, der BCV Regionalliga und den bayerischen T20-Ligen."
+      },
+      "training": {
+        "title": "Training das ganze Jahr",
+        "text": "Im Sommer Training im Freien, im Winter in der Halle."
+      },
+      "social": {
+        "title": "Neue Freunde, neue Kontakte",
+        "text": "Triff Spieler aus vielen Ländern, finde neue Freunde und knüpfe neue Kontakte beim Cricket."
+      },
+      "ground": {
+        "title": "Ein richtiger Platz",
+        "text": "Ein fester Kunstrasen-Pitch, eine Bowling-Maschine und noch viel mehr Ausrüstung."
+      }
+    },
+    "fees": {
+      "eyebrow": "Beiträge",
+      "heading": "Wähle deine Mitgliedschaft",
+      "intro": "Jahresbeiträge, ermäßigt für Jugendliche (bis 18) und Studierende.",
+      "perYear": "/ Jahr",
+      "reduced": "{amount} für Jugendliche (bis 18) und Studierende",
+      "perMatch": "+ {amount} pro Turnierspiel",
+      "highlight": "Ligacricket spielen",
+      "choose": "{membership} werden",
+      "terms": "Zahlungs- und Kündigungsbedingungen",
+      "empty": "Die Beiträge werden hier bald veröffentlicht."
+    },
+    "schedule": {
+      "eyebrow": "Training und Spiele",
+      "heading": "Wann wir spielen",
+      "intro": "Deine Woche im Verein auf einen Blick.",
+      "time": "{start} – {end} Uhr",
+      "directions": "So kommst du zum Platz"
+    },
+    "join": {
+      "eyebrow": "Mitglied werden",
+      "heading": "In drei Schritten zum ersten Spiel",
+      "steps": {
+        "contact": {
+          "title": "Melde dich",
+          "text": "Schreib uns oder komm einfach zum Training vorbei."
+        },
+        "apply": {
+          "title": "Aufnahmeantrag ausfüllen",
+          "text": "Antrag herunterladen, ausfüllen und dem Vorstand geben."
+        },
+        "play": {
+          "title": "Spielen",
+          "text": "Willkommen im Verein. Wir sehen uns auf dem Platz!"
+        }
+      },
+      "contact": "Kontakt"
+    },
+    "questions": {
+      "heading": "Fragen vor der Anmeldung?",
+      "text": "Schreib uns, wir helfen gern.",
+      "contact": "Kontakt"
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "metaDescription": "Kontakt zum Erlangen Cricket Club: Nachricht senden, E-Mail und soziale Medien sowie die Anfahrt zu unserem Platz in Erlangen.",
+    "lead": "Fragen zur Mitgliedschaft, zum Sponsoring oder zu unseren Spielen? Wir freuen uns auf deine Nachricht.",
+    "form": {
+      "heading": "Schreib uns",
+      "intro": "Der Vorstand antwortet per E-Mail.",
+      "name": "Name",
+      "email": "E-Mail",
+      "topic": {
+        "label": "Worum geht es?",
+        "options": {
+          "membership": "Mitgliedschaft",
+          "sponsorship": "Sponsoring",
+          "matches": "Spiele und Spielplan",
+          "other": "Etwas anderes"
+        }
+      },
+      "message": "Nachricht",
+      "choose": "Bitte wählen…",
+      "honeypot": "Dieses Feld leer lassen",
+      "privacy": "Wir nutzen deine Angaben nur, um dir zu antworten. Siehe unsere <link>Datenschutzerklärung</link>.",
+      "submit": "Nachricht senden",
+      "sending": "Wird gesendet…",
+      "success": {
+        "heading": "Danke!",
+        "text": "Wir haben deine Nachricht erhalten und antworten dir per E-Mail."
+      },
+      "errors": {
+        "summary": "Bitte prüfe die markierten Felder.",
+        "required": "Bitte fülle dieses Feld aus.",
+        "invalidEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+        "tooLong": "Das ist zu lang.",
+        "server": "Deine Nachricht konnte leider nicht gesendet werden. Bitte versuche es noch einmal oder schreib uns an {email}."
+      }
+    },
+    "email": {
+      "heading": "E-Mail und soziale Medien",
+      "intro": "Lieber direkt schreiben? Nutze unsere E-Mail oder finde uns in den sozialen Medien."
+    },
+    "ground": {
+      "heading": "Unser Platz",
+      "openMap": "In Karten öffnen",
+      "directions": "Anfahrt"
+    },
+    "map": {
+      "title": "Karte: {place}",
+      "load": "Karte anzeigen",
+      "notice": "Die Karte wird von OpenStreetMap geladen. Dabei wird deine IP-Adresse an die OpenStreetMap Foundation übermittelt.",
+      "larger": "Größere Karte"
+    }
   }
 }

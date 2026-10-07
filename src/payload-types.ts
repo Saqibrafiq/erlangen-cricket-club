@@ -72,6 +72,8 @@ export interface Config {
     teams: Team;
     competitions: Competition;
     media: Media;
+    documents: Document;
+    'contact-messages': ContactMessage;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -85,6 +87,8 @@ export interface Config {
     teams: TeamsSelect<false> | TeamsSelect<true>;
     competitions: CompetitionsSelect<false> | CompetitionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -96,10 +100,14 @@ export interface Config {
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de') | ('en' | 'de')[];
   globals: {
+    membership: Membership;
+    contact: Contact;
     impressum: Impressum;
     'privacy-policy': PrivacyPolicy;
   };
   globalsSelect: {
+    membership: MembershipSelect<false> | MembershipSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
     impressum: ImpressumSelect<false> | ImpressumSelect<true>;
     'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
   };
@@ -330,6 +338,48 @@ export interface Team {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  /**
+   * Shown as the download link text, e.g. "Membership application form".
+   */
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Sent from the contact page. Reply by email, then update the status.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-messages".
+ */
+export interface ContactMessage {
+  id: number;
+  name: string;
+  email: string;
+  topic: 'membership' | 'sponsorship' | 'matches' | 'other';
+  message: string;
+  /**
+   * Language of the website when it was sent.
+   */
+  locale: 'en' | 'de';
+  status: 'new' | 'replied' | 'closed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -397,6 +447,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'documents';
+        value: number | Document;
+      } | null)
+    | ({
+        relationTo: 'contact-messages';
+        value: number | ContactMessage;
       } | null)
     | ({
         relationTo: 'users';
@@ -558,6 +616,38 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-messages_select".
+ */
+export interface ContactMessagesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  topic?: T;
+  message?: T;
+  locale?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -620,6 +710,123 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Fees, training times and the application form, as shown on the membership page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "membership".
+ */
+export interface Membership {
+  id: number;
+  /**
+   * Shown side by side, in this order.
+   */
+  fees?:
+    | {
+        /**
+         * e.g. "Active".
+         */
+        name: string;
+        /**
+         * One item per line, shown as a checklist.
+         */
+        includes: string;
+        annualFee: number;
+        /**
+         * Leave empty if there is no reduction.
+         */
+        reducedFee?: number | null;
+        /**
+         * Leave empty if none.
+         */
+        perMatchFee?: number | null;
+        /**
+         * Marks it as the way to play league cricket.
+         */
+        isHighlighted?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown below the fees, e.g. reductions on request.
+   */
+  feesNote?: string | null;
+  /**
+   * Cancellation and payment terms (small print).
+   */
+  terms?: string | null;
+  /**
+   * PDF offered for download on the membership page.
+   */
+  applicationForm?: (number | null) | Document;
+  sessions?:
+    | {
+        /**
+         * e.g. "Training" or "Match days".
+         */
+        title: string;
+        days: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday')[];
+        /**
+         * HH:mm, e.g. 17:30.
+         */
+        startTime: string;
+        /**
+         * HH:mm, e.g. 17:30.
+         */
+        endTime: string;
+        /**
+         * e.g. "Erlangen Cricket Ground".
+         */
+        venue: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. where changes and cancellations are announced.
+   */
+  sessionsNote?: string | null;
+  /**
+   * Large photo at the top of the page, e.g. the squad.
+   */
+  heroImage?: (number | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Shown on the contact page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: number;
+  email: string;
+  facebookUrl?: string | null;
+  instagramUrl?: string | null;
+  /**
+   * Where we train and play home matches.
+   */
+  ground: {
+    name: string;
+    street: string;
+    postalCode: string;
+    city: string;
+    /**
+     * e.g. 49.59391 — right-click the pitch in Google Maps to copy it.
+     */
+    latitude: number;
+    /**
+     * e.g. 10.97719
+     */
+    longitude: number;
+    /**
+     * How to get there by train, bus or on foot.
+     */
+    directions?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Legal notice (§ 5 DDG): association name, address, board, register court and number, contact.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -670,6 +877,64 @@ export interface PrivacyPolicy {
   } | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "membership_select".
+ */
+export interface MembershipSelect<T extends boolean = true> {
+  fees?:
+    | T
+    | {
+        name?: T;
+        includes?: T;
+        annualFee?: T;
+        reducedFee?: T;
+        perMatchFee?: T;
+        isHighlighted?: T;
+        id?: T;
+      };
+  feesNote?: T;
+  terms?: T;
+  applicationForm?: T;
+  sessions?:
+    | T
+    | {
+        title?: T;
+        days?: T;
+        startTime?: T;
+        endTime?: T;
+        venue?: T;
+        id?: T;
+      };
+  sessionsNote?: T;
+  heroImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  email?: T;
+  facebookUrl?: T;
+  instagramUrl?: T;
+  ground?:
+    | T
+    | {
+        name?: T;
+        street?: T;
+        postalCode?: T;
+        city?: T;
+        latitude?: T;
+        longitude?: T;
+        directions?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

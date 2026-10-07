@@ -13,6 +13,10 @@ export const buttonVariants = cva(
         secondary:
           'border border-border-default bg-surface-default text-text-default hover:bg-surface-muted',
         ghost: 'text-text-default hover:bg-surface-muted',
+        /** On photos and dark bands (--color-media-overlay). */
+        'on-media': 'bg-text-on-media text-media-overlay hover:bg-text-on-media/90',
+        'on-media-outline':
+          'border border-text-on-media/70 text-text-on-media hover:bg-text-on-media/10',
       },
       size: {
         sm: 'min-h-9 px-3 text-sm',
