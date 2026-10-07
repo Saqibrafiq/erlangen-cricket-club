@@ -1,7 +1,7 @@
 import { CalendarDays, Dumbbell, Trophy, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { SectionHeading } from './section-heading'
+import { SectionHeading } from '@/shared/ui/section-heading'
 
 const BENEFITS = [
   { key: 'league', Icon: Trophy },

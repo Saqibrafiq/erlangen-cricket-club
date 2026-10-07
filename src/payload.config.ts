@@ -16,6 +16,7 @@ import { news } from './cms/collections/news'
 import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
 import { contact } from './cms/globals/contact'
+import { journey } from './cms/globals/journey'
 import { impressum, privacyPolicy } from './cms/globals/legal-pages'
 import { membership } from './cms/globals/membership'
 import { migrations } from './cms/migrations'
@@ -31,7 +32,7 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
   },
   collections: [news, fixtures, teams, competitions, media, documents, contactMessages, users],
-  globals: [membership, contact, impressum, privacyPolicy],
+  globals: [membership, contact, journey, impressum, privacyPolicy],
   editor: lexicalEditor(),
   // Content fields opt in with `localized: true`; untranslated German falls back to English.
   localization: {

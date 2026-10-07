@@ -6,7 +6,7 @@ export type SectionHeadingProps = {
   intro?: string
 }
 
-/** Heading block shared by the membership page's sections (centred, with an eyebrow). */
+/** Centred section heading with a small eyebrow label above it and an optional intro below. */
 export function SectionHeading({ id, eyebrow, heading, intro }: SectionHeadingProps) {
   return (
     <div className="mx-auto max-w-2xl text-center">

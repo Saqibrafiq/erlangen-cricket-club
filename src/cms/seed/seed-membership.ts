@@ -3,11 +3,10 @@ import { fileURLToPath } from 'node:url'
 
 import type { Payload } from 'payload'
 
-import type { RevalidateContext } from '../hooks/revalidate-pages'
 import { SEED_CONTACT, SEED_MEMBERSHIP } from './data/membership'
+import { findMediaId, SEED_CONTEXT } from './media'
 import type { SeedContact, SeedMembership } from './types'
 
-const SEED_CONTEXT: RevalidateContext = { disableRevalidate: true }
 const ASSETS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'assets/membership')
 
 type Locale = 'en' | 'de'
@@ -45,16 +44,6 @@ async function upsertApplicationForm(
   })
 
   return created.id
-}
-
-async function findMediaId(payload: Payload, filename: string): Promise<number | null> {
-  const { docs } = await payload.find({
-    collection: 'media',
-    where: { filename: { equals: filename } },
-    limit: 1,
-    depth: 0,
-  })
-  return docs[0]?.id ?? null
 }
 
 // Array rows carry the ids written in English, so German fills in the same rows instead of
