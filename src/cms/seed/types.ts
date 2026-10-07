@@ -129,3 +129,18 @@ export type SeedContact = {
     directions: SeedLocalized
   }
 }
+
+export type SeedJourney = {
+  chapters: { title: SeedLocalized; text: SeedLocalized }[]
+  milestones: {
+    year: number
+    title: SeedLocalized
+    text: SeedLocalized
+    /**
+     * An image in `seed/assets/journey/` (with alt text), or one already in the media library
+     * from the news (filename only).
+     */
+    image?: SeedImage | { file: string }
+    link?: string
+  }[]
+}

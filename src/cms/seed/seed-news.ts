@@ -1,41 +1,13 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
 import type { Payload } from 'payload'
 
-import type { RevalidateContext } from '../hooks/revalidate-pages'
 import { SEED_NEWS } from './data/news'
+import { SEED_CONTEXT, upsertImage } from './media'
 import { toRichText } from './rich-text'
-import type { SeedImage, SeedNewsArticle } from './types'
+import type { SeedNewsArticle } from './types'
 
-const SEED_CONTEXT: RevalidateContext = { disableRevalidate: true }
-const ASSETS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'assets/news')
+const NEWS_ASSETS = 'news'
 // Payload stores day-only dates at noon UTC so they never shift across time zones.
 const DAY_ONLY_TIME = 'T12:00:00.000Z'
-
-/** Uploads a seed image once; later runs reuse the existing media document (matched by filename). */
-async function upsertImage(payload: Payload, image: SeedImage): Promise<number> {
-  const existing = await payload.find({
-    collection: 'media',
-    where: { filename: { equals: image.file } },
-    limit: 1,
-    depth: 0,
-  })
-  const found = existing.docs[0]
-
-  if (found) {
-    return found.id
-  }
-
-  const created = await payload.create({
-    collection: 'media',
-    data: { alt: image.alt },
-    filePath: path.join(ASSETS_DIR, image.file),
-    context: SEED_CONTEXT,
-  })
-
-  return created.id
-}
 
 async function createArticleIfMissing(
   payload: Payload,
@@ -51,11 +23,11 @@ async function createArticleIfMissing(
   }
 
   const featuredImage = article.featuredImage
-    ? await upsertImage(payload, article.featuredImage)
+    ? await upsertImage(payload, NEWS_ASSETS, article.featuredImage)
     : null
   const gallery: number[] = []
   for (const image of article.gallery) {
-    gallery.push(await upsertImage(payload, image))
+    gallery.push(await upsertImage(payload, NEWS_ASSETS, image))
   }
 
   await payload.create({
