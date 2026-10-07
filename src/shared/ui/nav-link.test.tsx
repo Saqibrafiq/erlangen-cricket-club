@@ -28,6 +28,35 @@ describe('NavLink', () => {
     )
   })
 
+  it('marks a section link as current on the pages below it', () => {
+    pathname.current = '/news/annual-general-meeting-2024-key-takeaways'
+    renderWithIntl(
+      <NavLink href="/news" section>
+        News
+      </NavLink>,
+    )
+
+    expect(screen.getByRole('link', { name: 'News' })).toHaveAttribute('aria-current', 'true')
+  })
+
+  it('does not treat home as the section of every page', () => {
+    pathname.current = '/news'
+    renderWithIntl(
+      <NavLink href="/" section>
+        Home
+      </NavLink>,
+    )
+
+    expect(screen.getByRole('link', { name: 'Home' })).not.toHaveAttribute('aria-current')
+  })
+
+  it('marks only the exact page without section', () => {
+    pathname.current = '/news/annual-general-meeting-2024-key-takeaways'
+    renderWithIntl(<NavLink href="/news">News</NavLink>)
+
+    expect(screen.getByRole('link', { name: 'News' })).not.toHaveAttribute('aria-current')
+  })
+
   it('does not mark links to other pages', () => {
     renderWithIntl(<NavLink href="/fixtures">Fixtures & Results</NavLink>)
 

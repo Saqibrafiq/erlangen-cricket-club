@@ -7,25 +7,25 @@ C4Context
   title System context — Erlangen Cricket Club platform
 
   Person(visitor, "Visitor", "Player, prospective member, fan, sponsor, recruiter")
-  Person(editor, "Club editor", "Enters scorecards, players and stories")
+  Person(editor, "Club editor", "Enters scorecards, players and news")
 
   System(ecc, "ECC platform", "Public website and admin CMS")
 
   System_Ext(search, "Search engines", "Google, Bing")
   System_Ext(social, "Social networks", "Link previews via Open Graph")
 
-  Rel(visitor, ecc, "Reads fixtures, stats, stories; sends membership enquiries", "HTTPS")
+  Rel(visitor, ecc, "Reads fixtures, stats, news; sends membership enquiries", "HTTPS")
   Rel(editor, ecc, "Manages content", "HTTPS, /admin")
   Rel(search, ecc, "Crawls", "sitemap.xml, robots.txt, JSON-LD")
   Rel(social, ecc, "Fetches previews", "Open Graph")
 ```
 
-| Partner         | Input to the platform               | Output from the platform                           |
-| --------------- | ----------------------------------- | -------------------------------------------------- |
-| Visitor         | Membership enquiries (planned)      | Localised pages (en/de)                            |
-| Club editor     | Scorecards, players, stories, media | Admin UI                                           |
-| Search engines  | —                                   | Sitemap, robots.txt, hreflang, structured data     |
-| Social networks | —                                   | Open Graph / Twitter metadata, OG images (planned) |
+| Partner         | Input to the platform            | Output from the platform                           |
+| --------------- | -------------------------------- | -------------------------------------------------- |
+| Visitor         | Membership enquiries (planned)   | Localised pages (en/de)                            |
+| Club editor     | Scorecards, players, news, media | Admin UI                                           |
+| Search engines  | —                                | Sitemap, robots.txt, hreflang, structured data     |
+| Social networks | —                                | Open Graph / Twitter metadata, OG images (planned) |
 
 ## 3.2 Technical context
 

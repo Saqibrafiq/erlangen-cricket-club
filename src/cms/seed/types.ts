@@ -1,5 +1,6 @@
 import type { ResultMargin } from '../../domain/cricket'
-import type { Fixture } from '../../payload-types'
+import type { Fixture, News } from '../../payload-types'
+import type { SeedBlock } from './rich-text'
 
 export type SeedTeam = {
   shortName: string
@@ -61,4 +62,22 @@ export type SeedFixture = {
   teams?: [string, string]
   innings: SeedInnings[]
   result: SeedResult
+}
+
+/** An image file in `seed/assets/news/` with its alt text. */
+export type SeedImage = {
+  file: string
+  alt: string
+}
+
+export type SeedNewsArticle = {
+  slug: string
+  title: string
+  excerpt: string
+  /** ISO date, YYYY-MM-DD. */
+  publishedAt: string
+  featuredImage?: SeedImage
+  featuredImageStyle: News['featuredImageStyle']
+  gallery: SeedImage[]
+  body: SeedBlock[]
 }

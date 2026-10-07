@@ -13,7 +13,8 @@
     "fixturesOverview": "Alle Spiele & Ergebnisse",
     "languageLabel": "Sprache",
     "standings": "Tabellen",
-    "standingsOverview": "Alle Tabellen"
+    "standingsOverview": "Alle Tabellen",
+    "news": "Neuigkeiten"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -191,5 +192,12 @@
       "lost": "Niederl.",
       "netRunRate": "NRR"
     }
+  },
+  "news": {
+    "title": "Neuigkeiten",
+    "metaDescription": "Neuigkeiten vom Erlangen Cricket Club: Sponsoren, Vereinsleben, Spielberichte und Ankündigungen.",
+    "empty": "Noch keine Neuigkeiten. Schau bald wieder vorbei.",
+    "readMore": "Weiterlesen",
+    "gallery": "Fotos"
   }
 }
