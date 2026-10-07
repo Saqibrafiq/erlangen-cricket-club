@@ -52,22 +52,23 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 
 ### Current contents
 
-| Path                   | Contents                                                                                                                                                            |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `domain/cricket/`      | Batting average, strike rate, overs notation, `resolveMatchResult`, `getTeamOutcome`                                                                                |
-| `shared/ui/`           | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram` |
-| `shared/lib/`          | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                    |
-| `shared/config/`       | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                             |
-| `cms/collections/`     | `fixtures`, `teams`, `competitions` (with `slug`, `standings`), `news` (drafts), `media`, `documents` (PDFs), `contact-messages`, `users`                           |
-| `cms/globals/`         | `membership` (fees, training and match days, application form, hero photo), `contact` (email, social media, ground with coordinates), `impressum`, `privacy-policy` |
-| `cms/hooks/`           | Fixture title, on-demand revalidation of all localised pages                                                                                                        |
-| `cms/seed/`            | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                          |
-| `features/standings/`  | League tables — see below                                                                                                                                           |
-| `features/news/`       | News articles — see below                                                                                                                                           |
-| `features/membership/` | Membership page — see below                                                                                                                                         |
-| `features/contact/`    | Contact page and contact form — see below                                                                                                                           |
-| `features/fixtures/`   | Fixtures & Results — see below                                                                                                                                      |
-| `features/legal/`      | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                 |
+| Path                   | Contents                                                                                                                                                                                                    |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain/cricket/`      | Batting average, strike rate, overs notation, `resolveMatchResult`, `getTeamOutcome`                                                                                                                        |
+| `shared/ui/`           | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram`                                         |
+| `shared/lib/`          | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                                                            |
+| `shared/config/`       | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                                                                     |
+| `cms/collections/`     | `fixtures`, `teams`, `competitions` (with `slug`, `standings`), `news` (drafts), `media`, `documents` (PDFs), `contact-messages`, `users`                                                                   |
+| `cms/globals/`         | `membership` (fees, training and match days, application form, hero photo), `contact` (email, social media, ground with coordinates), `journey` (story chapters, milestones), `impressum`, `privacy-policy` |
+| `cms/hooks/`           | Fixture title, on-demand revalidation of all localised pages                                                                                                                                                |
+| `cms/seed/`            | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                                                                  |
+| `features/standings/`  | League tables — see below                                                                                                                                                                                   |
+| `features/news/`       | News articles — see below                                                                                                                                                                                   |
+| `features/membership/` | Membership page — see below                                                                                                                                                                                 |
+| `features/contact/`    | Contact page and contact form — see below                                                                                                                                                                   |
+| `features/journey/`    | Journey page — see below                                                                                                                                                                                    |
+| `features/fixtures/`   | Fixtures & Results — see below                                                                                                                                                                              |
+| `features/legal/`      | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                                                         |
 
 ### `features/fixtures`
 
@@ -138,3 +139,11 @@ Content comes from the Payload global `membership` (localised; editors change fe
 | `/contact` | Contact form, email and social media, the ground (two-click map, "Open in maps", directions) |
 
 Details come from the Payload global `contact`. The map loads only on request ([ADR-0008](09-architecture-decisions/0008-maps-load-on-request.md)); `domain/map.ts` builds its URLs from the ground's coordinates. The form is a client component that calls `submitContactMessageAction`, which validates with `domain/contact-message.ts` (Zod, honeypot) and stores the message in `contact-messages` ([ADR-0007](09-architecture-decisions/0007-contact-messages-stored-in-cms.md)). The action is passed to the form as a prop, so the form is tested with a fake action.
+
+### `features/journey`
+
+| Route      | Content                                                                                                                 |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `/journey` | Hero with key figures, the club's story in three chapters, a timeline of milestones (2010 to today), invitation to join |
+
+Content comes from the Payload global `journey`: localised story chapters (up to three, title and text, shown as cards) and milestones (year, title, text, optional thumbnail and "Read more" link to a news article or page). `server/map-journey.ts` sorts milestones oldest first, so editors can add them in any order. Seeded from the old site's About page and news archive; claims the board corrected (player nationalities, ground dimensions) were left out.

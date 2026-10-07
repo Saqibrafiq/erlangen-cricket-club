@@ -6,7 +6,7 @@ import { Button } from '@/shared/ui/button'
 
 import type { MembershipFee } from '../types'
 import { JOIN_SECTION_ID } from './membership-join'
-import { SectionHeading } from './section-heading'
+import { SectionHeading } from '@/shared/ui/section-heading'
 
 export type MembershipFeesProps = {
   fees: readonly MembershipFee[]

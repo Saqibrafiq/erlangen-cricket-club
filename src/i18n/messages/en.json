@@ -16,7 +16,8 @@
     "standingsOverview": "All standings",
     "news": "News",
     "membership": "Membership",
-    "contact": "Contact"
+    "contact": "Contact",
+    "journey": "Journey"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -340,6 +341,47 @@
       "load": "Show map",
       "notice": "The map is loaded from OpenStreetMap. Your IP address is then sent to the OpenStreetMap Foundation.",
       "larger": "View larger map"
+    }
+  },
+  "journey": {
+    "title": "Our journey",
+    "metaDescription": "The story of Erlangen Cricket Club: from the first players in 2010 to two teams in Bavaria’s top leagues, with every title and milestone along the way.",
+    "eyebrow": "Our journey · Since 2010",
+    "heading": "From the first players to Bavaria’s top leagues",
+    "lead": "How a handful of cricket lovers built a club with two teams, its own ground and seven titles.",
+    "stats": {
+      "firstPlayers": {
+        "label": "First players",
+        "value": "2010"
+      },
+      "founders": {
+        "label": "Founding members",
+        "value": "~22"
+      },
+      "titles": {
+        "label": "Titles",
+        "value": "7"
+      },
+      "teams": {
+        "label": "Teams today",
+        "value": "2"
+      }
+    },
+    "story": {
+      "eyebrow": "Our story",
+      "heading": "Who we are"
+    },
+    "yearsLabel": "Jump to a year",
+    "timeline": {
+      "eyebrow": "Milestones",
+      "heading": "From 2010 to today",
+      "intro": "Titles, firsts and new chapters, year by year.",
+      "readMore": "Read more"
+    },
+    "cta": {
+      "heading": "Write the next chapter with us",
+      "text": "New players of every level are welcome.",
+      "button": "Become a member"
     }
   }
 }

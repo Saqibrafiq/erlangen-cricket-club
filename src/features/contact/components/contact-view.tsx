@@ -45,7 +45,7 @@ function GroundSection({ ground }: { ground: Ground }) {
         <MapPin aria-hidden="true" className="size-6 text-brand-primary" />
         {t('heading')}
       </h2>
-      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="mt-6 grid gap-8 lg:grid-cols-content-aside">
         <GroundMap coordinates={ground.coordinates} placeName={ground.name} />
         <div className="space-y-5">
           <address className="text-lg not-italic">
@@ -85,7 +85,7 @@ export function ContactView({ info, locale, messageAction, privacyHref }: Contac
         <p className="text-lg text-text-muted">{t('lead')}</p>
       </header>
 
-      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="grid items-start gap-8 lg:grid-cols-content-aside">
         <section
           aria-labelledby="message-heading"
           className="rounded-3xl border border-border-default bg-surface-default p-6 shadow-sm sm:p-10"

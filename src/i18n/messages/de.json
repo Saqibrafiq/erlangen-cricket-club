@@ -16,7 +16,8 @@
     "standingsOverview": "Alle Tabellen",
     "news": "Neuigkeiten",
     "membership": "Mitgliedschaft",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "journey": "Geschichte"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -340,6 +341,47 @@
       "load": "Karte anzeigen",
       "notice": "Die Karte wird von OpenStreetMap geladen. Dabei wird deine IP-Adresse an die OpenStreetMap Foundation übermittelt.",
       "larger": "Größere Karte"
+    }
+  },
+  "journey": {
+    "title": "Unsere Geschichte",
+    "metaDescription": "Die Geschichte des Erlangen Cricket Club: von den ersten Spielern 2010 bis zu zwei Mannschaften in Bayerns höchsten Ligen, mit allen Titeln und Meilensteinen.",
+    "eyebrow": "Unsere Geschichte · Seit 2010",
+    "heading": "Von den ersten Spielern bis in Bayerns höchste Ligen",
+    "lead": "Wie eine Handvoll Cricket-Begeisterter einen Verein mit zwei Mannschaften, eigenem Platz und sieben Titeln aufgebaut hat.",
+    "stats": {
+      "firstPlayers": {
+        "label": "Erste Spieler",
+        "value": "2010"
+      },
+      "founders": {
+        "label": "Gründungsmitglieder",
+        "value": "~22"
+      },
+      "titles": {
+        "label": "Titel",
+        "value": "7"
+      },
+      "teams": {
+        "label": "Mannschaften heute",
+        "value": "2"
+      }
+    },
+    "story": {
+      "eyebrow": "Unsere Geschichte",
+      "heading": "Wer wir sind"
+    },
+    "yearsLabel": "Zu einem Jahr springen",
+    "timeline": {
+      "eyebrow": "Meilensteine",
+      "heading": "Von 2010 bis heute",
+      "intro": "Titel, Premieren und neue Kapitel, Jahr für Jahr.",
+      "readMore": "Weiterlesen"
+    },
+    "cta": {
+      "heading": "Schreib das nächste Kapitel mit uns",
+      "text": "Neue Spieler jeder Spielstärke sind willkommen.",
+      "button": "Mitglied werden"
     }
   }
 }
