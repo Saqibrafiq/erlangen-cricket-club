@@ -8,12 +8,16 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
 import { competitions } from './cms/collections/competitions'
+import { documents } from './cms/collections/documents'
 import { fixtures } from './cms/collections/fixtures'
 import { media } from './cms/collections/media'
+import { contactMessages } from './cms/collections/contact-messages'
 import { news } from './cms/collections/news'
 import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
+import { contact } from './cms/globals/contact'
 import { impressum, privacyPolicy } from './cms/globals/legal-pages'
+import { membership } from './cms/globals/membership'
 import { migrations } from './cms/migrations'
 import { routing } from './i18n/routing'
 import { parseServerEnv } from './shared/config/env'
@@ -26,8 +30,8 @@ export default buildConfig({
     user: users.slug,
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [news, fixtures, teams, competitions, media, users],
-  globals: [impressum, privacyPolicy],
+  collections: [news, fixtures, teams, competitions, media, documents, contactMessages, users],
+  globals: [membership, contact, impressum, privacyPolicy],
   editor: lexicalEditor(),
   // Content fields opt in with `localized: true`; untranslated German falls back to English.
   localization: {
@@ -50,7 +54,7 @@ export default buildConfig({
     // Disabled locally without a token, so uploads go to ./media in development.
     vercelBlobStorage({
       enabled: env.BLOB_READ_WRITE_TOKEN !== undefined,
-      collections: { [media.slug]: true },
+      collections: { [media.slug]: true, [documents.slug]: true },
       token: env.BLOB_READ_WRITE_TOKEN,
     }),
   ],

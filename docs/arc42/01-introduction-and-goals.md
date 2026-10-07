@@ -4,18 +4,19 @@
 
 Erlangen Cricket Club (Erlangen, Bavaria) needs a modern website and a content platform to replace [erlangencricketclub.wordpress.com](https://erlangencricketclub.wordpress.com/).
 
-| Feature            | Purpose                                                            |
-| ------------------ | ------------------------------------------------------------------ |
-| Home               | First impression, club identity, primary call to action (join)     |
-| Team / Players     | Player profiles with career stats derived from scorecards          |
-| Fixtures & Results | Upcoming matches (date, venue) and scorecards of completed matches |
-| Standings          | League tables as published by the leagues (ADR-0006)               |
-| News               | Club news, sponsors, match reports, season reviews                 |
-| Hall of Fame       | Milestones (centuries, five-wicket hauls) derived from scorecards  |
-| Membership         | How to join; enquiry form                                          |
-| Achievements       | Trophies and honours                                               |
-| Legal              | Impressum (§ 5 DDG), Datenschutzerklärung                          |
-| Admin (CMS)        | Non-technical editors manage scorecards, players and news          |
+| Feature            | Purpose                                                                  |
+| ------------------ | ------------------------------------------------------------------------ |
+| Home               | First impression, club identity, primary call to action (join)           |
+| Team / Players     | Player profiles with career stats derived from scorecards                |
+| Fixtures & Results | Upcoming matches (date, venue) and scorecards of completed matches       |
+| Standings          | League tables as published by the leagues (ADR-0006)                     |
+| News               | Club news, sponsors, match reports, season reviews                       |
+| Hall of Fame       | Milestones (centuries, five-wicket hauls) derived from scorecards        |
+| Membership         | Why join, fees, training and match days, how to join                     |
+| Contact            | Contact form, email and social media, the ground with map and directions |
+| Achievements       | Trophies and honours                                                     |
+| Legal              | Impressum (§ 5 DDG), Datenschutzerklärung                                |
+| Admin (CMS)        | Non-technical editors manage scorecards, players and news                |
 
 The site is bilingual: English (default) and German.
 

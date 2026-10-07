@@ -25,6 +25,7 @@ next-env.d.ts
 
 # payload local media (production uses Vercel Blob)
 /media
+/documents
 
 # vercel
 .vercel
