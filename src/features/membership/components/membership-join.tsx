@@ -5,7 +5,7 @@ import { Link } from '@/i18n/navigation'
 import { Button } from '@/shared/ui/button'
 
 import type { DownloadableDocument } from '../types'
-import { SectionHeading } from './section-heading'
+import { SectionHeading } from '@/shared/ui/section-heading'
 
 export const JOIN_SECTION_ID = 'join'
 

@@ -6,7 +6,7 @@ import { cn } from '@/shared/lib/cn'
 
 import { getWeekdayDate, summariseWeek } from '../domain/week'
 import type { ClubSession } from '../types'
-import { SectionHeading } from './section-heading'
+import { SectionHeading } from '@/shared/ui/section-heading'
 
 // Sessions alternate between two looks, so the week strip shows which day belongs to which.
 const SESSION_TONES = [

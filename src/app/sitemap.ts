@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 
 import { FIXTURES_PATH, getCompetitionPath, getCompetitionSlugs } from '@/features/fixtures'
 import { CONTACT_PATH } from '@/features/contact'
+import { JOURNEY_PATH } from '@/features/journey'
 import { LEGAL_PATHS } from '@/features/legal'
 import { MEMBERSHIP_PATH } from '@/features/membership'
 import { getNewsEntries, getNewsPath, NEWS_PATH } from '@/features/news'
@@ -14,6 +15,7 @@ const STATIC_PATHS = [
   FIXTURES_PATH,
   STANDINGS_PATH,
   NEWS_PATH,
+  JOURNEY_PATH,
   MEMBERSHIP_PATH,
   CONTACT_PATH,
   LEGAL_PATHS.impressum,

@@ -102,12 +102,14 @@ export interface Config {
   globals: {
     membership: Membership;
     contact: Contact;
+    journey: Journey;
     impressum: Impressum;
     'privacy-policy': PrivacyPolicy;
   };
   globalsSelect: {
     membership: MembershipSelect<false> | MembershipSelect<true>;
     contact: ContactSelect<false> | ContactSelect<true>;
+    journey: JourneySelect<false> | JourneySelect<true>;
     impressum: ImpressumSelect<false> | ImpressumSelect<true>;
     'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
   };
@@ -827,6 +829,43 @@ export interface Contact {
   createdAt?: string | null;
 }
 /**
+ * The club’s story and timeline, shown on the “Our journey” page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey".
+ */
+export interface Journey {
+  id: number;
+  /**
+   * Up to three short chapters, shown side by side as cards.
+   */
+  chapters?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown oldest first; the order here does not matter.
+   */
+  milestones?:
+    | {
+        year: number;
+        title: string;
+        text: string;
+        image?: (number | null) | Media;
+        /**
+         * Optional “Read more” link, e.g. "/news/annual-general-meeting-2024-key-takeaways".
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Legal notice (§ 5 DDG): association name, address, board, register court and number, contact.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -931,6 +970,32 @@ export interface ContactSelect<T extends boolean = true> {
         latitude?: T;
         longitude?: T;
         directions?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey_select".
+ */
+export interface JourneySelect<T extends boolean = true> {
+  chapters?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  milestones?:
+    | T
+    | {
+        year?: T;
+        title?: T;
+        text?: T;
+        image?: T;
+        link?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

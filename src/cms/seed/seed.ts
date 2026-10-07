@@ -3,6 +3,7 @@ import type { Payload } from 'payload'
 import { slugify } from '../../shared/lib/slugify'
 import type { RevalidateContext } from '../hooks/revalidate-pages'
 import { SEED_COMPETITIONS, SEED_TEAMS } from './data'
+import { seedJourney } from './seed-journey'
 import { seedMembership } from './seed-membership'
 import { seedNews } from './seed-news'
 import type { SeedCompetition, SeedFixture, SeedResult, SeedStandingsRow } from './types'
@@ -196,4 +197,5 @@ export async function seed(payload: Payload): Promise<void> {
 
   await seedNews(payload)
   await seedMembership(payload)
+  await seedJourney(payload)
 }
