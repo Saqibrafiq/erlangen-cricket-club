@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    news: News;
     fixtures: Fixture;
     teams: Team;
     competitions: Competition;
@@ -79,6 +80,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    news: NewsSelect<false> | NewsSelect<true>;
     fixtures: FixturesSelect<false> | FixturesSelect<true>;
     teams: TeamsSelect<false> | TeamsSelect<true>;
     competitions: CompetitionsSelect<false> | CompetitionsSelect<true>;
@@ -128,6 +130,72 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news".
+ */
+export interface News {
+  id: number;
+  title: string;
+  /**
+   * One or two sentences for news cards, search results and link previews.
+   */
+  excerpt: string;
+  /**
+   * Shown after the heading and in link previews, e.g. a sponsor logo or the best photo.
+   */
+  featuredImage?: (number | null) | Media;
+  featuredImageStyle: 'photo' | 'logo';
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * More photos, shown as a gallery below the article.
+   */
+  gallery?: (number | Media)[] | null;
+  publishedAt: string;
+  /**
+   * URL segment, generated from the title if left empty.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describe the image for people who cannot see it (required for accessibility).
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * Matches and results. List teams in batting order for completed matches — winner and margin are calculated from the innings.
@@ -262,28 +330,6 @@ export interface Team {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Describe the image for people who cannot see it (required for accessibility).
-   */
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -332,6 +378,10 @@ export interface PayloadKv {
 export interface PayloadLockedDocument {
   id: number;
   document?:
+    | ({
+        relationTo: 'news';
+        value: number | News;
+      } | null)
     | ({
         relationTo: 'fixtures';
         value: number | Fixture;
@@ -393,6 +443,23 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news_select".
+ */
+export interface NewsSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  featuredImageStyle?: T;
+  body?: T;
+  gallery?: T;
+  publishedAt?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

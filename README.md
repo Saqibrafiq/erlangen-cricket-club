@@ -21,6 +21,7 @@ pnpm dev
 - Website: http://localhost:3000 (German: http://localhost:3000/de)
 - Fixtures & Results: http://localhost:3000/fixtures (all fixtures, filterable by competition and status, e.g. `?status=forfeit`); one page per competition, e.g. /fixtures/bcv-regionalliga-bayern-2026
 - Standings: http://localhost:3000/standings (league tables as published, entered per competition in the admin, see ADR-0006); one table per competition, e.g. /standings/bcv-t20-regionalliga-bayern-2026
+- News: http://localhost:3000/news (articles from the `news` collection; the seed imports 24 articles and their photos from the old WordPress site)
 - Admin: http://localhost:3000/admin — create the first user on first visit
 
 The Docker database uses host port **5433** so it does not clash with a locally installed PostgreSQL on 5432.

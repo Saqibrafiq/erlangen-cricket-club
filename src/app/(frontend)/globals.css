@@ -44,6 +44,8 @@
   --color-surface-muted: oklch(0.95 0.01 155);
   /* Opaque highlight (e.g. the club's rows in tables); must stay solid for sticky cells. */
   --color-surface-highlight: oklch(0.93 0.035 155);
+  /* Behind third-party logos, which are designed for white: stays white in dark mode. */
+  --color-surface-logo: oklch(1 0 0);
 
   --color-text-default: oklch(0.21 0.02 155);
   --color-text-muted: oklch(0.46 0.02 155);

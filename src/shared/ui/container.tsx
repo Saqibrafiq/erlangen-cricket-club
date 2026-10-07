@@ -9,7 +9,7 @@ export const containerVariants = cva('mx-auto w-full px-4 sm:px-6 lg:px-8', {
     width: {
       /** Page layout: header, lists, grids. Full width with gutters; grids add columns as space grows. */
       wide: 'max-w-none',
-      /** Long-form reading (stories, legal pages): ~65–75 characters per line. */
+      /** Long-form reading (news articles, legal pages): ~65–75 characters per line. */
       prose: 'max-w-3xl',
     },
   },

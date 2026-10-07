@@ -46,7 +46,9 @@ export function SiteHeader({ items }: SiteHeaderProps) {
                 {item.groups ? (
                   <NavMenu label={item.label} href={item.href} groups={item.groups} />
                 ) : (
-                  <NavLink href={item.href}>{item.label}</NavLink>
+                  <NavLink href={item.href} section>
+                    {item.label}
+                  </NavLink>
                 )}
               </li>
             ))}

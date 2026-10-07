@@ -3,6 +3,7 @@ import type { Payload } from 'payload'
 import { slugify } from '../../shared/lib/slugify'
 import type { RevalidateContext } from '../hooks/revalidate-pages'
 import { SEED_COMPETITIONS, SEED_TEAMS } from './data'
+import { seedNews } from './seed-news'
 import type { SeedCompetition, SeedFixture, SeedResult, SeedStandingsRow } from './types'
 
 const SEED_CONTEXT: RevalidateContext = { disableRevalidate: true }
@@ -165,7 +166,8 @@ async function createFixtureIfMissing(
 }
 
 /**
- * Imports the 2026 results and published standings of all seeded competitions. Idempotent: existing teams,
+ * Imports the 2026 results and published standings of all seeded competitions, and the news
+ * articles migrated from the old website. Idempotent: existing teams,
  * competitions and fixtures (matched by short name, slug and import key) are left
  * untouched, so editor changes in the admin are never overwritten.
  */
@@ -190,4 +192,6 @@ export async function seed(payload: Payload): Promise<void> {
       `${competition.name} ${competition.season}: ${created} fixtures created, ${fixtures.length - created} already present.`,
     )
   }
+
+  await seedNews(payload)
 }

@@ -58,11 +58,12 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 | `shared/ui/`          | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram` |
 | `shared/lib/`         | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                    |
 | `shared/config/`      | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                             |
-| `cms/collections/`    | `fixtures`, `teams`, `competitions` (with `slug`, `points`), `media`, `users`                                                                                       |
+| `cms/collections/`    | `fixtures`, `teams`, `competitions` (with `slug`, `standings`), `news` (drafts), `media`, `users`                                                                   |
 | `cms/globals/`        | `impressum`, `privacy-policy` (localised rich text)                                                                                                                 |
 | `cms/hooks/`          | Fixture title, on-demand revalidation of all localised pages                                                                                                        |
 | `cms/seed/`           | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                          |
 | `features/standings/` | League tables — see below                                                                                                                                           |
+| `features/news/`      | News articles — see below                                                                                                                                           |
 | `features/fixtures/`  | Fixtures & Results — see below                                                                                                                                      |
 | `features/legal/`     | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                 |
 
@@ -110,3 +111,12 @@ flowchart LR
 ```
 
 Standings are the published table stored on the competition (`competitions.standings`); they do not read fixtures.
+
+### `features/news`
+
+| Route          | Content                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| `/news`        | Published articles, newest first: the latest as a wide lead card, the rest in a card grid        |
+| `/news/[slug]` | Article: date, title, featured image (photo, or a sponsor logo shown whole), body, photo gallery |
+
+Articles live in the Payload `news` collection (localised title, excerpt and body; drafts via versions). Public queries filter on `_status: published` because the Local API bypasses access control; the collection's read access additionally hides drafts from anonymous REST requests. `server/map-news.ts` maps documents to view models (`NewsSummary`, `NewsArticle`); pages emit `NewsArticle` and `BreadcrumbList` JSON-LD, Open Graph article metadata and sitemap entries with `lastModified`.
