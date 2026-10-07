@@ -14,7 +14,7 @@ C4Context
   System_Ext(search, "Search engines", "Google, Bing")
   System_Ext(social, "Social networks", "Link previews via Open Graph")
 
-  Rel(visitor, ecc, "Reads fixtures, stats, news; sends membership enquiries", "HTTPS")
+  Rel(visitor, ecc, "Reads fixtures, stats, news; sends contact messages", "HTTPS")
   Rel(editor, ecc, "Manages content", "HTTPS, /admin")
   Rel(search, ecc, "Crawls", "sitemap.xml, robots.txt, JSON-LD")
   Rel(social, ecc, "Fetches previews", "Open Graph")
@@ -22,7 +22,7 @@ C4Context
 
 | Partner         | Input to the platform            | Output from the platform                           |
 | --------------- | -------------------------------- | -------------------------------------------------- |
-| Visitor         | Membership enquiries (planned)   | Localised pages (en/de)                            |
+| Visitor         | Contact messages                 | Localised pages (en/de)                            |
 | Club editor     | Scorecards, players, news, media | Admin UI                                           |
 | Search engines  | —                                | Sitemap, robots.txt, hreflang, structured data     |
 | Social networks | —                                | Open Graph / Twitter metadata, OG images (planned) |

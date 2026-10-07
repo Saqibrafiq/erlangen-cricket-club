@@ -52,20 +52,22 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 
 ### Current contents
 
-| Path                  | Contents                                                                                                                                                            |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `domain/cricket/`     | Batting average, strike rate, overs notation, `resolveMatchResult`, `getTeamOutcome`                                                                                |
-| `shared/ui/`          | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram` |
-| `shared/lib/`         | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                    |
-| `shared/config/`      | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                             |
-| `cms/collections/`    | `fixtures`, `teams`, `competitions` (with `slug`, `standings`), `news` (drafts), `media`, `users`                                                                   |
-| `cms/globals/`        | `impressum`, `privacy-policy` (localised rich text)                                                                                                                 |
-| `cms/hooks/`          | Fixture title, on-demand revalidation of all localised pages                                                                                                        |
-| `cms/seed/`           | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                          |
-| `features/standings/` | League tables — see below                                                                                                                                           |
-| `features/news/`      | News articles — see below                                                                                                                                           |
-| `features/fixtures/`  | Fixtures & Results — see below                                                                                                                                      |
-| `features/legal/`     | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                 |
+| Path                   | Contents                                                                                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain/cricket/`      | Batting average, strike rate, overs notation, `resolveMatchResult`, `getTeamOutcome`                                                                                |
+| `shared/ui/`           | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram` |
+| `shared/lib/`          | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                    |
+| `shared/config/`       | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                             |
+| `cms/collections/`     | `fixtures`, `teams`, `competitions` (with `slug`, `standings`), `news` (drafts), `media`, `documents` (PDFs), `contact-messages`, `users`                           |
+| `cms/globals/`         | `membership` (fees, training and match days, application form, hero photo), `contact` (email, social media, ground with coordinates), `impressum`, `privacy-policy` |
+| `cms/hooks/`           | Fixture title, on-demand revalidation of all localised pages                                                                                                        |
+| `cms/seed/`            | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                          |
+| `features/standings/`  | League tables — see below                                                                                                                                           |
+| `features/news/`       | News articles — see below                                                                                                                                           |
+| `features/membership/` | Membership page — see below                                                                                                                                         |
+| `features/contact/`    | Contact page and contact form — see below                                                                                                                           |
+| `features/fixtures/`   | Fixtures & Results — see below                                                                                                                                      |
+| `features/legal/`      | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                 |
 
 ### `features/fixtures`
 
@@ -120,3 +122,19 @@ Standings are the published table stored on the competition (`competitions.stand
 | `/news/[slug]` | Article: date, title, featured image (photo, or a sponsor logo shown whole), body, photo gallery |
 
 Articles live in the Payload `news` collection (localised title, excerpt and body; drafts via versions). Public queries filter on `_status: published` because the Local API bypasses access control; the collection's read access additionally hides drafts from anonymous REST requests. `server/map-news.ts` maps documents to view models (`NewsSummary`, `NewsArticle`); pages emit `NewsArticle` and `BreadcrumbList` JSON-LD, Open Graph article metadata and sitemap entries with `lastModified`.
+
+### `features/membership`
+
+| Route         | Content                                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `/membership` | Photo hero with the two ways in, why join, fees as a pricing table, the week's training and match days, how to join |
+
+Content comes from the Payload global `membership` (localised; editors change fees and sessions without a deployment) and the `documents` collection (application form PDF). `domain/week.ts` turns the sessions into the week strip. Questions and directions link to the contact page.
+
+### `features/contact`
+
+| Route      | Content                                                                                      |
+| ---------- | -------------------------------------------------------------------------------------------- |
+| `/contact` | Contact form, email and social media, the ground (two-click map, "Open in maps", directions) |
+
+Details come from the Payload global `contact`. The map loads only on request ([ADR-0008](09-architecture-decisions/0008-maps-load-on-request.md)); `domain/map.ts` builds its URLs from the ground's coordinates. The form is a client component that calls `submitContactMessageAction`, which validates with `domain/contact-message.ts` (Zod, honeypot) and stores the message in `contact-messages` ([ADR-0007](09-architecture-decisions/0007-contact-messages-stored-in-cms.md)). The action is passed to the form as a prop, so the form is tested with a fake action.

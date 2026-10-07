@@ -4,6 +4,7 @@ import * as migration_20261003_195239_result_walkover from './20261003_195239_re
 import * as migration_20261003_203936_legal_pages from './20261003_203936_legal_pages';
 import * as migration_20261004_212931_competition_standings from './20261004_212931_competition_standings';
 import * as migration_20261007_155104_news from './20261007_155104_news';
+import * as migration_20261007_171235_membership_and_contact from './20261007_171235_membership_and_contact';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261007_155104_news.up,
     down: migration_20261007_155104_news.down,
-    name: '20261007_155104_news'
+    name: '20261007_155104_news',
+  },
+  {
+    up: migration_20261007_171235_membership_and_contact.up,
+    down: migration_20261007_171235_membership_and_contact.down,
+    name: '20261007_171235_membership_and_contact'
   },
 ];

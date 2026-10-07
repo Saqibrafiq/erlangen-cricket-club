@@ -3,6 +3,7 @@ import type { CollectionConfig, Validate } from 'payload'
 import { WICKETS_PER_INNINGS } from '../../domain/cricket'
 import { anyone } from '../access/anyone'
 import { validateOvers } from '../fields/validate-overs'
+import { validateTime } from '../fields/validate-time'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 import { setFixtureTitle } from '../hooks/set-fixture-title'
 
@@ -12,7 +13,6 @@ export const RESULT_METHODS = ['normal', 'dls', 'forfeit', 'walkover', 'no-resul
 const AWARDED_METHODS = new Set(['forfeit', 'walkover'])
 
 const MAX_INNINGS = 2
-const START_TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/
 
 type FixtureFormData = {
   status?: string
@@ -30,9 +30,6 @@ function battingTeamOf(row: unknown): unknown {
     ? relationId(row.battingTeam)
     : undefined
 }
-
-const validateStartTime: Validate<string | null | undefined> = (value) =>
-  !value || START_TIME_PATTERN.test(value) || 'Use 24-hour format HH:mm, e.g. 13:30.'
 
 const validateTeam2: Validate<unknown, FixtureFormData> = (value, { data }) =>
   !value || relationId(value) !== relationId(data.team1) || 'A team cannot play against itself.'
@@ -119,7 +116,7 @@ export const fixtures: CollectionConfig = {
         {
           name: 'startTime',
           type: 'text',
-          validate: validateStartTime,
+          validate: validateTime,
           admin: { description: 'Local time, HH:mm (optional).' },
         },
       ],

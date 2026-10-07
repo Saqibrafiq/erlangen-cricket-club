@@ -36,6 +36,7 @@
 
 - **Data tables:** standings are plain server-rendered tables in published order and columns (no sorting: the ranking is the content). Numbers right-aligned with tabular figures; points in the display face; win % with a decorative bar; overs muted next to runs; position chips (brand colour for the club). Row labels are `th scope="row"` in a sticky first column. On phones, cells are compact and teams show their league code (full name kept for screen readers), so position through points fit without scrolling; the rest scrolls inside a focusable, named region. A legend explains the abbreviations.
 - **News cards:** a container query switches any wide card (the lead story, or a lone card in its row) to image-beside-text; narrow cards stack. Logos (e.g. sponsors) sit whole on `--color-surface-logo`, which stays white in dark mode because third-party logos are designed for white. Articles without an image keep the card shape with a club-branded panel.
+- **Text on photos:** hero images get a gradient in `--color-media-overlay` with `--color-text-on-media` (both fixed in dark mode); buttons there use the `on-media` and `on-media-outline` variants.
 - **Summary cards ("Our teams"):** a club team's place in a table (ordinal position, points, won, lost, NRR) above the tables. Cards use a container query (`@container`) to switch to a one-row banner when the card itself is wide, so the same component works in a grid and full width; `grid-cols-cards-fit` lets fewer cards stretch to fill the row.
 - **Header dropdowns:** on phones the logo and language switcher share the first row and the nav takes a full-width second row; dropdown panels then span the nav row, so they never leave the viewport or cover the language links (WCAG 2.5.8 target size).
 
@@ -51,6 +52,9 @@
 - Errors: typed results or domain errors (e.g. `RangeError` for invalid stats input); route-level `error.tsx` boundaries arrive with the first data-driven feature.
 
 ## 8.7 Security
+
+- **Third-party content:** nothing from another server loads without the visitor asking: the ground map is a two-click OpenStreetMap embed ([ADR-0008](09-architecture-decisions/0008-maps-load-on-request.md)); fonts are self-hosted.
+- **Public forms:** data minimisation (only what is needed to reply), server-side Zod validation, a honeypot instead of a captcha (no cookies, no third-party script), personal data readable by signed-in editors only. Form fields use `shared/ui/FormField` (label, hint and error wired with `aria-describedby`; invalid controls get `aria-invalid`); after a failed submit, focus moves to the first invalid field. See [ADR-0007](09-architecture-decisions/0007-contact-messages-stored-in-cms.md).
 
 - Payload access control per collection (`src/cms/access/`); public read only where content is public.
 - JSON-LD output escapes `<` to prevent script injection from CMS content.
