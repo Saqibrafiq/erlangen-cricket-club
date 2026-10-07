@@ -18,7 +18,7 @@ The owner (Saqib) is a Senior Frontend Engineer. Do not over-explain basics; do 
 - **Replaces:** https://erlangencricketclub.wordpress.com/
 - **Goals:** (a) a real, live club website found on Google for "Erlangen Cricket Club"; (b) a portfolio project that demonstrates senior/architect-level skills to recruiters.
 - **Hard constraint:** €0 running cost. Only free tiers and open-source software.
-- **Features:** Home, Team/Players (+ player stats), Fixtures & Results, Standings, Stories (blog), Hall of Fame, Membership, Achievements, Legal pages (Impressum, Datenschutz), Admin (CMS).
+- **Features:** Home, Team/Players (+ player stats), Fixtures & Results, Standings, News, Hall of Fame, Membership, Achievements, Legal pages (Impressum, Datenschutz), Admin (CMS).
 
 ## 3. Tech Stack (fixed — changes require an ADR)
 
@@ -63,7 +63,7 @@ src/
     (frontend)/[locale]/...     # Routes only: compose features, no business logic
     (payload)/admin/...         # Payload admin (generated, do not hand-edit)
   features/
-    players/  fixtures/  standings/  stories/  hall-of-fame/  membership/  achievements/
+    players/  fixtures/  standings/  news/  hall-of-fame/  membership/  achievements/
       components/               # Feature UI (Server Components by default)
       server/                   # queries.ts, actions.ts — data access via Payload Local API
       domain/                   # Pure feature logic (optional)
@@ -152,8 +152,8 @@ Use correct cricket vocabulary in code: `innings`, `fixture`, `wicket`, `overs`,
 
 1. **Player** — on a phone at the ground; checks fixtures, venue, own stats. Needs speed and clarity.
 2. **Prospective member** — often new to Germany or to cricket in Germany, English or German speaker; needs trust and a clear "how to join" path.
-3. **Fan / family / sponsor** — results, stories, achievements.
-4. **Club editor** — non-technical; enters scorecards and stories in the admin.
+3. **Fan / family / sponsor** — results, news, achievements.
+4. **Club editor** — non-technical; enters scorecards and news in the admin.
 5. **Recruiter** — skims the site and repo; must see polish within 10 seconds.
 
 ### 8.2 Principles
@@ -178,9 +178,9 @@ Use correct cricket vocabulary in code: `innings`, `fixture`, `wicket`, `overs`,
 
 - Every route exports `generateMetadata` (title template `%s | Erlangen Cricket Club`, description, canonical, Open Graph, Twitter).
 - `app/sitemap.ts` and `app/robots.ts` generated from CMS data; hreflang alternates for en/de.
-- JSON-LD structured data: `SportsOrganization` (site-wide), `SportsEvent` (fixtures), `Article` (stories), `BreadcrumbList`.
+- JSON-LD structured data: `SportsOrganization` (site-wide), `SportsEvent` (fixtures), `NewsArticle` (news), `BreadcrumbList`.
 - Dynamic OG images via `next/og`.
-- Human-readable slugs (`/players/saqib-rafiq`, `/stories/2026-season-review`).
+- Human-readable slugs (`/players/saqib-rafiq`, `/news/2026-season-review`).
 - Static or ISR rendering wherever possible; revalidate on CMS change via Payload `afterChange` hooks + `revalidateTag`/`revalidatePath`.
 - Core Web Vitals budget: LCP < 2.5 s, INP < 200 ms, CLS < 0.1. Lighthouse ≥ 95 in all four categories.
 

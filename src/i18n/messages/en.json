@@ -13,7 +13,8 @@
     "fixturesOverview": "All fixtures & results",
     "languageLabel": "Language",
     "standings": "Standings",
-    "standingsOverview": "All standings"
+    "standingsOverview": "All standings",
+    "news": "News"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -191,5 +192,12 @@
       "lost": "Lost",
       "netRunRate": "NRR"
     }
+  },
+  "news": {
+    "title": "News",
+    "metaDescription": "News from Erlangen Cricket Club: sponsors, club events, match reports and announcements.",
+    "empty": "No news yet. Check back soon.",
+    "readMore": "Read more",
+    "gallery": "Photos"
   }
 }

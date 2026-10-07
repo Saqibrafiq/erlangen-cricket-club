@@ -10,6 +10,7 @@ import sharp from 'sharp'
 import { competitions } from './cms/collections/competitions'
 import { fixtures } from './cms/collections/fixtures'
 import { media } from './cms/collections/media'
+import { news } from './cms/collections/news'
 import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
 import { impressum, privacyPolicy } from './cms/globals/legal-pages'
@@ -25,7 +26,7 @@ export default buildConfig({
     user: users.slug,
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [fixtures, teams, competitions, media, users],
+  collections: [news, fixtures, teams, competitions, media, users],
   globals: [impressum, privacyPolicy],
   editor: lexicalEditor(),
   // Content fields opt in with `localized: true`; untranslated German falls back to English.

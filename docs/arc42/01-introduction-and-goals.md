@@ -10,12 +10,12 @@ Erlangen Cricket Club (Erlangen, Bavaria) needs a modern website and a content p
 | Team / Players     | Player profiles with career stats derived from scorecards          |
 | Fixtures & Results | Upcoming matches (date, venue) and scorecards of completed matches |
 | Standings          | League tables as published by the leagues (ADR-0006)               |
-| Stories            | Blog: match reports, season reviews, club news                     |
+| News               | Club news, sponsors, match reports, season reviews                 |
 | Hall of Fame       | Milestones (centuries, five-wicket hauls) derived from scorecards  |
 | Membership         | How to join; enquiry form                                          |
 | Achievements       | Trophies and honours                                               |
 | Legal              | Impressum (§ 5 DDG), Datenschutzerklärung                          |
-| Admin (CMS)        | Non-technical editors manage scorecards, players and stories       |
+| Admin (CMS)        | Non-technical editors manage scorecards, players and news          |
 
 The site is bilingual: English (default) and German.
 
@@ -37,8 +37,8 @@ Concrete scenarios are in [section 10](10-quality-requirements.md).
 | ------------------------- | ---------------------------------------------------------------------------- |
 | Players                   | Fast, clear access to fixtures, venues and their own stats on mobile         |
 | Prospective members       | Trust and a clear path to joining, in English or German                      |
-| Fans, families, sponsors  | Results, stories, achievements                                               |
-| Club editors              | Simple admin to enter scorecards and stories without technical knowledge     |
+| Fans, families, sponsors  | Results, news, achievements                                                  |
+| Club editors              | Simple admin to enter scorecards and news without technical knowledge        |
 | Club board                | Legal compliance (Impressum, GDPR), zero running cost                        |
 | Owner / developer (Saqib) | Maintainable codebase; portfolio demonstrating senior/architect-level skills |
 | Recruiters                | Visible polish in the site and in the repository within seconds              |

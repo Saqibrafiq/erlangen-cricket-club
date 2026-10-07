@@ -3,6 +3,7 @@ import * as migration_20261003_192021_competition_slug from './20261003_192021_c
 import * as migration_20261003_195239_result_walkover from './20261003_195239_result_walkover';
 import * as migration_20261003_203936_legal_pages from './20261003_203936_legal_pages';
 import * as migration_20261004_212931_competition_standings from './20261004_212931_competition_standings';
+import * as migration_20261007_155104_news from './20261007_155104_news';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261004_212931_competition_standings.up,
     down: migration_20261004_212931_competition_standings.down,
-    name: '20261004_212931_competition_standings'
+    name: '20261004_212931_competition_standings',
+  },
+  {
+    up: migration_20261007_155104_news.up,
+    down: migration_20261007_155104_news.down,
+    name: '20261007_155104_news'
   },
 ];
