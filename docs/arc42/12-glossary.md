@@ -28,5 +28,6 @@ Code uses the English term (camelCase where applicable).
 | Stage                | Runde                       | `stage`           | Part of a competition: league, qualifier, semi-final, final.                                               |
 | Club team            | Vereinsmannschaft           | `isClubTeam`      | An Erlangen Cricket Club team; results are shown from its perspective.                                     |
 | Hall of Fame         | Ruhmeshalle                 | `hallOfFame`      | Milestones derived from scorecards.                                                                        |
+| News article         | Neuigkeit / Beitrag         | `news`            | Club news (sponsors, events, reports) maintained by editors; published or draft.                           |
 | Impressum            | Impressum                   | —                 | Legally required provider identification (§ 5 DDG).                                                        |
 | Datenschutzerklärung | Datenschutzerklärung        | —                 | Privacy policy required by GDPR.                                                                           |
