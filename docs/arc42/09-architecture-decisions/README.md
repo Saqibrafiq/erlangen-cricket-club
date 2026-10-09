@@ -12,3 +12,4 @@ Decisions follow the [MADR](https://adr.github.io/madr/) template ([`template.md
 | [0006](0006-standings-from-published-tables.md)                   | Standings show the published league tables, entered in the CMS    | Accepted |
 | [0007](0007-contact-messages-stored-in-cms.md)                    | Contact messages stored in the CMS, protected by a honeypot       | Accepted |
 | [0008](0008-maps-load-on-request.md)                              | Maps load on request (OpenStreetMap, two-click)                   | Accepted |
+| [0009](0009-player-profiles-require-recorded-consent.md)          | Player profiles require recorded consent                          | Accepted |
