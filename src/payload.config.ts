@@ -13,6 +13,7 @@ import { fixtures } from './cms/collections/fixtures'
 import { media } from './cms/collections/media'
 import { contactMessages } from './cms/collections/contact-messages'
 import { news } from './cms/collections/news'
+import { sponsors } from './cms/collections/sponsors'
 import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
 import { contact } from './cms/globals/contact'
@@ -31,7 +32,17 @@ export default buildConfig({
     user: users.slug,
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [news, fixtures, teams, competitions, media, documents, contactMessages, users],
+  collections: [
+    news,
+    fixtures,
+    teams,
+    competitions,
+    media,
+    documents,
+    contactMessages,
+    sponsors,
+    users,
+  ],
   globals: [membership, contact, journey, impressum, privacyPolicy],
   editor: lexicalEditor(),
   // Content fields opt in with `localized: true`; untranslated German falls back to English.

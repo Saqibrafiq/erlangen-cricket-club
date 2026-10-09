@@ -11,6 +11,7 @@ import {
   getCompetitionPath,
 } from '@/features/fixtures'
 import { LEGAL_PATHS } from '@/features/legal'
+import { SPONSORS_PATH } from '@/features/sponsors'
 import { getStandingsPath, STANDINGS_PATH } from '@/features/standings'
 import { resolveLocale } from '@/i18n/locale'
 import { routing } from '@/i18n/routing'
@@ -95,6 +96,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
           </main>
           <SiteFooter
             year={new Date().getFullYear()}
+            clubLinks={[{ href: SPONSORS_PATH, label: tFooter('sponsors') }]}
             legalLinks={[
               { href: LEGAL_PATHS.impressum, label: tFooter('impressum') },
               { href: LEGAL_PATHS.privacy, label: tFooter('privacy') },

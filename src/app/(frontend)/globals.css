@@ -39,6 +39,8 @@
   --grid-template-columns-hero: minmax(0, 1fr) auto;
   /* Main content with a narrower aside (3:2), e.g. a form next to contact details. */
   --grid-template-columns-content-aside: minmax(0, 3fr) minmax(0, 2fr);
+  /* The mirror image (2:3), e.g. a logo panel next to its description. */
+  --grid-template-columns-aside-content: minmax(0, 2fr) minmax(0, 3fr);
   /* Timeline: a year column next to the line and its entries. */
   --grid-template-columns-timeline: 3.5rem minmax(0, 1fr);
   --grid-template-columns-timeline-wide: 5rem minmax(0, 1fr);

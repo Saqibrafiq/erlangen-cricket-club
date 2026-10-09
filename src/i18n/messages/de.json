@@ -17,7 +17,8 @@
     "news": "Neuigkeiten",
     "membership": "Mitgliedschaft",
     "contact": "Kontakt",
-    "journey": "Geschichte"
+    "journey": "Geschichte",
+    "sponsors": "Sponsoren"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -120,7 +121,9 @@
     "legalLabel": "Rechtliches",
     "impressum": "Impressum",
     "privacy": "Datenschutz",
-    "copyright": "© {year} {club}"
+    "copyright": "© {year} {club}",
+    "clubLabel": "Verein",
+    "sponsors": "Sponsoren"
   },
   "legal": {
     "impressumTitle": "Impressum",
@@ -382,6 +385,54 @@
       "heading": "Schreib das nächste Kapitel mit uns",
       "text": "Neue Spieler jeder Spielstärke sind willkommen.",
       "button": "Mitglied werden"
+    }
+  },
+  "sponsors": {
+    "title": "Sponsoren",
+    "metaDescription": "Die Sponsoren des Erlangen Cricket Club, angeführt von Hauptsponsor mein-banker, und wie dein Unternehmen Cricket in Erlangen unterstützen kann.",
+    "hero": {
+      "eyebrow": "Sponsoren und Partner",
+      "heading": "Danke an unsere Sponsoren",
+      "lead": "Ihre Unterstützung hilft uns, Cricket in Erlangen wachsen zu lassen, auf und neben dem Platz.",
+      "become": "Sponsor werden"
+    },
+    "list": {
+      "eyebrow": "Unsere Sponsoren",
+      "heading": "Die Partner hinter unserem Verein",
+      "intro": "Wir danken allen Unternehmen und Personen, die den Erlangen Cricket Club unterstützen.",
+      "empty": "Unsere Sponsorenliste wird gerade aktualisiert."
+    },
+    "card": {
+      "tier": {
+        "title": "Hauptsponsor",
+        "sponsor": "Sponsor"
+      },
+      "since": "Seit {year}",
+      "website": "Zur Website",
+      "websiteOf": "(Website von {name}, öffnet in neuem Tab)",
+      "announcement": "Zur Ankündigung"
+    },
+    "benefits": {
+      "eyebrow": "Sponsor werden",
+      "heading": "Warum den Erlangen Cricket Club unterstützen",
+      "intro": "Gemeinsam mit dir stellen wir ein Paket zusammen, das zu deinem Unternehmen passt.",
+      "visibility": {
+        "title": "Sichtbarkeit",
+        "text": "Dein Logo und ein Link auf unserer Website und in unseren Neuigkeiten, als Hauptsponsor auch auf unserem Trikot."
+      },
+      "community": {
+        "title": "Gemeinschaft",
+        "text": "Erreiche eine internationale Gemeinschaft aus Spielern, Familien und Fans in Erlangen und ganz Bayern."
+      },
+      "impact": {
+        "title": "Wirkung",
+        "text": "Hilf mit, Breitensport-Cricket in Erlangen wachsen zu lassen: Training, Ausrüstung und Ligacricket für zwei Mannschaften."
+      }
+    },
+    "cta": {
+      "heading": "Interesse am Sponsoring?",
+      "text": "Erzähl uns von deinem Unternehmen, der Vorstand meldet sich bei dir.",
+      "button": "Kontakt"
     }
   }
 }

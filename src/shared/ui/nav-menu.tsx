@@ -93,8 +93,8 @@ export function NavMenu({ label, href, groups }: NavMenuProps) {
         hidden={!isOpen}
         // Phones: anchored to the full-width nav row (the nearest positioned ancestor), so it spans
         // the screen instead of overflowing it. From sm up: a fixed-width panel under the button,
-        // left-aligned while the nav starts the row, right-aligned once it sits at the right (md).
-        className="absolute inset-x-0 z-40 mt-1 rounded-lg border border-border-default bg-surface-default p-2 shadow-lg sm:right-auto sm:w-72 md:right-0 md:left-auto"
+        // left-aligned while the nav starts the row, right-aligned once it sits at the right (xl).
+        className="absolute inset-x-0 z-40 mt-1 rounded-lg border border-border-default bg-surface-default p-2 shadow-lg sm:right-auto sm:w-72 xl:right-0 xl:left-auto"
       >
         {groups.map((group, index) => {
           const groupId = `${panelId}-group-${index}`

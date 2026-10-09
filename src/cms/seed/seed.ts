@@ -6,6 +6,7 @@ import { SEED_COMPETITIONS, SEED_TEAMS } from './data'
 import { seedJourney } from './seed-journey'
 import { seedMembership } from './seed-membership'
 import { seedNews } from './seed-news'
+import { seedSponsors } from './seed-sponsors'
 import type { SeedCompetition, SeedFixture, SeedResult, SeedStandingsRow } from './types'
 
 const SEED_CONTEXT: RevalidateContext = { disableRevalidate: true }
@@ -198,4 +199,5 @@ export async function seed(payload: Payload): Promise<void> {
   await seedNews(payload)
   await seedMembership(payload)
   await seedJourney(payload)
+  await seedSponsors(payload)
 }

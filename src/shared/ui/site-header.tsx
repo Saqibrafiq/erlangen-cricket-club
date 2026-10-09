@@ -31,16 +31,17 @@ export function SiteHeader({ items }: SiteHeaderProps) {
         >
           {siteConfig.name}
         </Link>
-        {/* Phones: logo and languages share the first row, the nav gets a full-width second row,
-            so an open dropdown never covers the language links. From md up: one row. */}
-        <div className="order-2 md:order-3">
+        {/* Below xl: logo and languages share the first row and the nav gets a full-width second
+            row, so it never wraps awkwardly (eight items, long German labels) and an open dropdown
+            never covers the language links. From xl up: one row. */}
+        <div className="order-2 xl:order-3">
           <LocaleSwitcher />
         </div>
         <nav
           aria-label={t('label')}
-          className="relative order-3 basis-full md:order-2 md:ml-auto md:basis-auto"
+          className="relative order-3 basis-full xl:order-2 xl:ml-auto xl:basis-auto"
         >
-          <ul className="flex flex-wrap gap-1">
+          <ul className="flex flex-wrap gap-1 xl:gap-0">
             {items.map((item) => (
               <li key={item.href}>
                 {item.groups ? (

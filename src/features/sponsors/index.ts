@@ -1,0 +1,5 @@
+export { SponsorsView, type SponsorsViewProps } from './components/sponsors-view'
+export { buildSponsorsJsonLd } from './domain/sponsors'
+export { SPONSORS_PATH } from './paths'
+export { getSponsors } from './server/queries'
+export type { Sponsor } from './types'
