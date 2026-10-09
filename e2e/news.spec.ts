@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openMainNavigation } from './navigation'
 
 // Runs against the seeded data: articles migrated from the old website, newest first.
 const SPONSOR = {
@@ -16,7 +17,7 @@ const AGM = {
 test.describe('news', () => {
   test('lists articles newest first and opens one from the header', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'News' }).click()
+    await (await openMainNavigation(page)).getByRole('link', { name: 'News' }).click()
 
     await expect(page).toHaveTitle('News | Erlangen Cricket Club')
     // Seeded: the 2 recent articles plus 22 migrated from the old website.
@@ -40,7 +41,7 @@ test.describe('news', () => {
       'https://www.ovb.de/finanzberater/nuernberg-martin-denis.html',
     )
     await expect(
-      page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'News' }),
+      (await openMainNavigation(page)).getByRole('link', { name: 'News' }),
     ).toHaveAttribute('aria-current', 'true')
   })
 

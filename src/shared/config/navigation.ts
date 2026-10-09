@@ -4,7 +4,7 @@ export type NavigationItem = {
   href: string
   labelKey: Exclude<
     keyof (typeof en)['navigation'],
-    'label' | 'languageLabel' | 'fixturesOverview' | 'standingsOverview'
+    'label' | 'languageLabel' | 'fixturesOverview' | 'standingsOverview' | 'menu' | 'closeMenu'
   >
 }
 

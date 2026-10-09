@@ -1,15 +1,13 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openMainNavigation } from './navigation'
 
 // Runs against the seeded membership page.
 test.describe('membership', () => {
   test('is reachable from the header and shows fees and the week', async ({ page }) => {
     await page.goto('/')
-    await page
-      .getByRole('navigation', { name: 'Main' })
-      .getByRole('link', { name: 'Membership' })
-      .click()
+    await (await openMainNavigation(page)).getByRole('link', { name: 'Membership' }).click()
 
     await expect(page).toHaveTitle('Membership | Erlangen Cricket Club')
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Play cricket in Erlangen')
