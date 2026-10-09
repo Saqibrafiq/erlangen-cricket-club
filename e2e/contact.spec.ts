@@ -1,15 +1,13 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openMainNavigation } from './navigation'
 
 // Runs against the seeded contact page.
 test.describe('contact', () => {
   test('is reachable from the header and shows email and the ground', async ({ page }) => {
     await page.goto('/')
-    await page
-      .getByRole('navigation', { name: 'Main' })
-      .getByRole('link', { name: 'Contact' })
-      .click()
+    await (await openMainNavigation(page)).getByRole('link', { name: 'Contact' }).click()
 
     await expect(page).toHaveTitle('Contact us | Erlangen Cricket Club')
     await expect(page.getByRole('link', { name: 'erlangencricketclub@gmail.com' })).toHaveAttribute(

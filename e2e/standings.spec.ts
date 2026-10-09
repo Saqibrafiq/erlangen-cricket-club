@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openNavigationSection } from './navigation'
 
 // Runs against the seeded data: all four 2026 tables are seeded exactly as published on CricClubs.
 const T20 = {
@@ -30,14 +31,11 @@ const CLUB_TEAM_NAMES: Partial<Record<string, string>> = {
 }
 
 test.describe('standings navigation', () => {
-  test('opens a competition table from the header dropdown', async ({ page }) => {
+  test('opens a competition table from the navigation', async ({ page }) => {
     await page.goto('/')
 
-    await page
-      .getByRole('navigation', { name: 'Main' })
-      .getByRole('button', { name: 'Standings' })
-      .click()
-    await page
+    const navigation = await openNavigationSection(page, 'Standings')
+    await navigation
       .getByRole('list', { name: 'Erlangen Cricket Club II' })
       .getByRole('link', { name: VERBANDSLIGA.title })
       .click()
