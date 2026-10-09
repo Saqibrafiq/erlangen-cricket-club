@@ -27,6 +27,13 @@ describe('SiteHeader', () => {
     expect(screen.getByRole('link', { name: 'Erlangen Cricket Club' })).toHaveAttribute('href', '/')
   })
 
+  it('shows the club crest as decoration, so the link is named by the club name only', () => {
+    renderWithIntl(<SiteHeader items={ITEMS} />)
+
+    const home = screen.getByRole('link', { name: 'Erlangen Cricket Club' })
+    expect(home.querySelector('img')).toHaveAttribute('alt', '')
+  })
+
   it('renders plain items as links and items with groups as dropdown buttons', () => {
     renderWithIntl(<SiteHeader items={ITEMS} />)
 

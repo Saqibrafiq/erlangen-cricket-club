@@ -7,10 +7,12 @@ test.describe('site chrome', () => {
   test('switches language and keeps the current page', async ({ page }) => {
     await page.goto('/fixtures')
 
-    await page
-      .getByRole('navigation', { name: 'Language' })
-      .getByRole('link', { name: /Deutsch/ })
-      .click()
+    // Retry until hydrated: before that, the menu button does nothing.
+    await expect(async () => {
+      await page.getByRole('button', { name: /Language/ }).click()
+      await expect(page.getByRole('menu', { name: 'Language' })).toBeVisible({ timeout: 1000 })
+    }).toPass()
+    await page.getByRole('menuitem', { name: 'Deutsch' }).click()
 
     await expect(page).toHaveURL(/\/de\/fixtures$/)
     await expect(page.locator('html')).toHaveAttribute('lang', 'de')

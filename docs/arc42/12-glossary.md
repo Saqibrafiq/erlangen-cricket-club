@@ -28,6 +28,9 @@ Code uses the English term (camelCase where applicable).
 | Stage                | Runde                       | `stage`           | Part of a competition: league, qualifier, semi-final, final.                                               |
 | Club team            | Vereinsmannschaft           | `isClubTeam`      | An Erlangen Cricket Club team; results are shown from its perspective.                                     |
 | Hall of Fame         | Ruhmeshalle                 | `hallOfFame`      | Milestones derived from scorecards.                                                                        |
+| Player               | Spieler                     | `players`         | Club member shown on the website; only with recorded consent (`hasPublishConsent`).                        |
+| Playing role         | Spielerrolle                | `playingRole`     | Batter, bowler, all-rounder or wicketkeeper.                                                               |
+| Squad                | Kader                       | —                 | All players shown on the players page.                                                                     |
 | News article         | Neuigkeit / Beitrag         | `news`            | Club news (sponsors, events, reports) maintained by editors; published or draft.                           |
 | Active membership    | Aktive Mitgliedschaft       | `active`          | Membership including league and tournament matches (plus a fee per tournament match).                      |
 | Passive membership   | Passive Mitgliedschaft      | `passive`         | Membership for training, indoor cricket and friendlies, without league matches.                            |

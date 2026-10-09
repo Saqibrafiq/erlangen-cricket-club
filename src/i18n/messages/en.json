@@ -14,6 +14,7 @@
     "languageLabel": "Language",
     "standings": "Standings",
     "standingsOverview": "All standings",
+    "players": "Players",
     "news": "News",
     "membership": "Membership",
     "contact": "Contact",
@@ -435,6 +436,98 @@
       "heading": "Interested in sponsoring?",
       "text": "Tell us about your company and the board will get in touch.",
       "button": "Contact us"
+    }
+  },
+  "players": {
+    "title": "Players",
+    "metaDescription": "Meet the players of Erlangen Cricket Club: the squad that represents Erlangen in the Bavarian leagues and the DCB-Bundesliga.",
+    "hero": {
+      "eyebrow": "Erlangen Cricket Club",
+      "eyebrowSeason": "Season {season}",
+      "heading": "Our squad"
+    },
+    "list": {
+      "heading": "The squad",
+      "count": "{count, plural, one {# player} other {# players}}",
+      "empty": "Our squad will be introduced here soon."
+    },
+    "office": {
+      "president": "President",
+      "vice-president": "Vice President",
+      "treasurer": "Treasurer",
+      "secretary": "Secretary"
+    },
+    "playingRole": {
+      "batter": "Batter",
+      "bowler": "Bowler",
+      "all-rounder": "All-rounder",
+      "wicketkeeper": "Wicketkeeper"
+    },
+    "battingStyle": {
+      "right-hand": "Right-hand bat",
+      "left-hand": "Left-hand bat"
+    },
+    "bowlingStyle": {
+      "right-arm-fast": "Right-arm fast",
+      "right-arm-medium": "Right-arm medium",
+      "right-arm-off-spin": "Right-arm off-spin",
+      "right-arm-leg-spin": "Right-arm leg-spin",
+      "left-arm-fast": "Left-arm fast",
+      "left-arm-medium": "Left-arm medium",
+      "left-arm-orthodox": "Left-arm orthodox",
+      "left-arm-wrist-spin": "Left-arm wrist-spin"
+    },
+    "profile": {
+      "eyebrow": "Erlangen Cricket Club",
+      "details": {
+        "heading": "Playing profile",
+        "role": "Role",
+        "batting": "Batting",
+        "bowling": "Bowling",
+        "teams": "Teams"
+      },
+      "stats": {
+        "eyebrow": "Coming soon",
+        "heading": "Career stats",
+        "text": "Stats are calculated from match scorecards and will appear here once the club records them.",
+        "matches": "Matches",
+        "runs": "Runs",
+        "wickets": "Wickets",
+        "catches": "Catches",
+        "notRecorded": "Not recorded yet"
+      },
+      "metaDescription": "{name} plays cricket for Erlangen Cricket Club.",
+      "teammates": {
+        "heading": "More players",
+        "all": "All players"
+      }
+    },
+    "join": {
+      "heading": "Join the squad",
+      "text": "Training every Thursday"
+    },
+    "facts": {
+      "players": "Players",
+      "teams": "Teams",
+      "competitions": "Competitions"
+    },
+    "search": {
+      "label": "Find a player",
+      "placeholder": "Find a player",
+      "results": "{shown} of {total}",
+      "noMatch": "No players match your search.",
+      "clear": "Show all players"
+    },
+    "filters": {
+      "team": "Team",
+      "role": "Role",
+      "all": "All",
+      "roles": {
+        "batter": "Batters",
+        "bowler": "Bowlers",
+        "all-rounder": "All-rounders",
+        "wicketkeeper": "Wicketkeepers"
+      }
     }
   }
 }
