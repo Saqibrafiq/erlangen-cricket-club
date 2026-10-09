@@ -14,6 +14,7 @@
     "languageLabel": "Sprache",
     "standings": "Tabellen",
     "standingsOverview": "Alle Tabellen",
+    "players": "Spieler",
     "news": "Neuigkeiten",
     "membership": "Mitgliedschaft",
     "contact": "Kontakt",
@@ -435,6 +436,98 @@
       "heading": "Interesse am Sponsoring?",
       "text": "Erzähl uns von deinem Unternehmen, der Vorstand meldet sich bei dir.",
       "button": "Kontakt"
+    }
+  },
+  "players": {
+    "title": "Spieler",
+    "metaDescription": "Lerne die Spieler des Erlangen Cricket Club kennen: der Kader, der Erlangen in den bayerischen Ligen und der DCB-Bundesliga vertritt.",
+    "hero": {
+      "eyebrow": "Erlangen Cricket Club",
+      "eyebrowSeason": "Saison {season}",
+      "heading": "Unser Kader"
+    },
+    "list": {
+      "heading": "Der Kader",
+      "count": "{count, plural, one {# Spieler} other {# Spieler}}",
+      "empty": "Unser Kader wird hier bald vorgestellt."
+    },
+    "office": {
+      "president": "Präsident",
+      "vice-president": "Vizepräsident",
+      "treasurer": "Kassenwart",
+      "secretary": "Schriftführer"
+    },
+    "playingRole": {
+      "batter": "Batter",
+      "bowler": "Bowler",
+      "all-rounder": "Allrounder",
+      "wicketkeeper": "Wicketkeeper"
+    },
+    "battingStyle": {
+      "right-hand": "Rechtshänder",
+      "left-hand": "Linkshänder"
+    },
+    "bowlingStyle": {
+      "right-arm-fast": "Rechter Arm, schnell",
+      "right-arm-medium": "Rechter Arm, mittelschnell",
+      "right-arm-off-spin": "Rechter Arm, Off-Spin",
+      "right-arm-leg-spin": "Rechter Arm, Leg-Spin",
+      "left-arm-fast": "Linker Arm, schnell",
+      "left-arm-medium": "Linker Arm, mittelschnell",
+      "left-arm-orthodox": "Linker Arm, Orthodox Spin",
+      "left-arm-wrist-spin": "Linker Arm, Wrist-Spin"
+    },
+    "profile": {
+      "eyebrow": "Erlangen Cricket Club",
+      "details": {
+        "heading": "Spielerprofil",
+        "role": "Rolle",
+        "batting": "Schlagen",
+        "bowling": "Werfen",
+        "teams": "Teams"
+      },
+      "stats": {
+        "eyebrow": "Demnächst",
+        "heading": "Karrierestatistik",
+        "text": "Die Statistik wird aus den Spielberichten (Scorecards) berechnet und erscheint hier, sobald der Verein sie erfasst.",
+        "matches": "Spiele",
+        "runs": "Runs",
+        "wickets": "Wickets",
+        "catches": "Catches",
+        "notRecorded": "Noch nicht erfasst"
+      },
+      "metaDescription": "{name} spielt Cricket für den Erlangen Cricket Club.",
+      "teammates": {
+        "heading": "Weitere Spieler",
+        "all": "Alle Spieler"
+      }
+    },
+    "join": {
+      "heading": "Werde Teil des Kaders",
+      "text": "Training jeden Donnerstag"
+    },
+    "facts": {
+      "players": "Spieler",
+      "teams": "Teams",
+      "competitions": "Wettbewerbe"
+    },
+    "search": {
+      "label": "Spieler finden",
+      "placeholder": "Spieler finden",
+      "results": "{shown} von {total}",
+      "noMatch": "Keine Spieler passen zu deiner Suche.",
+      "clear": "Alle Spieler zeigen"
+    },
+    "filters": {
+      "team": "Team",
+      "role": "Rolle",
+      "all": "Alle",
+      "roles": {
+        "batter": "Batter",
+        "bowler": "Bowler",
+        "all-rounder": "Allrounder",
+        "wicketkeeper": "Wicketkeeper"
+      }
     }
   }
 }

@@ -70,6 +70,7 @@ export interface Config {
     news: News;
     fixtures: Fixture;
     teams: Team;
+    players: Player;
     competitions: Competition;
     media: Media;
     documents: Document;
@@ -86,6 +87,7 @@ export interface Config {
     news: NewsSelect<false> | NewsSelect<true>;
     fixtures: FixturesSelect<false> | FixturesSelect<true>;
     teams: TeamsSelect<false> | TeamsSelect<true>;
+    players: PlayersSelect<false> | PlayersSelect<true>;
     competitions: CompetitionsSelect<false> | CompetitionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
@@ -341,6 +343,57 @@ export interface Team {
   createdAt: string;
 }
 /**
+ * Only players whose consent is recorded appear on the website. Stats will come from match scorecards.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "players".
+ */
+export interface Player {
+  id: number;
+  name: string;
+  /**
+   * Head-and-shoulders photo, best cut out (transparent PNG or WebP) so the player stands on the club green. Initials are shown without one.
+   */
+  photo?: (number | null) | Media;
+  playingRole?: ('batter' | 'bowler' | 'all-rounder' | 'wicketkeeper') | null;
+  battingStyle?: ('right-hand' | 'left-hand') | null;
+  bowlingStyle?:
+    | (
+        | 'right-arm-fast'
+        | 'right-arm-medium'
+        | 'right-arm-off-spin'
+        | 'right-arm-leg-spin'
+        | 'left-arm-fast'
+        | 'left-arm-medium'
+        | 'left-arm-orthodox'
+        | 'left-arm-wrist-spin'
+      )
+    | null;
+  /**
+   * Club teams the player plays for.
+   */
+  teams?: (number | Team)[] | null;
+  /**
+   * Board role, if the player holds one.
+   */
+  clubOffice?: ('president' | 'vice-president' | 'treasurer' | 'secretary') | null;
+  /**
+   * Two or three sentences in the player’s own words.
+   */
+  bio?: string | null;
+  /**
+   * URL segment, generated from the name if left empty.
+   */
+  slug: string;
+  /**
+   * Name, photo and stats are public only when ticked. On a removal request, untick and delete the photo in Media.
+   */
+  hasPublishConsent?: boolean | null;
+  consentNote?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "documents".
  */
@@ -476,6 +529,10 @@ export interface PayloadLockedDocument {
         value: number | Team;
       } | null)
     | ({
+        relationTo: 'players';
+        value: number | Player;
+      } | null)
+    | ({
         relationTo: 'competitions';
         value: number | Competition;
       } | null)
@@ -602,6 +659,25 @@ export interface TeamsSelect<T extends boolean = true> {
   name?: T;
   shortName?: T;
   isClubTeam?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "players_select".
+ */
+export interface PlayersSelect<T extends boolean = true> {
+  name?: T;
+  photo?: T;
+  playingRole?: T;
+  battingStyle?: T;
+  bowlingStyle?: T;
+  teams?: T;
+  clubOffice?: T;
+  bio?: T;
+  slug?: T;
+  hasPublishConsent?: T;
+  consentNote?: T;
   updatedAt?: T;
   createdAt?: T;
 }

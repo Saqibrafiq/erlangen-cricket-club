@@ -7,6 +7,7 @@ import * as migration_20261007_155104_news from './20261007_155104_news';
 import * as migration_20261007_171235_membership_and_contact from './20261007_171235_membership_and_contact';
 import * as migration_20261007_175123_journey from './20261007_175123_journey';
 import * as migration_20261009_195656_sponsors from './20261009_195656_sponsors';
+import * as migration_20261009_210146_players from './20261009_210146_players';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261009_195656_sponsors.up,
     down: migration_20261009_195656_sponsors.down,
-    name: '20261009_195656_sponsors'
+    name: '20261009_195656_sponsors',
+  },
+  {
+    up: migration_20261009_210146_players.up,
+    down: migration_20261009_210146_players.down,
+    name: '20261009_210146_players'
   },
 ];

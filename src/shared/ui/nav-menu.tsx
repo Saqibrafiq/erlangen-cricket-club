@@ -81,7 +81,8 @@ export function NavMenu({ label, href, groups }: NavMenuProps) {
           setIsOpen((open) => !open)
         }}
         className={cn(
-          'inline-flex min-h-11 items-center gap-1 rounded-md px-3 text-sm font-medium text-text-muted transition-colors duration-150 hover:bg-surface-muted hover:text-text-default',
+          // Tighter between xl and 2xl so nine items with German labels fit one row at 1280 px.
+          'inline-flex min-h-11 items-center gap-1 rounded-md px-1.5 text-sm font-medium whitespace-nowrap text-text-muted transition-colors duration-150 hover:bg-surface-muted hover:text-text-default 2xl:px-3',
           isInSection &&
             'text-text-default underline decoration-brand-primary decoration-2 underline-offset-8',
         )}

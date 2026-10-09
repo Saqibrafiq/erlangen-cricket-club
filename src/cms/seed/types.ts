@@ -159,3 +159,9 @@ export type SeedSponsor = {
   announcement?: string
   description: SeedLocalized
 }
+
+export type SeedPlayer = {
+  name: string
+  /** A photo in `seed/assets/players/`. */
+  photo: SeedImage
+}
