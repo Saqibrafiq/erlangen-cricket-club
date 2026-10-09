@@ -1,6 +1,7 @@
 import { expect, type Page, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openNavigationSection } from './navigation'
 
 // Runs against the seeded 2026 results (`pnpm db:seed`).
 const T20 = {
@@ -20,28 +21,31 @@ const VERBANDSLIGA = {
   title: 'BCV T20 1. Verbandsliga 2026',
 }
 
+// The header dropdown (desktop only; phones use the menu panel).
 function fixturesMenuButton(page: Page) {
   return page
+    .getByRole('banner')
     .getByRole('navigation', { name: 'Main' })
     .getByRole('button', { name: 'Fixtures & Results' })
 }
 
 test.describe('fixtures navigation', () => {
-  test('opens a competition from the header dropdown, grouped by team', async ({ page }) => {
+  test('opens a competition from the navigation, grouped by team', async ({ page }) => {
     await page.goto('/')
 
-    await fixturesMenuButton(page).click()
-    await page
+    const navigation = await openNavigationSection(page, 'Fixtures & Results')
+    await navigation
       .getByRole('list', { name: 'Erlangen Cricket Club II' })
       .getByRole('link', { name: REGIONALLIGA.title })
       .click()
 
     await expect(page).toHaveURL(new RegExp(`${REGIONALLIGA.path}$`))
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(REGIONALLIGA.title)
-    await expect(fixturesMenuButton(page)).toHaveAttribute('aria-expanded', 'false')
+    await expect(page.getByRole('dialog')).toHaveCount(0)
   })
 
-  test('closes the dropdown with Escape and returns focus', async ({ page }) => {
+  test('closes the dropdown with Escape and returns focus', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Phones use the menu panel (see site.spec.ts).')
     await page.goto('/')
 
     await fixturesMenuButton(page).click()
@@ -52,9 +56,9 @@ test.describe('fixtures navigation', () => {
     await expect(fixturesMenuButton(page)).toBeFocused()
   })
 
-  test('has no accessibility violations with the dropdown open', async ({ page }) => {
+  test('has no accessibility violations with the navigation open', async ({ page }) => {
     await page.goto('/')
-    await fixturesMenuButton(page).click()
+    await openNavigationSection(page, 'Fixtures & Results')
 
     await expectNoAxeViolations(page)
   })

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openMainNavigation } from './navigation'
 
 // Runs against the seeded sponsors (from the old website's announcements).
 test.describe('sponsors', () => {
@@ -26,10 +27,7 @@ test.describe('sponsors', () => {
 
   test('is in the main navigation too', async ({ page }) => {
     await page.goto('/')
-    await page
-      .getByRole('navigation', { name: 'Main' })
-      .getByRole('link', { name: 'Sponsors' })
-      .click()
+    await (await openMainNavigation(page)).getByRole('link', { name: 'Sponsors' }).click()
 
     await expect(page).toHaveURL(/\/sponsors$/)
   })

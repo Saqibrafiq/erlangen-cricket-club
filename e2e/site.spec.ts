@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openMainNavigation } from './navigation'
 
 test.describe('site chrome', () => {
   test('switches language and keeps the current page', async ({ page }) => {
@@ -34,12 +35,37 @@ test.describe('site chrome', () => {
     await expect(page.getByText(/wird gerade vorbereitet/)).toBeVisible()
   })
 
-  test('keeps the header visible while scrolling on larger screens', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'On phones the header scrolls away to free up the screen.')
+  test('keeps the slim header visible while scrolling', async ({ page }) => {
     await page.goto('/fixtures')
     await page.mouse.wheel(0, 2000)
 
     await expect(page.getByRole('banner')).toBeInViewport()
+  })
+
+  test('phone menu closes with Escape and returns focus to its button', async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(!isMobile, 'Desktop shows the navigation in the header.')
+    await page.goto('/')
+
+    await openMainNavigation(page)
+    await page.keyboard.press('Escape')
+
+    await expect(page.getByRole('dialog')).toHaveCount(0)
+    await expect(page.getByRole('button', { name: 'Menu', exact: true })).toBeFocused()
+  })
+
+  test('phone menu has no accessibility violations', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'Desktop shows the navigation in the header.')
+    await page.goto('/news')
+
+    const navigation = await openMainNavigation(page)
+    await expect(navigation.getByRole('link', { name: 'News' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    await expectNoAxeViolations(page)
   })
 
   test('legal pages have no accessibility violations', async ({ page }) => {

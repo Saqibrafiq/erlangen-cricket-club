@@ -18,7 +18,9 @@
     "membership": "Membership",
     "contact": "Contact",
     "journey": "Journey",
-    "sponsors": "Sponsors"
+    "sponsors": "Sponsors",
+    "menu": "Menu",
+    "closeMenu": "Close menu"
   },
   "home": {
     "heading": "Erlangen Cricket Club",

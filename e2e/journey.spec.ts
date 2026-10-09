@@ -1,15 +1,13 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { openMainNavigation } from './navigation'
 
 // Runs against the seeded journey page (story and milestones from the old website).
 test.describe('journey', () => {
   test('is reachable from the header and tells the story from 2010 to today', async ({ page }) => {
     await page.goto('/')
-    await page
-      .getByRole('navigation', { name: 'Main' })
-      .getByRole('link', { name: 'Journey' })
-      .click()
+    await (await openMainNavigation(page)).getByRole('link', { name: 'Journey' }).click()
 
     await expect(page).toHaveTitle('Our journey | Erlangen Cricket Club')
     await expect(page.getByRole('region', { name: 'Who we are' })).toContainText(
