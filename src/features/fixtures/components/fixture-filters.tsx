@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useId, type ReactNode } from 'react'
 
-import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button'
+import { PillGroup, type PillOption } from '@/shared/ui/pill-group'
 
 import {
   countByCategory,
@@ -50,61 +50,30 @@ type FixtureFiltersViewProps = FixtureFiltersProps & {
 
 const ALL = 'all'
 
-type FilterOption<V extends string> = {
-  value: V
-  label: string
-  count: number
-}
-
 type FilterOptionGroupProps<V extends string> = {
   legend: string
-  options: readonly FilterOption<V | typeof ALL>[]
+  options: readonly PillOption<V | typeof ALL>[]
   value: V | null
   onChange: (value: V | null) => void
 }
 
-/** A single-choice filter rendered as pills: native radios (visually hidden) inside labels. */
+/** A pill filter where "all" stands for no filter (`null`). */
 function FilterOptionGroup<V extends string>({
   legend,
   options,
   value,
   onChange,
 }: FilterOptionGroupProps<V>) {
-  const name = useId()
-
   return (
-    <fieldset>
-      <legend className="text-sm font-medium">{legend}</legend>
-      <div className="mt-1.5 flex flex-wrap gap-2 lg:flex-col lg:flex-nowrap lg:gap-1">
-        {options.map((option) => {
-          const isChecked = (value ?? ALL) === option.value
-
-          return (
-            <label
-              key={option.value}
-              className={cn(
-                'inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring lg:justify-between lg:rounded-md',
-                isChecked
-                  ? 'border-brand-primary bg-brand-primary text-brand-on-primary'
-                  : 'border-border-default hover:bg-surface-muted',
-              )}
-            >
-              <input
-                type="radio"
-                name={name}
-                value={option.value}
-                checked={isChecked}
-                onChange={() => {
-                  onChange(option.value === ALL ? null : option.value)
-                }}
-                className="sr-only"
-              />
-              {option.label} <span className="tabular-nums">({option.count})</span>
-            </label>
-          )
-        })}
-      </div>
-    </fieldset>
+    <PillGroup
+      legend={legend}
+      layout="sidebar"
+      options={options}
+      value={value ?? ALL}
+      onChange={(option) => {
+        onChange(option === ALL ? null : option)
+      }}
+    />
   )
 }
 

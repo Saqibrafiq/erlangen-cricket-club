@@ -10,6 +10,9 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   /* Condensed display face for headings, scores and stats (generates font-display). */
   --font-display: var(--font-barlow-condensed), var(--font-inter), ui-sans-serif, sans-serif;
+  /* Below text-xs: only for labels on small cards (e.g. 3 player cards per row on phones). */
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1rem;
 
   /* Filter changes fade the list in; disabled under prefers-reduced-motion (see base layer). */
   --animate-fade-in: fade-in 200ms ease-out;
@@ -48,6 +51,8 @@
   --grid-template-columns-cards-compact: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
   --grid-template-columns-sidebar: 16rem minmax(0, 1fr);
   --grid-template-columns-hero: minmax(0, 1fr) auto;
+  /* A fixed-size picture beside flexible text, e.g. a player portrait next to the name. */
+  --grid-template-columns-media-content: auto minmax(0, 1fr);
   /* Main content with a narrower aside (3:2), e.g. a form next to contact details. */
   --grid-template-columns-content-aside: minmax(0, 3fr) minmax(0, 2fr);
   /* The mirror image (2:3), e.g. a logo panel next to its description. */
@@ -68,6 +73,8 @@
   --color-surface-logo: oklch(1 0 0);
   /* Text over photos and dark bands, with the overlay that keeps it readable; same in dark mode. */
   --color-media-overlay: oklch(0.2 0.04 155);
+  /* Brand green behind text-on-media (e.g. hero panels); deliberately the same in dark mode. */
+  --color-brand-surface: oklch(0.42 0.11 155);
   --color-text-on-media: oklch(0.99 0 0);
 
   --color-text-default: oklch(0.21 0.02 155);
@@ -109,6 +116,15 @@
 @utility bg-dots {
   background-image: radial-gradient(var(--color-border-default) 1px, transparent 1px);
   background-size: 1rem 1rem;
+}
+
+/* Light dots for brand panels (text-on-media colour, so the same in dark mode). */
+@utility bg-dots-on-media {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-text-on-media) 22%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 0.75rem 0.75rem;
 }
 
 @layer base {

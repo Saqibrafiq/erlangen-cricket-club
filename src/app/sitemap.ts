@@ -5,6 +5,7 @@ import { CONTACT_PATH } from '@/features/contact'
 import { JOURNEY_PATH } from '@/features/journey'
 import { LEGAL_PATHS } from '@/features/legal'
 import { MEMBERSHIP_PATH } from '@/features/membership'
+import { getPlayerEntries, getPlayerPath, PLAYERS_PATH } from '@/features/players'
 import { SPONSORS_PATH } from '@/features/sponsors'
 import { getNewsEntries, getNewsPath, NEWS_PATH } from '@/features/news'
 import { getStandingsPath, STANDINGS_PATH } from '@/features/standings'
@@ -15,6 +16,7 @@ const STATIC_PATHS = [
   '/',
   FIXTURES_PATH,
   STANDINGS_PATH,
+  PLAYERS_PATH,
   NEWS_PATH,
   JOURNEY_PATH,
   MEMBERSHIP_PATH,
@@ -39,9 +41,10 @@ function toEntry(pathname: string): MetadataRoute.Sitemap[number] {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [competitionSlugs, newsEntries] = await Promise.all([
+  const [competitionSlugs, newsEntries, playerEntries] = await Promise.all([
     getCompetitionSlugs(),
     getNewsEntries(),
+    getPlayerEntries(),
   ])
 
   return [
@@ -52,6 +55,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ].map(toEntry),
     ...newsEntries.map(({ slug, updatedAt }) => ({
       ...toEntry(getNewsPath(slug)),
+      lastModified: updatedAt,
+    })),
+    ...playerEntries.map(({ slug, updatedAt }) => ({
+      ...toEntry(getPlayerPath(slug)),
       lastModified: updatedAt,
     })),
   ]
