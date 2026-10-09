@@ -74,6 +74,7 @@ export interface Config {
     media: Media;
     documents: Document;
     'contact-messages': ContactMessage;
+    sponsors: Sponsor;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -89,6 +90,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
     'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
+    sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -381,6 +383,37 @@ export interface ContactMessage {
   createdAt: string;
 }
 /**
+ * Shown on the sponsors page: title sponsors first, then by how long they support us.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors".
+ */
+export interface Sponsor {
+  id: number;
+  name: string;
+  /**
+   * Shown whole on a white panel; transparent PNG or SVG works best.
+   */
+  logo: number | Media;
+  tier: 'title' | 'sponsor';
+  since: number;
+  /**
+   * One or two sentences about the sponsor.
+   */
+  description: string;
+  website?: string | null;
+  /**
+   * News article announcing the sponsorship, if any.
+   */
+  announcement?: (number | null) | News;
+  /**
+   * Untick when the sponsorship ends.
+   */
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -457,6 +490,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-messages';
         value: number | ContactMessage;
+      } | null)
+    | ({
+        relationTo: 'sponsors';
+        value: number | Sponsor;
       } | null)
     | ({
         relationTo: 'users';
@@ -645,6 +682,22 @@ export interface ContactMessagesSelect<T extends boolean = true> {
   message?: T;
   locale?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors_select".
+ */
+export interface SponsorsSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  tier?: T;
+  since?: T;
+  description?: T;
+  website?: T;
+  announcement?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }

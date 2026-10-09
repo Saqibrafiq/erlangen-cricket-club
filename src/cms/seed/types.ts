@@ -144,3 +144,18 @@ export type SeedJourney = {
     link?: string
   }[]
 }
+
+export type SeedSponsor = {
+  name: string
+  /**
+   * A logo in `seed/assets/sponsors/` (with alt text), or one already in the media library from
+   * the news (filename only).
+   */
+  logo: SeedImage | { file: string }
+  tier: 'title' | 'sponsor'
+  since: number
+  website: string
+  /** Slug of the news article announcing the sponsorship, if there is one. */
+  announcement?: string
+  description: SeedLocalized
+}
