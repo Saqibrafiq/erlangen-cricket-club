@@ -19,6 +19,11 @@ export type NavigationGroup = {
   links: readonly NavigationLink[]
 }
 
+export type SiteNavigationItem = NavigationLink & {
+  /** When present, the item opens a dropdown with these groups instead of linking directly. */
+  groups?: readonly NavigationGroup[]
+}
+
 export type NavMenuProps = {
   label: string
   /** Section root; the button is marked current on this path and below it. */
@@ -66,7 +71,7 @@ export function NavMenu({ label, href, groups }: NavMenuProps) {
   }, [isOpen])
 
   return (
-    <div ref={containerRef} className="sm:relative">
+    <div ref={containerRef} className="relative">
       <button
         ref={buttonRef}
         type="button"
@@ -91,10 +96,8 @@ export function NavMenu({ label, href, groups }: NavMenuProps) {
       <div
         id={panelId}
         hidden={!isOpen}
-        // Phones: anchored to the full-width nav row (the nearest positioned ancestor), so it spans
-        // the screen instead of overflowing it. From sm up: a fixed-width panel under the button,
-        // left-aligned while the nav starts the row, right-aligned once it sits at the right (xl).
-        className="absolute inset-x-0 z-40 mt-1 rounded-lg border border-border-default bg-surface-default p-2 shadow-lg sm:right-auto sm:w-72 xl:right-0 xl:left-auto"
+        // Desktop only (phones use the menu panel): right-aligned under the button.
+        className="absolute right-0 z-40 mt-1 w-72 rounded-lg border border-border-default bg-surface-default p-2 shadow-lg"
       >
         {groups.map((group, index) => {
           const groupId = `${panelId}-group-${index}`

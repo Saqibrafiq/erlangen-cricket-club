@@ -13,6 +13,17 @@
 
   /* Filter changes fade the list in; disabled under prefers-reduced-motion (see base layer). */
   --animate-fade-in: fade-in 200ms ease-out;
+  /* The menu panel slides in from the right; also disabled under prefers-reduced-motion. */
+  --animate-slide-in-right: slide-in-right 200ms ease-out;
+
+  @keyframes slide-in-right {
+    from {
+      translate: 100% 0;
+    }
+    to {
+      translate: 0 0;
+    }
+  }
 
   @keyframes fade-in {
     from {

@@ -30,7 +30,7 @@
 - Components in `src/shared/ui/` follow shadcn/ui conventions: `cva` variants, `cn()` merging, Radix primitives, a story and a test for each.
 - **Typography:** Inter (body) and Barlow Condensed (`font-display`: h1/h2, scores, stats), both self-hosted via `next/font`.
 - **Match cards:** the winner is emphasised (losing team and score muted), team monograms identify clubs (brand colour for ECC teams). The club outcome is shown by a text badge (Won/Lost/Tied), never by colour alone.
-- **Header:** sticky from `md` with a translucent blur; on phones it scrolls away. Contains the EN/DE switcher (each language named in itself).
+- **Header:** one slim row (logo, EN/DE switcher, navigation), sticky on every screen size with a translucent blur. The EN/DE switcher names each language in itself.
 - **Page width:** every page uses `Container`. `wide` (full width with gutters, no maximum) is the default for layout — header, lists, grids — so all pages share one left edge. `prose` (max 768 px, ~65–75 characters per line) is only for long-form reading such as news articles and legal pages. Data views use the width: e.g. fixtures show a fixed 16rem filter sidebar from `lg` (`grid-cols-sidebar`) and a card grid that fits as many ≥20rem columns as the space allows (`grid-cols-cards`): one on phones, five or six on wide monitors.
 - **Cards look the same with less or more data:** a card always renders the same sections (fixture card: header, teams, result, meta), filling gaps with a status text instead of omitting a section, and rows have a minimum height. In grids, cards use CSS subgrid (`row-span-4 grid-rows-subgrid`) so sections line up across every card in a row.
 
@@ -38,7 +38,7 @@
 - **News cards:** a container query switches any wide card (the lead story, or a lone card in its row) to image-beside-text; narrow cards stack. Logos (e.g. sponsors) sit whole on `--color-surface-logo`, which stays white in dark mode because third-party logos are designed for white. Articles without an image keep the card shape with a club-branded panel.
 - **Text on photos:** hero images get a gradient in `--color-media-overlay` with `--color-text-on-media` (both fixed in dark mode); buttons there use the `on-media` and `on-media-outline` variants.
 - **Summary cards ("Our teams"):** a club team's place in a table (ordinal position, points, won, lost, NRR) above the tables. Cards use a container query (`@container`) to switch to a one-row banner when the card itself is wide, so the same component works in a grid and full width; `grid-cols-cards-fit` lets fewer cards stretch to fill the row.
-- **Header layout:** from `xl` (1280 px) logo, menu and language switcher share one row; below that the logo and language switcher form the first row and the menu a full-width second row, so eight items and longer German labels never wrap awkwardly. Dropdown panels span the menu row on phones, so they never leave the viewport or cover the language links (WCAG 2.5.8 target size).
+- **Header layout:** from `xl` (1280 px) the navigation sits in the header row, with dropdown panels for sections that have sub-pages. Below `xl`, a **Menu** button opens a slide-in panel (Radix Dialog: focus trap, Escape closes, focus returns to the button). In the panel, sections with sub-pages are native `<details>` disclosures, and the section of the current page is opened automatically. Top-level links carry `aria-current="page"` on their page and `"true"` on pages below it. The panel slides in only under `prefers-reduced-motion: no-preference`.
 
 ## 8.5 Cricket calculations
 

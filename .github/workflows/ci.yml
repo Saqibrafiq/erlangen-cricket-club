@@ -47,7 +47,9 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:17-alpine
+        # Docker Hub's official image via the AWS ECR Public mirror: shared runner IPs keep
+        # hitting Docker Hub's anonymous pull rate limit.
+        image: public.ecr.aws/docker/library/postgres:17-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
