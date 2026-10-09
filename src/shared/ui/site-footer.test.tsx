@@ -25,6 +25,25 @@ describe('SiteFooter', () => {
     )
   })
 
+  it('adds a club menu when there are club links', () => {
+    renderWithIntl(
+      <SiteFooter
+        legalLinks={LINKS}
+        clubLinks={[{ href: '/sponsors', label: 'Sponsors' }]}
+        year={2026}
+      />,
+    )
+
+    const nav = screen.getByRole('navigation', { name: 'Club' })
+    expect(within(nav).getByRole('link', { name: 'Sponsors' })).toHaveAttribute('href', '/sponsors')
+  })
+
+  it('has no club menu without club links', () => {
+    renderWithIntl(<SiteFooter legalLinks={LINKS} year={2026} />)
+
+    expect(screen.queryByRole('navigation', { name: 'Club' })).toBeNull()
+  })
+
   it('shows the copyright year and club name', () => {
     renderWithIntl(<SiteFooter legalLinks={LINKS} year={2026} />)
 

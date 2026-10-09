@@ -14,6 +14,7 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
   { href: '/standings', labelKey: 'standings' },
   { href: '/news', labelKey: 'news' },
   { href: '/journey', labelKey: 'journey' },
+  { href: '/sponsors', labelKey: 'sponsors' },
   { href: '/membership', labelKey: 'membership' },
   { href: '/contact', labelKey: 'contact' },
 ]
