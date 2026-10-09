@@ -58,7 +58,7 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 | `shared/ui/`           | `Button`, `Badge`, `Skeleton`, `Container`, `SkipLink`, `JsonLd`, `SiteHeader`, `SiteFooter`, `NavLink`, `NavMenu`, `LocaleSwitcher`, `Breadcrumbs`, `TeamMonogram`                                         |
 | `shared/lib/`          | `cn`, `slugify`, `getMonogram`, SEO helpers (`buildAlternates`, `BreadcrumbList` / `SportsOrganization` JSON-LD)                                                                                            |
 | `shared/config/`       | `parseServerEnv` (Zod), `siteConfig`, `MAIN_NAVIGATION`                                                                                                                                                     |
-| `cms/collections/`     | `fixtures`, `teams`, `competitions` (with `slug`, `standings`), `news` (drafts), `media`, `documents` (PDFs), `contact-messages`, `users`                                                                   |
+| `cms/collections/`     | `fixtures`, `teams`, `competitions` (with `slug`, `standings`), `news` (drafts), `media`, `documents` (PDFs), `contact-messages`, `sponsors`, `users`                                                       |
 | `cms/globals/`         | `membership` (fees, training and match days, application form, hero photo), `contact` (email, social media, ground with coordinates), `journey` (story chapters, milestones), `impressum`, `privacy-policy` |
 | `cms/hooks/`           | Fixture title, on-demand revalidation of all localised pages                                                                                                                                                |
 | `cms/seed/`            | Idempotent import of 2026 results: ECC-I (DCB-Bundesliga Südost, BCV T20 Regionalliga), ECC-II (BCV Regionalliga, BCV T20 1. Verbandsliga)                                                                  |
@@ -67,6 +67,7 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 | `features/membership/` | Membership page — see below                                                                                                                                                                                 |
 | `features/contact/`    | Contact page and contact form — see below                                                                                                                                                                   |
 | `features/journey/`    | Journey page — see below                                                                                                                                                                                    |
+| `features/sponsors/`   | Sponsors page — see below                                                                                                                                                                                   |
 | `features/fixtures/`   | Fixtures & Results — see below                                                                                                                                                                              |
 | `features/legal/`      | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                                                         |
 
@@ -147,3 +148,11 @@ Details come from the Payload global `contact`. The map loads only on request ([
 | `/journey` | Hero with key figures, the club's story in three chapters, a timeline of milestones (2010 to today), invitation to join |
 
 Content comes from the Payload global `journey`: localised story chapters (up to three, title and text, shown as cards) and milestones (year, title, text, optional thumbnail and "Read more" link to a news article or page). `server/map-journey.ts` sorts milestones oldest first, so editors can add them in any order. Seeded from the old site's About page and news archive; claims the board corrected (player nationalities, ground dimensions) were left out.
+
+### `features/sponsors`
+
+| Route       | Content                                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------------------ |
+| `/sponsors` | Thanks to the sponsors, one card per active sponsor (title sponsor first), why sponsor the club, contact CTA |
+
+Sponsors are a Payload collection (name, logo, tier, since, localised description, website, optional link to the announcement in `news`, active flag). `domain/sponsors.ts` orders them (title sponsors, then longest-standing) and builds `SportsOrganization` JSON-LD with a `sponsor` list. The page is linked from the footer's "Club" menu, keeping the header short.

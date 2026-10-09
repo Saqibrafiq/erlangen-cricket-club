@@ -38,7 +38,7 @@
 - **News cards:** a container query switches any wide card (the lead story, or a lone card in its row) to image-beside-text; narrow cards stack. Logos (e.g. sponsors) sit whole on `--color-surface-logo`, which stays white in dark mode because third-party logos are designed for white. Articles without an image keep the card shape with a club-branded panel.
 - **Text on photos:** hero images get a gradient in `--color-media-overlay` with `--color-text-on-media` (both fixed in dark mode); buttons there use the `on-media` and `on-media-outline` variants.
 - **Summary cards ("Our teams"):** a club team's place in a table (ordinal position, points, won, lost, NRR) above the tables. Cards use a container query (`@container`) to switch to a one-row banner when the card itself is wide, so the same component works in a grid and full width; `grid-cols-cards-fit` lets fewer cards stretch to fill the row.
-- **Header dropdowns:** on phones the logo and language switcher share the first row and the nav takes a full-width second row; dropdown panels then span the nav row, so they never leave the viewport or cover the language links (WCAG 2.5.8 target size).
+- **Header layout:** from `xl` (1280 px) logo, menu and language switcher share one row; below that the logo and language switcher form the first row and the menu a full-width second row, so eight items and longer German labels never wrap awkwardly. Dropdown panels span the menu row on phones, so they never leave the viewport or cover the language links (WCAG 2.5.8 target size).
 
 ## 8.5 Cricket calculations
 

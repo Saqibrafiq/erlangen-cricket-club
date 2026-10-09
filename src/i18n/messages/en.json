@@ -17,7 +17,8 @@
     "news": "News",
     "membership": "Membership",
     "contact": "Contact",
-    "journey": "Journey"
+    "journey": "Journey",
+    "sponsors": "Sponsors"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -120,7 +121,9 @@
     "legalLabel": "Legal",
     "impressum": "Legal notice",
     "privacy": "Privacy policy",
-    "copyright": "© {year} {club}"
+    "copyright": "© {year} {club}",
+    "clubLabel": "Club",
+    "sponsors": "Sponsors"
   },
   "legal": {
     "impressumTitle": "Legal notice (Impressum)",
@@ -382,6 +385,54 @@
       "heading": "Write the next chapter with us",
       "text": "New players of every level are welcome.",
       "button": "Become a member"
+    }
+  },
+  "sponsors": {
+    "title": "Sponsors",
+    "metaDescription": "The sponsors of Erlangen Cricket Club, led by title sponsor mein-banker, and how your company can support cricket in Erlangen.",
+    "hero": {
+      "eyebrow": "Sponsors and partners",
+      "heading": "Thank you to our sponsors",
+      "lead": "Their support helps us grow cricket in Erlangen, on and off the pitch.",
+      "become": "Become a sponsor"
+    },
+    "list": {
+      "eyebrow": "Our sponsors",
+      "heading": "The partners behind our club",
+      "intro": "We are grateful to every company and person who supports Erlangen Cricket Club.",
+      "empty": "Our sponsor list is being updated."
+    },
+    "card": {
+      "tier": {
+        "title": "Title sponsor",
+        "sponsor": "Sponsor"
+      },
+      "since": "Since {year}",
+      "website": "Visit website",
+      "websiteOf": "(website of {name}, opens in a new tab)",
+      "announcement": "Read the announcement"
+    },
+    "benefits": {
+      "eyebrow": "Become a sponsor",
+      "heading": "Why sponsor Erlangen Cricket Club",
+      "intro": "We put together a package with you that fits your company.",
+      "visibility": {
+        "title": "Visibility",
+        "text": "Your logo and a link on our website and in our news, and with title sponsorship on our team jersey."
+      },
+      "community": {
+        "title": "Community",
+        "text": "Reach a multinational community of players, families and supporters in Erlangen and across Bavaria."
+      },
+      "impact": {
+        "title": "Impact",
+        "text": "Help grow grassroots cricket in Erlangen: training, equipment and league cricket for two teams."
+      }
+    },
+    "cta": {
+      "heading": "Interested in sponsoring?",
+      "text": "Tell us about your company and the board will get in touch.",
+      "button": "Contact us"
     }
   }
 }

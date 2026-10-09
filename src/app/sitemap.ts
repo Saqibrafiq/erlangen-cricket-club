@@ -5,6 +5,7 @@ import { CONTACT_PATH } from '@/features/contact'
 import { JOURNEY_PATH } from '@/features/journey'
 import { LEGAL_PATHS } from '@/features/legal'
 import { MEMBERSHIP_PATH } from '@/features/membership'
+import { SPONSORS_PATH } from '@/features/sponsors'
 import { getNewsEntries, getNewsPath, NEWS_PATH } from '@/features/news'
 import { getStandingsPath, STANDINGS_PATH } from '@/features/standings'
 import { getLocalizedPath, routing } from '@/i18n/routing'
@@ -18,6 +19,7 @@ const STATIC_PATHS = [
   JOURNEY_PATH,
   MEMBERSHIP_PATH,
   CONTACT_PATH,
+  SPONSORS_PATH,
   LEGAL_PATHS.impressum,
   LEGAL_PATHS.privacy,
 ] as const

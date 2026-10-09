@@ -15,6 +15,7 @@ Erlangen Cricket Club (Erlangen, Bavaria) needs a modern website and a content p
 | Membership         | Why join, fees, training and match days, how to join                     |
 | Contact            | Contact form, email and social media, the ground with map and directions |
 | Journey            | The club’s story and a timeline of milestones since 2010                 |
+| Sponsors           | Sponsors with logo, level and links; why and how to become a sponsor     |
 | Achievements       | Trophies and honours                                                     |
 | Legal              | Impressum (§ 5 DDG), Datenschutzerklärung                                |
 | Admin (CMS)        | Non-technical editors manage scorecards, players and news                |
