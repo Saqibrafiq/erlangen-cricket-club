@@ -16,6 +16,8 @@ export default defineConfig(
     'src/payload-types.ts',
     'src/app/(payload)/',
     'src/cms/migrations/',
+    // Vendored Claude Code skills: third-party, kept as published.
+    '.claude/skills/',
   ]),
   nextCoreWebVitals,
   nextTypescript,

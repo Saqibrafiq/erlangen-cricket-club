@@ -8,3 +8,5 @@ src/payload-types.ts
 src/app/(payload)/admin/importMap.js
 CHANGELOG.md
 src/cms/migrations/
+# Vendored Claude Code skills (third-party, kept as published)
+.claude/skills/
