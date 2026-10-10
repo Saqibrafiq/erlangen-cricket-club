@@ -1,7 +1,8 @@
 /**
  * Players from the 2023–24 squad on the "ECC TEAM" page of the previous WordPress site who still
  * play for the club, with names spelled as published there. The club confirmed on 9 October 2026
- * that these players agreed to appear on the website.
+ * that these players agreed to appear on the website. Players who joined the website later note
+ * their own consent.
  */
 import type { SeedPlayer } from '../types'
 
@@ -25,6 +26,14 @@ export const SEED_PLAYERS: readonly SeedPlayer[] = [
   {
     name: 'Sagar Suri',
     photo: { file: 'player-sagar-suri.webp', alt: 'Sagar Suri in the club kit' },
+  },
+  {
+    name: 'Saqib Rafiq',
+    photo: {
+      file: 'player-saqib-rafiq.webp',
+      alt: 'Saqib Rafiq in the club’s orange training top',
+    },
+    consentNote: 'Added at the player’s own request on 10 October 2026.',
   },
   {
     name: 'Parikshhit Kulkarni',

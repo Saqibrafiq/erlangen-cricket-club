@@ -162,6 +162,8 @@ export type SeedSponsor = {
 
 export type SeedPlayer = {
   name: string
-  /** A photo in `seed/assets/players/`. */
-  photo: SeedImage
+  /** A cut-out photo in `seed/assets/players/`; without one the site shows the player's initials. */
+  photo?: SeedImage
+  /** How this player agreed to appear on the website, when not via the board's confirmation. */
+  consentNote?: string
 }
