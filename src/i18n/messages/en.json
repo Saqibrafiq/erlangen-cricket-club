@@ -202,13 +202,24 @@
     "impressum": "Legal notice",
     "privacy": "Privacy policy",
     "copyright": "© {year} {club}",
-    "clubLabel": "Club",
-    "sponsors": "Sponsors",
     "socialLabel": "Social media",
     "social": {
       "instagram": "{club} on Instagram (opens in a new tab)",
       "facebook": "{club} on Facebook (opens in a new tab)"
-    }
+    },
+    "tagline": "Seven-time champions of Bavarian cricket, playing in Erlangen since 2010.",
+    "columns": {
+      "club": "Club",
+      "matches": "Matches",
+      "join": "Join"
+    },
+    "visit": {
+      "heading": "Visit us",
+      "training": "Training"
+    },
+    "clubContent": "Club name, crest, photos and texts belong to the club.",
+    "credit": "Website designed and built by <author>{name}</author>",
+    "codeCopyright": "Website design and code © {year} {author}. All rights reserved."
   },
   "legal": {
     "impressumTitle": "Legal notice (Impressum)",

@@ -21,7 +21,8 @@ test.describe('news', () => {
 
     await expect(page).toHaveTitle('News | Erlangen Cricket Club')
     // Seeded: the 2 recent articles plus 22 migrated from the old website.
-    const headings = page.getByRole('heading', { level: 2 })
+    // Scoped to the page: the footer has its own column headings.
+    const headings = page.getByRole('main').getByRole('heading', { level: 2 })
     await expect(headings).toHaveCount(24)
     await expect(headings.nth(0)).toHaveText(SPONSOR.title)
     await expect(headings.nth(1)).toHaveText(AGM.title)
