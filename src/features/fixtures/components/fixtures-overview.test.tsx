@@ -15,8 +15,20 @@ vi.mock('next/navigation', async (importOriginal) => ({
   useSearchParams: () => useMockSearchParams(),
 }))
 
-const T20 = { id: 1, slug: 't20-2026', name: 'BCV T20 Regionalliga Bayern', season: '2026' }
-const BUNDESLIGA = { id: 2, slug: 'bl-2026', name: 'DCB-Bundesliga Südost: Bayern', season: '2026' }
+const T20 = {
+  id: 1,
+  slug: 't20-2026',
+  name: 'BCV T20 Regionalliga Bayern',
+  season: '2026',
+  isFeatured: false,
+}
+const BUNDESLIGA = {
+  id: 2,
+  slug: 'bl-2026',
+  name: 'DCB-Bundesliga Südost: Bayern',
+  season: '2026',
+  isFeatured: false,
+}
 
 const OVERVIEW: FixturesOverviewData = {
   fixtures: [

@@ -52,6 +52,16 @@ export const competitions: CollectionConfig = {
       admin: { description: 'Scheduled overs per innings (20 for T20).' },
     },
     {
+      name: 'isFeatured',
+      label: 'Show next match on the home page',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'The home page counts down to the next match of the ticked competitions only.',
+      },
+    },
+    {
       name: 'standings',
       type: 'array',
       labels: { singular: 'Row', plural: 'Rows' },

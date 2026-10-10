@@ -1,3 +1,4 @@
+export { NewsCard, type NewsCardProps } from './components/news-card'
 export { NewsArticleView, type NewsArticleViewProps } from './components/news-article-view'
 export { NewsList, type NewsListProps } from './components/news-list'
 export { NewsSkeleton } from './components/news-skeleton'

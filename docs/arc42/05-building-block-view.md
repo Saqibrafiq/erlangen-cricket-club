@@ -72,6 +72,18 @@ These rules are encoded in [`.dependency-cruiser.cjs`](../../.dependency-cruiser
 | `features/fixtures/`   | Fixtures & Results — see below                                                                                                                                                                                                              |
 | `features/legal/`      | Impressum and Datenschutz pages: content from Payload globals (`impressum`, `privacy-policy`), rich text, localised                                                                                                                         |
 
+### `features/home`
+
+| Route | Content                                                                                                                                                                                                                                                   |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`   | Hero (crest, club name, join and fixtures, training time) with the next match on the ground scoreboard; the season record as an LED scoreboard band; the squad as a pinned line-up; where we stand; latest results; news; Instagram posts; join; sponsors |
+
+`server/queries.ts` gathers everything through the other features' public APIs (`getMatchday`, `getStandingsOverview`, `getPlayers`, `getNewsList`, `getSponsors`, `getContactInfo`, `getMembershipInfo`); the page only renders. The next match widget counts down (ticking every second, client component rendered after hydration because the page is static) to the next fixture of a **featured** competition: editors tick "Show next match on the home page" on a competition (T20 Regionalliga and DCB-Bundesliga). It shows date, kick-off, ground, home or away (from the venue: a ground in Erlangen is a home game), "Add to calendar" (`/calendar/fixture-{id}.ics`) and directions (a Google Maps link, no embed). The squad line-up shows the players editors tick "Show in the home page line-up" (up to seven; until anyone is ticked, players with a photo). Between seasons the same card shows "TBD" and "{next season} fixtures coming soon", so the layout does not change when fixtures arrive. The latest Instagram posts come from `features/instagram` ([ADR-0011](../09-architecture-decisions/0011-instagram-feed-via-api.md)). On phones, results, tables and news are swipeable rails (`CardRail`); from md they are grids. The page revalidates hourly, so a played fixture leaves "Next match" without a CMS change.
+
+### `features/instagram`
+
+Instagram post graphics (1080×1350 PNG) for upcoming matches, results and players, generated on request with `next/og` at `/instagram/{locale}/{kind}-{id}.png` and downloaded by editors from the fixture and player edit views ([ADR-0010](../09-architecture-decisions/0010-instagram-graphics-generated-on-request.md)). The file-name helpers live in `shared/lib/instagram-graphic.ts`, so the admin component can use them without loading server code.
+
 ### `features/fixtures`
 
 Routes ([ADR-0005](09-architecture-decisions/0005-fixtures-pages-per-competition.md)):

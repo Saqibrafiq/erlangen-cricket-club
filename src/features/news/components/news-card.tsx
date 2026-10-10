@@ -21,7 +21,7 @@ export function NewsCard({ article, isLead = false }: NewsCardProps) {
   return (
     <article
       // Container query: side-by-side layout whenever the card itself is wide.
-      className="group @container relative overflow-hidden rounded-2xl border border-border-default bg-surface-default shadow-sm transition-shadow duration-150 hover:shadow-md"
+      className="group @container relative h-full overflow-hidden rounded-2xl border border-border-default bg-surface-default shadow-sm transition-shadow duration-150 hover:shadow-md"
     >
       <div className="flex h-full flex-col @3xl:flex-row">
         <NewsCover

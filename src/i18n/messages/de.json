@@ -25,7 +25,84 @@
   },
   "home": {
     "heading": "Erlangen Cricket Club",
-    "intro": "Cricket im Herzen Frankens. Spieler, Spielplan und Geschichten aus unserem Verein — bald verfügbar."
+    "intro": "Siebenfacher Meister und fünfmaliger Vizemeister der T20-Regionalliga, seit 2010 in Erlangen zu Hause. Alle, die das Spiel lieben, sind willkommen.",
+    "join": "Mitglied werden",
+    "fixtures": "Spielplan & Ergebnisse",
+    "training": "Training {day} {start}–{end}",
+    "nextMatch": {
+      "label": "Nächstes Spiel",
+      "home": "Heimspiel",
+      "away": "Auswärtsspiel",
+      "versus": "gegen",
+      "kickoff": "Spielbeginn {time} Uhr",
+      "addToCalendar": "In den Kalender",
+      "directions": "Route",
+      "directionsTo": "Route nach {venue} (öffnet in neuem Tab)",
+      "days": "{count, plural, one {Tag} other {Tagen}}",
+      "hours": "{count, plural, one {Stunde} other {Stunden}}",
+      "minutes": "{count, plural, one {Minute} other {Minuten}}",
+      "today": "Heute ist Spieltag!",
+      "seconds": "{count, plural, one {Sekunde} other {Sekunden}}",
+      "tbd": "Folgt",
+      "clubTbd": "Erlangen Cricket Club",
+      "opponentTbd": "Gegner folgt",
+      "comingSoon": "Spielplan folgt bald",
+      "comingSoonSeason": "Spielplan {season} folgt bald",
+      "date": "Datum",
+      "time": "Spielbeginn",
+      "venue": "Spielort",
+      "lastSeason": "Ergebnisse der letzten Saison"
+    },
+    "season": {
+      "heading": "Saison {season}",
+      "played": "Spiele",
+      "won": "Siege",
+      "lost": "Niederlagen",
+      "winRate": "Siegquote",
+      "text": "Alle Spiele beider Teams in allen vier Wettbewerben."
+    },
+    "comingUp": {
+      "heading": "Demnächst",
+      "all": "Ganzer Spielplan"
+    },
+    "results": {
+      "heading": "Letzte Ergebnisse",
+      "all": "Alle Ergebnisse"
+    },
+    "standings": {
+      "heading": "Unsere Tabellenplätze",
+      "all": "Alle Tabellen"
+    },
+    "squad": {
+      "heading": "Unser Kader",
+      "text": "{count, plural, one {# Spieler} other {# Spieler}} in {teams, plural, one {# Team} other {# Teams}}, jedes Wochenende der Saison auf dem Platz.",
+      "all": "Alle Spieler"
+    },
+    "news": {
+      "heading": "Neuigkeiten",
+      "all": "Alle Neuigkeiten"
+    },
+    "joinBand": {
+      "heading": "Spiel Cricket mit uns",
+      "text": "Komm zum Training – zum Ausprobieren brauchst du weder Erfahrung noch Ausrüstung.",
+      "button": "So wirst du Mitglied"
+    },
+    "instagram": {
+      "heading": "Auf Instagram",
+      "follow": "Folge uns",
+      "postAlt": "Instagram-Beitrag",
+      "opensInNewTab": "(öffnet Instagram in neuem Tab)"
+    },
+    "sponsors": {
+      "heading": "Unterstützt von",
+      "all": "Unsere Sponsoren"
+    },
+    "titles": "7 Titel",
+    "statement": {
+      "heading": "Unsere Titel",
+      "text": "Sieben Titel seit 2010. Bayerischer Meister 2012. Hallen- und One-Day-Meister 2014 und 2015. Bundesliga-Meister 2017 und 2023. Fünfmal Vizemeister der T20-Regionalliga, zuletzt 2025 und 2026. Heute spielen zwei Teams in vier Wettbewerben, und es ist Platz für dich."
+    },
+    "runnersUp": "5× T20-Vizemeister"
   },
   "fixtures": {
     "metaTitle": "Spielplan & Ergebnisse",
@@ -126,7 +203,12 @@
     "privacy": "Datenschutz",
     "copyright": "© {year} {club}",
     "clubLabel": "Verein",
-    "sponsors": "Sponsoren"
+    "sponsors": "Sponsoren",
+    "socialLabel": "Soziale Medien",
+    "social": {
+      "instagram": "{club} auf Instagram (öffnet in neuem Tab)",
+      "facebook": "{club} auf Facebook (öffnet in neuem Tab)"
+    }
   },
   "legal": {
     "impressumTitle": "Impressum",
@@ -529,5 +611,10 @@
         "wicketkeeper": "Wicketkeeper"
       }
     }
+  },
+  "instagram": {
+    "match": "Spieltag",
+    "result": "Spielende",
+    "player": "Unser Kader"
   }
 }

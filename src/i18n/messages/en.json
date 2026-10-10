@@ -25,7 +25,84 @@
   },
   "home": {
     "heading": "Erlangen Cricket Club",
-    "intro": "Cricket in the heart of Franconia. Players, fixtures and stories from our club — coming soon."
+    "intro": "Seven-time champions and five-time T20 Regionalliga runners-up, playing cricket in Erlangen since 2010. Everyone who loves the game is welcome.",
+    "join": "Join the club",
+    "fixtures": "Fixtures & results",
+    "training": "Training {day} {start}–{end}",
+    "nextMatch": {
+      "label": "Next match",
+      "home": "Home game",
+      "away": "Away game",
+      "versus": "vs",
+      "kickoff": "Kick-off {time}",
+      "addToCalendar": "Add to calendar",
+      "directions": "Directions",
+      "directionsTo": "Directions to {venue} (opens in a new tab)",
+      "days": "{count, plural, one {day} other {days}}",
+      "hours": "{count, plural, one {hour} other {hours}}",
+      "minutes": "{count, plural, one {minute} other {minutes}}",
+      "today": "Match day today!",
+      "seconds": "{count, plural, one {second} other {seconds}}",
+      "tbd": "TBD",
+      "clubTbd": "Erlangen Cricket Club",
+      "opponentTbd": "Opponent TBA",
+      "comingSoon": "Fixtures coming soon",
+      "comingSoonSeason": "{season} fixtures coming soon",
+      "date": "Date",
+      "time": "Kick-off",
+      "venue": "Ground",
+      "lastSeason": "Last season’s results"
+    },
+    "season": {
+      "heading": "Season {season}",
+      "played": "Played",
+      "won": "Won",
+      "lost": "Lost",
+      "winRate": "Win rate",
+      "text": "Every match of both teams in all four competitions."
+    },
+    "comingUp": {
+      "heading": "Coming up",
+      "all": "All fixtures"
+    },
+    "results": {
+      "heading": "Latest results",
+      "all": "All results"
+    },
+    "standings": {
+      "heading": "Where we stand",
+      "all": "All tables"
+    },
+    "squad": {
+      "heading": "Meet the squad",
+      "text": "{count, plural, one {# player} other {# players}} across {teams, plural, one {# team} other {# teams}}, on the field every weekend of the season.",
+      "all": "All players"
+    },
+    "news": {
+      "heading": "Latest news",
+      "all": "All news"
+    },
+    "joinBand": {
+      "heading": "Play cricket with us",
+      "text": "Come to a training session – no experience or kit needed to try it out.",
+      "button": "How to join"
+    },
+    "instagram": {
+      "heading": "On Instagram",
+      "follow": "Follow us",
+      "postAlt": "Instagram post",
+      "opensInNewTab": "(opens Instagram in a new tab)"
+    },
+    "sponsors": {
+      "heading": "Supported by",
+      "all": "Our sponsors"
+    },
+    "titles": "7 titles",
+    "statement": {
+      "heading": "Our titles",
+      "text": "Seven titles since 2010. Bavarian champions in 2012. Indoor and one-day champions in 2014 and 2015. Bundesliga champions in 2017 and 2023. T20 Regionalliga runners-up five times, most recently in 2025 and 2026. Today two teams play in four competitions, and there is room for you."
+    },
+    "runnersUp": "5× T20 runners-up"
   },
   "fixtures": {
     "metaTitle": "Fixtures & Results",
@@ -126,7 +203,12 @@
     "privacy": "Privacy policy",
     "copyright": "© {year} {club}",
     "clubLabel": "Club",
-    "sponsors": "Sponsors"
+    "sponsors": "Sponsors",
+    "socialLabel": "Social media",
+    "social": {
+      "instagram": "{club} on Instagram (opens in a new tab)",
+      "facebook": "{club} on Facebook (opens in a new tab)"
+    }
   },
   "legal": {
     "impressumTitle": "Legal notice (Impressum)",
@@ -529,5 +611,10 @@
         "wicketkeeper": "Wicketkeepers"
       }
     }
+  },
+  "instagram": {
+    "match": "Matchday",
+    "result": "Full time",
+    "player": "Meet the squad"
   }
 }

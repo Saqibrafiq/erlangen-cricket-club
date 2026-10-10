@@ -19,6 +19,7 @@ const DETAIL: CompetitionDetail = {
     slug: 'bcv-t20-regionalliga-bayern-2026',
     name: 'BCV T20 Regionalliga Bayern',
     season: '2026',
+    isFeatured: false,
   },
   clubTeams: [ECC_TEAM],
   record: { played: 1, won: 0, lost: 1, tied: 0, noResult: 0 },

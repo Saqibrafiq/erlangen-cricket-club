@@ -17,6 +17,7 @@ export const PLAYER: Player = {
   teams: [],
   clubOffice: null,
   bio: null,
+  isFeaturedOnHome: false,
 }
 
 export const PLAYER_WITH_DETAILS: Player = {

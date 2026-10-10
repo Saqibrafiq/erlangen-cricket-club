@@ -1,3 +1,4 @@
+export { PlayerCard, type PlayerCardProps } from './components/player-card'
 export { PlayerProfileView, type PlayerProfileViewProps } from './components/player-profile-view'
 export { PlayersSkeleton } from './components/players-skeleton'
 export { PlayersView, type PlayersViewProps, type SquadFacts } from './components/players-view'

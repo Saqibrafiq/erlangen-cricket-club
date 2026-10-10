@@ -7,7 +7,7 @@ describe('Container', () => {
   it('uses the full page width by default', () => {
     render(<Container>Fixtures</Container>)
 
-    expect(screen.getByText('Fixtures')).toHaveClass('max-w-none', 'mx-auto')
+    expect(screen.getByText('Fixtures')).toHaveClass('max-w-page', 'mx-auto')
   })
 
   it('narrows to a readable measure for prose', () => {
@@ -23,6 +23,6 @@ describe('Container', () => {
       </Container>,
     )
 
-    expect(screen.getByRole('region', { name: 'Results' })).toHaveClass('max-w-none')
+    expect(screen.getByRole('region', { name: 'Results' })).toHaveClass('max-w-page')
   })
 })

@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { getPayload, type Where } from 'payload'
 import { cache } from 'react'
 
+import { buildMatchday, getFixtureDay, type Matchday } from '../domain/matchday'
 import {
   buildCompetitionNavigation,
   groupCompetitionsByTeam,
@@ -86,6 +87,7 @@ export const getCompetitionDetail = cache(async function getCompetitionDetail(
       slug: competition.slug,
       name: competition.name,
       season: competition.season,
+      isFeatured: competition.isFeatured ?? false,
     },
     clubTeams: summary?.clubTeams ?? [],
     record: summary?.record ?? EMPTY_RECORD,
@@ -110,3 +112,24 @@ export async function getCompetitionSlugs(): Promise<string[]> {
 
   return docs.map((competition) => competition.slug)
 }
+
+/**
+ * The next fixture, those after it, the latest results and the season record, for the home page.
+ * `now` decides which scheduled fixtures still lie ahead.
+ */
+export async function getMatchday(now: Date, timeZone: string): Promise<Matchday> {
+  const [scheduled, played] = await Promise.all([
+    findFixtures(SCHEDULED, UPCOMING_SORT),
+    findFixtures(NOT_SCHEDULED, PAST_SORT),
+  ])
+
+  return buildMatchday(scheduled, played, getFixtureDay(now.toISOString(), timeZone), timeZone)
+}
+
+/** One fixture by id, or `null`; for its calendar file and Instagram graphic. */
+export const getFixture = cache(async function getFixture(
+  id: number,
+): Promise<FixtureSummary | null> {
+  const [fixture] = await findFixtures({ id: { equals: id } }, PAST_SORT)
+  return fixture ?? null
+})

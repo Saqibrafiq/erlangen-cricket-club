@@ -6,7 +6,14 @@
  * Values in @theme generate Tailwind utilities (bg-brand-primary, text-text-muted, ...);
  * dark mode only reassigns the variables, so components never need `dark:` variants.
  */
+/* Laptop screens (768–800 px tall): compact sizes so a first screen fits without scrolling. */
+@custom-variant short (@media (max-height: 50rem));
+/* Tall monitors (1080 px and up): room for larger type in full-screen scenes. */
+@custom-variant tall (@media (min-height: 62rem));
+
 @theme {
+  /* Widest page content: on large monitors the page stays together instead of spreading out. */
+  --container-page: 100rem;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   /* Condensed display face for headings, scores and stats (generates font-display). */
   --font-display: var(--font-barlow-condensed), var(--font-inter), ui-sans-serif, sans-serif;
@@ -51,6 +58,12 @@
   --grid-template-columns-cards-compact: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
   --grid-template-columns-sidebar: 16rem minmax(0, 1fr);
   --grid-template-columns-hero: minmax(0, 1fr) auto;
+  /* Two equal sides around a centred middle, e.g. team vs team. */
+  --grid-template-columns-versus: minmax(0, 1fr) auto minmax(0, 1fr);
+  /* Short facts side by side, the last one (e.g. a ground's address) taking the rest. */
+  --grid-template-columns-details: auto auto minmax(0, 1fr);
+  /* Recessed into a panel, e.g. a scoreboard cell or bolt. */
+  --inset-shadow-recessed: inset 0 2px 6px rgb(0 0 0 / 0.6);
   /* A fixed-size picture beside flexible text, e.g. a player portrait next to the name. */
   --grid-template-columns-media-content: auto minmax(0, 1fr);
   /* Main content with a narrower aside (3:2), e.g. a form next to contact details. */
@@ -76,6 +89,10 @@
   /* Brand green behind text-on-media (e.g. hero panels); deliberately the same in dark mode. */
   --color-brand-surface: oklch(0.42 0.11 155);
   --color-text-on-media: oklch(0.99 0 0);
+  /* The ground scoreboard: a near-black green panel with amber LED digits (the yellow of the club
+     kit). Same in dark mode, like the panels above. */
+  --color-scoreboard: oklch(0.15 0.025 155);
+  --color-led: oklch(0.87 0.16 88);
 
   --color-text-default: oklch(0.21 0.02 155);
   --color-text-muted: oklch(0.46 0.02 155);
@@ -125,6 +142,39 @@
     transparent 1px
   );
   background-size: 0.75rem 0.75rem;
+}
+
+/* LED digits: the glyph shows as a grid of dots, like a ground scoreboard. Dot pitch follows the
+   font size. Decorative: the real value is always also given as text for assistive technology. */
+@utility led-matrix {
+  mask-image: radial-gradient(circle at center, #000 50%, transparent 62%);
+  mask-size: 0.085em 0.085em;
+}
+
+/* The soft light around lit LEDs (on the parent: the mask would clip a text shadow). */
+@utility led-glow {
+  filter: drop-shadow(0 0 0.18em color-mix(in oklab, var(--color-led) 55%, transparent));
+}
+
+/* A first screen that fills the viewport below the sticky header (4rem), up to 60rem: on tall
+   monitors the next section shows instead of empty space around the hero. */
+@utility min-h-hero {
+  min-height: min(calc(100svh - 4rem), 60rem);
+}
+
+/* Exactly the visible height below the sticky header, e.g. a pinned scroll scene. */
+@utility h-hero {
+  height: calc(100svh - 4rem);
+}
+
+/* Scroll room for a pinned, scroll-driven scene (e.g. the word-by-word statement). */
+@utility h-scroll-scene {
+  height: 220svh;
+}
+
+/* Fades content out towards its bottom edge, e.g. cut-out players standing in a centred line-up. */
+@utility mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
 }
 
 @layer base {
