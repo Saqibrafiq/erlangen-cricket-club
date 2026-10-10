@@ -106,6 +106,7 @@ export interface Config {
   globals: {
     membership: Membership;
     contact: Contact;
+    instagram: Instagram;
     journey: Journey;
     impressum: Impressum;
     'privacy-policy': PrivacyPolicy;
@@ -113,6 +114,7 @@ export interface Config {
   globalsSelect: {
     membership: MembershipSelect<false> | MembershipSelect<true>;
     contact: ContactSelect<false> | ContactSelect<true>;
+    instagram: InstagramSelect<false> | InstagramSelect<true>;
     journey: JourneySelect<false> | JourneySelect<true>;
     impressum: ImpressumSelect<false> | ImpressumSelect<true>;
     'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
@@ -288,6 +290,10 @@ export interface Competition {
    */
   maxOvers: number;
   /**
+   * The home page counts down to the next match of the ticked competitions only.
+   */
+  isFeatured?: boolean | null;
+  /**
    * The league table exactly as published on CricClubs, one row per team in published order (row 1 = position 1).
    */
   standings?:
@@ -385,6 +391,10 @@ export interface Player {
    * URL segment, generated from the name if left empty.
    */
   slug: string;
+  /**
+   * Up to seven players stand in the squad line-up on the home page. Best with a cut-out photo.
+   */
+  isFeaturedOnHome?: boolean | null;
   /**
    * Name, photo and stats are public only when ticked. On a removal request, untick and delete the photo in Media.
    */
@@ -676,6 +686,7 @@ export interface PlayersSelect<T extends boolean = true> {
   clubOffice?: T;
   bio?: T;
   slug?: T;
+  isFeaturedOnHome?: T;
   hasPublishConsent?: T;
   consentNote?: T;
   updatedAt?: T;
@@ -689,6 +700,7 @@ export interface CompetitionsSelect<T extends boolean = true> {
   name?: T;
   season?: T;
   maxOvers?: T;
+  isFeatured?: T;
   standings?:
     | T
     | {
@@ -958,6 +970,25 @@ export interface Contact {
   createdAt?: string | null;
 }
 /**
+ * Shows the latest Instagram posts on the home page. Needs a Professional (Business or Creator) Instagram account.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instagram".
+ */
+export interface Instagram {
+  id: number;
+  /**
+   * Long-lived token from Meta for Developers (Instagram API with Instagram Login, permission instagram_business_basic). Leave empty to hide the posts.
+   */
+  accessToken?: string | null;
+  /**
+   * Set by the website when it renews the token (about weekly).
+   */
+  tokenRefreshedAt?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The club’s story and timeline, shown on the “Our journey” page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1100,6 +1131,17 @@ export interface ContactSelect<T extends boolean = true> {
         longitude?: T;
         directions?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instagram_select".
+ */
+export interface InstagramSelect<T extends boolean = true> {
+  accessToken?: T;
+  tokenRefreshedAt?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -106,6 +106,7 @@ export function mapFixture(doc: Fixture): FixtureSummary {
       slug: competition.slug,
       name: competition.name,
       season: competition.season,
+      isFeatured: competition.isFeatured ?? false,
     },
     teams,
     innings,

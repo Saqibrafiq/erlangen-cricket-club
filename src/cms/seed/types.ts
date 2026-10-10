@@ -12,6 +12,8 @@ export type SeedCompetition = {
   name: string
   season: string
   maxOvers: number
+  /** Its next match is the one the home page counts down to. */
+  isFeatured?: boolean
 }
 
 export type SeedInnings = {
@@ -164,6 +166,8 @@ export type SeedPlayer = {
   name: string
   /** A cut-out photo in `seed/assets/players/`; without one the site shows the player's initials. */
   photo?: SeedImage
+  /** Stands in the home page's squad line-up. */
+  isFeaturedOnHome?: boolean
   /** How this player agreed to appear on the website, when not via the board's confirmation. */
   consentNote?: string
 }

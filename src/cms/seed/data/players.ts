@@ -9,6 +9,7 @@ import type { SeedPlayer } from '../types'
 export const SEED_PLAYERS: readonly SeedPlayer[] = [
   {
     name: 'Mohammad Yasub',
+    isFeaturedOnHome: true,
     photo: { file: 'player-mohammad-yasub.webp', alt: 'Mohammad Yasub in the club kit' },
   },
   {
@@ -29,6 +30,7 @@ export const SEED_PLAYERS: readonly SeedPlayer[] = [
   },
   {
     name: 'Saqib Rafiq',
+    isFeaturedOnHome: true,
     photo: {
       file: 'player-saqib-rafiq.webp',
       alt: 'Saqib Rafiq in the club’s orange training top',
@@ -41,22 +43,27 @@ export const SEED_PLAYERS: readonly SeedPlayer[] = [
   },
   {
     name: 'Jimmy Joshi',
+    isFeaturedOnHome: true,
     photo: { file: 'player-jimmy-joshi.webp', alt: 'Jimmy Joshi in the club kit' },
   },
   {
     name: 'Gursher Singh',
+    isFeaturedOnHome: true,
     photo: { file: 'player-gursher-singh.webp', alt: 'Gursher Singh in the club kit' },
   },
   {
     name: 'Bilal Ahmad',
+    isFeaturedOnHome: true,
     photo: { file: 'player-bilal-ahmad.webp', alt: 'Bilal Ahmad in the club kit' },
   },
   {
     name: 'Arun',
+    isFeaturedOnHome: true,
     photo: { file: 'player-arun.webp', alt: 'Arun in the club kit' },
   },
   {
     name: 'Akmal Sandhu',
+    isFeaturedOnHome: true,
     photo: { file: 'player-akmal-sandhu.webp', alt: 'Akmal Sandhu in the club kit' },
   },
 ]

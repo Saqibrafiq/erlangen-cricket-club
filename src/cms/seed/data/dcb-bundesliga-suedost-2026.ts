@@ -7,6 +7,7 @@ import type { SeedCompetitionData, SeedFixture, SeedStandingsRow } from '../type
 const COMPETITION = {
   name: 'DCB-Bundesliga Südost: Bayern',
   season: '2026',
+  isFeatured: true,
   maxOvers: 50,
 }
 
