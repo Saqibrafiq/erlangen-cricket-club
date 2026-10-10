@@ -6,7 +6,8 @@ import { SEED_CONTEXT, upsertImage } from './media'
 import type { SeedPlayer } from './types'
 
 const PLAYER_ASSETS = 'players'
-const CONSENT_NOTE = 'Confirmed by the club board on 9 October 2026 (listed on the old website).'
+const BOARD_CONSENT_NOTE =
+  'Confirmed by the club board on 9 October 2026 (listed on the old website).'
 
 async function createPlayerIfMissing(payload: Payload, player: SeedPlayer): Promise<boolean> {
   const existing = await payload.count({
@@ -23,16 +24,16 @@ async function createPlayerIfMissing(payload: Payload, player: SeedPlayer): Prom
     data: {
       name: player.name,
       slug: slugify(player.name),
-      photo: await upsertImage(payload, PLAYER_ASSETS, player.photo),
+      photo: player.photo ? await upsertImage(payload, PLAYER_ASSETS, player.photo) : null,
       hasPublishConsent: true,
-      consentNote: CONSENT_NOTE,
+      consentNote: player.consentNote ?? BOARD_CONSENT_NOTE,
     },
   })
 
   return true
 }
 
-/** Imports the squad from the old website; existing players (matched by name) stay as edited. */
+/** Imports the squad (mostly from the old website); existing players (matched by name) stay as edited. */
 export async function seedPlayers(payload: Payload): Promise<void> {
   let created = 0
   for (const player of SEED_PLAYERS) {

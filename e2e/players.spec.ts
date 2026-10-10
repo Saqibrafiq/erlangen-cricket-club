@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 import { expectNoAxeViolations } from './a11y'
 import { openMainNavigation } from './navigation'
 
-// Runs against the seeded squad: 11 players from the old website, all with recorded consent.
+// Runs against the seeded squad: 12 players, all with recorded consent.
 const PLAYER = { path: '/players/sagar-suri', name: 'Sagar Suri' }
 
 test.describe('players', () => {
@@ -14,12 +14,12 @@ test.describe('players', () => {
     await expect(page).toHaveTitle('Players | Erlangen Cricket Club')
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Our squad')
     const squad = page.getByRole('region', { name: 'The squad' })
-    await expect(squad.getByRole('status')).toHaveText('11 players')
-    // 11 players by name, then the open spot inviting visitors to join.
+    await expect(squad.getByRole('status')).toHaveText('12 players')
+    // 12 players by name, then the open spot inviting visitors to join.
     const names = squad.getByRole('heading', { level: 3 })
-    await expect(names).toHaveCount(12)
+    await expect(names).toHaveCount(13)
     await expect(names.first()).toHaveText('Akmal Sandhu')
-    await expect(names.nth(10)).toHaveText('Ullas')
+    await expect(names.nth(11)).toHaveText('Ullas')
     await expect(squad.getByRole('link', { name: 'Join the squad' })).toHaveAttribute(
       'href',
       '/membership',
@@ -35,7 +35,7 @@ test.describe('players', () => {
       await squad.getByRole('searchbox', { name: 'Find a player' }).fill('kumar')
       await expect(squad.getByRole('article')).toHaveCount(1, { timeout: 1000 })
     }).toPass()
-    await expect(squad.getByRole('status')).toHaveText('1 of 11')
+    await expect(squad.getByRole('status')).toHaveText('1 of 12')
     await squad.getByRole('link', { name: 'Sunny Kumar' }).click()
 
     await expect(page).toHaveURL(/\/players\/sunny-kumar$/)
@@ -56,7 +56,7 @@ test.describe('players', () => {
     // The next players in the squad, wrapping around.
     await expect(
       page.getByRole('region', { name: 'More players' }).getByRole('heading', { level: 3 }),
-    ).toHaveText(['Sunny Kumar', 'Tarang', 'Ullas', 'Akmal Sandhu'])
+    ).toHaveText(['Saqib Rafiq', 'Sunny Kumar', 'Tarang', 'Ullas'])
     await expect(
       page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Players' }),
     ).toHaveAttribute('href', '/players')
