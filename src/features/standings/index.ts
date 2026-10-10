@@ -1,3 +1,4 @@
+export { ClubStandingCard, type ClubStandingCardProps } from './components/club-standing-card'
 export {
   CompetitionStandingsView,
   type CompetitionStandingsViewProps,
@@ -8,3 +9,4 @@ export { StandingsTable, type StandingsTableProps } from './components/standings
 export { getStandingsPath, STANDINGS_PATH } from './paths'
 export { getCompetitionStandings, getStandingsOverview } from './server/queries'
 export type { CompetitionStandings, StandingsTableRow } from './types'
+export { getClubStandings } from './domain/get-club-standings'

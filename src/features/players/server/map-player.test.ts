@@ -62,6 +62,7 @@ describe('mapPlayer', () => {
       teams: [{ id: 1, name: 'Erlangen Cricket Club I' }],
       clubOffice: 'president',
       bio: 'Captain and opening batter.',
+      isFeaturedOnHome: false,
     })
   })
 

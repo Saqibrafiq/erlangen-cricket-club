@@ -10,6 +10,7 @@ import {
   getCompetitionNavigation,
   getCompetitionPath,
 } from '@/features/fixtures'
+import { getContactInfo } from '@/features/contact'
 import { LEGAL_PATHS } from '@/features/legal'
 import { SPONSORS_PATH } from '@/features/sponsors'
 import { getStandingsPath, STANDINGS_PATH } from '@/features/standings'
@@ -19,7 +20,8 @@ import { MAIN_NAVIGATION } from '@/shared/config/navigation'
 import { siteConfig } from '@/shared/config/site'
 import { buildSportsOrganizationJsonLd, TITLE_TEMPLATE } from '@/shared/lib/seo'
 import { JsonLd } from '@/shared/ui/json-ld'
-import { SiteFooter } from '@/shared/ui/site-footer'
+import { MotionProvider } from '@/shared/ui/motion-provider'
+import { SiteFooter, type SocialLink } from '@/shared/ui/site-footer'
 import { SiteHeader, type SiteNavigationItem } from '@/shared/ui/site-header'
 import { MAIN_CONTENT_ID, SkipLink } from '@/shared/ui/skip-link'
 
@@ -59,11 +61,12 @@ export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Pr
 
 export default async function LocaleLayout({ children, params }: LayoutProps<'/[locale]'>) {
   const locale = await resolveLocale(params)
-  const [t, tNavigation, tFooter, competitionNavigation] = await Promise.all([
+  const [t, tNavigation, tFooter, competitionNavigation, contact] = await Promise.all([
     getTranslations({ locale, namespace: 'common' }),
     getTranslations({ locale, namespace: 'navigation' }),
     getTranslations({ locale, namespace: 'footer' }),
     getCompetitionNavigation(),
+    getContactInfo(locale),
   ])
   // Sections organised by competition get a dropdown: overview first, then competitions per team.
   const competitionMenus: Partial<Record<string, CompetitionMenuOptions>> = {
@@ -85,23 +88,33 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
     }
   })
 
+  const socialLinks: SocialLink[] = [
+    ...(contact.instagramUrl
+      ? [{ network: 'instagram' as const, href: contact.instagramUrl }]
+      : []),
+    ...(contact.facebookUrl ? [{ network: 'facebook' as const, href: contact.facebookUrl }] : []),
+  ]
+
   return (
     <html lang={locale} className={`${inter.variable} ${barlowCondensed.variable}`}>
       <body className="flex min-h-svh flex-col">
         <SkipLink>{t('skipToContent')}</SkipLink>
         <NextIntlClientProvider>
-          <SiteHeader items={navigationItems} />
-          <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex-1 focus:outline-none">
-            {children}
-          </main>
-          <SiteFooter
-            year={new Date().getFullYear()}
-            clubLinks={[{ href: SPONSORS_PATH, label: tFooter('sponsors') }]}
-            legalLinks={[
-              { href: LEGAL_PATHS.impressum, label: tFooter('impressum') },
-              { href: LEGAL_PATHS.privacy, label: tFooter('privacy') },
-            ]}
-          />
+          <MotionProvider>
+            <SiteHeader items={navigationItems} />
+            <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex-1 focus:outline-none">
+              {children}
+            </main>
+            <SiteFooter
+              year={new Date().getFullYear()}
+              socialLinks={socialLinks}
+              clubLinks={[{ href: SPONSORS_PATH, label: tFooter('sponsors') }]}
+              legalLinks={[
+                { href: LEGAL_PATHS.impressum, label: tFooter('impressum') },
+                { href: LEGAL_PATHS.privacy, label: tFooter('privacy') },
+              ]}
+            />
+          </MotionProvider>
         </NextIntlClientProvider>
         <JsonLd data={buildSportsOrganizationJsonLd()} />
       </body>

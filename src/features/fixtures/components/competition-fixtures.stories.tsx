@@ -14,6 +14,7 @@ const COMPETITION = {
   slug: 'dcb-bundesliga-suedost-bayern-2026',
   name: 'DCB-Bundesliga Südost: Bayern',
   season: '2026',
+  isFeatured: false,
 }
 
 const meta = {

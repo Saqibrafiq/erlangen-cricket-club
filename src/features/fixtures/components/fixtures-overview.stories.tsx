@@ -11,12 +11,14 @@ const T20 = {
   slug: 'bcv-t20-regionalliga-bayern-2026',
   name: 'BCV T20 Regionalliga Bayern',
   season: '2026',
+  isFeatured: false,
 }
 const VERBANDSLIGA = {
   id: 4,
   slug: 'bcv-t20-1-verbandsliga-2026',
   name: 'BCV T20 1. Verbandsliga',
   season: '2026',
+  isFeatured: false,
 }
 
 const meta = {

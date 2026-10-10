@@ -38,4 +38,6 @@ export type Player = {
   teams: PlayerTeam[]
   clubOffice: ClubOffice | null
   bio: string | null
+  /** Editors pick who stands in the home page's squad line-up. */
+  isFeaturedOnHome: boolean
 }

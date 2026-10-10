@@ -26,6 +26,10 @@ Code uses the English term (camelCase where applicable).
 | Tie                  | Unentschieden (Tie)         | `tie`             | Both teams finish on the same score (or as declared under DLS).                                            |
 | No result            | Kein Ergebnis               | `no-result`       | Match started but could not be completed with a result.                                                    |
 | Stage                | Runde                       | `stage`           | Part of a competition: league, qualifier, semi-final, final.                                               |
+| Featured competition | Hervorgehobener Wettbewerb  | `isFeatured`      | A competition whose next match the home page counts down to (T20 Regionalliga, DCB-Bundesliga).            |
+| Home game            | Heimspiel                   | `home`            | A fixture at a ground in Erlangen; derived from the venue (`getVenueKind`).                                |
+| Away game            | Auswärtsspiel               | `away`            | A fixture at a ground outside Erlangen.                                                                    |
+| Kick-off             | Spielbeginn                 | `kickoff`         | Start of a fixture: its day plus local start time (`getKickoff`), in Europe/Berlin.                        |
 | Club team            | Vereinsmannschaft           | `isClubTeam`      | An Erlangen Cricket Club team; results are shown from its perspective.                                     |
 | Hall of Fame         | Ruhmeshalle                 | `hallOfFame`      | Milestones derived from scorecards.                                                                        |
 | Player               | Spieler                     | `players`         | Club member shown on the website; only with recorded consent (`hasPublishConsent`).                        |

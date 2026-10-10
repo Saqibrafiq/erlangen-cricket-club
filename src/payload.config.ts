@@ -18,6 +18,7 @@ import { sponsors } from './cms/collections/sponsors'
 import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
 import { contact } from './cms/globals/contact'
+import { instagram } from './cms/globals/instagram'
 import { journey } from './cms/globals/journey'
 import { impressum, privacyPolicy } from './cms/globals/legal-pages'
 import { membership } from './cms/globals/membership'
@@ -45,7 +46,7 @@ export default buildConfig({
     sponsors,
     users,
   ],
-  globals: [membership, contact, journey, impressum, privacyPolicy],
+  globals: [membership, contact, instagram, journey, impressum, privacyPolicy],
   editor: lexicalEditor(),
   // Content fields opt in with `localized: true`; untranslated German falls back to English.
   localization: {

@@ -10,15 +10,34 @@ const ECC_II: FixtureTeam = {
   shortName: 'ECC-II',
   isClubTeam: true,
 }
-const T20 = { id: 1, slug: 'bcv-t20-2026', name: 'BCV T20 Regionalliga Bayern', season: '2026' }
+const T20 = {
+  id: 1,
+  slug: 'bcv-t20-2026',
+  name: 'BCV T20 Regionalliga Bayern',
+  season: '2026',
+  isFeatured: false,
+}
 const BUNDESLIGA = {
   id: 2,
   slug: 'dcb-bl-2026',
   name: 'DCB-Bundesliga Südost: Bayern',
   season: '2026',
+  isFeatured: false,
 }
-const REGIONALLIGA = { id: 3, slug: 'bcv-rl-2026', name: 'BCV Regionalliga Bayern', season: '2026' }
-const OLD_T20 = { id: 4, slug: 'bcv-t20-2025', name: 'BCV T20 Regionalliga Bayern', season: '2025' }
+const REGIONALLIGA = {
+  id: 3,
+  slug: 'bcv-rl-2026',
+  name: 'BCV Regionalliga Bayern',
+  season: '2026',
+  isFeatured: false,
+}
+const OLD_T20 = {
+  id: 4,
+  slug: 'bcv-t20-2025',
+  name: 'BCV T20 Regionalliga Bayern',
+  season: '2025',
+  isFeatured: false,
+}
 
 describe('summariseCompetitions', () => {
   it('derives club teams and record per competition', () => {
