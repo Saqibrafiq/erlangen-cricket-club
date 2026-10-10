@@ -29,5 +29,6 @@ export function mapPlayer(doc: PlayerDoc): Player {
     teams: mapTeams(doc.teams),
     clubOffice: doc.clubOffice ?? null,
     bio: doc.bio ?? null,
+    isFeaturedOnHome: doc.isFeaturedOnHome ?? false,
   }
 }

@@ -23,6 +23,7 @@ describe('buildCompetitionMenu', () => {
                   slug: 'dcb-bl-2026',
                   name: 'DCB-Bundesliga Südost: Bayern',
                   season: '2026',
+                  isFeatured: false,
                 },
               ],
             },

@@ -5,12 +5,20 @@ import { siteConfig } from '@/shared/config/site'
 
 import { Container } from './container'
 import type { NavigationLink } from './nav-menu'
+import { SocialIcon, type SocialNetwork } from './social-icon'
+
+export type SocialLink = {
+  network: SocialNetwork
+  href: string
+}
 
 export type SiteFooterProps = {
   /** Legal links (Impressum, Datenschutz) — mandatory on German websites. */
   legalLinks: readonly NavigationLink[]
   /** Further club pages that do not fit the header, e.g. sponsors. */
   clubLinks?: readonly NavigationLink[]
+  /** The club on social media, shown as icons. */
+  socialLinks?: readonly SocialLink[]
   /** Year shown in the copyright line; passed in so rendering stays deterministic. */
   year: number
 }
@@ -34,13 +42,37 @@ function FooterLinks({ label, links }: { label: string; links: readonly Navigati
   )
 }
 
-export function SiteFooter({ legalLinks, clubLinks = [], year }: SiteFooterProps) {
+export function SiteFooter({
+  legalLinks,
+  clubLinks = [],
+  socialLinks = [],
+  year,
+}: SiteFooterProps) {
   const t = useTranslations('footer')
 
   return (
     <footer className="mt-16 border-t border-border-default bg-surface-muted">
       <Container className="flex flex-col gap-4 py-8 text-sm text-text-muted sm:flex-row sm:items-center sm:justify-between">
-        <p>{t('copyright', { year, club: siteConfig.name })}</p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <p>{t('copyright', { year, club: siteConfig.name })}</p>
+          {socialLinks.length > 0 && (
+            <ul aria-label={t('socialLabel')} className="flex gap-1">
+              {socialLinks.map(({ network, href }) => (
+                <li key={network}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t(`social.${network}`, { club: siteConfig.name })}
+                    className="inline-flex size-11 items-center justify-center rounded-full transition-colors duration-150 hover:bg-surface-default hover:text-brand-primary"
+                  >
+                    <SocialIcon network={network} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <div className="flex flex-wrap gap-x-6">
           {clubLinks.length > 0 && <FooterLinks label={t('clubLabel')} links={clubLinks} />}
           <FooterLinks label={t('legalLabel')} links={legalLinks} />

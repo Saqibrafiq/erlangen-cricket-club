@@ -229,5 +229,13 @@ export const fixtures: CollectionConfig = {
         description: 'Set by data imports to avoid duplicates.',
       },
     },
+    {
+      name: 'instagramGraphics',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: { Field: '/cms/components/instagram-graphics#InstagramGraphics' },
+      },
+    },
   ],
 }

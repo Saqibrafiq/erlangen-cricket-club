@@ -126,6 +126,17 @@ export const players: CollectionConfig = {
       },
     },
     {
+      name: 'isFeaturedOnHome',
+      label: 'Show in the home page line-up',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Up to seven players stand in the squad line-up on the home page. Best with a cut-out photo.',
+      },
+    },
+    {
       name: 'hasPublishConsent',
       label: 'Agreed to appear on the website',
       type: 'checkbox',
@@ -147,6 +158,14 @@ export const players: CollectionConfig = {
       admin: {
         position: 'sidebar',
         condition: (data) => Boolean(data.hasPublishConsent),
+      },
+    },
+    {
+      name: 'instagramGraphics',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: { Field: '/cms/components/instagram-graphics#InstagramGraphics' },
       },
     },
   ],

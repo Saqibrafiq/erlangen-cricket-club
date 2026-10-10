@@ -25,6 +25,7 @@ async function createPlayerIfMissing(payload: Payload, player: SeedPlayer): Prom
       name: player.name,
       slug: slugify(player.name),
       photo: player.photo ? await upsertImage(payload, PLAYER_ASSETS, player.photo) : null,
+      isFeaturedOnHome: player.isFeaturedOnHome ?? false,
       hasPublishConsent: true,
       consentNote: player.consentNote ?? BOARD_CONSENT_NOTE,
     },

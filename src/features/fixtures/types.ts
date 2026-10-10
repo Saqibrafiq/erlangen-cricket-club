@@ -16,6 +16,8 @@ export type FixtureCompetition = {
   slug: string
   name: string
   season: string
+  /** Its next match is the one the home page counts down to. */
+  isFeatured: boolean
 }
 
 export type FixtureInnings = {
