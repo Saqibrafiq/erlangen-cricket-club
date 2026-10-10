@@ -66,3 +66,9 @@ src/
 ## Contributing
 
 Trunk-based: short-lived branches (`type/short-description`) → PR → squash merge. Commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are checked by commitlint; staged files are linted and formatted on commit. Project rules live in [`CLAUDE.md`](CLAUDE.md).
+
+## Licence
+
+© 2026 Saqib Rafiq. All rights reserved. The code and design are proprietary and published for
+viewing only; see [LICENSE](LICENSE). The club's name, crest, photos and texts belong to Erlangen
+Cricket Club e.V.

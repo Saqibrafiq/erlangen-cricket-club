@@ -202,13 +202,24 @@
     "impressum": "Impressum",
     "privacy": "Datenschutz",
     "copyright": "© {year} {club}",
-    "clubLabel": "Verein",
-    "sponsors": "Sponsoren",
     "socialLabel": "Soziale Medien",
     "social": {
       "instagram": "{club} auf Instagram (öffnet in neuem Tab)",
       "facebook": "{club} auf Facebook (öffnet in neuem Tab)"
-    }
+    },
+    "tagline": "Siebenfacher Meister im bayerischen Cricket, seit 2010 in Erlangen zu Hause.",
+    "columns": {
+      "club": "Verein",
+      "matches": "Spiele",
+      "join": "Mitmachen"
+    },
+    "visit": {
+      "heading": "So findest du uns",
+      "training": "Training"
+    },
+    "clubContent": "Vereinsname, Wappen, Fotos und Texte gehören dem Verein.",
+    "credit": "Website gestaltet und entwickelt von <author>{name}</author>",
+    "codeCopyright": "Design und Code der Website © {year} {author}. Alle Rechte vorbehalten."
   },
   "legal": {
     "impressumTitle": "Impressum",

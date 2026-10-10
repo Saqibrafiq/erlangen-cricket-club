@@ -10,10 +10,10 @@ test.describe('contact', () => {
     await (await openMainNavigation(page)).getByRole('link', { name: 'Contact' }).click()
 
     await expect(page).toHaveTitle('Contact us | Erlangen Cricket Club')
-    await expect(page.getByRole('link', { name: 'erlangencricketclub@gmail.com' })).toHaveAttribute(
-      'href',
-      'mailto:erlangencricketclub@gmail.com',
-    )
+    // Scoped to the page: the footer repeats the email address.
+    await expect(
+      page.getByRole('main').getByRole('link', { name: 'erlangencricketclub@gmail.com' }),
+    ).toHaveAttribute('href', 'mailto:erlangencricketclub@gmail.com')
     await expect(page.getByRole('region', { name: 'Our ground' })).toContainText('Siedlerstraße 1')
   })
 
