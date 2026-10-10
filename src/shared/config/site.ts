@@ -20,4 +20,9 @@ export const siteConfig = {
   },
   /** Fallback until the contact page is filled in the admin. */
   email: 'erlangencricketclub@gmail.com',
+  /** Designed and built the website; owns its code and design (see LICENSE). */
+  author: {
+    name: 'Saqib Rafiq',
+    url: 'https://github.com/Saqibrafiq',
+  },
 } as const

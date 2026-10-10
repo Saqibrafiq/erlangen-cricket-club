@@ -47,7 +47,8 @@ test.describe('standings navigation', () => {
   test('links each competition table to its fixtures', async ({ page }) => {
     await page.goto(T20.path)
 
-    await page.getByRole('link', { name: 'Fixtures & results' }).click()
+    // Scoped to the page: the footer also links to Fixtures & Results.
+    await page.getByRole('main').getByRole('link', { name: 'Fixtures & results' }).click()
 
     await expect(page).toHaveURL(/\/fixtures\/bcv-t20-regionalliga-bayern-2026$/)
   })

@@ -19,8 +19,49 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
-
-export const WithClubLinks: Story = {
-  args: { clubLinks: [{ href: '/sponsors', label: 'Sponsors' }] },
+/** As on the site: link columns, where to find us, socials and the credit. */
+export const Full: Story = {
+  args: {
+    columns: [
+      {
+        label: 'Club',
+        links: [
+          { href: '/players', label: 'Players' },
+          { href: '/news', label: 'News' },
+          { href: '/journey', label: 'Journey' },
+          { href: '/sponsors', label: 'Sponsors' },
+        ],
+      },
+      {
+        label: 'Matches',
+        links: [
+          { href: '/fixtures', label: 'Fixtures & Results' },
+          { href: '/standings', label: 'Standings' },
+        ],
+      },
+      {
+        label: 'Join',
+        links: [
+          { href: '/membership', label: 'Membership' },
+          { href: '/contact', label: 'Contact' },
+        ],
+      },
+    ],
+    visit: {
+      training: 'Thursday 17:30–20:00',
+      ground: {
+        name: 'Erlangen Cricket Ground',
+        address: 'Siedlerstraße 1, 91058 Erlangen',
+        href: '/contact#ground',
+      },
+      email: 'erlangencricketclub@gmail.com',
+    },
+    socialLinks: [
+      { network: 'instagram', href: 'https://www.instagram.com/er_cricketclub' },
+      { network: 'facebook', href: 'https://www.facebook.com/CricketClubErlangen' },
+    ],
+  },
 }
+
+/** The minimum: legal links and the copyright lines. */
+export const Minimal: Story = {}

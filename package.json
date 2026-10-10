@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "Website and content platform for Erlangen Cricket Club",
-  "license": "MIT",
+  "license": "UNLICENSED",
+  "author": "Saqib Rafiq (https://github.com/Saqibrafiq)",
   "type": "module",
   "packageManager": "pnpm@10.29.1",
   "engines": {

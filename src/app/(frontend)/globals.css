@@ -60,6 +60,8 @@
   --grid-template-columns-hero: minmax(0, 1fr) auto;
   /* Two equal sides around a centred middle, e.g. team vs team. */
   --grid-template-columns-versus: minmax(0, 1fr) auto minmax(0, 1fr);
+  /* Footer: the club, three link columns, then where to find us (a little wider for addresses). */
+  --grid-template-columns-footer: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr)) minmax(0, 1.4fr);
   /* Short facts side by side, the last one (e.g. a ground's address) taking the rest. */
   --grid-template-columns-details: auto auto minmax(0, 1fr);
   /* Recessed into a panel, e.g. a scoreboard cell or bolt. */
