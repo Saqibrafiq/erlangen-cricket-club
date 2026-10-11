@@ -44,7 +44,6 @@ export const siteConfig = {
   /** Designed and built the website; owns its code and design (see LICENSE). */
   author: {
     name: 'Saqib Rafiq',
-    url: 'https://github.com/Saqibrafiq',
   },
   /** Google Search Console ownership token (public by design: it is served in a meta tag). */
   googleSiteVerification: 'ym_ZrPq_GuCrQK587Bwe4ldUoFsue69odXtDn6rgIRc',

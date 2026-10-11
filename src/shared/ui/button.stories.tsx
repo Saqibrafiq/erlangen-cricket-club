@@ -7,7 +7,7 @@ const meta = {
   component: Button,
   args: { children: 'Join the club' },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost'] },
+    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost', 'danger'] },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
   },
 } satisfies Meta<typeof Button>
@@ -21,6 +21,8 @@ export const Primary: Story = {}
 export const Secondary: Story = { args: { variant: 'secondary' } }
 
 export const Ghost: Story = { args: { variant: 'ghost' } }
+
+export const Danger: Story = { args: { variant: 'danger', children: 'Delete player' } }
 
 /** For photos and dark bands; shown on the media overlay colour. */
 export const OnMedia: Story = {

@@ -18,6 +18,9 @@ export default defineConfig(
     'src/cms/migrations/',
     // Vendored Claude Code skills: third-party, kept as published.
     '.claude/skills/',
+    // ONNX runtime copied from node_modules and the vendored model (ADR-0016).
+    'public/onnx/',
+    'public/models/',
   ]),
   nextCoreWebVitals,
   nextTypescript,

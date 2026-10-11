@@ -11,8 +11,8 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "dev": "pnpm copy:onnx && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "build": "pnpm copy:onnx && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
@@ -34,7 +34,8 @@
     "test:e2e": "playwright test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "husky && next typegen"
+    "prepare": "husky && next typegen",
+    "copy:onnx": "node scripts/copy-onnx-runtime.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -45,6 +46,7 @@
     ]
   },
   "dependencies": {
+    "@huggingface/transformers": "4.3.0",
     "@payloadcms/db-postgres": "3.90.2",
     "@payloadcms/next": "3.90.2",
     "@payloadcms/richtext-lexical": "3.90.2",

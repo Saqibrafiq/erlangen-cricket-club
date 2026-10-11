@@ -64,9 +64,16 @@
 - **Editor sign-in** ([ADR-0014](09-architecture-decisions/0014-club-sign-in-page-on-payload-auth.md)):
   - `/login` (`features/auth`) signs in through Payload's Local API and sets Payload's own session cookie (`payload-token`: `HttpOnly`, `SameSite=Lax`, `Secure` in production, 2 h);
   - Payload locks an account for 10 minutes after 5 wrong passwords, and the error never says whether the email or the password was wrong;
-  - `?redirect=` only accepts admin paths, so the login can't be used as an open redirect;
+  - `?redirect=` only accepts paths on this site, so the login can't be used as an open redirect; without one, editors land on the website in edit mode;
   - Payload's `/admin/login` forwards to `/login`;
   - the header's admin icon is a static link, so no page reads the session cookie and the public pages stay static.
+- **Editing on the website** ([ADR-0015](09-architecture-decisions/0015-edit-content-on-the-website.md)):
+  - signing in also sets a readable hint cookie (`ecc-editor`, `shared/config/edit-mode.ts`); static pages read it in the browser (`useIsEditMode`) and only then load their editing controls via `next/dynamic`, so visitors download no editing code;
+  - the hint grants nothing: every editing server action checks the Payload session itself and writes as that user with access control on (`overrideAccess: false`); IDs, locales and form fields are validated with Zod, and photos by type and size;
+  - player photos are cut out in the editor's browser like the existing squad photos: MODNet matting, edge colour clean-up, head and shoulders, 720 px WebP. The model and ONNX runtime are served from our own domain ([ADR-0016](09-architecture-decisions/0016-player-photo-background-removal-in-the-browser.md)). Other photos are shrunk (`resizeImage`, WebP, at most 1200 px). Server actions accept up to 4 MB, below Vercel's 4.5 MB request limit;
+  - the admin bar under the header signs out through Payload's `logout`, which also ends the session server-side;
+  - routes pass the server actions to the editing components as props (`PLAYER_EDITING`), like the contact form.
+- **Fresh pages after edits:** collection hooks call `revalidatePath('/(frontend)/[locale]', 'layout')`. The route group must be part of the path, otherwise nothing is invalidated and prerendered pages keep their build-time content. Inside a server action, the editor's page updates in the same response; visitors get the new version on their next visit.
 - Payload access control per collection (`src/cms/access/`); public read only where content is public.
 - JSON-LD output escapes `<` to prevent script injection from CMS content.
 - Secrets only in `.env.local` / Vercel environment variables.

@@ -219,7 +219,7 @@
       "training": "Training"
     },
     "clubContent": "Club name, crest, photos and texts belong to the club.",
-    "credit": "Website designed and built by <author>{name}</author>",
+    "credit": "Website designed and built by {name}",
     "codeCopyright": "Website design and code © {year} {author}. All rights reserved."
   },
   "legal": {
@@ -622,6 +622,91 @@
         "all-rounder": "All-rounders",
         "wicketkeeper": "Wicketkeepers"
       }
+    },
+    "roleSummary": {
+      "batter": "Batter",
+      "fast-bowler": "Fast bowler",
+      "medium-pacer": "Medium pacer",
+      "spinner": "Spinner",
+      "bowler": "Bowler",
+      "all-rounder": "All-rounder",
+      "wicketkeeper": "Wicketkeeper"
+    },
+    "editor": {
+      "add": "Add player",
+      "edit": "Edit {name}",
+      "delete": "Delete {name}",
+      "hidden": {
+        "summary": "{count, plural, one {# hidden player} other {# hidden players}}",
+        "hint": "Not shown on the website until their consent is recorded."
+      },
+      "notice": {
+        "saved": "{name} saved.",
+        "savedHidden": "{name} saved. Not shown on the website until consent is recorded.",
+        "deleted": "{name} deleted."
+      },
+      "sheet": {
+        "addTitle": "Add player",
+        "editTitle": "Edit player",
+        "description": "Changes appear on the website right away.",
+        "close": "Close",
+        "loading": "Loading player…"
+      },
+      "form": {
+        "name": "Name",
+        "photo": "Photo",
+        "photoHint": "JPG, PNG or WebP. Best: head and shoulders with the background removed.",
+        "choosePhoto": "Choose photo",
+        "changePhoto": "Change photo",
+        "removePhoto": "Remove photo",
+        "noPhoto": "No photo yet: the card shows initials.",
+        "role": "Role",
+        "roleHint": "Bowlers are shown as fast bowler, medium pacer or spinner, by their bowling style.",
+        "notSet": "Not set",
+        "batting": "Batting",
+        "bowling": "Bowling style",
+        "pace": "Pace",
+        "spin": "Spin",
+        "office": "Club office",
+        "teams": "Teams",
+        "bio": "Short introduction",
+        "bioHint": "Two or three sentences, up to {max} characters.",
+        "featured": "Show in the home page line-up",
+        "consent": "Agreed to appear on the website",
+        "consentHint": "Name, photo and details are public only when ticked (GDPR).",
+        "consentNote": "How consent was given",
+        "consentNoteHint": "For example: signed membership form, 3 March 2026",
+        "save": "Save",
+        "saving": "Saving…",
+        "cancel": "Cancel",
+        "removeBackground": "Remove background automatically",
+        "removingBackground": "Removing the background… The first photo takes a little longer.",
+        "backgroundRemoved": "Background removed and framed like the other squad photos.",
+        "backgroundFailed": "The background could not be removed automatically. The photo will be used as it is."
+      },
+      "errors": {
+        "summary": "Please check the highlighted fields.",
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "consentNoteRequired": "Note how and when the player agreed.",
+        "photoType": "Please choose a JPG, PNG or WebP image.",
+        "photoSize": "This photo is too large. Please choose a smaller one.",
+        "duplicateName": "A player with this name already exists.",
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Saving is not possible right now. Please try again.",
+        "load": "The player could not be loaded. Please try again.",
+        "hiddenLoad": "Hidden players could not be loaded.",
+        "retry": "Try again"
+      },
+      "deleteDialog": {
+        "title": "Remove {name}?",
+        "description": "The profile and photo are deleted from the website. This cannot be undone.",
+        "confirm": "Delete",
+        "deleting": "Deleting…",
+        "cancel": "Cancel",
+        "error": "Could not delete. Please try again."
+      }
     }
   },
   "instagram": {
@@ -647,6 +732,18 @@
         "locked": "Too many wrong attempts. For your security this account is locked for 10 minutes.",
         "server": "Signing in is not possible right now. Please try again in a few minutes."
       }
+    },
+    "editorBar": {
+      "status": "Edit mode: you can add, edit and delete content",
+      "admin": "Admin panel",
+      "signOut": "Sign out"
+    },
+    "signedIn": {
+      "title": "You’re signed in",
+      "intro": "Signed in as {email}.",
+      "editMode": "Open edit mode",
+      "signOut": "Sign out",
+      "expired": "Your session has just ended. Please sign out and sign in again."
     }
   }
 }

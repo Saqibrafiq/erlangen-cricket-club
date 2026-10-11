@@ -1,4 +1,4 @@
-import type { Player } from '../types'
+import type { BowlingStyle, Player } from '../types'
 
 /**
  * First and last name initials for avatars without a photo: "Mohammad Yasub" → "MY",
@@ -100,4 +100,33 @@ export function buildPlayerJsonLd(player: Player, profileUrl: string, club: Play
     ...buildPerson(player, profileUrl, club.url),
     memberOf: { '@type': 'SportsTeam', name: club.name, sport: 'Cricket', url: club.url },
   }
+}
+
+/** The one-word role on cards and chips: bowlers are named by how they bowl. */
+export type RoleSummary =
+  'batter' | 'fast-bowler' | 'medium-pacer' | 'spinner' | 'bowler' | 'all-rounder' | 'wicketkeeper'
+
+const PACE: Partial<Record<BowlingStyle, RoleSummary>> = {
+  'right-arm-fast': 'fast-bowler',
+  'left-arm-fast': 'fast-bowler',
+  'right-arm-medium': 'medium-pacer',
+  'left-arm-medium': 'medium-pacer',
+}
+
+/**
+ * How the squad talks about a player: "Fast bowler", "Spinner", "Wicketkeeper"… A bowler without
+ * a recorded bowling style is just a "Bowler"; `null` when no role is set.
+ */
+export function getRoleSummary(
+  player: Pick<Player, 'playingRole' | 'bowlingStyle'>,
+): RoleSummary | null {
+  const { playingRole, bowlingStyle } = player
+  if (playingRole !== 'bowler') {
+    return playingRole
+  }
+  if (bowlingStyle === null) {
+    return 'bowler'
+  }
+
+  return PACE[bowlingStyle] ?? 'spinner'
 }

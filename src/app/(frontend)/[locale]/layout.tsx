@@ -10,7 +10,7 @@ import {
   getCompetitionNavigation,
   getCompetitionPath,
 } from '@/features/fixtures'
-import { LOGIN_PATH } from '@/features/auth'
+import { EditorBar, LOGIN_PATH, signOutAction } from '@/features/auth'
 import { CONTACT_PATH, getContactInfo, GROUND_SECTION_ID } from '@/features/contact'
 import { JOURNEY_PATH } from '@/features/journey'
 import { LEGAL_PATHS } from '@/features/legal'
@@ -157,6 +157,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
         <NextIntlClientProvider>
           <MotionProvider>
             <SiteHeader items={navigationItems} loginHref={LOGIN_PATH} />
+            <EditorBar signOut={signOutAction} />
             <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex-1 focus:outline-none">
               {children}
             </main>

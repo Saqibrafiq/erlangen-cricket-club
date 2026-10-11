@@ -1,5 +1,6 @@
 /**
- * Storybook stand-in for every feature's `server/queries` and `server/actions` (see main.ts).
+ * Storybook stand-in for every feature's `server/queries`, `server/actions` and `server/editing`
+ * (see main.ts).
  * Feature public APIs export their server functions next to their components; stories render
  * components with props and never call these, but the bundler must not pull Payload (Node-only)
  * into the browser. A query missing here fails the Storybook build, so add new ones below.
@@ -31,4 +32,6 @@ export const getPlayerEntries = serverOnly('getPlayerEntries')
 export const getPlayers = serverOnly('getPlayers')
 export const getSponsors = serverOnly('getSponsors')
 export const getStandingsOverview = serverOnly('getStandingsOverview')
+// Stories pass their own editing actions; this only keeps Payload out of the browser bundle.
+export const PLAYER_EDITING = undefined
 export const submitContactMessageAction = serverOnly('submitContactMessageAction')

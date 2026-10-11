@@ -68,18 +68,20 @@ export function parseSignIn(formData: FormData): SignInParseResult {
   return { success: false, fieldErrors, email: email.trim() }
 }
 
+/** Where editors land after signing in when no page was requested: the website, in edit mode. */
+export const HOME_PATH = '/'
+
 /**
- * Where to go after signing in. Only pages of the admin are allowed, so a crafted
+ * Where to go after signing in or out. Only paths on this site are allowed, so a crafted
  * `?redirect=https://evil.example` link cannot turn the login into an open redirect.
  */
 export function getSafeRedirectPath(target: unknown): string {
-  if (typeof target !== 'string') {
-    return ADMIN_PATH
+  if (typeof target !== 'string' || !target.startsWith('/')) {
+    return HOME_PATH
   }
 
-  const isAdminPath = target === ADMIN_PATH || target.startsWith(`${ADMIN_PATH}/`)
-  // Backslashes and protocol-relative tricks ("/admin/..//evil") have no place in an admin path.
+  // Protocol-relative ("//evil.example") and backslash tricks ("/\evil.example") leave the site.
   const isPlainPath = !target.includes('\\') && !target.includes('//')
 
-  return isAdminPath && isPlainPath ? target : ADMIN_PATH
+  return isPlainPath ? target : HOME_PATH
 }

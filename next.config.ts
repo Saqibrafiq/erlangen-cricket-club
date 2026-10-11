@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/instagram/[locale]/[file]': ['./src/shared/assets/**/*'],
   },
+  experimental: {
+    // Player photos are shrunk in the browser first (see resize-image.ts) and capped at 3 MB on the
+    // server; this leaves room for the form around them, below Vercel's 4.5 MB request limit.
+    serverActions: { bodySizeLimit: '4mb' },
+  },
   turbopack: {
     root: path.resolve(dirname),
   },

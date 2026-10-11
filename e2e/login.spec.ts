@@ -37,19 +37,47 @@ test.describe('admin login', () => {
 
     await expect(page).toHaveURL(/\/login\?redirect=%2Fadmin%2Fcollections%2Fnews$/)
   })
+})
 
-  test('signs an editor in and opens the admin', async ({ page }) => {
-    test.skip(!ADMIN_EMAIL || !ADMIN_PASSWORD, 'Set E2E_ADMIN_EMAIL and E2E_ADMIN_PASSWORD.')
-    test.setTimeout(2 * ADMIN_LOAD_TIMEOUT_MS)
+test.describe('admin login with the test account', () => {
+  // Payload keeps a user's sessions in a list on the user record: two sign-ins with the same
+  // account at the same moment can overwrite each other's entry. So these run once (desktop)
+  // and one after another; the editing specs sign in only after them (playwright.config.ts).
+  test.describe.configure({ mode: 'serial' })
+  test.skip(!ADMIN_EMAIL || !ADMIN_PASSWORD, 'Set E2E_ADMIN_EMAIL and E2E_ADMIN_PASSWORD.')
+  test.beforeEach(() => {
+    test.skip(test.info().project.name !== 'desktop', 'One test account: desktop only.')
+  })
 
+  test('signs an editor in to the website in edit mode, and out again', async ({ page }) => {
     await page.goto('/login')
     await page.getByLabel('Email').fill(ADMIN_EMAIL ?? '')
     await page.getByLabel('Password', { exact: true }).fill(ADMIN_PASSWORD ?? '')
     await page.getByRole('button', { name: 'Sign in' }).click()
 
-    await expect(page).toHaveURL(/\/admin$/, { timeout: ADMIN_LOAD_TIMEOUT_MS })
-    // Signed in: the header icon now leads straight back to the admin.
+    await expect(page).toHaveURL(/\/$/, { timeout: ADMIN_LOAD_TIMEOUT_MS })
+    await expect(page.getByText('Edit mode: you can add, edit and delete content')).toBeVisible()
+
+    // Coming back to the login page while signed in offers edit mode instead of the form.
     await page.goto('/login')
+    await expect(page.getByRole('heading', { level: 1, name: 'You’re signed in' })).toBeVisible()
+    await page.getByRole('button', { name: 'Open edit mode' }).click()
+    await expect(page).toHaveURL(/\/$/, { timeout: ADMIN_LOAD_TIMEOUT_MS })
+
+    await page.getByRole('button', { name: 'Sign out' }).click()
+    await expect(page.getByText('Edit mode: you can add, edit and delete content')).toBeHidden({
+      timeout: ADMIN_LOAD_TIMEOUT_MS,
+    })
+  })
+
+  test('takes Payload admin pages back to where the editor was going', async ({ page }) => {
+    test.setTimeout(2 * ADMIN_LOAD_TIMEOUT_MS)
+
+    await page.goto('/admin/login?redirect=%2Fadmin')
+    await page.getByLabel('Email').fill(ADMIN_EMAIL ?? '')
+    await page.getByLabel('Password', { exact: true }).fill(ADMIN_PASSWORD ?? '')
+    await page.getByRole('button', { name: 'Sign in' }).click()
+
     await expect(page).toHaveURL(/\/admin$/, { timeout: ADMIN_LOAD_TIMEOUT_MS })
   })
 })
