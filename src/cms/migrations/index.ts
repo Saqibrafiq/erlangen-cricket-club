@@ -11,6 +11,7 @@ import * as migration_20261009_210146_players from './20261009_210146_players';
 import * as migration_20261010_100051_featured_competitions from './20261010_100051_featured_competitions';
 import * as migration_20261010_100420_instagram_feed from './20261010_100420_instagram_feed';
 import * as migration_20261010_181911_featured_players from './20261010_181911_featured_players';
+import * as migration_20261011_153938_blob_storage_fields from './20261011_153938_blob_storage_fields';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261010_181911_featured_players.up,
     down: migration_20261010_181911_featured_players.down,
-    name: '20261010_181911_featured_players'
+    name: '20261010_181911_featured_players',
+  },
+  {
+    up: migration_20261011_153938_blob_storage_fields.up,
+    down: migration_20261011_153938_blob_storage_fields.down,
+    name: '20261011_153938_blob_storage_fields'
   },
 ];
