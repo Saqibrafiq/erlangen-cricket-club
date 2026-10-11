@@ -12,6 +12,7 @@ Decisions follow the [MADR](https://adr.github.io/madr/) template ([`template.md
 | [0006](0006-standings-from-published-tables.md)                   | Standings show the published league tables, entered in the CMS             | Accepted |
 | [0007](0007-contact-messages-stored-in-cms.md)                    | Contact messages stored in the CMS, protected by a honeypot                | Accepted |
 | [0008](0008-maps-load-on-request.md)                              | Maps load on request (OpenStreetMap, two-click)                            | Accepted |
+| [0014](0014-club-sign-in-page-on-payload-auth.md)                 | Club sign-in page on top of Payload's authentication                       | Accepted |
 | [0013](0013-production-on-vercel-and-neon.md)                     | Production on Vercel and Neon (Frankfurt); migrations in the build         | Accepted |
 | [0012](0012-proprietary-licence.md)                               | Code and design under a proprietary licence; club content stays the club's | Accepted |
 | [0011](0011-instagram-feed-via-api.md)                            | Instagram posts via the Instagram API, served without third-party requests | Accepted |

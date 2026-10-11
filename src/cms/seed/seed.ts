@@ -3,6 +3,7 @@ import type { Payload } from 'payload'
 import { slugify } from '../../shared/lib/slugify'
 import type { RevalidateContext } from '../hooks/revalidate-pages'
 import { SEED_COMPETITIONS, SEED_TEAMS } from './data'
+import { seedE2eUser } from './seed-e2e-user'
 import { seedJourney } from './seed-journey'
 import { seedLegal } from './seed-legal'
 import { seedMembership } from './seed-membership'
@@ -204,4 +205,5 @@ export async function seed(payload: Payload): Promise<void> {
   await seedSponsors(payload)
   await seedPlayers(payload)
   await seedLegal(payload)
+  await seedE2eUser(payload)
 }

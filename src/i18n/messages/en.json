@@ -21,7 +21,8 @@
     "journey": "Journey",
     "sponsors": "Sponsors",
     "menu": "Menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "adminLogin": "Admin login"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -627,5 +628,25 @@
     "match": "Matchday",
     "result": "Full time",
     "player": "Meet the squad"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Club admin",
+      "intro": "Sign in to manage players, news and photos.",
+      "email": "Email",
+      "password": "Password",
+      "showPassword": "Show password",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "errors": {
+        "summary": "Please check the highlighted fields.",
+        "required": "Please fill in this field.",
+        "invalidEmail": "Please enter a valid email address.",
+        "tooLong": "This is too long.",
+        "credentials": "The email or password is incorrect.",
+        "locked": "Too many wrong attempts. For your security this account is locked for 10 minutes.",
+        "server": "Signing in is not possible right now. Please try again in a few minutes."
+      }
+    }
   }
 }

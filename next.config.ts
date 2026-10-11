@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(dirname),
   },
+  // Payload's admin sends signed-out editors (and sign-outs) to its own login; use the club's
+  // instead. The query string (e.g. ?redirect=/admin/collections/news) is kept.
+  redirects: () =>
+    Promise.resolve([{ source: '/admin/login', destination: '/login', permanent: false }]),
 }
 
 export default withPayload(withNextIntl(nextConfig), { devBundleServerPackages: false })

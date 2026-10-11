@@ -21,6 +21,18 @@ const ITEMS: SiteNavigationItem[] = [
 ]
 
 describe('SiteHeader', () => {
+  it('offers editors a small, named sign-in link when given one', () => {
+    renderWithIntl(<SiteHeader items={ITEMS} loginHref="/login" />)
+
+    expect(screen.getByRole('link', { name: 'Admin login' })).toHaveAttribute('href', '/login')
+  })
+
+  it('has no sign-in link without one', () => {
+    renderWithIntl(<SiteHeader items={ITEMS} />)
+
+    expect(screen.queryByRole('link', { name: 'Admin login' })).toBeNull()
+  })
+
   it('links the club name to the home page', () => {
     renderWithIntl(<SiteHeader items={ITEMS} />)
 
