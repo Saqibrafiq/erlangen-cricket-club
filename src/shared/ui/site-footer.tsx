@@ -182,21 +182,7 @@ export function SiteFooter({
             </nav>
           </div>
           <div className="space-y-1 lg:text-right">
-            <p>
-              {t.rich('credit', {
-                author: (chunks) => (
-                  <a
-                    href={siteConfig.author.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold underline decoration-text-on-media/40 underline-offset-4 hover:decoration-text-on-media"
-                  >
-                    {chunks}
-                  </a>
-                ),
-                name: siteConfig.author.name,
-              })}
-            </p>
+            <p>{t('credit', { name: siteConfig.author.name })}</p>
             <p className="opacity-70">
               {t('codeCopyright', { year, author: siteConfig.author.name })}
             </p>

@@ -9,6 +9,7 @@ import {
   getPlayerPath,
   getPlayers,
   pickTeammates,
+  PLAYER_EDITING,
   PlayerProfileView,
   PLAYERS_PATH,
 } from '@/features/players'
@@ -76,6 +77,7 @@ export default async function PlayerProfilePage({ params }: PlayerProfilePagePro
           player={player}
           teammates={pickTeammates(squad, player.slug, TEAMMATES_SHOWN)}
           playersHref={PLAYERS_PATH}
+          editing={PLAYER_EDITING}
         />
       </div>
       <JsonLd

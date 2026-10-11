@@ -219,7 +219,7 @@
       "training": "Training"
     },
     "clubContent": "Vereinsname, Wappen, Fotos und Texte gehören dem Verein.",
-    "credit": "Website gestaltet und entwickelt von <author>{name}</author>",
+    "credit": "Website gestaltet und entwickelt von {name}",
     "codeCopyright": "Design und Code der Website © {year} {author}. Alle Rechte vorbehalten."
   },
   "legal": {
@@ -622,6 +622,91 @@
         "all-rounder": "Allrounder",
         "wicketkeeper": "Wicketkeeper"
       }
+    },
+    "roleSummary": {
+      "batter": "Batter",
+      "fast-bowler": "Fast Bowler",
+      "medium-pacer": "Medium Pacer",
+      "spinner": "Spinner",
+      "bowler": "Bowler",
+      "all-rounder": "Allrounder",
+      "wicketkeeper": "Wicketkeeper"
+    },
+    "editor": {
+      "add": "Spieler hinzufügen",
+      "edit": "{name} bearbeiten",
+      "delete": "{name} löschen",
+      "hidden": {
+        "summary": "{count, plural, one {# ausgeblendeter Spieler} other {# ausgeblendete Spieler}}",
+        "hint": "Erscheinen erst auf der Website, wenn ihre Einwilligung eingetragen ist."
+      },
+      "notice": {
+        "saved": "{name} gespeichert.",
+        "savedHidden": "{name} gespeichert. Erscheint erst auf der Website, wenn die Einwilligung eingetragen ist.",
+        "deleted": "{name} gelöscht."
+      },
+      "sheet": {
+        "addTitle": "Spieler hinzufügen",
+        "editTitle": "Spieler bearbeiten",
+        "description": "Änderungen sind sofort auf der Website sichtbar.",
+        "close": "Schließen",
+        "loading": "Spieler wird geladen …"
+      },
+      "form": {
+        "name": "Name",
+        "photo": "Foto",
+        "photoHint": "JPG, PNG oder WebP. Am besten: Kopf und Schultern, Hintergrund entfernt.",
+        "choosePhoto": "Foto auswählen",
+        "changePhoto": "Foto ändern",
+        "removePhoto": "Foto entfernen",
+        "noPhoto": "Noch kein Foto: Die Karte zeigt die Initialen.",
+        "role": "Rolle",
+        "roleHint": "Bowler erscheinen je nach Wurfstil als Fast Bowler, Medium Pacer oder Spinner.",
+        "notSet": "Nicht angegeben",
+        "batting": "Schlaghand",
+        "bowling": "Wurfstil",
+        "pace": "Tempo",
+        "spin": "Spin",
+        "office": "Vereinsamt",
+        "teams": "Teams",
+        "bio": "Kurze Vorstellung",
+        "bioHint": "Zwei oder drei Sätze, bis zu {max} Zeichen.",
+        "featured": "In der Aufstellung auf der Startseite zeigen",
+        "consent": "Einverstanden, auf der Website zu erscheinen",
+        "consentHint": "Name, Foto und Angaben sind nur öffentlich, wenn angehakt (DSGVO).",
+        "consentNote": "Wie die Einwilligung gegeben wurde",
+        "consentNoteHint": "Zum Beispiel: Mitgliedsantrag unterschrieben, 3. März 2026",
+        "save": "Speichern",
+        "saving": "Wird gespeichert …",
+        "cancel": "Abbrechen",
+        "removeBackground": "Hintergrund automatisch entfernen",
+        "removingBackground": "Hintergrund wird entfernt … Beim ersten Foto dauert es etwas länger.",
+        "backgroundRemoved": "Hintergrund entfernt und wie die anderen Kaderfotos zugeschnitten.",
+        "backgroundFailed": "Der Hintergrund konnte nicht automatisch entfernt werden. Das Foto wird so verwendet, wie es ist."
+      },
+      "errors": {
+        "summary": "Bitte prüfe die markierten Felder.",
+        "required": "Bitte fülle dieses Feld aus.",
+        "tooLong": "Das ist zu lang.",
+        "consentNoteRequired": "Bitte notiere, wie und wann der Spieler zugestimmt hat.",
+        "photoType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
+        "photoSize": "Dieses Foto ist zu groß. Bitte wähle ein kleineres.",
+        "duplicateName": "Ein Spieler mit diesem Namen existiert bereits.",
+        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+        "signIn": "Erneut anmelden",
+        "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal.",
+        "load": "Der Spieler konnte nicht geladen werden. Bitte versuche es noch einmal.",
+        "hiddenLoad": "Ausgeblendete Spieler konnten nicht geladen werden.",
+        "retry": "Erneut versuchen"
+      },
+      "deleteDialog": {
+        "title": "{name} entfernen?",
+        "description": "Profil und Foto werden von der Website gelöscht. Das lässt sich nicht rückgängig machen.",
+        "confirm": "Löschen",
+        "deleting": "Wird gelöscht …",
+        "cancel": "Abbrechen",
+        "error": "Löschen nicht möglich. Bitte versuche es noch einmal."
+      }
     }
   },
   "instagram": {
@@ -647,6 +732,18 @@
         "locked": "Zu viele Fehlversuche. Zu deiner Sicherheit ist das Konto für 10 Minuten gesperrt.",
         "server": "Die Anmeldung ist gerade nicht möglich. Bitte versuche es in ein paar Minuten noch einmal."
       }
+    },
+    "editorBar": {
+      "status": "Bearbeitungsmodus: Du kannst Inhalte hinzufügen, ändern und löschen",
+      "admin": "Verwaltung",
+      "signOut": "Abmelden"
+    },
+    "signedIn": {
+      "title": "Du bist angemeldet",
+      "intro": "Angemeldet als {email}.",
+      "editMode": "Bearbeitungsmodus öffnen",
+      "signOut": "Abmelden",
+      "expired": "Deine Sitzung ist gerade abgelaufen. Bitte melde dich ab und erneut an."
     }
   }
 }

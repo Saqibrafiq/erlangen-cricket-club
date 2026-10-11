@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { hasAdminAccount, isSignedIn } from './queries'
+import { getSignedInEmail, hasAdminAccount } from './queries'
 
 const payload = vi.hoisted(() => ({ auth: vi.fn(), count: vi.fn() }))
 
@@ -14,11 +14,13 @@ describe('auth queries', () => {
     payload.count.mockReset()
   })
 
-  it('knows whether the request carries a valid session', async () => {
-    payload.auth.mockResolvedValueOnce({ user: { id: 1 } }).mockResolvedValueOnce({ user: null })
+  it('names the signed-in editor, or nobody without a valid session', async () => {
+    payload.auth
+      .mockResolvedValueOnce({ user: { id: 1, email: 'saqib@example.com' } })
+      .mockResolvedValueOnce({ user: null })
 
-    expect(await isSignedIn()).toBe(true)
-    expect(await isSignedIn()).toBe(false)
+    expect(await getSignedInEmail()).toBe('saqib@example.com')
+    expect(await getSignedInEmail()).toBeNull()
   })
 
   it('reports whether the first admin account exists yet', async () => {

@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl'
 
+import type { PlayerEditing } from '../editor-types'
 import type { Player } from '../types'
 import { SquadBrowser } from './squad-browser'
 
@@ -16,6 +17,8 @@ export type PlayersViewProps = {
   joinHref: string
   /** Club numbers next to the title; left out until the season has fixtures. */
   facts: SquadFacts | null
+  /** Editing actions; the controls show only in a signed-in editor's browser. */
+  editing?: PlayerEditing
 }
 
 type FactProps = {
@@ -36,7 +39,7 @@ function Fact({ label, value }: FactProps) {
 }
 
 /** The squad page: title with the club's numbers, then the searchable, filterable squad. */
-export function PlayersView({ players, joinHref, facts }: PlayersViewProps) {
+export function PlayersView({ players, joinHref, facts, editing }: PlayersViewProps) {
   const t = useTranslations('players')
 
   return (
@@ -57,7 +60,7 @@ export function PlayersView({ players, joinHref, facts }: PlayersViewProps) {
         </dl>
       </header>
 
-      <SquadBrowser players={players} joinHref={joinHref} />
+      <SquadBrowser players={players} joinHref={joinHref} editing={editing} />
     </div>
   )
 }

@@ -74,17 +74,16 @@ describe('SiteFooter', () => {
     )
   })
 
-  it('separates the club’s copyright from the website’s, crediting its author', () => {
+  it('separates the club’s copyright from the website’s, crediting its author by name', () => {
     renderWithIntl(<SiteFooter {...PROPS} />)
 
     expect(screen.getByText('© 2026 Erlangen Cricket Club')).toBeInTheDocument()
     expect(
       screen.getByText(/Club name, crest, photos and texts belong to the club/),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Saqib Rafiq' })).toHaveAttribute(
-      'href',
-      'https://github.com/Saqibrafiq',
-    )
+    expect(screen.getByText('Website designed and built by Saqib Rafiq')).toBeInTheDocument()
+    // The name only, without a link to a profile.
+    expect(screen.queryByRole('link', { name: 'Saqib Rafiq' })).toBeNull()
     expect(
       screen.getByText('Website design and code © 2026 Saqib Rafiq. All rights reserved.'),
     ).toBeInTheDocument()

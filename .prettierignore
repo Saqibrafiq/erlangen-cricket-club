@@ -10,3 +10,6 @@ CHANGELOG.md
 src/cms/migrations/
 # Vendored Claude Code skills (third-party, kept as published)
 .claude/skills/
+# ONNX runtime copied from node_modules and the vendored model, kept as published (ADR-0016)
+public/onnx/
+public/models/

@@ -35,16 +35,21 @@ export function SignInForm({ action, redirectTo }: SignInFormProps) {
     if (state.status === 'rejected') {
       passwordRef.current?.focus()
     }
+    if (state.status === 'success') {
+      window.location.assign(state.redirectTo)
+    }
   }, [state])
 
   const fieldErrors = state.status === 'invalid' ? state.fieldErrors : {}
-  const email = state.status === 'idle' ? undefined : state.email
+  const email = state.status === 'idle' || state.status === 'success' ? undefined : state.email
   const fieldId = (field: SignInField) => `${id}-${field}`
   const errorFor = (field: SignInField) => {
     const code = fieldErrors[field]
     return code ? t(`errors.${code}`) : undefined
   }
   const alert = getAlert(state)
+  // Stays busy after success while the next page loads.
+  const isBusy = isPending || state.status === 'success'
 
   return (
     <form ref={formRef} action={formAction} noValidate className="space-y-5">
@@ -107,8 +112,8 @@ export function SignInForm({ action, redirectTo }: SignInFormProps) {
         )}
       </FormField>
 
-      <Button type="submit" size="lg" disabled={isPending} aria-busy={isPending} className="w-full">
-        {isPending ? t('submitting') : t('submit')}
+      <Button type="submit" size="lg" disabled={isBusy} aria-busy={isBusy} className="w-full">
+        {isBusy ? t('submitting') : t('submit')}
       </Button>
     </form>
   )

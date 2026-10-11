@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { siteConfig } from '@/shared/config/site'
 
-import { splitName } from '../domain/players'
+import { getRoleSummary, splitName } from '../domain/players'
 import { getPlayerPath } from '../paths'
 import type { Player } from '../types'
 import { PlayerPortrait } from './player-portrait'
@@ -25,9 +25,10 @@ const PHOTO_SIZES =
 export function PlayerCard({ player, priority = false }: PlayerCardProps) {
   const t = useTranslations('players')
   const { firstName, lastName } = splitName(player.name)
+  const roleSummary = getRoleSummary(player)
   const role = player.clubOffice
     ? t(`office.${player.clubOffice}`)
-    : player.playingRole && t(`playingRole.${player.playingRole}`)
+    : roleSummary && t(`roleSummary.${roleSummary}`)
 
   return (
     <article className="group relative isolate aspect-3/4 overflow-hidden rounded-2xl bg-linear-to-b from-brand-surface to-media-overlay text-text-on-media shadow-sm transition-shadow duration-300 hover:shadow-xl has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring sm:rounded-3xl">

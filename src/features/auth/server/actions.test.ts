@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { INITIAL_SIGN_IN_STATE } from '../sign-in-state'
-import { signInAction } from './actions'
+import { enterEditModeAction, signInAction, signOutAction } from './actions'
 
 const mocks = vi.hoisted(() => {
   class AuthenticationError extends Error {}
@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => {
     LockedAuth,
     payload: {
       login: vi.fn(),
+      auth: vi.fn(),
       logger: { error: vi.fn() },
       config: { cookiePrefix: 'payload' },
       collections: {
@@ -22,9 +23,8 @@ const mocks = vi.hoisted(() => {
       },
     },
     setCookie: vi.fn(),
-    redirect: vi.fn((path: string) => {
-      throw new Error(`NEXT_REDIRECT ${path}`)
-    }),
+    deleteCookie: vi.fn(),
+    logout: vi.fn(),
   }
 })
 
@@ -35,8 +35,11 @@ vi.mock('payload', () => ({
   LockedAuth: mocks.LockedAuth,
 }))
 vi.mock('payload/shared', () => ({ getCookieExpiration: () => new Date('2026-10-11T20:00:00Z') }))
-vi.mock('next/headers', () => ({ cookies: () => Promise.resolve({ set: mocks.setCookie }) }))
-vi.mock('next/navigation', () => ({ redirect: mocks.redirect }))
+vi.mock('next/headers', () => ({
+  cookies: () => Promise.resolve({ set: mocks.setCookie, delete: mocks.deleteCookie }),
+  headers: () => Promise.resolve(new Headers()),
+}))
+vi.mock('@payloadcms/next/auth', () => ({ logout: mocks.logout }))
 
 function formData(fields: Record<string, string>): FormData {
   const data = new FormData()
@@ -53,38 +56,52 @@ describe('signInAction', () => {
     mocks.payload.login.mockReset()
     mocks.payload.logger.error.mockReset()
     mocks.setCookie.mockReset()
-    mocks.redirect.mockClear()
   })
 
-  it('sets the admin session cookie and opens the requested admin page', async () => {
+  it('sets the session and edit-mode cookies and returns the page to open', async () => {
     mocks.payload.login.mockResolvedValue({ token: 'jwt-token' })
 
-    await expect(
-      signInAction(
-        INITIAL_SIGN_IN_STATE,
-        formData({ ...VALID, redirect: '/admin/collections/news' }),
-      ),
-    ).rejects.toThrow('NEXT_REDIRECT /admin/collections/news')
+    const state = await signInAction(
+      INITIAL_SIGN_IN_STATE,
+      formData({ ...VALID, redirect: '/admin/collections/news' }),
+    )
 
+    expect(state).toEqual({ status: 'success', redirectTo: '/admin/collections/news' })
     expect(mocks.payload.login).toHaveBeenCalledWith({ collection: 'users', data: VALID })
-    expect(mocks.setCookie).toHaveBeenCalledWith({
-      name: 'payload-token',
-      value: 'jwt-token',
-      httpOnly: true,
+    const shared = {
       path: '/',
       sameSite: 'lax',
       secure: true,
       domain: undefined,
       expires: new Date('2026-10-11T20:00:00Z'),
+    }
+    expect(mocks.setCookie).toHaveBeenCalledWith({
+      ...shared,
+      name: 'payload-token',
+      value: 'jwt-token',
+      httpOnly: true,
+    })
+    expect(mocks.setCookie).toHaveBeenCalledWith({
+      ...shared,
+      name: 'ecc-editor',
+      value: '1',
+      httpOnly: false,
     })
   })
 
-  it('never redirects outside the admin', async () => {
+  it('opens the website when no page was requested, and never another site', async () => {
     mocks.payload.login.mockResolvedValue({ token: 'jwt-token' })
 
-    await expect(
-      signInAction(INITIAL_SIGN_IN_STATE, formData({ ...VALID, redirect: 'https://evil.example' })),
-    ).rejects.toThrow('NEXT_REDIRECT /admin')
+    expect(await signInAction(INITIAL_SIGN_IN_STATE, formData(VALID))).toEqual({
+      status: 'success',
+      redirectTo: '/',
+    })
+    expect(
+      await signInAction(
+        INITIAL_SIGN_IN_STATE,
+        formData({ ...VALID, redirect: 'https://evil.example' }),
+      ),
+    ).toEqual({ status: 'success', redirectTo: '/' })
   })
 
   it('returns field errors without asking Payload', async () => {
@@ -130,6 +147,37 @@ describe('signInAction', () => {
     const state = await signInAction(INITIAL_SIGN_IN_STATE, formData(VALID))
 
     expect(state).toEqual({ status: 'error', email: VALID.email })
+    expect(mocks.setCookie).not.toHaveBeenCalled()
+  })
+})
+
+describe('signOutAction', () => {
+  it("ends Payload's session and removes the edit-mode cookie", async () => {
+    await signOutAction()
+
+    expect(mocks.logout).toHaveBeenCalledWith({ config: {} })
+    expect(mocks.deleteCookie).toHaveBeenCalledWith('ecc-editor')
+  })
+})
+
+describe('enterEditModeAction', () => {
+  beforeEach(() => {
+    mocks.setCookie.mockReset()
+  })
+
+  it('switches edit mode on next to a valid session', async () => {
+    mocks.payload.auth.mockResolvedValue({ user: { id: 1 } })
+
+    expect(await enterEditModeAction()).toEqual({ status: 'ok' })
+    expect(mocks.setCookie).toHaveBeenCalledWith(
+      expect.objectContaining({ name: 'ecc-editor', value: '1' }),
+    )
+  })
+
+  it('refuses without a session', async () => {
+    mocks.payload.auth.mockResolvedValue({ user: null })
+
+    expect(await enterEditModeAction()).toEqual({ status: 'unauthorized' })
     expect(mocks.setCookie).not.toHaveBeenCalled()
   })
 })

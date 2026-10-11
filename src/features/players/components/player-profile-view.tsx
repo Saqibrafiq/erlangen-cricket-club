@@ -3,8 +3,10 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { siteConfig } from '@/shared/config/site'
 
-import { hasPlayingDetails, splitName } from '../domain/players'
+import { getRoleSummary, hasPlayingDetails, splitName } from '../domain/players'
+import type { PlayerEditing } from '../editor-types'
 import type { Player } from '../types'
+import { ProfileEditActions } from './editor/profile-edit-actions'
 import { PlayerCard } from './player-card'
 import { PlayerPortrait } from './player-portrait'
 
@@ -13,6 +15,8 @@ export type PlayerProfileViewProps = {
   /** Other players for the "More players" strip. */
   teammates: readonly Player[]
   playersHref: string
+  /** Editing actions; the controls show only in a signed-in editor's browser. */
+  editing?: PlayerEditing
 }
 
 // Derived from scorecards once they are recorded (CLAUDE.md §4.1); shown empty until then.
@@ -46,18 +50,24 @@ function StatTile({ label, value, srValue }: StatTileProps) {
   )
 }
 
-function ProfileHeader({ player }: { player: Player }) {
+type ProfileHeaderProps = Pick<PlayerProfileViewProps, 'player' | 'editing' | 'playersHref'>
+
+function ProfileHeader({ player, editing, playersHref }: ProfileHeaderProps) {
   const t = useTranslations('players')
   const { firstName, lastName } = splitName(player.name)
+  const roleSummary = getRoleSummary(player)
   const tags = [
     player.clubOffice && t(`office.${player.clubOffice}`),
-    player.playingRole && t(`playingRole.${player.playingRole}`),
+    roleSummary && t(`roleSummary.${roleSummary}`),
     ...player.teams.map((team) => team.name),
   ].filter(Boolean)
 
   return (
     <header className="relative isolate overflow-hidden rounded-3xl bg-linear-to-br from-brand-surface to-media-overlay text-text-on-media">
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-dots-on-media" />
+      {editing && (
+        <ProfileEditActions player={player} editing={editing} playersHref={playersHref} />
+      )}
       <span
         aria-hidden="true"
         className="absolute -top-4 right-4 -z-10 origin-top-right font-display text-9xl leading-none font-bold tracking-tighter text-text-on-media/10 select-none lg:scale-150"
@@ -108,13 +118,18 @@ function ProfileHeader({ player }: { player: Player }) {
 }
 
 /** A player's profile: header with photo and name, playing details, career stats, more players. */
-export function PlayerProfileView({ player, teammates, playersHref }: PlayerProfileViewProps) {
+export function PlayerProfileView({
+  player,
+  teammates,
+  playersHref,
+  editing,
+}: PlayerProfileViewProps) {
   const t = useTranslations('players')
 
   return (
     <div className="space-y-10 sm:space-y-14">
       <article className="space-y-6">
-        <ProfileHeader player={player} />
+        <ProfileHeader player={player} editing={editing} playersHref={playersHref} />
 
         {hasPlayingDetails(player) && (
           <section
