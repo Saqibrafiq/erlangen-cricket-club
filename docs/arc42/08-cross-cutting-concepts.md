@@ -61,6 +61,12 @@
 - **Third-party content:** nothing from another server loads without the visitor asking: the ground map is a two-click OpenStreetMap embed ([ADR-0008](09-architecture-decisions/0008-maps-load-on-request.md)); fonts are self-hosted.
 - **Public forms:** data minimisation (only what is needed to reply), server-side Zod validation, a honeypot instead of a captcha (no cookies, no third-party script), personal data readable by signed-in editors only. Form fields use `shared/ui/FormField` (label, hint and error wired with `aria-describedby`; invalid controls get `aria-invalid`); after a failed submit, focus moves to the first invalid field. See [ADR-0007](09-architecture-decisions/0007-contact-messages-stored-in-cms.md).
 
+- **Editor sign-in** ([ADR-0014](09-architecture-decisions/0014-club-sign-in-page-on-payload-auth.md)):
+  - `/login` (`features/auth`) signs in through Payload's Local API and sets Payload's own session cookie (`payload-token`: `HttpOnly`, `SameSite=Lax`, `Secure` in production, 2 h);
+  - Payload locks an account for 10 minutes after 5 wrong passwords, and the error never says whether the email or the password was wrong;
+  - `?redirect=` only accepts admin paths, so the login can't be used as an open redirect;
+  - Payload's `/admin/login` forwards to `/login`;
+  - the header's admin icon is a static link, so no page reads the session cookie and the public pages stay static.
 - Payload access control per collection (`src/cms/access/`); public read only where content is public.
 - JSON-LD output escapes `<` to prevent script injection from CMS content.
 - Secrets only in `.env.local` / Vercel environment variables.
