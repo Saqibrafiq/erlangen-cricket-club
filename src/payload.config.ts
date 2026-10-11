@@ -69,6 +69,9 @@ export default buildConfig({
     // Disabled locally without a token, so uploads go to ./media in development.
     vercelBlobStorage({
       enabled: env.BLOB_READ_WRITE_TOKEN !== undefined,
+      // Adds the plugin's columns even when disabled, so the schema (and every migration generated
+      // locally) is the same with and without Blob storage.
+      alwaysInsertFields: true,
       collections: { [media.slug]: true, [documents.slug]: true },
       token: env.BLOB_READ_WRITE_TOKEN,
     }),
