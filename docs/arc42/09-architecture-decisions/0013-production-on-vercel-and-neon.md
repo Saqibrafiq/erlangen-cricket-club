@@ -27,7 +27,7 @@ The site goes live. `CLAUDE.md` §3 fixes the platforms (Vercel Hobby, Neon, Ver
 
 - `vercel.json`:
   - build command `pnpm db:migrate && pnpm build`;
-  - `ignoreCommand` skips every non-production build;
+  - `ignoreCommand` skips every build of a branch other than `main` (it checks `VERCEL_GIT_COMMIT_REF`; `VERCEL_ENV` is not set to `production` during this step, which skipped every build in the first version);
   - functions in `fra1` (Frankfurt), next to the Neon database in `aws-eu-central-1`.
 - Vercel's Git integration deploys `main`. CI on pull requests is the gate: branch protection requires green CI before merging.
 - `prodMigrations` stays as a second line of defence, e.g. after a rollback to an older deployment.
