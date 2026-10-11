@@ -17,16 +17,16 @@ Everything here uses free tiers; no credit card is needed.
 
 1. Sign up at [vercel.com](https://vercel.com) with GitHub (Hobby plan).
 2. **Add New → Project**, import `Saqibrafiq/erlangen-cricket-club`. `vercel.json` already sets the framework, install and build commands, and the region. Don't deploy yet: the first build fails without the variables from step 3.
-3. **Storage → Create → Blob**, name it `ecc-media`, connect it to the project. This sets `BLOB_READ_WRITE_TOKEN` automatically.
+3. **Storage → Create → Blob**, name it `ecc-media`, access **Public**, no custom variable prefix, connect it to the project. The connection only adds `BLOB_STORE_ID`; copy the `vercel_blob_rw_…` token from the store page (.env.local tab) for step 3.
 4. **Settings → Functions → Function Region:** check that it shows Frankfurt (`fra1`).
 
-## 3. Environment variables (Project → Settings → Environment Variables, scope "Production")
+## 3. Environment variables (Project → Settings → Environments → Production → Environment Variables)
 
 | Variable                       | Value                                                   |
 | ------------------------------ | ------------------------------------------------------- |
 | `DATABASE_URI`                 | Neon pooled connection string                           |
 | `PAYLOAD_SECRET`               | `openssl rand -hex 32` (new value, never the local one) |
-| `BLOB_READ_WRITE_TOKEN`        | set by the Blob store in step 2                         |
+| `BLOB_READ_WRITE_TOKEN`        | the store token from step 2 (add it by hand, Secret)    |
 | `ENABLE_EXPERIMENTAL_COREPACK` | `1`, so Vercel uses the pnpm version in `package.json`  |
 
 Leave `NEXT_PUBLIC_SITE_URL` unset: the site uses the production domain automatically. Set it only to force a specific origin.
@@ -48,7 +48,7 @@ pnpm db:seed
 Move-Item ..\ecc-uploads-backup\* .
 ```
 
-Close the terminal afterwards, so later commands don't hit production.
+Close the terminal afterwards, so later commands don't hit production. Don't delete anything in the Blob store while the seed runs: the database would point at missing files.
 
 ## 5. First deployment
 
@@ -66,7 +66,7 @@ Close the terminal afterwards, so later commands don't hit production.
 
 ## 7. Google
 
-1. [Google Search Console](https://search.google.com/search-console) → Add property → **URL prefix** → the production URL. Verify with the HTML tag method.
+1. [Google Search Console](https://search.google.com/search-console) → Add a website → **URL prefix** → the production URL. Verify with the HTML tag method: the token is `siteConfig.googleSiteVerification`, rendered by the root layout.
 2. **Sitemaps** → submit `sitemap.xml`.
 3. **URL inspection** → the home page → "Request indexing".
 4. Optional: a [Google Business Profile](https://business.google.com) for the club (sports club, Erlangen). Link it to the site; this does most for the "Erlangen Cricket Club" search on Maps.
