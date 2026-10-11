@@ -21,7 +21,8 @@
     "journey": "Geschichte",
     "sponsors": "Sponsoren",
     "menu": "Menü",
-    "closeMenu": "Menü schließen"
+    "closeMenu": "Menü schließen",
+    "adminLogin": "Admin-Anmeldung"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -627,5 +628,25 @@
     "match": "Spieltag",
     "result": "Spielende",
     "player": "Unser Kader"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Vereinsverwaltung",
+      "intro": "Melde dich an, um Spieler, News und Fotos zu verwalten.",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "showPassword": "Passwort anzeigen",
+      "submit": "Anmelden",
+      "submitting": "Anmeldung läuft …",
+      "errors": {
+        "summary": "Bitte prüfe die markierten Felder.",
+        "required": "Bitte fülle dieses Feld aus.",
+        "invalidEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+        "tooLong": "Das ist zu lang.",
+        "credentials": "E-Mail oder Passwort ist falsch.",
+        "locked": "Zu viele Fehlversuche. Zu deiner Sicherheit ist das Konto für 10 Minuten gesperrt.",
+        "server": "Die Anmeldung ist gerade nicht möglich. Bitte versuche es in ein paar Minuten noch einmal."
+      }
+    }
   }
 }

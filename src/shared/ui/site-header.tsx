@@ -1,3 +1,4 @@
+import { CircleUserRound } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
@@ -19,13 +20,15 @@ const LOGO_HEIGHT = 192
 
 export type SiteHeaderProps = {
   items: readonly SiteNavigationItem[]
+  /** Editors' sign-in page; shown as a small icon next to the language switch. */
+  loginHref?: string
 }
 
 /**
  * One slim sticky row: crest and club name (crest only on phones), navigation, languages. From xl the navigation sits in the row; below
  * that it moves into the menu panel, so the header never wraps (nine items, long German labels).
  */
-export function SiteHeader({ items }: SiteHeaderProps) {
+export function SiteHeader({ items, loginHref }: SiteHeaderProps) {
   const t = useTranslations('navigation')
 
   return (
@@ -64,6 +67,16 @@ export function SiteHeader({ items }: SiteHeaderProps) {
         </nav>
         <div className="flex items-center gap-1">
           <LocaleSwitcher />
+          {loginHref && (
+            <Link
+              href={loginHref}
+              aria-label={t('adminLogin')}
+              title={t('adminLogin')}
+              className="inline-flex size-11 items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-muted hover:text-text-default"
+            >
+              <CircleUserRound aria-hidden="true" className="size-5" />
+            </Link>
+          )}
           <div className="xl:hidden">
             <MobileMenu items={items} />
           </div>

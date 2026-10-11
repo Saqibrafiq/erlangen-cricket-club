@@ -5,6 +5,9 @@ export const users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: true,
+  auth: {
+    // The session cookie only travels over HTTPS in production (localhost counts as secure too).
+    cookies: { secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' },
+  },
   fields: [],
 }
