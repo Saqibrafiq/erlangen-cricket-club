@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Pr
       locale,
     },
     twitter: { card: 'summary_large_image' },
+    verification: { google: siteConfig.googleSiteVerification },
   }
 }
 
