@@ -63,6 +63,10 @@ src/
   i18n/         locales, routing, messages
 ```
 
+## Deployment
+
+Production runs on Vercel (Frankfurt) with a Neon Postgres database and Vercel Blob for media. Merging into `main` deploys it. Setup and operations: [`docs/deployment.md`](docs/deployment.md).
+
 ## Contributing
 
 Trunk-based: short-lived branches (`type/short-description`) → PR → squash merge. Commits follow [Conventional Commits](https://www.conventionalcommits.org/) and are checked by commitlint; staged files are linted and formatted on commit. Project rules live in [`CLAUDE.md`](CLAUDE.md).
