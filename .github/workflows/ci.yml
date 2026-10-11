@@ -18,6 +18,9 @@ env:
   PAYLOAD_SECRET: ci-only-secret-not-used-in-any-deployment-000000
   NEXT_PUBLIC_SITE_URL: http://localhost:3000
   NEXT_TELEMETRY_DISABLED: '1'
+  # Test admin, created by the seed in the throwaway CI database only (seed-e2e-user.ts).
+  E2E_ADMIN_EMAIL: e2e-admin@example.com
+  E2E_ADMIN_PASSWORD: ci-only-password-not-used-anywhere-else
 
 jobs:
   quality:
