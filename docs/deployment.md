@@ -40,8 +40,12 @@ The seed imports the 2026 results, standings, news, players and photos, and the 
 $env:DATABASE_URI = '<Neon pooled connection string>'
 $env:PAYLOAD_SECRET = '<the production secret>'
 $env:BLOB_READ_WRITE_TOKEN = '<the Blob token>'
+# Local uploads would make Payload rename every file it sends to Blob; the seed refuses to run.
+New-Item -ItemType Directory -Force ..\ecc-uploads-backup
+Move-Item media, documents ..\ecc-uploads-backup\ -ErrorAction SilentlyContinue
 pnpm db:migrate
 pnpm db:seed
+Move-Item ..\ecc-uploads-backup\* .
 ```
 
 Close the terminal afterwards, so later commands don't hit production.
