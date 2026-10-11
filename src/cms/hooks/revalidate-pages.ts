@@ -9,7 +9,9 @@ import type {
 // The header menu (in the locale layout) lists competitions, so most content affects every
 // localised page — not just one route. Revalidating the layout covers all of them; at club
 // scale this is cheaper to reason about than per-route tags.
-const LOCALIZED_ROOT = '/[locale]'
+// The layout's route, including its route group: without "(frontend)" nothing is invalidated and
+// prerendered pages keep serving their build-time content.
+const LOCALIZED_ROOT = '/(frontend)/[locale]'
 
 /** Set `context: { disableRevalidate: true }` when writing outside a Next.js request (seeds, scripts). */
 export type RevalidateContext = { disableRevalidate?: boolean }

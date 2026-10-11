@@ -35,7 +35,7 @@ const config: StorybookConfig = {
         ...viteConfig.resolve,
         alias: [
           {
-            find: /^\.\/server\/(queries|actions)$/,
+            find: /^\.\/server\/(queries|actions|editing)$/,
             replacement: path.join(dirname, 'server-stub.ts'),
           },
           ...existingAliases,

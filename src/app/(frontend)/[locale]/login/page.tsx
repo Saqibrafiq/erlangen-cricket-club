@@ -4,12 +4,15 @@ import { getTranslations } from 'next-intl/server'
 
 import {
   CREATE_FIRST_USER_PATH,
+  enterEditModeAction,
   getSafeRedirectPath,
+  getSignedInEmail,
   hasAdminAccount,
-  isSignedIn,
   REDIRECT_PARAM,
+  SignedInView,
   signInAction,
   SignInView,
+  signOutAction,
 } from '@/features/auth'
 import { resolveLocale } from '@/i18n/locale'
 
@@ -34,9 +37,17 @@ export default async function LoginPage({ params, searchParams }: PageProps<'/[l
   if (!(await hasAdminAccount())) {
     redirect(CREATE_FIRST_USER_PATH)
   }
-  // Already signed in: the admin icon is a shortcut straight to the admin.
-  if (await isSignedIn()) {
-    redirect(redirectTo)
+  // Already signed in: offer edit mode (the hint cookie may be missing) or signing out.
+  const email = await getSignedInEmail()
+  if (email) {
+    return (
+      <SignedInView
+        email={email}
+        redirectTo={redirectTo}
+        enterEditMode={enterEditModeAction}
+        signOut={signOutAction}
+      />
+    )
   }
 
   return <SignInView action={signInAction} redirectTo={redirectTo} />

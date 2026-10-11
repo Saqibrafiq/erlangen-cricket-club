@@ -13,6 +13,8 @@ export const buttonVariants = cva(
         secondary:
           'border border-border-default bg-surface-default text-text-default hover:bg-surface-muted',
         ghost: 'text-text-default hover:bg-surface-muted',
+        /** Destructive actions such as deleting; the colours swap in dark mode, keeping contrast. */
+        danger: 'bg-status-danger-text text-status-danger-surface hover:bg-status-danger-text/90',
         /** On photos and dark bands (--color-media-overlay). */
         'on-media': 'bg-text-on-media text-media-overlay hover:bg-text-on-media/90',
         'on-media-outline':

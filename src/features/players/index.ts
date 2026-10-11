@@ -3,6 +3,8 @@ export { PlayerProfileView, type PlayerProfileViewProps } from './components/pla
 export { PlayersSkeleton } from './components/players-skeleton'
 export { PlayersView, type PlayersViewProps, type SquadFacts } from './components/players-view'
 export { buildPlayerJsonLd, buildPlayersJsonLd, pickTeammates } from './domain/players'
+export type { PlayerEditing, PlayerEditorActions } from './editor-types'
 export { getPlayerPath, PLAYERS_PATH } from './paths'
+export { PLAYER_EDITING } from './server/editing'
 export { getPlayer, getPlayerEntries, getPlayers } from './server/queries'
 export type { Player } from './types'

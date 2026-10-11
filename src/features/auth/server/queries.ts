@@ -2,11 +2,14 @@ import config from '@payload-config'
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 
-/** True when the request carries a valid admin session. Reads cookies, so the page renders per request. */
-export async function isSignedIn(): Promise<boolean> {
+/**
+ * The signed-in editor's email, or `null` without a valid session. Reads cookies, so the page
+ * renders per request.
+ */
+export async function getSignedInEmail(): Promise<string | null> {
   const payload = await getPayload({ config })
   const { user } = await payload.auth({ headers: await headers() })
-  return user !== null
+  return user?.email ?? null
 }
 
 /**

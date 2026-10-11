@@ -35,7 +35,7 @@ Chosen option 1.
   - `signInAction` validates the input with Zod, calls `payload.login`, and sets the `payload-token` cookie with the name, lifetime and flags that Payload's admin reads;
   - `isSignedIn` lets `/login` send a signed-in editor straight on.
 - The users collection sets the session cookie to `Secure` in production. Payload's default is `false`.
-- `?redirect=` only accepts paths inside `/admin` (`getSafeRedirectPath`), so the login can't be used as an open redirect.
+- `?redirect=` only accepts paths on this site (`getSafeRedirectPath`), so the login can't be used as an open redirect. (Admin paths only at first; widened by ADR-0015.)
 - While no account exists, `/login` sends visitors on to Payload's `/admin/create-first-user`. Payload's own login page did this check, and it is no longer reached.
 - `next.config.ts` forwards `/admin/login`, including its query, to `/login`. Signed-out editors and sign-outs therefore always land on the club page.
 - The header shows a small, named icon (`Admin login`) that always links to `/login`. It doesn't change when someone is signed in: showing that would mean reading the cookie in the root layout, which makes every public page dynamic.
@@ -46,5 +46,5 @@ Chosen option 1.
 - Good: Payload's audited authentication is unchanged (hashing, tokens, lockout), and editors get a branded, bilingual and accessible entry point.
 - Good: public pages stay static; only `/login` renders per request.
 - Bad: two login implementations exist side by side. Payload's own page is unreachable, but `/admin/create-first-user` and password changes still use Payload's UI.
-- Bad: the header doesn't show a signed-in state. Signing out happens in the admin.
+- Bad: the header doesn't show a signed-in state. Superseded in part by [ADR-0015](0015-edit-content-on-the-website.md): editors now land on the website in edit mode, with an admin bar for signing out.
 - Follow-up: "Forgot password" needs an email adapter. Until one exists, an admin resets passwords in the admin.

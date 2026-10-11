@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
 import {
-  ADMIN_PATH,
   EMAIL_MAX_LENGTH,
   getSafeRedirectPath,
+  HOME_PATH,
   parseSignIn,
   PASSWORD_MAX_LENGTH,
 } from './sign-in'
@@ -63,26 +63,26 @@ describe('parseSignIn', () => {
 })
 
 describe('getSafeRedirectPath', () => {
-  it('keeps the admin home and pages inside the admin', () => {
-    expect(getSafeRedirectPath('/admin')).toBe('/admin')
+  it('keeps pages of this site, the admin included', () => {
+    expect(getSafeRedirectPath('/players')).toBe('/players')
+    expect(getSafeRedirectPath('/de/players/saqib-rafiq')).toBe('/de/players/saqib-rafiq')
     expect(getSafeRedirectPath('/admin/collections/news?limit=10')).toBe(
       '/admin/collections/news?limit=10',
     )
   })
 
-  it('falls back to the admin for anything else', () => {
+  it('falls back to the home page for anything that could leave the site', () => {
     for (const target of [
       undefined,
-      ['/admin/collections'],
+      ['/players'],
       '',
-      '/players',
-      '/administrator',
+      'players',
       'https://evil.example/admin',
       '//evil.example/admin',
       '/admin//evil.example',
-      '/admin/\\evil.example',
+      '/\\evil.example',
     ]) {
-      expect(getSafeRedirectPath(target)).toBe(ADMIN_PATH)
+      expect(getSafeRedirectPath(target)).toBe(HOME_PATH)
     }
   })
 })

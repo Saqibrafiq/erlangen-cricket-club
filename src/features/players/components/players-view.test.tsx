@@ -1,8 +1,11 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { EDIT_MODE_COOKIE } from '@/shared/config/edit-mode'
 import { renderWithIntl } from '@/shared/testing/render-with-intl'
+
+import type { PlayerEditing } from '../editor-types'
 
 import { createSquad, PLAYER, PLAYER_WITH_DETAILS, PLAYER_WITHOUT_PHOTO } from '../test-factories'
 import { PlayersView, type SquadFacts } from './players-view'
@@ -111,5 +114,41 @@ describe('PlayersView', () => {
     expect(screen.getByText('Our squad will be introduced here soon.')).toBeVisible()
     expect(screen.queryByRole('searchbox')).toBeNull()
     expect(squad().getByRole('link', { name: 'Join the squad' })).toBeVisible()
+  })
+})
+
+describe('PlayersView in edit mode', () => {
+  const editing: PlayerEditing = {
+    loginHref: '/login',
+    actions: {
+      getEditorData: vi.fn(),
+      getHiddenPlayers: vi.fn(() => Promise.resolve({ status: 'ok' as const, data: [] })),
+      savePlayer: vi.fn(),
+      deletePlayer: vi.fn(),
+    },
+  }
+
+  afterEach(() => {
+    document.cookie = `${EDIT_MODE_COOKIE}=; path=/; max-age=0`
+  })
+
+  it('shows no editing controls to visitors, even when the page has them', () => {
+    renderWithIntl(
+      <PlayersView players={[PLAYER]} joinHref="/membership" facts={FACTS} editing={editing} />,
+    )
+
+    expect(screen.queryByRole('button', { name: 'Add player' })).toBeNull()
+    expect(screen.queryByRole('button', { name: `Edit ${PLAYER.name}` })).toBeNull()
+  })
+
+  it('offers add, edit and delete to a signed-in editor', async () => {
+    document.cookie = `${EDIT_MODE_COOKIE}=1; path=/`
+    renderWithIntl(
+      <PlayersView players={[PLAYER]} joinHref="/membership" facts={FACTS} editing={editing} />,
+    )
+
+    expect(await screen.findByRole('button', { name: 'Add player' })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: `Edit ${PLAYER.name}` })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: `Delete ${PLAYER.name}` })).toBeInTheDocument()
   })
 })
