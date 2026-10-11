@@ -80,6 +80,8 @@ Close the terminal afterwards, so later commands don't hit production. Don't del
 
 ## Day to day
 
+- **Background removal files:** `pnpm dev` and `pnpm build` copy the ONNX runtime into `public/onnx/` first (generated, not committed); the model lives in `public/models/` (ADR-0016). Nothing to configure on Vercel.
+
 - **Deploy:** merge a PR into `main`. Vercel migrates and builds. Pull requests get no preview (ADR-0013).
 - **Roll back:** Vercel → Deployments → a previous one → "Promote to Production". Migrations are additive, so the older code still works with the newer schema.
 - **New migration:** `pnpm db:migrate:create <name>` locally. Keep it additive: add a column now, remove the old one in a later release.

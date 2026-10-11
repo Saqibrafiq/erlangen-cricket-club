@@ -62,6 +62,25 @@ describe('SignInForm', () => {
     expect(screen.getByLabelText('Email')).toHaveValue('admin@example.com')
   })
 
+  it('loads the requested page in full after signing in, staying busy meanwhile', async () => {
+    const assign = vi.fn()
+    vi.stubGlobal('location', { assign })
+    renderWithIntl(
+      <SignInForm
+        action={respondWith({ status: 'success', redirectTo: '/players' })}
+        redirectTo="/players"
+      />,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: 'Sign in' }))
+
+    await waitFor(() => {
+      expect(assign).toHaveBeenCalledWith('/players')
+    })
+    expect(screen.getByRole('button', { name: 'Signing in…' })).toBeDisabled()
+    vi.unstubAllGlobals()
+  })
+
   it('explains a locked account and server errors', async () => {
     const { unmount } = renderWithIntl(
       <SignInForm

@@ -6,6 +6,7 @@ import {
   buildPlayerJsonLd,
   buildPlayersJsonLd,
   getInitials,
+  getRoleSummary,
   hasPlayingDetails,
   pickTeammates,
   searchPlayers,
@@ -145,5 +146,37 @@ describe('buildPlayerJsonLd', () => {
       image: 'https://cdn.example.org/jonas.jpg',
       memberOf: { '@type': 'SportsTeam', name: CLUB.name, sport: 'Cricket', url: CLUB.url },
     })
+  })
+})
+
+describe('getRoleSummary', () => {
+  it('names bowlers by how they bowl', () => {
+    expect(getRoleSummary({ playingRole: 'bowler', bowlingStyle: 'right-arm-fast' })).toBe(
+      'fast-bowler',
+    )
+    expect(getRoleSummary({ playingRole: 'bowler', bowlingStyle: 'left-arm-fast' })).toBe(
+      'fast-bowler',
+    )
+    expect(getRoleSummary({ playingRole: 'bowler', bowlingStyle: 'right-arm-medium' })).toBe(
+      'medium-pacer',
+    )
+    expect(getRoleSummary({ playingRole: 'bowler', bowlingStyle: 'right-arm-off-spin' })).toBe(
+      'spinner',
+    )
+    expect(getRoleSummary({ playingRole: 'bowler', bowlingStyle: 'left-arm-wrist-spin' })).toBe(
+      'spinner',
+    )
+  })
+
+  it('calls a bowler without a recorded style just a bowler', () => {
+    expect(getRoleSummary({ playingRole: 'bowler', bowlingStyle: null })).toBe('bowler')
+  })
+
+  it('keeps the other roles, whatever they bowl, and has nothing without a role', () => {
+    expect(getRoleSummary({ playingRole: 'wicketkeeper', bowlingStyle: null })).toBe('wicketkeeper')
+    expect(getRoleSummary({ playingRole: 'all-rounder', bowlingStyle: 'right-arm-fast' })).toBe(
+      'all-rounder',
+    )
+    expect(getRoleSummary({ playingRole: null, bowlingStyle: 'right-arm-fast' })).toBeNull()
   })
 })

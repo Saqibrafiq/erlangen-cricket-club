@@ -25,7 +25,7 @@ Chosen option 1.
 
 - `LICENSE`: © Saqib Rafiq, all rights reserved. The code is published for viewing only, and Erlangen Cricket Club may use it to run its own website. Club content is excluded and stays with the club and the people shown. Third-party parts (npm packages, the OFL-licensed Barlow fonts, the vendored skills) keep their own licences.
 - `package.json`: `"license": "UNLICENSED"`, author Saqib Rafiq.
-- Footer bottom bar: "© {year} Erlangen Cricket Club" with a note that the club's name, crest, photos and texts belong to the club, plus "Website designed and built by Saqib Rafiq" (linking his GitHub) and "Website design and code © {year} Saqib Rafiq. All rights reserved." The author's details live in `siteConfig.author`.
+- Footer bottom bar: "© {year} Erlangen Cricket Club" with a note that the club's name, crest, photos and texts belong to the club, plus "Website designed and built by Saqib Rafiq" (the name only, without a link) and "Website design and code © {year} Saqib Rafiq. All rights reserved." The author's details live in `siteConfig.author`.
 
 ## Consequences
 

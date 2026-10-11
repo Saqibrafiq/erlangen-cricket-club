@@ -15,5 +15,13 @@ export type SignInState =
   | { status: 'rejected'; reason: 'credentials' | 'locked'; email: string }
   /** Something else went wrong (e.g. the database is unreachable). */
   | { status: 'error'; email: string }
+  /**
+   * Signed in. The form loads `redirectTo` as a full page, so every static page and the admin
+   * bar pick up edit mode (a client-side navigation would keep the mounted layout as it was).
+   */
+  | { status: 'success'; redirectTo: string }
 
 export const INITIAL_SIGN_IN_STATE: SignInState = { status: 'idle' }
+
+/** Result of switching edit mode on for an existing session. */
+export type EditModeResult = { status: 'ok' } | { status: 'unauthorized' }

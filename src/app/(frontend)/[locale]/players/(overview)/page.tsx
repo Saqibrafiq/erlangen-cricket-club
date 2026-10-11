@@ -7,6 +7,7 @@ import {
   buildPlayersJsonLd,
   getPlayerPath,
   getPlayers,
+  PLAYER_EDITING,
   PLAYERS_PATH,
   PlayersView,
 } from '@/features/players'
@@ -42,7 +43,12 @@ export default async function PlayersPage({ params }: PageProps<'/[locale]/playe
 
   return (
     <Container className="py-10">
-      <PlayersView players={players} joinHref={MEMBERSHIP_PATH} facts={facts} />
+      <PlayersView
+        players={players}
+        joinHref={MEMBERSHIP_PATH}
+        facts={facts}
+        editing={PLAYER_EDITING}
+      />
       <JsonLd
         data={buildPlayersJsonLd(
           players,
