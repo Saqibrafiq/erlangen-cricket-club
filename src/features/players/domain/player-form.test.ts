@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { BIO_MAX_LENGTH, NAME_MAX_LENGTH, parsePlayerForm, PHOTO_MAX_BYTES } from './player-form'
+import { IMAGE_UPLOAD_MAX_BYTES } from '@/shared/config/image-upload'
+
+import { BIO_MAX_LENGTH, NAME_MAX_LENGTH, parsePlayerForm } from './player-form'
 
 function formData(fields: Record<string, string | string[] | File>): FormData {
   const data = new FormData()
@@ -121,7 +123,9 @@ describe('parsePlayerForm', () => {
       fieldErrors: { photo: 'photoType' },
     })
     expect(
-      parsePlayerForm(formData({ ...MINIMAL, photo: photo('image/jpeg', PHOTO_MAX_BYTES + 1) })),
+      parsePlayerForm(
+        formData({ ...MINIMAL, photo: photo('image/jpeg', IMAGE_UPLOAD_MAX_BYTES + 1) }),
+      ),
     ).toEqual({ success: false, fieldErrors: { photo: 'photoSize' } })
   })
 

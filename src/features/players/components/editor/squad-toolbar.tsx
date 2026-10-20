@@ -1,10 +1,9 @@
 'use client'
 
-import { EyeOff, PencilLine, Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
-import { Button } from '@/shared/ui/button'
+import { EditorToolbar } from '@/shared/ui/editor-toolbar'
 
 import type { EditorResult, HiddenPlayer, PlayerEditorActions } from '../../editor-types'
 
@@ -37,40 +36,17 @@ export function SquadToolbar({ getHiddenPlayers, refreshKey, onAdd, onEdit }: Sq
   const hiddenPlayers = hidden?.status === 'ok' ? hidden.data : []
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border-2 border-dashed border-brand-primary/40 bg-surface-highlight p-4 sm:flex-row sm:items-start sm:justify-between">
-      <Button onClick={onAdd}>
-        <Plus aria-hidden="true" />
-        {t('add')}
-      </Button>
-      {hidden?.status === 'error' && (
-        <p className="text-sm text-status-danger-text">{t('errors.hiddenLoad')}</p>
-      )}
-      {hiddenPlayers.length > 0 && (
-        <details className="group sm:max-w-sm">
-          <summary className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md px-2 font-medium">
-            <EyeOff aria-hidden="true" className="size-4" />
-            {t('hidden.summary', { count: hiddenPlayers.length })}
-          </summary>
-          <p className="mt-1 px-2 text-sm text-text-muted">{t('hidden.hint')}</p>
-          <ul className="mt-2">
-            {hiddenPlayers.map((player) => (
-              <li key={player.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onEdit(player.id)
-                  }}
-                  className="inline-flex min-h-11 w-full items-center justify-between gap-3 rounded-md px-2 text-left hover:bg-surface-muted"
-                >
-                  <span>{player.name}</span>
-                  <PencilLine aria-hidden="true" className="size-4 shrink-0" />
-                  <span className="sr-only">{t('edit', { name: player.name })}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </details>
-      )}
-    </div>
+    <EditorToolbar
+      addLabel={t('add')}
+      onAdd={onAdd}
+      error={hidden?.status === 'error' ? t('errors.hiddenLoad') : undefined}
+      hidden={{
+        summary: t('hidden.summary', { count: hiddenPlayers.length }),
+        hint: t('hidden.hint'),
+        items: hiddenPlayers.map((player) => ({ id: player.id, label: player.name })),
+        editLabel: (item) => t('edit', { name: item.label }),
+        onEdit,
+      }}
+    />
   )
 }

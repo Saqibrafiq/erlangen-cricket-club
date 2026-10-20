@@ -301,7 +301,86 @@
     "metaDescription": "News from Erlangen Cricket Club: sponsors, club events, match reports and announcements.",
     "empty": "No news yet. Check back soon.",
     "readMore": "Read more",
-    "gallery": "Photos"
+    "gallery": "Photos",
+    "editor": {
+      "add": "Write article",
+      "edit": "Edit “{title}”",
+      "delete": "Delete “{title}”",
+      "drafts": {
+        "summary": "{count, plural, one {# draft} other {# drafts}}",
+        "hint": "Not on the website until published."
+      },
+      "notice": {
+        "published": "“{title}” is published.",
+        "draft": "“{title}” saved as a draft. It is not on the website yet.",
+        "deleted": "“{title}” deleted."
+      },
+      "sheet": {
+        "addTitle": "Write article",
+        "editTitle": "Edit article",
+        "close": "Close",
+        "loading": "Loading article…",
+        "newLanguages": "A new article appears in English and German. Translate it later by switching the site to the other language and editing it.",
+        "editLanguage": "You are editing the {language} version. Switch the site language to edit the other one.",
+        "draftStatus": "Draft: not on the website yet."
+      },
+      "form": {
+        "title": "Title",
+        "excerpt": "Summary",
+        "excerptHint": "One or two sentences for news cards, Google and link previews (up to {max} characters).",
+        "mainImage": "Main image",
+        "mainImageHint": "JPG, PNG or WebP. Shown after the title and in link previews.",
+        "chooseImage": "Choose image",
+        "changeImage": "Change image",
+        "removeImage": "Remove image",
+        "noImage": "No image: the card shows the club panel.",
+        "imageStyle": "Show the image as",
+        "stylePhoto": "Photo (fills the frame)",
+        "styleLogo": "Logo (whole, on a light panel)",
+        "text": "Text",
+        "readOnlyText": "This article’s text contains elements that can only be edited in the admin panel. Title, summary, images and date can be changed here; the text stays as it is.",
+        "gallery": "Photo gallery",
+        "galleryHint": "More photos below the article. You can choose several at once.",
+        "addPhotos": "Add photos",
+        "removePhoto": "Remove photo {number}",
+        "uploading": "Uploading {done} of {total}…",
+        "date": "Date",
+        "publish": "Publish",
+        "update": "Save",
+        "saveDraft": "Save as draft",
+        "unpublish": "Unpublish",
+        "saving": "Saving…",
+        "cancel": "Cancel"
+      },
+      "errors": {
+        "summary": "Please check the highlighted fields.",
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "invalidDate": "Please choose a date.",
+        "duplicateTitle": "An article with this title already exists. Please choose another title.",
+        "imageType": "Please choose a JPG, PNG or WebP image.",
+        "imageSize": "This image is too large. Please choose a smaller one.",
+        "imageUpload": "The image could not be uploaded. Please try again.",
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Saving is not possible right now. Please try again.",
+        "load": "The article could not be loaded. Please try again.",
+        "draftsLoad": "Drafts could not be loaded.",
+        "retry": "Try again"
+      },
+      "deleteDialog": {
+        "title": "Delete “{title}”?",
+        "description": "The article is removed from the website in all languages. Its photos stay in the media library. This cannot be undone.",
+        "confirm": "Delete",
+        "deleting": "Deleting…",
+        "cancel": "Cancel",
+        "error": "Could not delete. Please try again."
+      },
+      "languages": {
+        "en": "English",
+        "de": "German"
+      }
+    }
   },
   "membership": {
     "title": "Membership",
@@ -745,5 +824,25 @@
       "signOut": "Sign out",
       "expired": "Your session has just ended. Please sign out and sign in again."
     }
+  },
+  "richTextEditor": {
+    "toolbar": "Formatting",
+    "textStyle": "Text style",
+    "paragraph": "Text",
+    "heading": "Heading",
+    "subheading": "Subheading",
+    "bold": "Bold",
+    "italic": "Italic",
+    "bulletList": "Bulleted list",
+    "numberedList": "Numbered list",
+    "link": "Add link",
+    "removeLink": "Remove link",
+    "linkUrl": "Link address",
+    "linkHint": "A web address (https://…) or a page of this site (/membership).",
+    "invalidUrl": "Please enter an address starting with https:// or /.",
+    "addLink": "Add link",
+    "cancel": "Cancel",
+    "undo": "Undo",
+    "redo": "Redo"
   }
 }

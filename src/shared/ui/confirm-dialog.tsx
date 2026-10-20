@@ -38,7 +38,11 @@ export function ConfirmDialog({
     <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed inset-0 z-50 bg-media-overlay/60 backdrop-blur-sm motion-safe:animate-fade-in" />
-        <AlertDialog.Content className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-surface-default p-6 shadow-xl motion-safe:animate-fade-in">
+        {/*
+          Centred by layout (inset-0 + m-auto + h-fit), not by translate: the fade-in animates
+          translate, and would otherwise override the centring so the dialog jumps into place.
+        */}
+        <AlertDialog.Content className="fixed inset-0 z-50 m-auto h-fit w-[calc(100%-2rem)] max-w-md rounded-2xl bg-surface-default p-6 shadow-xl motion-safe:animate-fade-in">
           <AlertDialog.Title className="text-xl font-bold">{title}</AlertDialog.Title>
           <AlertDialog.Description className="mt-2 text-text-muted">
             {description}

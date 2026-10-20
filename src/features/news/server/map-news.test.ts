@@ -2,7 +2,14 @@ import { describe, expect, it } from 'vitest'
 
 import type { Media, News } from '@/payload-types'
 
-import { mapNewsArticle, mapNewsImage, mapNewsSummary } from './map-news'
+import {
+  mapNewsArticle,
+  mapNewsDraft,
+  mapNewsImage,
+  mapNewsSummary,
+  toEditorImage,
+  toStoredBody,
+} from './map-news'
 
 const TIMESTAMP = '2026-10-07T12:00:00.000Z'
 
@@ -91,5 +98,69 @@ describe('mapNewsArticle', () => {
 
   it('has an empty gallery when none was uploaded', () => {
     expect(mapNewsArticle(newsDoc({ gallery: null })).gallery).toEqual([])
+  })
+})
+
+describe('mapNewsDraft', () => {
+  it('gives the editor the article with image ids, the day and the status', () => {
+    const draft = mapNewsDraft(
+      newsDoc({
+        publishedAt: '2026-10-12T12:00:00.000Z',
+        gallery: [media({ id: 11 }), 12, media({ id: 13, url: null })],
+        _status: 'draft',
+      }),
+    )
+
+    expect(draft).toMatchObject({
+      id: 1,
+      publishedAt: '2026-10-12',
+      featuredImage: { id: 10, url: '/api/media/file/ovb-logo.png' },
+      featuredImageStyle: 'logo',
+      status: 'draft',
+    })
+    // Unpopulated or file-less images are left out.
+    expect(draft.gallery.map((image) => image.id)).toEqual([11])
+  })
+
+  it('treats anything but a draft as published, and copes without images', () => {
+    expect(
+      mapNewsDraft(newsDoc({ featuredImage: null, gallery: null, _status: 'published' })),
+    ).toMatchObject({ featuredImage: null, gallery: [], status: 'published' })
+  })
+})
+
+describe('toEditorImage', () => {
+  it('needs a populated image with a file', () => {
+    expect(toEditorImage(media())).toMatchObject({ id: 10, width: 350 })
+    expect(toEditorImage(7)).toBeNull()
+    expect(toEditorImage(null)).toBeNull()
+  })
+})
+
+describe('toStoredBody', () => {
+  it('fills in what Payload’s stored text requires', () => {
+    expect(
+      toStoredBody({
+        root: { type: 'root', direction: 'rtl', children: [{ type: 'paragraph' }] },
+      }),
+    ).toEqual({
+      root: {
+        type: 'root',
+        direction: 'rtl',
+        format: '',
+        indent: 0,
+        version: 1,
+        children: [{ type: 'paragraph', version: 1 }],
+      },
+    })
+  })
+
+  it('keeps node versions and defaults the direction', () => {
+    const stored = toStoredBody({
+      root: { type: 'root', children: [{ type: 'quote', version: 2 }] },
+    })
+
+    expect(stored.root).toMatchObject({ direction: 'ltr', children: [{ version: 2 }] })
+    expect(toStoredBody({ root: { type: 'root' } }).root.children).toEqual([])
   })
 })

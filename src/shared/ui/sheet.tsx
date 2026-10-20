@@ -4,6 +4,8 @@ import { X } from 'lucide-react'
 import { Dialog } from 'radix-ui'
 import type { ReactNode } from 'react'
 
+import { cn } from '@/shared/lib/cn'
+
 export type SheetProps = {
   open: boolean
   onOpenChange: (isOpen: boolean) => void
@@ -12,6 +14,8 @@ export type SheetProps = {
   description?: string
   /** Accessible name of the close button, e.g. "Close". */
   closeLabel: string
+  /** `wide` for writing, e.g. a news article; `default` for short forms. */
+  size?: 'default' | 'wide'
   children: ReactNode
 }
 
@@ -26,6 +30,7 @@ export function Sheet({
   title,
   description,
   closeLabel,
+  size = 'default',
   children,
 }: SheetProps) {
   return (
@@ -34,7 +39,10 @@ export function Sheet({
         <Dialog.Overlay className="fixed inset-0 z-50 bg-media-overlay/60 backdrop-blur-sm motion-safe:animate-fade-in" />
         <Dialog.Content
           {...(description ? {} : { 'aria-describedby': undefined })}
-          className="fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-surface-default shadow-xl motion-safe:animate-slide-in-right sm:max-w-lg sm:border-l sm:border-border-default"
+          className={cn(
+            'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-surface-default shadow-xl motion-safe:animate-slide-in-right sm:border-l sm:border-border-default',
+            size === 'wide' ? 'sm:max-w-3xl' : 'sm:max-w-lg',
+          )}
         >
           <div className="flex items-start justify-between gap-4 border-b border-border-default py-3 pr-3 pl-6">
             <div className="py-1.5">

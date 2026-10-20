@@ -8,6 +8,7 @@ import logo from '@/shared/assets/ecc-logo.png'
 import { siteConfig } from '@/shared/config/site'
 
 import { Container } from './container'
+import { HomeLink } from './home-link'
 import type { NavigationLink } from './nav-menu'
 import { SocialIcon, type SocialNetwork } from './social-icon'
 
@@ -96,7 +97,7 @@ export function SiteFooter({
     <footer className="bg-media-overlay text-text-on-media">
       <Container className="grid grid-cols-3 gap-x-4 gap-y-10 py-14 sm:gap-x-6 lg:grid-cols-footer lg:gap-8">
         <div className="col-span-3 space-y-5 lg:col-span-1">
-          <Link href="/" className="inline-flex items-center gap-3 rounded-md">
+          <HomeLink className="inline-flex items-center gap-3 rounded-md">
             <Image
               src={logo}
               alt=""
@@ -107,7 +108,7 @@ export function SiteFooter({
             <span className="font-display text-2xl leading-none font-bold uppercase">
               {siteConfig.name}
             </span>
-          </Link>
+          </HomeLink>
           <p className="max-w-xs opacity-80">{t('tagline')}</p>
           {socialLinks.length > 0 && (
             <ul aria-label={t('socialLabel')} className="flex gap-2">

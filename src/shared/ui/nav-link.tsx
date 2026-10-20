@@ -4,6 +4,7 @@ import type { ComponentProps } from 'react'
 
 import { Link, usePathname } from '@/i18n/navigation'
 import { cn } from '@/shared/lib/cn'
+import { scrollToTop } from '@/shared/lib/scroll-to-top'
 
 export type NavLinkProps = Omit<ComponentProps<typeof Link>, 'href'> & {
   href: string
@@ -17,7 +18,7 @@ const HOME_PATH = '/'
  * Navigation link that marks the current page with aria-current="page", or — with `section` —
  * the current section with aria-current="true" on the pages below it.
  */
-export function NavLink({ href, section = false, className, ...props }: NavLinkProps) {
+export function NavLink({ href, section = false, className, onClick, ...props }: NavLinkProps) {
   const pathname = usePathname()
   const isPage = pathname === href
   const isInSection = section && href !== HOME_PATH && pathname.startsWith(`${href}/`)
@@ -27,6 +28,11 @@ export function NavLink({ href, section = false, className, ...props }: NavLinkP
     <Link
       href={href}
       aria-current={isPage ? 'page' : isInSection ? 'true' : undefined}
+      onClick={(event) => {
+        onClick?.(event)
+        // Already here: back to the top instead of nothing happening.
+        if (isPage) scrollToTop()
+      }}
       className={cn(
         'inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium text-text-muted transition-colors duration-150 hover:bg-surface-muted hover:text-text-default',
         isCurrent &&

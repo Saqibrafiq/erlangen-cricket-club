@@ -301,7 +301,86 @@
     "metaDescription": "Neuigkeiten vom Erlangen Cricket Club: Sponsoren, Vereinsleben, Spielberichte und Ankündigungen.",
     "empty": "Noch keine Neuigkeiten. Schau bald wieder vorbei.",
     "readMore": "Weiterlesen",
-    "gallery": "Fotos"
+    "gallery": "Fotos",
+    "editor": {
+      "add": "Artikel schreiben",
+      "edit": "„{title}“ bearbeiten",
+      "delete": "„{title}“ löschen",
+      "drafts": {
+        "summary": "{count, plural, one {# Entwurf} other {# Entwürfe}}",
+        "hint": "Erst nach dem Veröffentlichen auf der Website."
+      },
+      "notice": {
+        "published": "„{title}“ ist veröffentlicht.",
+        "draft": "„{title}“ als Entwurf gespeichert. Er ist noch nicht auf der Website.",
+        "deleted": "„{title}“ gelöscht."
+      },
+      "sheet": {
+        "addTitle": "Artikel schreiben",
+        "editTitle": "Artikel bearbeiten",
+        "close": "Schließen",
+        "loading": "Artikel wird geladen …",
+        "newLanguages": "Ein neuer Artikel erscheint auf Deutsch und Englisch. Übersetze ihn später, indem du die Website auf die andere Sprache umstellst und ihn bearbeitest.",
+        "editLanguage": "Du bearbeitest die {language} Fassung. Stelle die Sprache der Website um, um die andere zu bearbeiten.",
+        "draftStatus": "Entwurf: noch nicht auf der Website."
+      },
+      "form": {
+        "title": "Titel",
+        "excerpt": "Zusammenfassung",
+        "excerptHint": "Ein oder zwei Sätze für News-Karten, Google und Link-Vorschauen (bis zu {max} Zeichen).",
+        "mainImage": "Hauptbild",
+        "mainImageHint": "JPG, PNG oder WebP. Erscheint nach dem Titel und in Link-Vorschauen.",
+        "chooseImage": "Bild auswählen",
+        "changeImage": "Bild ändern",
+        "removeImage": "Bild entfernen",
+        "noImage": "Kein Bild: Die Karte zeigt das Vereinsmotiv.",
+        "imageStyle": "Bild anzeigen als",
+        "stylePhoto": "Foto (füllt den Rahmen)",
+        "styleLogo": "Logo (ganz, auf hellem Grund)",
+        "text": "Text",
+        "readOnlyText": "Der Text dieses Artikels enthält Elemente, die nur in der Verwaltung bearbeitet werden können. Titel, Zusammenfassung, Bilder und Datum kannst du hier ändern; der Text bleibt, wie er ist.",
+        "gallery": "Fotogalerie",
+        "galleryHint": "Weitere Fotos unter dem Artikel. Du kannst mehrere auf einmal auswählen.",
+        "addPhotos": "Fotos hinzufügen",
+        "removePhoto": "Foto {number} entfernen",
+        "uploading": "{done} von {total} wird hochgeladen …",
+        "date": "Datum",
+        "publish": "Veröffentlichen",
+        "update": "Speichern",
+        "saveDraft": "Als Entwurf speichern",
+        "unpublish": "Zurückziehen",
+        "saving": "Wird gespeichert …",
+        "cancel": "Abbrechen"
+      },
+      "errors": {
+        "summary": "Bitte prüfe die markierten Felder.",
+        "required": "Bitte fülle dieses Feld aus.",
+        "tooLong": "Das ist zu lang.",
+        "invalidDate": "Bitte wähle ein Datum.",
+        "duplicateTitle": "Ein Artikel mit diesem Titel existiert bereits. Bitte wähle einen anderen Titel.",
+        "imageType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
+        "imageSize": "Dieses Bild ist zu groß. Bitte wähle ein kleineres.",
+        "imageUpload": "Das Bild konnte nicht hochgeladen werden. Bitte versuche es noch einmal.",
+        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+        "signIn": "Erneut anmelden",
+        "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal.",
+        "load": "Der Artikel konnte nicht geladen werden. Bitte versuche es noch einmal.",
+        "draftsLoad": "Entwürfe konnten nicht geladen werden.",
+        "retry": "Erneut versuchen"
+      },
+      "deleteDialog": {
+        "title": "„{title}“ löschen?",
+        "description": "Der Artikel wird in allen Sprachen von der Website entfernt. Seine Fotos bleiben in der Mediathek. Das lässt sich nicht rückgängig machen.",
+        "confirm": "Löschen",
+        "deleting": "Wird gelöscht …",
+        "cancel": "Abbrechen",
+        "error": "Löschen nicht möglich. Bitte versuche es noch einmal."
+      },
+      "languages": {
+        "en": "englische",
+        "de": "deutsche"
+      }
+    }
   },
   "membership": {
     "title": "Mitgliedschaft",
@@ -745,5 +824,25 @@
       "signOut": "Abmelden",
       "expired": "Deine Sitzung ist gerade abgelaufen. Bitte melde dich ab und erneut an."
     }
+  },
+  "richTextEditor": {
+    "toolbar": "Formatierung",
+    "textStyle": "Textstil",
+    "paragraph": "Text",
+    "heading": "Überschrift",
+    "subheading": "Zwischenüberschrift",
+    "bold": "Fett",
+    "italic": "Kursiv",
+    "bulletList": "Aufzählung",
+    "numberedList": "Nummerierte Liste",
+    "link": "Link einfügen",
+    "removeLink": "Link entfernen",
+    "linkUrl": "Link-Adresse",
+    "linkHint": "Eine Webadresse (https://…) oder eine Seite dieser Website (/membership).",
+    "invalidUrl": "Bitte gib eine Adresse ein, die mit https:// oder / beginnt.",
+    "addLink": "Link einfügen",
+    "cancel": "Abbrechen",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen"
   }
 }
