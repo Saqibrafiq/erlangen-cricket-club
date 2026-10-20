@@ -7,6 +7,7 @@ import { useId, useState } from 'react'
 
 import { Link, usePathname } from '@/i18n/navigation'
 import { cn } from '@/shared/lib/cn'
+import { scrollToTop } from '@/shared/lib/scroll-to-top'
 
 import type { NavigationGroup, SiteNavigationItem } from './nav-menu'
 
@@ -37,7 +38,11 @@ function MenuLink({ href, label, isNested = false, onNavigate }: MenuLinkProps) 
     <Link
       href={href}
       aria-current={isPage ? 'page' : isCurrent ? 'true' : undefined}
-      onClick={onNavigate}
+      onClick={() => {
+        onNavigate()
+        // Already here: back to the top instead of nothing happening.
+        if (isPage) scrollToTop()
+      }}
       className={cn(
         'flex min-h-12 items-center rounded-xl px-4 transition-colors duration-150 hover:bg-surface-muted',
         isNested ? 'text-base' : 'text-lg font-semibold',

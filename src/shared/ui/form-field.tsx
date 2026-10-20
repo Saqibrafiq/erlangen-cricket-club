@@ -34,7 +34,7 @@ export function FormField({ id, label, optionalLabel, hint, error, children }: F
 
   return (
     <div className="space-y-1.5">
-      <label htmlFor={id} className="block text-sm font-medium">
+      <label id={`${id}-label`} htmlFor={id} className="block text-sm font-medium">
         {label}
         {optionalLabel && (
           <>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
-import { getNewsList, NEWS_PATH, NewsList } from '@/features/news'
+import { getNewsList, NEWS_EDITING, NEWS_PATH, NewsList } from '@/features/news'
 import { resolveLocale } from '@/i18n/locale'
 import { buildAlternates } from '@/shared/lib/seo'
 import { Container } from '@/shared/ui/container'
@@ -28,7 +28,7 @@ export default async function NewsPage({ params }: PageProps<'/[locale]/news'>) 
   return (
     <Container className="space-y-8 py-10">
       <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{t('title')}</h1>
-      <NewsList articles={articles} />
+      <NewsList articles={articles} editing={NEWS_EDITING} />
     </Container>
   )
 }
