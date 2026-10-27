@@ -294,7 +294,76 @@
       "won": "Won",
       "lost": "Lost",
       "netRunRate": "NRR"
-    }
+    },
+    "import": {
+      "open": "Import table",
+      "update": "Update table",
+      "title": "Import table",
+      "description": "From CricClubs: Points Table → Export to Excel (CSV).",
+      "close": "Close",
+      "loading": "Loading competitions…",
+      "competition": "Competition",
+      "newCompetition": {
+        "option": "New competition…",
+        "legend": "New competition",
+        "name": "Name",
+        "nameHint": "As the league calls it, without the year, e.g. \"BCV Regionalliga Bayern\".",
+        "placeholder": "New competition",
+        "season": "Season",
+        "format": "Format",
+        "overs": "{overs} overs"
+      },
+      "file": "Points table (CSV)",
+      "fileHint": "Nothing is saved until you confirm below.",
+      "choose": "Choose CSV file",
+      "drop": "or drop it here",
+      "chooseAnother": "Choose another file",
+      "confirm": "{count, plural, =0 {Import table} one {Import table (# team)} other {Import table (# teams)}}",
+      "importing": "Importing…",
+      "cancel": "Cancel",
+      "preview": {
+        "unchanged": "This table is already up to date: nothing to import.",
+        "changes": "{count, plural, =0 {No moves or new points} one {# change} other {# changes}}",
+        "newTeam": "New team",
+        "newInTable": "New in this table",
+        "up": "up {places}",
+        "down": "down {places}",
+        "points": "{points, number, ::+!} pts",
+        "matches": "{count, plural, one {# match} other {# matches}}",
+        "removed": "No longer listed: {teams}. They will be removed from this table."
+      },
+      "fileErrors": {
+        "summary": "{count, plural, one {This file has # problem} other {This file has # problems}}. Please check it is the CricClubs points table export.",
+        "line": "Line {line}:",
+        "empty": "The file is empty.",
+        "tooLarge": "The file is too large for a points table.",
+        "missingColumn": "Column \"{column}\" is missing.",
+        "noRows": "The file has headings but no teams.",
+        "missingTeam": "The team is missing.",
+        "duplicateTeam": "{value} is listed twice.",
+        "notCount": "{column} should be a whole number, not \"{value}\".",
+        "notNumber": "{column} should be a number, not \"{value}\".",
+        "notRunsOvers": "{column} should be runs/overs like 1954/243.4, not \"{value}\"."
+      },
+      "notice": {
+        "imported": "{competition} updated: {count} teams.",
+        "importedWithTeams": "{competition} updated: {count} teams, {added, plural, one {# new team} other {# new teams}} added."
+      },
+      "errors": {
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "season": "Please enter a year between 2000 and 2100.",
+        "maxOvers": "Please choose a format.",
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Importing is not possible right now. Please try again.",
+        "load": "The competitions could not be loaded. Please try again.",
+        "retry": "Try again"
+      }
+    },
+    "seasons": "Seasons",
+    "seasonTitle": "Standings {season}",
+    "seasonMetaDescription": "League tables of Erlangen Cricket Club's {season} season: points, net run rate and results."
   },
   "news": {
     "title": "News",
