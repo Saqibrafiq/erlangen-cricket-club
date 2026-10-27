@@ -35,6 +35,8 @@ export function SponsorCard({ sponsor }: SponsorCardProps) {
             width={sponsor.logo.width}
             height={sponsor.logo.height}
             sizes="320px"
+            // The editor's live preview shows a logo that is not uploaded yet.
+            unoptimized={sponsor.logo.url.startsWith('blob:')}
             className="max-h-28 w-auto object-contain"
           />
         ) : (

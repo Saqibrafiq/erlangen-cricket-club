@@ -2,7 +2,13 @@ import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
 import { CONTACT_PATH } from '@/features/contact'
-import { buildSponsorsJsonLd, getSponsors, SPONSORS_PATH, SponsorsView } from '@/features/sponsors'
+import {
+  buildSponsorsJsonLd,
+  getSponsors,
+  SPONSOR_EDITING,
+  SPONSORS_PATH,
+  SponsorsView,
+} from '@/features/sponsors'
 import { resolveLocale } from '@/i18n/locale'
 import { siteConfig } from '@/shared/config/site'
 import { buildAlternates } from '@/shared/lib/seo'
@@ -29,7 +35,7 @@ export default async function SponsorsPage({ params }: PageProps<'/[locale]/spon
 
   return (
     <Container className="py-10">
-      <SponsorsView sponsors={sponsors} contactHref={CONTACT_PATH} />
+      <SponsorsView sponsors={sponsors} contactHref={CONTACT_PATH} editing={SPONSOR_EDITING} />
       <JsonLd
         data={buildSponsorsJsonLd(sponsors, { name: siteConfig.name, url: siteConfig.url })}
       />

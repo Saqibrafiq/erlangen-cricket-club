@@ -5,8 +5,10 @@ import { useTranslations } from 'next-intl'
 import { createContext, type ReactNode, use, useEffect, useState } from 'react'
 
 import { useIsEditMode } from '@/shared/lib/edit-mode'
+import { useVanishing } from '@/shared/lib/use-vanishing'
 import { EditActions } from '@/shared/ui/edit-actions'
 import { EditorToolbar } from '@/shared/ui/editor-toolbar'
+import { Vanish } from '@/shared/ui/vanish'
 
 import type { DraftNews, NewsEditing, NewsEditorResult } from '../../editor-types'
 import type { NewsIntent } from './news-editor'
@@ -16,7 +18,11 @@ const NewsEditor = dynamic(() => import('./news-editor').then((module) => module
   ssr: false,
 })
 
-type NewsEditingContextValue = { open: (intent: NewsIntent) => void }
+type NewsEditingContextValue = {
+  open: (intent: NewsIntent) => void
+  vanishingId: number | null
+  onVanished: () => void
+}
 
 const NewsEditingContext = createContext<NewsEditingContextValue | null>(null)
 
@@ -92,6 +98,7 @@ export function NewsEditingProvider({
   const [intent, setIntent] = useState<NewsIntent | null>(null)
   const [notice, setNotice] = useState('')
   const [refreshKey, setRefreshKey] = useState(0)
+  const { vanishingId, vanish, finish: onVanished } = useVanishing()
 
   if (!isEditMode || !editing) {
     return children
@@ -104,7 +111,7 @@ export function NewsEditingProvider({
   }
 
   return (
-    <NewsEditingContext value={{ open: setIntent }}>
+    <NewsEditingContext value={{ open: setIntent, vanishingId, onVanished }}>
       <div className="space-y-6">
         {variant === 'list' && (
           <DraftsToolbar
@@ -124,6 +131,8 @@ export function NewsEditingProvider({
           editing={editing}
           // On an article's own page, a deleted or unpublished article is gone: back to the list.
           leaveHref={variant === 'article' ? listHref : undefined}
+          // Only the list wraps its cards in NewsVanish; an article page has nothing to dissolve.
+          vanish={variant === 'list' ? vanish : undefined}
           onClose={() => {
             setIntent(null)
           }}
@@ -136,6 +145,26 @@ export function NewsEditingProvider({
         />
       )}
     </NewsEditingContext>
+  )
+}
+
+export type NewsVanishProps = { id: number; className?: string; children: ReactNode }
+
+/** Lets an article card dissolve when it is deleted; just the card outside edit mode. */
+export function NewsVanish({ id, className, children }: NewsVanishProps) {
+  const context = use(NewsEditingContext)
+  if (!context) {
+    return children
+  }
+
+  return (
+    <Vanish
+      isVanishing={context.vanishingId === id}
+      onVanished={context.onVanished}
+      className={className}
+    >
+      {children}
+    </Vanish>
   )
 }
 

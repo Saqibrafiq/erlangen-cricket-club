@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 import type { NewsEditing } from '../editor-types'
 import { NEWS_PATH } from '../paths'
 import type { NewsSummary } from '../types'
-import { NewsEditingProvider } from './editor/news-editing'
+import { NewsEditingProvider, NewsVanish } from './editor/news-editing'
 import { NewsCard } from './news-card'
 
 export type NewsListProps = {
@@ -24,11 +24,15 @@ export function NewsList({ articles, editing }: NewsListProps) {
     <NewsEditingProvider editing={editing} variant="list" listHref={NEWS_PATH}>
       {lead ? (
         <div className="space-y-6">
-          <NewsCard article={lead} isLead />
+          <NewsVanish id={lead.id}>
+            <NewsCard article={lead} isLead />
+          </NewsVanish>
           {others.length > 0 && (
             <div className="grid grid-cols-cards-fit gap-6">
               {others.map((article) => (
-                <NewsCard key={article.id} article={article} />
+                <NewsVanish key={article.id} id={article.id} className="grid">
+                  <NewsCard article={article} />
+                </NewsVanish>
               ))}
             </div>
           )}

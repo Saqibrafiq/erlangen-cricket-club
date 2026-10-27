@@ -3,7 +3,8 @@
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 
-import { Link, useRouter } from '@/i18n/navigation'
+import { Link } from '@/i18n/navigation'
+import { useRefreshThen } from '@/shared/lib/use-refresh-then'
 import { Button } from '@/shared/ui/button'
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog'
 import { Sheet } from '@/shared/ui/sheet'
@@ -26,6 +27,8 @@ export type NewsEditorProps = {
   onSaved: (article: SavedArticle, title: string) => void
   /** Called after the page has been refreshed without the article. */
   onDeleted: (title: string) => void
+  /** Plays the item's delete effect; deleting waits for it before refreshing the page. */
+  vanish?: (id: number) => Promise<void>
 }
 
 type LoadState = { status: 'loading' } | NewsEditorResult<NewsDraft | null>
@@ -123,16 +126,19 @@ function DeleteNewsDialog({
   editing,
   onClose,
   onDeleted,
+  vanish,
   isFinishing,
 }: { id: number; title: string } & Omit<NewsEditorProps, 'intent' | 'onSaved'> & FinishingProps) {
   const t = useTranslations('news.editor')
   const [isDeleting, startTransition] = useTransition()
   const [error, setError] = useState<string | undefined>()
+  // Closed while the article vanishes, so the dialog doesn't hide the effect.
+  const [isHidden, setIsHidden] = useState(false)
   const isPending = isDeleting || isFinishing
 
   return (
     <ConfirmDialog
-      open
+      open={!isHidden}
       onOpenChange={(isOpen) => {
         if (!isOpen) onClose()
       }}
@@ -146,6 +152,8 @@ function DeleteNewsDialog({
         startTransition(async () => {
           const result = await editing.actions.deleteArticle(id)
           if (result.status === 'deleted') {
+            setIsHidden(true)
+            await vanish?.(id)
             onDeleted(title)
             return
           }
@@ -160,28 +168,10 @@ function DeleteNewsDialog({
 
 /** The panel for writing or editing an article, or the dialog for deleting one. */
 export function NewsEditor({ intent, leaveHref, onSaved, onDeleted, ...props }: NewsEditorProps) {
-  const router = useRouter()
-  const [isRefreshing, startRefresh] = useTransition()
-  const [whenRefreshed, setWhenRefreshed] = useState<(() => void) | null>(null)
-
-  // Report the change only once the refreshed page is on screen, so the list never lags behind.
-  useEffect(() => {
-    if (whenRefreshed && !isRefreshing) {
-      whenRefreshed()
-    }
-  }, [whenRefreshed, isRefreshing])
-
+  const { refreshThen: refreshOrLeaveThen, isFinishing } = useRefreshThen()
   const refreshThen = (callback: () => void, leavesArticle: boolean) => {
-    setWhenRefreshed(() => callback)
-    startRefresh(() => {
-      if (leavesArticle && leaveHref) {
-        router.push(leaveHref)
-      } else {
-        router.refresh()
-      }
-    })
+    refreshOrLeaveThen(callback, leavesArticle ? leaveHref : undefined)
   }
-  const isFinishing = whenRefreshed !== null
 
   if (intent.kind === 'delete') {
     return (
