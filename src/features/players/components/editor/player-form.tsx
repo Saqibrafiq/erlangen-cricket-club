@@ -13,6 +13,7 @@ import {
 } from 'react'
 
 import { Link } from '@/i18n/navigation'
+import { IMAGE_UPLOAD_TYPES } from '@/shared/config/image-upload'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
@@ -25,7 +26,6 @@ import {
   CLUB_OFFICES,
   CONSENT_NOTE_MAX_LENGTH,
   NAME_MAX_LENGTH,
-  PHOTO_TYPES,
   PLAYING_ROLES,
   type PlayerFormField,
 } from '../../domain/player-form'
@@ -177,7 +177,7 @@ export function PlayerForm({
                 {...control}
                 name="photo"
                 type="file"
-                accept={PHOTO_TYPES.join(',')}
+                accept={IMAGE_UPLOAD_TYPES.join(',')}
                 disabled={isRemovingPhoto}
                 onChange={(event) => {
                   photo.choose(event.target.files?.[0] ?? null)

@@ -34,6 +34,9 @@ export const Open: Story = {}
 
 export const WithoutDescription: Story = { args: { description: undefined } }
 
+/** For writing, e.g. a news article. */
+export const Wide: Story = { args: { size: 'wide', title: 'Write article' } }
+
 /** Opened from a button, as on the players page. */
 export const Interactive: Story = {
   args: { open: false },

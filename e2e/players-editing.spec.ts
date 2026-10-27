@@ -19,6 +19,8 @@ async function signIn(page: Page): Promise<void> {
 }
 
 test.describe('editing players on the website', () => {
+  // One test account: sign-ins one after another (see login.spec.ts).
+  test.describe.configure({ mode: 'serial' })
   test.skip(!ADMIN_EMAIL || !ADMIN_PASSWORD, 'Set E2E_ADMIN_EMAIL and E2E_ADMIN_PASSWORD.')
 
   test('visitors see no editing controls', async ({ page }) => {
