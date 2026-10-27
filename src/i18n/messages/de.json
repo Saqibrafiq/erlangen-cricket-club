@@ -294,7 +294,76 @@
       "won": "Siege",
       "lost": "Niederl.",
       "netRunRate": "NRR"
-    }
+    },
+    "import": {
+      "open": "Tabelle importieren",
+      "update": "Tabelle aktualisieren",
+      "title": "Tabelle importieren",
+      "description": "Aus CricClubs: Points Table → Export to Excel (CSV).",
+      "close": "Schließen",
+      "loading": "Wettbewerbe werden geladen…",
+      "competition": "Wettbewerb",
+      "newCompetition": {
+        "option": "Neuer Wettbewerb…",
+        "legend": "Neuer Wettbewerb",
+        "name": "Name",
+        "nameHint": "Wie die Liga ihn nennt, ohne Jahr, z. B. „BCV Regionalliga Bayern“.",
+        "placeholder": "Neuer Wettbewerb",
+        "season": "Saison",
+        "format": "Format",
+        "overs": "{overs} Overs"
+      },
+      "file": "Punktetabelle (CSV)",
+      "fileHint": "Gespeichert wird erst, wenn du unten bestätigst.",
+      "choose": "CSV-Datei auswählen",
+      "drop": "oder hier ablegen",
+      "chooseAnother": "Andere Datei auswählen",
+      "confirm": "{count, plural, =0 {Tabelle importieren} one {Tabelle importieren (# Team)} other {Tabelle importieren (# Teams)}}",
+      "importing": "Wird importiert…",
+      "cancel": "Abbrechen",
+      "preview": {
+        "unchanged": "Diese Tabelle ist schon aktuell: nichts zu importieren.",
+        "changes": "{count, plural, =0 {Keine Verschiebungen oder neuen Punkte} one {# Änderung} other {# Änderungen}}",
+        "newTeam": "Neues Team",
+        "newInTable": "Neu in dieser Tabelle",
+        "up": "{places} hoch",
+        "down": "{places} runter",
+        "points": "{points, number, ::+!} Pkt.",
+        "matches": "{count, plural, one {# Spiel} other {# Spiele}}",
+        "removed": "Nicht mehr aufgeführt: {teams}. Sie werden aus dieser Tabelle entfernt."
+      },
+      "fileErrors": {
+        "summary": "{count, plural, one {Diese Datei hat # Problem} other {Diese Datei hat # Probleme}}. Bitte prüfe, ob es der CricClubs-Export der Punktetabelle ist.",
+        "line": "Zeile {line}:",
+        "empty": "Die Datei ist leer.",
+        "tooLarge": "Die Datei ist zu groß für eine Punktetabelle.",
+        "missingColumn": "Die Spalte „{column}“ fehlt.",
+        "noRows": "Die Datei hat Überschriften, aber keine Teams.",
+        "missingTeam": "Das Team fehlt.",
+        "duplicateTeam": "{value} steht zweimal in der Tabelle.",
+        "notCount": "{column} muss eine ganze Zahl sein, nicht „{value}“.",
+        "notNumber": "{column} muss eine Zahl sein, nicht „{value}“.",
+        "notRunsOvers": "{column} muss Runs/Overs wie 1954/243.4 sein, nicht „{value}“."
+      },
+      "notice": {
+        "imported": "{competition} aktualisiert: {count} Teams.",
+        "importedWithTeams": "{competition} aktualisiert: {count} Teams, {added, plural, one {# neues Team} other {# neue Teams}} hinzugefügt."
+      },
+      "errors": {
+        "required": "Bitte fülle dieses Feld aus.",
+        "tooLong": "Das ist zu lang.",
+        "season": "Bitte gib ein Jahr zwischen 2000 und 2100 ein.",
+        "maxOvers": "Bitte wähle ein Format.",
+        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+        "signIn": "Erneut anmelden",
+        "server": "Importieren ist gerade nicht möglich. Bitte versuche es noch einmal.",
+        "load": "Die Wettbewerbe konnten nicht geladen werden. Bitte versuche es noch einmal.",
+        "retry": "Erneut versuchen"
+      }
+    },
+    "seasons": "Saisons",
+    "seasonTitle": "Tabellen {season}",
+    "seasonMetaDescription": "Tabellen der Saison {season} des Erlangen Cricket Club: Punkte, Net Run Rate und Ergebnisse."
   },
   "news": {
     "title": "Neuigkeiten",

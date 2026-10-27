@@ -8,7 +8,12 @@ import { MEMBERSHIP_PATH } from '@/features/membership'
 import { getPlayerEntries, getPlayerPath, PLAYERS_PATH } from '@/features/players'
 import { SPONSORS_PATH } from '@/features/sponsors'
 import { getNewsEntries, getNewsPath, NEWS_PATH } from '@/features/news'
-import { getStandingsPath, STANDINGS_PATH } from '@/features/standings'
+import {
+  getStandingsOverview,
+  getStandingsPath,
+  getStandingsSeasonPath,
+  STANDINGS_PATH,
+} from '@/features/standings'
 import { getLocalizedPath, routing } from '@/i18n/routing'
 import { siteConfig } from '@/shared/config/site'
 
@@ -41,8 +46,9 @@ function toEntry(pathname: string): MetadataRoute.Sitemap[number] {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [competitionSlugs, newsEntries, playerEntries] = await Promise.all([
+  const [competitionSlugs, standings, newsEntries, playerEntries] = await Promise.all([
     getCompetitionSlugs(),
+    getStandingsOverview(),
     getNewsEntries(),
     getPlayerEntries(),
   ])
@@ -52,6 +58,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...STATIC_PATHS,
       ...competitionSlugs.map(getCompetitionPath),
       ...competitionSlugs.map(getStandingsPath),
+      // Past seasons; the current one is STANDINGS_PATH.
+      ...standings.seasons.slice(1).map(getStandingsSeasonPath),
     ].map(toEntry),
     ...newsEntries.map(({ slug, updatedAt }) => ({
       ...toEntry(getNewsPath(slug)),

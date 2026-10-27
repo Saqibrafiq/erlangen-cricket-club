@@ -7,6 +7,7 @@ import { getClubStandings } from '../domain/get-club-standings'
 import { getStandingsPath } from '../paths'
 import type { CompetitionStandings } from '../types'
 import { ClubStandings } from './club-standings'
+import { StandingsUpdateButton } from './editor/standings-editing'
 import { StandingsEmptyState } from './standings-empty-state'
 import { StandingsLegend } from './standings-legend'
 import { StandingsTable } from './standings-table'
@@ -41,15 +42,18 @@ export function StandingsOverview({ competitions }: StandingsOverviewProps) {
         const headingId = `standings-${competition.id}-heading`
         return (
           <section key={competition.id} aria-labelledby={headingId} className="space-y-3">
-            <h2 id={headingId} className="text-2xl font-bold tracking-tight">
-              <Link
-                href={getStandingsPath(competition.slug)}
-                className="inline-flex min-h-11 items-center gap-1 rounded-md underline-offset-4 hover:underline"
-              >
-                {title}
-                <ChevronRight aria-hidden="true" className="size-5 text-text-muted" />
-              </Link>
-            </h2>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 id={headingId} className="text-2xl font-bold tracking-tight">
+                <Link
+                  href={getStandingsPath(competition.slug)}
+                  className="inline-flex min-h-11 items-center gap-1 rounded-md underline-offset-4 hover:underline"
+                >
+                  {title}
+                  <ChevronRight aria-hidden="true" className="size-5 text-text-muted" />
+                </Link>
+              </h2>
+              <StandingsUpdateButton competitionId={competition.id} competitionName={title} />
+            </div>
             {rows.length > 0 ? (
               <StandingsTable rows={rows} caption={title} />
             ) : (
