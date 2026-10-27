@@ -35,4 +35,5 @@ export const getStandingsOverview = serverOnly('getStandingsOverview')
 // Stories pass their own editing actions; this only keeps Payload out of the browser bundle.
 export const PLAYER_EDITING = undefined
 export const NEWS_EDITING = undefined
+export const SPONSOR_EDITING = undefined
 export const submitContactMessageAction = serverOnly('submitContactMessageAction')

@@ -1,6 +1,7 @@
 import { getNewsPath } from '@/features/news'
 import type { Media, News, Sponsor as SponsorDoc } from '@/payload-types'
 
+import type { SponsorDraft } from '../editor-types'
 import type { Sponsor, SponsorLogo } from '../types'
 
 function mapLogo(media: number | Media | null | undefined): SponsorLogo | null {
@@ -30,5 +31,20 @@ export function mapSponsor(doc: SponsorDoc): Sponsor {
     description: doc.description,
     website: doc.website ?? null,
     announcementHref: mapAnnouncement(doc.announcement),
+  }
+}
+
+/** The edit form's view of a sponsor read in English, with its German description beside it. */
+export function mapSponsorDraft(doc: SponsorDoc, descriptionDe: string): SponsorDraft {
+  return {
+    id: doc.id,
+    name: doc.name,
+    logo: mapLogo(doc.logo),
+    tier: doc.tier,
+    since: doc.since,
+    descriptionEn: doc.description,
+    descriptionDe,
+    website: doc.website ?? null,
+    isActive: doc.isActive ?? false,
   }
 }

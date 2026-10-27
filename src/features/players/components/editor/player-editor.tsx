@@ -1,10 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 
 import { Link } from '@/i18n/navigation'
+import { useRefreshThen } from '@/shared/lib/use-refresh-then'
 import { Button } from '@/shared/ui/button'
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog'
 import { Sheet } from '@/shared/ui/sheet'
@@ -25,6 +25,8 @@ export type PlayerEditorProps = {
   onSaved: (player: SavedPlayer, name: string) => void
   /** Called after the page has been refreshed without the player. */
   onDeleted: (name: string) => void
+  /** Plays the item's delete effect; deleting waits for it before refreshing the page. */
+  vanish?: (id: number) => Promise<void>
 }
 
 type LoadState = { status: 'loading' } | EditorResult<PlayerEditorData>
@@ -124,16 +126,19 @@ function DeletePlayerDialog({
   editing,
   onClose,
   onDeleted,
+  vanish,
   isFinishing,
 }: { id: number; name: string } & Omit<PlayerEditorProps, 'intent' | 'onSaved'> & FinishingProps) {
   const t = useTranslations('players.editor')
   const [isDeleting, startTransition] = useTransition()
   const isPending = isDeleting || isFinishing
   const [error, setError] = useState<string | undefined>()
+  // Closed while the player vanishes, so the dialog doesn't hide the effect.
+  const [isHidden, setIsHidden] = useState(false)
 
   return (
     <ConfirmDialog
-      open
+      open={!isHidden}
       onOpenChange={(isOpen) => {
         if (!isOpen) onClose()
       }}
@@ -147,6 +152,8 @@ function DeletePlayerDialog({
         startTransition(async () => {
           const result = await editing.actions.deletePlayer(id)
           if (result.status === 'deleted') {
+            setIsHidden(true)
+            await vanish?.(id)
             onDeleted(name)
             return
           }
@@ -161,24 +168,7 @@ function DeletePlayerDialog({
 
 /** The side panel for adding or editing a player, or the dialog for deleting one. */
 export function PlayerEditor({ intent, onSaved, onDeleted, ...props }: PlayerEditorProps) {
-  const router = useRouter()
-  const [isRefreshing, startRefresh] = useTransition()
-  const [whenRefreshed, setWhenRefreshed] = useState<(() => void) | null>(null)
-
-  // Report the change only once the refreshed page is on screen, so the list never lags behind.
-  useEffect(() => {
-    if (whenRefreshed && !isRefreshing) {
-      whenRefreshed()
-    }
-  }, [whenRefreshed, isRefreshing])
-
-  const refreshThen = (callback: () => void) => {
-    setWhenRefreshed(() => callback)
-    startRefresh(() => {
-      router.refresh()
-    })
-  }
-  const isFinishing = whenRefreshed !== null
+  const { refreshThen, isFinishing } = useRefreshThen()
 
   if (intent.kind === 'delete') {
     return (

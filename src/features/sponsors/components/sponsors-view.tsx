@@ -5,14 +5,18 @@ import { Link } from '@/i18n/navigation'
 import { Button } from '@/shared/ui/button'
 import { SectionHeading } from '@/shared/ui/section-heading'
 
+import type { SponsorEditing } from '../editor-types'
 import { BECOME_SPONSOR_ID } from '../paths'
 import type { Sponsor } from '../types'
+import { SponsorEditActions, SponsorEditingProvider, SponsorVanish } from './editor/sponsor-editing'
 import { SponsorCard } from './sponsor-card'
 
 export type SponsorsViewProps = {
   sponsors: readonly Sponsor[]
   /** Where interested companies get in touch, e.g. the contact page. */
   contactHref: string
+  /** Editing actions; the controls show only in a signed-in editor's browser. */
+  editing?: SponsorEditing
 }
 
 const BENEFITS = [
@@ -22,7 +26,7 @@ const BENEFITS = [
 ] as const
 
 /** Thanks to our sponsors, who they are, and how to become one. */
-export function SponsorsView({ sponsors, contactHref }: SponsorsViewProps) {
+export function SponsorsView({ sponsors, contactHref, editing }: SponsorsViewProps) {
   const t = useTranslations('sponsors')
 
   return (
@@ -54,17 +58,26 @@ export function SponsorsView({ sponsors, contactHref }: SponsorsViewProps) {
           heading={t('list.heading')}
           intro={t('list.intro')}
         />
-        {sponsors.length === 0 ? (
-          <p className="text-center text-text-muted">{t('list.empty')}</p>
-        ) : (
-          <ul className="mx-auto max-w-5xl space-y-6">
-            {sponsors.map((sponsor) => (
-              <li key={sponsor.id}>
-                <SponsorCard sponsor={sponsor} />
-              </li>
-            ))}
-          </ul>
-        )}
+        <SponsorEditingProvider editing={editing}>
+          {sponsors.length === 0 ? (
+            <p className="text-center text-text-muted">{t('list.empty')}</p>
+          ) : (
+            <ul className="mx-auto max-w-5xl space-y-6">
+              {sponsors.map((sponsor) => (
+                <li key={sponsor.id}>
+                  <SponsorVanish id={sponsor.id}>
+                    <SponsorCard sponsor={sponsor} />
+                    <SponsorEditActions
+                      id={sponsor.id}
+                      name={sponsor.name}
+                      className="absolute top-3 left-3"
+                    />
+                  </SponsorVanish>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SponsorEditingProvider>
       </section>
 
       <section
