@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation'
 
 import { getNewsPath } from '../paths'
 import type { NewsSummary } from '../types'
+import { NewsEditActions } from './editor/news-editing'
 import { NewsCover } from './news-cover'
 
 export type NewsCardProps = {
@@ -23,6 +24,7 @@ export function NewsCard({ article, isLead = false }: NewsCardProps) {
       // Container query: side-by-side layout whenever the card itself is wide.
       className="group @container relative h-full overflow-hidden rounded-2xl border border-border-default bg-surface-default shadow-sm transition-shadow duration-150 hover:shadow-md"
     >
+      <NewsEditActions id={article.id} title={article.title} className="absolute top-3 left-3" />
       <div className="flex h-full flex-col @3xl:flex-row">
         <NewsCover
           image={article.image}

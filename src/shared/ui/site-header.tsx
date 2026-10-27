@@ -7,6 +7,7 @@ import logo from '@/shared/assets/ecc-logo.png'
 import { siteConfig } from '@/shared/config/site'
 
 import { Container } from './container'
+import { HomeLink } from './home-link'
 import { LocaleSwitcher } from './locale-switcher'
 import { MobileMenu } from './mobile-menu'
 import { NavLink } from './nav-link'
@@ -34,10 +35,7 @@ export function SiteHeader({ items, loginHref }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-border-default bg-surface-default/85 backdrop-blur-md">
       <Container className="flex items-center justify-between gap-x-4 py-2 2xl:gap-x-6">
-        <Link
-          href="/"
-          className="inline-flex min-h-11 shrink-0 items-center gap-3 rounded-md font-display text-xl font-bold tracking-tight whitespace-nowrap uppercase"
-        >
+        <HomeLink className="inline-flex min-h-11 shrink-0 items-center gap-3 rounded-md font-display text-xl font-bold tracking-tight whitespace-nowrap uppercase">
           {/* Decorative: the club name next to it names the link (visually hidden on phones). */}
           <Image
             src={logo}
@@ -48,7 +46,7 @@ export function SiteHeader({ items, loginHref }: SiteHeaderProps) {
             className="h-12 w-auto"
           />
           <span className="max-sm:sr-only">{siteConfig.name}</span>
-        </Link>
+        </HomeLink>
         <nav aria-label={t('label')} className="ml-auto hidden xl:block">
           <ul className="flex">
             {items.map((item) => (

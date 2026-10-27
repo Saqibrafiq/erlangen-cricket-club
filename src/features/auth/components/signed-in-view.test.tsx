@@ -7,6 +7,9 @@ import { renderWithIntl } from '@/shared/testing/render-with-intl'
 import type { EditModeResult } from '../sign-in-state'
 import { SignedInView } from './signed-in-view'
 
+// next/image in the card still reads the address after a stub, so keep href and origin.
+const LOCATION = { href: window.location.href, origin: window.location.origin }
+
 afterEach(() => {
   vi.unstubAllGlobals()
 })
@@ -37,7 +40,7 @@ describe('SignedInView', () => {
     const { enterEditMode } = renderView()
     // After rendering: next/image reads the real location while it renders.
     const assign = vi.fn()
-    vi.stubGlobal('location', { assign })
+    vi.stubGlobal('location', { ...LOCATION, assign })
 
     await userEvent.click(screen.getByRole('button', { name: 'Open edit mode' }))
 
@@ -58,7 +61,7 @@ describe('SignedInView', () => {
   it('signs out and shows the sign-in form again', async () => {
     const { signOut } = renderView()
     const reload = vi.fn()
-    vi.stubGlobal('location', { reload })
+    vi.stubGlobal('location', { ...LOCATION, reload })
 
     await userEvent.click(screen.getByRole('button', { name: 'Sign out' }))
 

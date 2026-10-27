@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { checkImageUpload } from '@/shared/config/image-upload'
+
 import type { BattingStyle, BowlingStyle, ClubOffice, PlayingRole } from '../types'
 
 export const PLAYING_ROLES = [
@@ -34,10 +36,6 @@ export const NAME_MAX_LENGTH = 100
 /** Matches the CMS field: a short introduction, not a biography. */
 export const BIO_MAX_LENGTH = 400
 export const CONSENT_NOTE_MAX_LENGTH = 200
-
-/** Photos are shrunk in the browser first; this only stops oversized uploads that skipped that. */
-export const PHOTO_MAX_BYTES = 3 * 1024 * 1024
-export const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const
 
 export type PlayerFormErrorCode =
   'required' | 'tooLong' | 'consentNoteRequired' | 'photoType' | 'photoSize' | 'duplicateName'
@@ -123,10 +121,6 @@ function readText(formData: FormData, key: string): string {
   return typeof value === 'string' ? value : ''
 }
 
-function isPhotoType(type: string): boolean {
-  return PHOTO_TYPES.some((photoType) => photoType === type)
-}
-
 function readPhoto(formData: FormData): PhotoChange | PlayerFormErrorCode {
   if (formData.get('removePhoto') === 'on') {
     return { kind: 'remove' }
@@ -137,11 +131,11 @@ function readPhoto(formData: FormData): PhotoChange | PlayerFormErrorCode {
   if (!(file instanceof File) || file.size === 0) {
     return { kind: 'keep' }
   }
-  if (!isPhotoType(file.type)) {
+  const problem = checkImageUpload(file)
+  if (problem === 'type') {
     return 'photoType'
   }
-
-  return file.size > PHOTO_MAX_BYTES ? 'photoSize' : { kind: 'replace', file }
+  return problem === 'size' ? 'photoSize' : { kind: 'replace', file }
 }
 
 function readId(formData: FormData): number | null {

@@ -8,6 +8,7 @@ import {
   getNewsEntries,
   getNewsPath,
   NEWS_PATH,
+  NEWS_EDITING,
   NewsArticleView,
 } from '@/features/news'
 import { resolveLocale } from '@/i18n/locale'
@@ -64,7 +65,7 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
       <Breadcrumbs
         items={[{ label: tNavigation('news'), href: NEWS_PATH }, { label: article.title }]}
       />
-      <NewsArticleView article={article} />
+      <NewsArticleView article={article} editing={NEWS_EDITING} />
       <JsonLd
         data={buildNewsArticleJsonLd(article, `${siteConfig.url}${getLocalizedPath(path, locale)}`)}
       />

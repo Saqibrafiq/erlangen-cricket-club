@@ -21,12 +21,19 @@ export default defineConfig({
     // Primary persona: a player checking the site on a phone at the ground.
     { name: 'mobile', use: { ...devices['Pixel 7'] }, testIgnore: EDITING_SPECS },
     { name: 'desktop', use: { ...devices['Desktop Chrome'] }, testIgnore: EDITING_SPECS },
-    // Specs that change content run once the read-only ones are done, so counts stay predictable.
+    // Specs that change content run once the read-only ones are done, so counts stay predictable,
+    // and one after another: they all sign in with the one test account (see login.spec.ts).
     {
       name: 'editing',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: EDITING_SPECS,
+      testMatch: /players-editing\.spec\.ts$/,
       dependencies: ['mobile', 'desktop'],
+    },
+    {
+      name: 'editing-news',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /news-editing\.spec\.ts$/,
+      dependencies: ['editing'],
     },
   ],
   webServer: {

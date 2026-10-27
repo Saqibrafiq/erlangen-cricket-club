@@ -73,6 +73,12 @@
   - player photos are cut out in the editor's browser like the existing squad photos: MODNet matting, edge colour clean-up, head and shoulders, 720 px WebP. The model and ONNX runtime are served from our own domain ([ADR-0016](09-architecture-decisions/0016-player-photo-background-removal-in-the-browser.md)). Other photos are shrunk (`resizeImage`, WebP, at most 1200 px). Server actions accept up to 4 MB, below Vercel's 4.5 MB request limit;
   - the admin bar under the header signs out through Payload's `logout`, which also ends the session server-side;
   - routes pass the server actions to the editing components as props (`PLAYER_EDITING`), like the contact form.
+- **Editing news** ([ADR-0017](09-architecture-decisions/0017-edit-news-on-the-website.md)):
+  - a visual editor (`shared/ui/RichTextEditor`, Lexical 0.50.0 like Payload) writes Payload-compatible rich text; links are converted between the two shapes in `features/news/domain/rich-text.ts`;
+  - articles with content only the admin can edit keep their text read-only on the website;
+  - a new article is written in every language; images upload one per request;
+  - drafts are listed for editors only;
+  - `EditActions` and `EditorToolbar` (`shared/ui`) serve players and news alike.
 - **Fresh pages after edits:** collection hooks call `revalidatePath('/(frontend)/[locale]', 'layout')`. The route group must be part of the path, otherwise nothing is invalidated and prerendered pages keep their build-time content. Inside a server action, the editor's page updates in the same response; visitors get the new version on their next visit.
 - Payload access control per collection (`src/cms/access/`); public read only where content is public.
 - JSON-LD output escapes `<` to prevent script injection from CMS content.
