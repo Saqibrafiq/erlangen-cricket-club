@@ -78,7 +78,19 @@
   - articles with content only the admin can edit keep their text read-only on the website;
   - a new article is written in every language; images upload one per request;
   - drafts are listed for editors only;
-  - `EditActions` and `EditorToolbar` (`shared/ui`) serve players and news alike.
+  - `EditActions` and `EditorToolbar` (`shared/ui`) serve players, news and sponsors alike.
+- **Editing sponsors** (same pattern, `SPONSOR_EDITING`):
+  - the form shows a live preview of the real `SponsorCard`, and the logo on the same white panel (drop or choose; shrunk to at most 800 px WebP);
+  - English and German descriptions are edited together, and a new sponsor is saved in both languages;
+  - unticking "Show on the website" hides a sponsor; hidden sponsors are listed as past sponsors for editors;
+  - logos stay in the media library when a sponsor is deleted or gets a new logo, because news articles may show the same image.
+- **After an edit** (`shared/lib/use-refresh-then.ts`): every editor refreshes the page (or navigates away) and closes only once the new page is on screen.
+- **Deleting** (`shared/ui/Vanish`, `shared/lib/use-vanishing.ts`):
+  - a deleted card crumbles into dust and drifts away before the list refreshes;
+  - the effect is an SVG turbulence and displacement filter animated with Motion, about 1.4 s long;
+  - under `prefers-reduced-motion` the card only fades out;
+  - the confirm dialog closes first so the effect is visible;
+  - a timeout lets the delete finish even if the card is not on screen.
 - **Fresh pages after edits:** collection hooks call `revalidatePath('/(frontend)/[locale]', 'layout')`. The route group must be part of the path, otherwise nothing is invalidated and prerendered pages keep their build-time content. Inside a server action, the editor's page updates in the same response; visitors get the new version on their next visit.
 - Payload access control per collection (`src/cms/access/`); public read only where content is public.
 - JSON-LD output escapes `<` to prevent script injection from CMS content.

@@ -35,6 +35,12 @@ export default defineConfig({
       testMatch: /news-editing\.spec\.ts$/,
       dependencies: ['editing'],
     },
+    {
+      name: 'editing-sponsors',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /sponsors-editing\.spec\.ts$/,
+      dependencies: ['editing-news'],
+    },
   ],
   webServer: {
     command: `${isCi ? 'pnpm start' : 'pnpm dev'} --port ${PORT}`,

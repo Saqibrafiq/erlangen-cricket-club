@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { EDIT_MODE_COOKIE } from '@/shared/config/edit-mode'
+import { VANISH_TIMEOUT_MS } from '@/shared/lib/use-vanishing'
 import { renderWithIntl } from '@/shared/testing/render-with-intl'
 
 import type { NewsEditing } from '../../editor-types'
@@ -81,6 +82,9 @@ describe('news in edit mode', () => {
     await userEvent.click(within(dialog).getByRole('button', { name: 'Delete' }))
 
     expect(editing.actions.deleteArticle).toHaveBeenCalledWith(AGM_NEWS.id)
-    expect(await screen.findByText(`“${AGM_NEWS.title}” deleted.`)).toBeInTheDocument()
+    // The card first dissolves (Vanish), then the list refreshes.
+    expect(
+      await screen.findByText(`“${AGM_NEWS.title}” deleted.`, {}, { timeout: VANISH_TIMEOUT_MS }),
+    ).toBeInTheDocument()
   })
 })

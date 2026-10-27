@@ -609,6 +609,86 @@
       "heading": "Interesse am Sponsoring?",
       "text": "Erzähl uns von deinem Unternehmen, der Vorstand meldet sich bei dir.",
       "button": "Kontakt"
+    },
+    "editor": {
+      "add": "Sponsor hinzufügen",
+      "edit": "{name} bearbeiten",
+      "delete": "{name} löschen",
+      "inactive": {
+        "summary": "{count, plural, one {# ehemaliger Sponsor} other {# ehemalige Sponsoren}}",
+        "hint": "Nicht auf der Website sichtbar. Zum erneuten Anzeigen öffnen."
+      },
+      "notice": {
+        "saved": "{name} gespeichert.",
+        "savedInactive": "{name} gespeichert. Nicht auf der Website sichtbar.",
+        "deleted": "{name} gelöscht."
+      },
+      "sheet": {
+        "addTitle": "Sponsor hinzufügen",
+        "editTitle": "Sponsor bearbeiten",
+        "description": "Änderungen erscheinen sofort auf der Website.",
+        "close": "Schließen",
+        "loading": "Sponsor wird geladen…"
+      },
+      "preview": {
+        "label": "Vorschau",
+        "name": "Name des Sponsors",
+        "description": "Ein oder zwei Sätze über den Sponsor."
+      },
+      "form": {
+        "logo": "Logo",
+        "logoHint": "JPG, PNG oder WebP. Ein Logo mit transparentem Hintergrund wirkt am besten.",
+        "chooseLogo": "Logo auswählen",
+        "changeLogo": "Logo ändern",
+        "dropLogo": "oder hier ablegen",
+        "name": "Name",
+        "tier": "Stufe",
+        "tiers": {
+          "title": {
+            "label": "Hauptsponsor",
+            "hint": "Steht ganz oben und wird hervorgehoben."
+          },
+          "sponsor": {
+            "label": "Sponsor",
+            "hint": "Sortiert danach, wie lange er uns unterstützt."
+          }
+        },
+        "since": "Sponsor seit",
+        "website": "Website",
+        "optional": "(optional)",
+        "descriptionEn": "Beschreibung auf Englisch",
+        "descriptionDe": "Beschreibung auf Deutsch",
+        "descriptionHint": "Ein oder zwei Sätze, bis zu {max} Zeichen.",
+        "isActive": "Auf der Website anzeigen",
+        "isActiveHint": "Abwählen, wenn das Sponsoring endet; der Sponsor bleibt unter den ehemaligen Sponsoren.",
+        "save": "Speichern",
+        "saving": "Wird gespeichert…",
+        "cancel": "Abbrechen"
+      },
+      "errors": {
+        "summary": "Bitte prüfe die markierten Felder.",
+        "required": "Bitte fülle dieses Feld aus.",
+        "tooLong": "Das ist zu lang.",
+        "year": "Bitte gib ein Jahr zwischen 2000 und 2100 ein.",
+        "website": "Bitte gib eine vollständige Adresse ein, die mit https:// beginnt.",
+        "logoRequired": "Bitte wähle ein Logo aus.",
+        "logoType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
+        "logoSize": "Dieses Bild ist zu groß. Bitte wähle ein kleineres.",
+        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+        "signIn": "Erneut anmelden",
+        "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal.",
+        "load": "Der Sponsor konnte nicht geladen werden. Bitte versuche es noch einmal.",
+        "inactiveLoad": "Ehemalige Sponsoren konnten nicht geladen werden.",
+        "retry": "Erneut versuchen"
+      },
+      "deleteDialog": {
+        "title": "{name} entfernen?",
+        "description": "Der Sponsor wird von der Website gelöscht. Zum bloßen Ausblenden bearbeiten und „Auf der Website anzeigen“ abwählen.",
+        "confirm": "Löschen",
+        "deleting": "Wird gelöscht…",
+        "cancel": "Abbrechen",
+        "error": "Löschen fehlgeschlagen. Bitte versuche es noch einmal."
+      }
     }
   },
   "players": {
