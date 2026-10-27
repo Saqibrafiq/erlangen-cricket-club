@@ -1,4 +1,4 @@
-import { EyeOff, PencilLine, Plus } from 'lucide-react'
+import { EyeOff, type LucideIcon, PencilLine, Plus } from 'lucide-react'
 
 import { Button } from './button'
 
@@ -10,6 +10,8 @@ export type EditorToolbarItem = {
 export type EditorToolbarProps = {
   addLabel: string
   onAdd: () => void
+  /** The main button's icon; a plus by default, e.g. an upload icon for imports. */
+  addIcon?: LucideIcon
   /** Content visitors don't see (hidden players, draft articles), so editors can still reach it. */
   hidden?: {
     summary: string
@@ -27,7 +29,13 @@ export type EditorToolbarProps = {
  * Editors' controls above a list: the add button in the right corner, and a native disclosure on
  * the left with the items visitors don't see, out of the way until needed.
  */
-export function EditorToolbar({ addLabel, onAdd, hidden, error }: EditorToolbarProps) {
+export function EditorToolbar({
+  addLabel,
+  onAdd,
+  addIcon: AddIcon = Plus,
+  hidden,
+  error,
+}: EditorToolbarProps) {
   return (
     // No card around it: one row, hidden items on the left, the add button in the right corner.
     <div className="flex flex-wrap items-start justify-end gap-3">
@@ -59,7 +67,7 @@ export function EditorToolbar({ addLabel, onAdd, hidden, error }: EditorToolbarP
         </details>
       )}
       <Button onClick={onAdd}>
-        <Plus aria-hidden="true" />
+        <AddIcon aria-hidden="true" />
         {addLabel}
       </Button>
     </div>
