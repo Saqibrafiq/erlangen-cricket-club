@@ -48,23 +48,15 @@ jobs:
   build-and-e2e:
     name: Build, E2E and accessibility
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        # Docker Hub's official image via the AWS ECR Public mirror: shared runner IPs keep
-        # hitting Docker Hub's anonymous pull rate limit.
-        image: public.ecr.aws/docker/library/postgres:17-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: ecc
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres -d ecc"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
     steps:
+      # The runner image ships PostgreSQL: no container pull, so no Docker Hub or ECR pull limits
+      # (both have failed CI before). Matches DATABASE_URI above.
+      - name: Start PostgreSQL
+        run: |
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+          sudo -u postgres createdb ecc
+          pg_isready -h localhost -p 5432
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
