@@ -13,6 +13,7 @@ Decisions follow the [MADR](https://adr.github.io/madr/) template ([`template.md
 | [0007](0007-contact-messages-stored-in-cms.md)                    | Contact messages stored in the CMS, protected by a honeypot                      | Accepted |
 | [0008](0008-maps-load-on-request.md)                              | Maps load on request (OpenStreetMap, two-click)                                  | Accepted |
 | [0017](0017-edit-news-on-the-website.md)                          | Edit news on the website with a visual Lexical editor                            | Accepted |
+| [0018](0018-import-league-tables-from-cricclubs-csv.md)           | Update league tables from CricClubs CSV exports on the website                   | Accepted |
 | [0016](0016-player-photo-background-removal-in-the-browser.md)    | Player photos: background removed in the editor's browser, all files self-hosted | Accepted |
 | [0015](0015-edit-content-on-the-website.md)                       | Edit content on the website itself; static pages stay static                     | Accepted |
 | [0014](0014-club-sign-in-page-on-payload-auth.md)                 | Club sign-in page on top of Payload's authentication                             | Accepted |

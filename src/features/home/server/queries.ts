@@ -43,7 +43,8 @@ export async function getHomeData(locale: Locale, now: Date): Promise<HomeData> 
       getInstagramPosts(now),
     ])
   const { next } = matchday
-  const clubStandings = getClubStandings(standings, { withCompetition: true })
+  // The current season only: last season's places would read as today's.
+  const clubStandings = getClubStandings(standings.tables, { withCompetition: true })
 
   return {
     matchday,
