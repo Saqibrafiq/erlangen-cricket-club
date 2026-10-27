@@ -609,6 +609,86 @@
       "heading": "Interested in sponsoring?",
       "text": "Tell us about your company and the board will get in touch.",
       "button": "Contact us"
+    },
+    "editor": {
+      "add": "Add sponsor",
+      "edit": "Edit {name}",
+      "delete": "Delete {name}",
+      "inactive": {
+        "summary": "{count, plural, one {# past sponsor} other {# past sponsors}}",
+        "hint": "Not shown on the website. Open one to show it again."
+      },
+      "notice": {
+        "saved": "{name} saved.",
+        "savedInactive": "{name} saved. Not shown on the website.",
+        "deleted": "{name} deleted."
+      },
+      "sheet": {
+        "addTitle": "Add sponsor",
+        "editTitle": "Edit sponsor",
+        "description": "Changes appear on the website right away.",
+        "close": "Close",
+        "loading": "Loading sponsor…"
+      },
+      "preview": {
+        "label": "Preview",
+        "name": "Sponsor name",
+        "description": "One or two sentences about the sponsor."
+      },
+      "form": {
+        "logo": "Logo",
+        "logoHint": "JPG, PNG or WebP. A logo with a transparent background looks best.",
+        "chooseLogo": "Choose logo",
+        "changeLogo": "Change logo",
+        "dropLogo": "or drop it here",
+        "name": "Name",
+        "tier": "Level",
+        "tiers": {
+          "title": {
+            "label": "Title sponsor",
+            "hint": "Listed first and highlighted."
+          },
+          "sponsor": {
+            "label": "Sponsor",
+            "hint": "Listed by how long they support us."
+          }
+        },
+        "since": "Sponsor since",
+        "website": "Website",
+        "optional": "(optional)",
+        "descriptionEn": "Description in English",
+        "descriptionDe": "Description in German",
+        "descriptionHint": "One or two sentences, up to {max} characters.",
+        "isActive": "Show on the website",
+        "isActiveHint": "Untick when the sponsorship ends; the sponsor stays under past sponsors.",
+        "save": "Save",
+        "saving": "Saving…",
+        "cancel": "Cancel"
+      },
+      "errors": {
+        "summary": "Please check the highlighted fields.",
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "year": "Please enter a year between 2000 and 2100.",
+        "website": "Please enter a full address starting with https://",
+        "logoRequired": "Please choose a logo.",
+        "logoType": "Please choose a JPG, PNG or WebP image.",
+        "logoSize": "This image is too large. Please choose a smaller one.",
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Saving is not possible right now. Please try again.",
+        "load": "The sponsor could not be loaded. Please try again.",
+        "inactiveLoad": "Past sponsors could not be loaded.",
+        "retry": "Try again"
+      },
+      "deleteDialog": {
+        "title": "Remove {name}?",
+        "description": "The sponsor is deleted from the website. To only hide it, edit it and untick “Show on the website”.",
+        "confirm": "Delete",
+        "deleting": "Deleting…",
+        "cancel": "Cancel",
+        "error": "Could not delete. Please try again."
+      }
     }
   },
   "players": {

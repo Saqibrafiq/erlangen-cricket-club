@@ -7,9 +7,11 @@ import { useId, useState } from 'react'
 
 import { cn } from '@/shared/lib/cn'
 import { useIsEditMode } from '@/shared/lib/edit-mode'
+import { useVanishing } from '@/shared/lib/use-vanishing'
 import { Button } from '@/shared/ui/button'
 import { formControlClassName } from '@/shared/ui/form-field'
 import { PillGroup } from '@/shared/ui/pill-group'
+import { Vanish } from '@/shared/ui/vanish'
 
 import {
   filterSquad,
@@ -63,6 +65,7 @@ export function SquadBrowser({ players, joinHref, editing }: SquadBrowserProps) 
   const [intent, setIntent] = useState<EditorIntent | null>(null)
   const [notice, setNotice] = useState('')
   const [refreshKey, setRefreshKey] = useState(0)
+  const { vanishingId, vanish, finish: onVanished } = useVanishing()
   const canEdit = isEditMode && editing !== undefined
 
   // After a change (the editor has refreshed the page): close it and say what happened.
@@ -189,8 +192,14 @@ export function SquadBrowser({ players, joinHref, editing }: SquadBrowserProps) 
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8">
           {matches.map((player) => (
             <li key={player.id} className="relative">
-              <PlayerCard player={player} />
-              {canEdit && (
+              {canEdit ? (
+                <Vanish isVanishing={vanishingId === player.id} onVanished={onVanished}>
+                  <PlayerCard player={player} />
+                </Vanish>
+              ) : (
+                <PlayerCard player={player} />
+              )}
+              {canEdit && vanishingId !== player.id && (
                 <CardEditActions
                   name={player.name}
                   className="absolute top-1.5 left-1.5"
@@ -215,6 +224,7 @@ export function SquadBrowser({ players, joinHref, editing }: SquadBrowserProps) 
         <PlayerEditor
           intent={intent}
           editing={editing}
+          vanish={vanish}
           onClose={() => {
             setIntent(null)
           }}
