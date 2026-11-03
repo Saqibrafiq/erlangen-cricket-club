@@ -20,6 +20,14 @@ export type FixtureCompetition = {
   isFeatured: boolean
 }
 
+/** Where a match is played; the address is for directions and calendars. */
+export type FixtureGround = {
+  name: string
+  address: string | null
+  /** The club playing home games there, e.g. "ECC"; unset for halls and neutral grounds. */
+  clubCode?: string | null
+}
+
 export type FixtureInnings = {
   battingTeamId: number
   runs: number
@@ -33,7 +41,7 @@ export type FixtureSummary = {
   /** ISO 8601 date-time; day-only fixtures are stored at noon UTC. */
   date: string
   startTime: string | null
-  venue: string | null
+  ground: FixtureGround | null
   stage: FixtureStage
   status: FixtureStatus
   competition: FixtureCompetition
@@ -65,6 +73,15 @@ export type FixturesOverview = {
   fixtures: readonly FixtureSummary[]
   /** Every competition with fixtures, grouped by club team — the competition filter's options. */
   competitionsByTeam: readonly TeamCompetitions[]
+}
+
+/** One season's fixtures, with every season for the switcher. */
+export type FixturesSeason = FixturesOverview & {
+  /** The season shown; `null` without competitions (or for an unknown season). */
+  season: string | null
+  /** Newest first. */
+  seasons: string[]
+  isCurrent: boolean
 }
 
 /** Everything shown on one competition's page. */

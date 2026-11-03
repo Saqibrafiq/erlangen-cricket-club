@@ -1,6 +1,11 @@
 import type { MetadataRoute } from 'next'
 
-import { FIXTURES_PATH, getCompetitionPath, getCompetitionSlugs } from '@/features/fixtures'
+import {
+  FIXTURES_PATH,
+  getCompetitionPath,
+  getCompetitionSlugs,
+  getFixturesSeasonPath,
+} from '@/features/fixtures'
 import { CONTACT_PATH } from '@/features/contact'
 import { JOURNEY_PATH } from '@/features/journey'
 import { LEGAL_PATHS } from '@/features/legal'
@@ -60,6 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...competitionSlugs.map(getStandingsPath),
       // Past seasons; the current one is STANDINGS_PATH.
       ...standings.seasons.slice(1).map(getStandingsSeasonPath),
+      ...standings.seasons.slice(1).map(getFixturesSeasonPath),
     ].map(toEntry),
     ...newsEntries.map(({ slug, updatedAt }) => ({
       ...toEntry(getNewsPath(slug)),

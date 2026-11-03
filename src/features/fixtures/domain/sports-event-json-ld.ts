@@ -22,7 +22,15 @@ function toEvent(fixture: FixtureSummary) {
       name: `${fixture.competition.name} ${fixture.competition.season}`,
     },
     competitor: fixture.teams.map((team) => ({ '@type': 'SportsTeam', name: team.name })),
-    ...(fixture.venue ? { location: { '@type': 'Place', name: fixture.venue } } : {}),
+    ...(fixture.ground
+      ? {
+          location: {
+            '@type': 'Place',
+            name: fixture.ground.name,
+            ...(fixture.ground.address ? { address: fixture.ground.address } : {}),
+          },
+        }
+      : {}),
   }
 }
 

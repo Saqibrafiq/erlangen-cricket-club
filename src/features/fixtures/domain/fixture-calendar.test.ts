@@ -50,7 +50,7 @@ describe('buildFixtureCalendar', () => {
   it('escapes special characters and leaves out an unknown venue', () => {
     const calendar = buildFixtureCalendar(
       makeScheduledFixture({
-        venue: null,
+        ground: null,
         competition: {
           id: 1,
           slug: 'cup',

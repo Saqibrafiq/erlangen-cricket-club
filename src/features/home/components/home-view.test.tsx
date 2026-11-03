@@ -56,6 +56,29 @@ describe('HomeView', () => {
     expect(screen.getByText('Training Thursday 17:30–20:00')).toBeVisible()
   })
 
+  it('names a ground without a home club, e.g. a hall, by its name', () => {
+    const { next } = HOME_DATA.matchday
+    if (!next) throw new Error('HOME_DATA has a next match')
+    renderHome({
+      ...HOME_DATA,
+      matchday: {
+        ...HOME_DATA.matchday,
+        next: {
+          ...next,
+          ground: {
+            name: 'Hall 1 (Taufkirchen)',
+            address: 'Köglweg 99, 82024 Taufkirchen',
+            clubCode: null,
+          },
+        },
+      },
+    })
+
+    expect(detail('Ground')).toHaveTextContent(
+      'Hall 1 (Taufkirchen) · Köglweg 99, 82024 Taufkirchen',
+    )
+  })
+
   it('shows the next match with teams, home game, date, kick-off and ground', () => {
     renderHome()
 
@@ -65,7 +88,7 @@ describe('HomeView', () => {
     expect(card.getByText('Erlangen Cricket Club I')).toBeVisible()
     expect(card.getByText('NCC-I')).toBeVisible()
     expect(detail('Kick-off')).toHaveTextContent('11:00')
-    expect(detail('Ground')).toHaveTextContent('Erlangen Cricket Ground')
+    expect(detail('Ground')).toHaveTextContent('ECC · Siedlerstraße 1, 91056 Erlangen')
     expect(card.getByRole('link', { name: /Add to calendar/ })).toHaveAttribute(
       'href',
       '/calendar/fixture-100.ics',

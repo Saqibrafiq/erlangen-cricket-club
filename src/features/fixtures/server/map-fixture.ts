@@ -1,7 +1,7 @@
 import { getTeamOutcome, resolveMatchResult, type ResultInput } from '@/domain/cricket'
-import type { Competition, Fixture, Team } from '@/payload-types'
+import type { Competition, Fixture, Ground, Team } from '@/payload-types'
 
-import type { FixtureInnings, FixtureSummary, FixtureTeam } from '../types'
+import type { FixtureGround, FixtureInnings, FixtureSummary, FixtureTeam } from '../types'
 
 /** Thrown when a fixture was queried without populated relations (programming error). */
 export class FixtureMappingError extends Error {
@@ -84,6 +84,13 @@ function toResultInput(doc: Fixture, innings: FixtureInnings[]): ResultInput<num
 }
 
 /** Maps a Payload fixture (queried with depth >= 1) to the view model used by the UI. */
+/** The ground, when one is set and populated (queried with depth >= 1). */
+function mapGround(ground: number | Ground | null | undefined): FixtureGround | null {
+  return typeof ground === 'object' && ground !== null
+    ? { name: ground.name, address: ground.address ?? null, clubCode: ground.clubCode ?? null }
+    : null
+}
+
 export function mapFixture(doc: Fixture): FixtureSummary {
   const competition = requirePopulated<Competition>(doc.competition, 'competition', doc.id)
   const teams = [
@@ -98,7 +105,7 @@ export function mapFixture(doc: Fixture): FixtureSummary {
     id: doc.id,
     date: doc.date,
     startTime: doc.startTime ?? null,
-    venue: doc.venue ?? null,
+    ground: mapGround(doc.ground),
     stage: doc.stage,
     status: doc.status,
     competition: {

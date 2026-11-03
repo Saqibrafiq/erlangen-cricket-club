@@ -36,11 +36,11 @@ export type NewCompetitionFieldErrors = Partial<
 >
 
 /** The import's target: an existing competition, or one to create (e.g. a new season). */
-export type StandingsImportTarget =
+export type CompetitionTarget =
   { kind: 'existing'; id: number } | { kind: 'new'; competition: NewCompetition }
 
-export type StandingsImportFormResult =
-  | { success: true; target: StandingsImportTarget; csv: string }
+export type CompetitionImportFormResult =
+  | { success: true; target: CompetitionTarget; csv: string }
   | { success: false; fieldErrors: NewCompetitionFieldErrors }
 
 const FIELDS: readonly NewCompetitionField[] = ['name', 'season', 'maxOvers']
@@ -56,8 +56,8 @@ function readText(formData: FormData, key: string): string {
   return typeof value === 'string' ? value : ''
 }
 
-/** Validates the import form's target; the CSV itself is checked by `parseStandingsCsv`. */
-export function parseStandingsImportForm(formData: FormData): StandingsImportFormResult {
+/** Validates an import form's target competition; the CSV itself is checked by the importer. */
+export function parseCompetitionImportForm(formData: FormData): CompetitionImportFormResult {
   const csv = readText(formData, 'csv')
   const competition = readText(formData, 'competition')
   if (competition !== NEW_COMPETITION) {

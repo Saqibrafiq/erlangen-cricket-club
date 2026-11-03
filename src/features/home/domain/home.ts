@@ -17,8 +17,3 @@ export function pickFeaturedPlayers(players: readonly Player[]): Player[] {
 
   return [...withPhoto, ...withoutPhoto].slice(0, FEATURED_PLAYERS)
 }
-
-/** Google Maps directions to a ground given by name or address (no tracking embed, just a link). */
-export function getDirectionsUrl(venue: string): string {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(venue)}`
-}

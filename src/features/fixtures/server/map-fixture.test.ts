@@ -125,14 +125,17 @@ describe('mapFixture', () => {
         innings: null,
         result: undefined,
         startTime: '11:00',
-        venue: 'Erlangen',
+        ground: { id: 1, name: 'Erlangen', address: null, updatedAt: '', createdAt: '' },
       }),
     )
 
     expect(fixture.result).toBeNull()
     expect(fixture.clubOutcome).toBeNull()
     expect(fixture.innings).toEqual([])
-    expect(fixture).toMatchObject({ startTime: '11:00', venue: 'Erlangen' })
+    expect(fixture).toMatchObject({
+      startTime: '11:00',
+      ground: { name: 'Erlangen', address: null },
+    })
   })
 
   it('has no club outcome when no club team plays', () => {

@@ -85,9 +85,10 @@
   - unticking "Show on the website" hides a sponsor; hidden sponsors are listed as past sponsors for editors;
   - logos stay in the media library when a sponsor is deleted or gets a new logo, because news articles may show the same image.
 - **Importing league tables** ([ADR-0018](09-architecture-decisions/0018-import-league-tables-from-cricclubs-csv.md)): editors drop the CricClubs points table export on the standings page, check the changes and the table, then confirm. A new season's competition is created in the same step; teams new to us are added from their CricClubs code.
+- **Importing fixtures** ([ADR-0019](09-architecture-decisions/0019-import-fixtures-from-a-club-csv-template.md)): editors fill in the club template from the league schedule, drop it on the fixtures page, check new, changed and removed fixtures, then confirm. The template has only Date, Time, Home and Away; the ground is the home club's (by club code), and each fixture can then be edited or deleted on its card. Grounds are saved once (`grounds` collection) and shown with directions; results are never touched by an import.
 - **Seasons:**
-  - the current season is the newest one with a competition: as soon as a 2027 competition exists, `/standings`, the home page and the import list show only 2027;
-  - past seasons are linked from a season switcher on the standings page (`/standings/season/2026`, in the sitemap), and each competition keeps its own page;
+  - the current season is the newest one with a competition (`shared/lib/seasons.ts`): as soon as a 2027 competition exists, `/standings`, `/fixtures`, the home page tables and the import lists show only 2027;
+  - past seasons are linked from a season switcher (`/standings/season/2026`, `/fixtures/season/2026`, in the sitemap), and each competition keeps its own pages;
   - the header menus already listed only the newest season.
 - **After an edit** (`shared/lib/use-refresh-then.ts`): every editor refreshes the page (or navigates away) and closes only once the new page is on screen.
 - **Deleting** (`shared/ui/Vanish`, `shared/lib/use-vanishing.ts`):
