@@ -1,9 +1,10 @@
+import { pickSeason, sortSeasons } from '@/shared/lib/seasons'
+
 import type { CompetitionStandings } from '../types'
 
 /** Every season we have a competition for, newest first, e.g. `["2027", "2026"]`. */
 export function getSeasons(tables: readonly CompetitionStandings[]): string[] {
-  const seasons = new Set(tables.map(({ competition }) => competition.season))
-  return [...seasons].toSorted((a, b) => b.localeCompare(a, undefined, { numeric: true }))
+  return sortSeasons(tables.map(({ competition }) => competition.season))
 }
 
 export type SeasonStandings = {
@@ -25,13 +26,12 @@ export function selectSeason(
   requested?: string,
 ): SeasonStandings {
   const seasons = getSeasons(tables)
-  const [current = null] = seasons
-  const season = requested === undefined ? current : (seasons.find((s) => s === requested) ?? null)
+  const { season, isCurrent } = pickSeason(seasons, requested)
 
   return {
     season,
     seasons,
     tables: tables.filter(({ competition }) => competition.season === season),
-    isCurrent: season !== null && season === current,
+    isCurrent,
   }
 }

@@ -182,7 +182,66 @@
     "versus": "gegen",
     "when": "Wann",
     "where": "Wo",
-    "competition": "Wettbewerb"
+    "competition": "Wettbewerb",
+    "import": {
+      "open": "Spielplan importieren",
+      "title": "Spielplan importieren",
+      "description": "Aus deiner CSV-Datei des Liga-Spielplans. Gespielte Spiele und Ergebnisse werden nie geändert.",
+      "close": "Schließen",
+      "loading": "Wettbewerbe werden geladen…",
+      "newCompetitionPlaceholder": "Neuer Wettbewerb",
+      "file": "Spielplan (CSV)",
+      "fileHint": "Spalten: Date, Time, Home, Away, Ground, Address, Stage. Nur Date, Home und Away sind Pflicht. Gespeichert wird erst, wenn du unten bestätigst.",
+      "choose": "CSV-Datei auswählen",
+      "drop": "oder hier ablegen",
+      "chooseAnother": "Andere Datei auswählen",
+      "template": "Vorlage herunterladen (CSV für Excel)",
+      "confirm": "{count, plural, =0 {Spielplan importieren} one {# Spiel importieren} other {# Spiele importieren}}",
+      "importing": "Wird importiert…",
+      "cancel": "Abbrechen",
+      "preview": {
+        "unchanged": "Unverändert",
+        "summary": "{created} neu · {updated} geändert · {removed} entfernt",
+        "new": "Neu",
+        "changed": "Geändert: {fields}",
+        "played": "Gespielt",
+        "fields": {
+          "day": "Datum",
+          "startTime": "Uhrzeit",
+          "ground": "Platz",
+          "stage": "Runde"
+        },
+        "newTeams": "Neue Teams: {teams}.",
+        "newGrounds": "Neue Plätze: {grounds}.",
+        "removed": "Nicht mehr in der Datei, wird entfernt: {fixtures}.",
+        "upToDate": "Diese Spiele sind schon aktuell: nichts zu importieren."
+      },
+      "fileErrors": {
+        "summary": "{count, plural, one {Diese Datei hat # Problem} other {Diese Datei hat # Probleme}}. Bitte vergleiche sie mit der Vorlage.",
+        "line": "Zeile {line}:",
+        "empty": "Die Datei ist leer.",
+        "tooLarge": "Die Datei ist zu groß für einen Spielplan.",
+        "missingColumn": "Die Spalte „{column}“ fehlt.",
+        "noRows": "Die Datei hat Überschriften, aber keine Spiele.",
+        "notDate": "{column} muss ein Datum wie 16.05.2027 sein, nicht „{value}“.",
+        "notTime": "{column} muss eine Uhrzeit wie 11:00 sein, nicht „{value}“.",
+        "missingTeam": "Das Team in {column} fehlt.",
+        "sameTeams": "Heim und Gast sind beide „{value}“.",
+        "unknownStage": "{column} muss League, Qualifier, Semi-final oder Final sein, nicht „{value}“.",
+        "addressWithoutGround": "Es gibt eine Adresse, aber keinen Platznamen."
+      },
+      "notice": "{competition}: {created} neu, {updated} geändert, {removed} entfernt{added, plural, =0 {} one {, # neues Team oder neuer Platz hinzugefügt} other {, # neue Teams und Plätze hinzugefügt}}.",
+      "errors": {
+        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+        "signIn": "Erneut anmelden",
+        "server": "Importieren ist gerade nicht möglich. Bitte versuche es noch einmal.",
+        "load": "Die Wettbewerbe konnten nicht geladen werden. Bitte versuche es noch einmal.",
+        "retry": "Erneut versuchen"
+      }
+    },
+    "seasons": "Saisons",
+    "seasonTitle": "Spielplan & Ergebnisse {season}",
+    "seasonMetaDescription": "Alle Spiele und Ergebnisse der Saison {season} des Erlangen Cricket Club."
   },
   "error": {
     "heading": "Etwas ist schiefgelaufen",
@@ -302,17 +361,6 @@
       "description": "Aus CricClubs: Points Table → Export to Excel (CSV).",
       "close": "Schließen",
       "loading": "Wettbewerbe werden geladen…",
-      "competition": "Wettbewerb",
-      "newCompetition": {
-        "option": "Neuer Wettbewerb…",
-        "legend": "Neuer Wettbewerb",
-        "name": "Name",
-        "nameHint": "Wie die Liga ihn nennt, ohne Jahr, z. B. „BCV Regionalliga Bayern“.",
-        "placeholder": "Neuer Wettbewerb",
-        "season": "Saison",
-        "format": "Format",
-        "overs": "{overs} Overs"
-      },
       "file": "Punktetabelle (CSV)",
       "fileHint": "Gespeichert wird erst, wenn du unten bestätigst.",
       "choose": "CSV-Datei auswählen",
@@ -350,16 +398,13 @@
         "importedWithTeams": "{competition} aktualisiert: {count} Teams, {added, plural, one {# neues Team} other {# neue Teams}} hinzugefügt."
       },
       "errors": {
-        "required": "Bitte fülle dieses Feld aus.",
-        "tooLong": "Das ist zu lang.",
-        "season": "Bitte gib ein Jahr zwischen 2000 und 2100 ein.",
-        "maxOvers": "Bitte wähle ein Format.",
         "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
         "signIn": "Erneut anmelden",
         "server": "Importieren ist gerade nicht möglich. Bitte versuche es noch einmal.",
         "load": "Die Wettbewerbe konnten nicht geladen werden. Bitte versuche es noch einmal.",
         "retry": "Erneut versuchen"
-      }
+      },
+      "newCompetitionPlaceholder": "Neuer Wettbewerb"
     },
     "seasons": "Saisons",
     "seasonTitle": "Tabellen {season}",
@@ -993,5 +1038,23 @@
     "cancel": "Abbrechen",
     "undo": "Rückgängig",
     "redo": "Wiederholen"
+  },
+  "competitions": {
+    "target": {
+      "competition": "Wettbewerb",
+      "option": "Neuer Wettbewerb…",
+      "legend": "Neuer Wettbewerb",
+      "name": "Name",
+      "nameHint": "Wie die Liga ihn nennt, ohne Jahr, z. B. „BCV Regionalliga Bayern“.",
+      "season": "Saison",
+      "format": "Format",
+      "overs": "{overs} Overs",
+      "errors": {
+        "required": "Bitte fülle dieses Feld aus.",
+        "tooLong": "Das ist zu lang.",
+        "season": "Bitte gib ein Jahr zwischen 2000 und 2100 ein.",
+        "maxOvers": "Bitte wähle ein Format."
+      }
+    }
   }
 }

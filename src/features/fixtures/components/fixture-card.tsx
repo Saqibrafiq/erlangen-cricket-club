@@ -84,7 +84,7 @@ export function FixtureCard({ fixture, showCompetition = true }: FixtureCardProp
   const [team1, team2] = fixture.teams
   // Forfeits and walkovers have a result but no innings, so no scores are shown.
   const showScores = fixture.status === 'completed' && fixture.innings.length > 0
-  const hasMeta = showCompetition || Boolean(fixture.venue)
+  const hasMeta = showCompetition || fixture.ground !== null
   const winnerTeamId = fixture.result ? getWinnerTeamId(fixture.result) : null
   const inningsFor = (team: FixtureTeam) =>
     fixture.innings.find((innings) => innings.battingTeamId === team.id)
@@ -151,8 +151,8 @@ export function FixtureCard({ fixture, showCompetition = true }: FixtureCardProp
 
       <p className={cn('text-xs text-text-muted', hasMeta && 'mt-2')}>
         {showCompetition && `${fixture.competition.name} ${fixture.competition.season}`}
-        {showCompetition && fixture.venue && ' · '}
-        {fixture.venue}
+        {showCompetition && fixture.ground && ' · '}
+        {fixture.ground?.name}
       </p>
     </article>
   )

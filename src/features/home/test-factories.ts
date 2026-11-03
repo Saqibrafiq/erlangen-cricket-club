@@ -20,7 +20,7 @@ export const NEXT_FIXTURE: FixtureSummary = {
   id: 100,
   date: '2027-05-15T12:00:00.000Z',
   startTime: '11:00',
-  venue: 'Erlangen Cricket Ground, Siedlerstraße 1, Erlangen',
+  ground: { name: 'Erlangen Cricket Ground', address: 'Siedlerstraße 1, Erlangen' },
   stage: 'league',
   status: 'scheduled',
   competition: COMPETITION,
@@ -35,7 +35,7 @@ export const LATEST_RESULT: FixtureSummary = {
   id: 50,
   date: '2026-09-05T12:00:00.000Z',
   startTime: null,
-  venue: null,
+  ground: null,
   status: 'completed',
   competition: {
     ...COMPETITION,
@@ -56,7 +56,14 @@ const RECORD = { played: 49, won: 27, lost: 20, tied: 0, noResult: 2 }
 export const MATCHDAY_WITH_NEXT: Matchday = {
   season: '2027',
   next: NEXT_FIXTURE,
-  upcoming: [{ ...NEXT_FIXTURE, id: 101, date: '2027-05-22T12:00:00.000Z', venue: 'Nürnberg' }],
+  upcoming: [
+    {
+      ...NEXT_FIXTURE,
+      id: 101,
+      date: '2027-05-22T12:00:00.000Z',
+      ground: { name: 'Nürnberg', address: null },
+    },
+  ],
   recentResults: [LATEST_RESULT],
   record: RECORD,
 }

@@ -12,6 +12,8 @@ import * as migration_20261010_100051_featured_competitions from './20261010_100
 import * as migration_20261010_100420_instagram_feed from './20261010_100420_instagram_feed';
 import * as migration_20261010_181911_featured_players from './20261010_181911_featured_players';
 import * as migration_20261011_153938_blob_storage_fields from './20261011_153938_blob_storage_fields';
+import * as migration_20261103_202652_grounds from './20261103_202652_grounds';
+import * as migration_20261103_202710_fixture_venue_to_ground from './20261103_202710_fixture_venue_to_ground';
 
 export const migrations = [
   {
@@ -82,6 +84,16 @@ export const migrations = [
   {
     up: migration_20261011_153938_blob_storage_fields.up,
     down: migration_20261011_153938_blob_storage_fields.down,
-    name: '20261011_153938_blob_storage_fields'
+    name: '20261011_153938_blob_storage_fields',
+  },
+  {
+    up: migration_20261103_202652_grounds.up,
+    down: migration_20261103_202652_grounds.down,
+    name: '20261103_202652_grounds',
+  },
+  {
+    up: migration_20261103_202710_fixture_venue_to_ground.up,
+    down: migration_20261103_202710_fixture_venue_to_ground.down,
+    name: '20261103_202710_fixture_venue_to_ground'
   },
 ];

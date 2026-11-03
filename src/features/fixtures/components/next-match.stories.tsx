@@ -16,5 +16,5 @@ type Story = StoryObj<typeof meta>
 export const WithTimeAndVenue: Story = {}
 
 export const DateOnly: Story = {
-  args: { fixture: makeScheduledFixture({ startTime: null, venue: null }) },
+  args: { fixture: makeScheduledFixture({ startTime: null, ground: null }) },
 }
