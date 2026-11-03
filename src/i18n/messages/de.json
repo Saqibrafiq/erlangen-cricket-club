@@ -191,7 +191,7 @@
       "loading": "Wettbewerbe werden geladen…",
       "newCompetitionPlaceholder": "Neuer Wettbewerb",
       "file": "Spielplan (CSV)",
-      "fileHint": "Spalten: Date, Time, Home, Away, Ground, Address, Stage. Nur Date, Home und Away sind Pflicht. Gespeichert wird erst, wenn du unten bestätigst.",
+      "fileHint": "Spalten: Date, Time, Home, Away, Ground, Address, Stage. Nur Date, Home und Away sind Pflicht: ohne Ground wird auf dem Platz des Heimteams gespielt. Gespeichert wird erst, wenn du unten bestätigst.",
       "choose": "CSV-Datei auswählen",
       "drop": "oder hier ablegen",
       "chooseAnother": "Andere Datei auswählen",
@@ -214,7 +214,8 @@
         "newTeams": "Neue Teams: {teams}.",
         "newGrounds": "Neue Plätze: {grounds}.",
         "removed": "Nicht mehr in der Datei, wird entfernt: {fixtures}.",
-        "upToDate": "Diese Spiele sind schon aktuell: nichts zu importieren."
+        "upToDate": "Diese Spiele sind schon aktuell: nichts zu importieren.",
+        "homeGround": "Heimplatz"
       },
       "fileErrors": {
         "summary": "{count, plural, one {Diese Datei hat # Problem} other {Diese Datei hat # Probleme}}. Bitte vergleiche sie mit der Vorlage.",

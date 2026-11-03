@@ -14,6 +14,7 @@ import * as migration_20261010_181911_featured_players from './20261010_181911_f
 import * as migration_20261011_153938_blob_storage_fields from './20261011_153938_blob_storage_fields';
 import * as migration_20261103_202652_grounds from './20261103_202652_grounds';
 import * as migration_20261103_202710_fixture_venue_to_ground from './20261103_202710_fixture_venue_to_ground';
+import * as migration_20261103_220951_ground_club_codes from './20261103_220951_ground_club_codes';
 
 export const migrations = [
   {
@@ -94,6 +95,11 @@ export const migrations = [
   {
     up: migration_20261103_202710_fixture_venue_to_ground.up,
     down: migration_20261103_202710_fixture_venue_to_ground.down,
-    name: '20261103_202710_fixture_venue_to_ground'
+    name: '20261103_202710_fixture_venue_to_ground',
+  },
+  {
+    up: migration_20261103_220951_ground_club_codes.up,
+    down: migration_20261103_220951_ground_club_codes.down,
+    name: '20261103_220951_ground_club_codes'
   },
 ];

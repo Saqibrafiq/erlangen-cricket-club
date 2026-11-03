@@ -13,6 +13,7 @@ import type { Fixture } from '@/payload-types'
 
 import { type ImportedFixture, parseFixturesCsv } from '../domain/fixtures-csv'
 import { diffFixtures, type ExistingImportedFixture } from '../domain/fixtures-diff'
+import { applyHomeGrounds, type ClubGround } from '../domain/home-grounds'
 import type { FixtureEditorResult, FixtureImportData, ImportFixturesResult } from '../editor-types'
 
 /*
@@ -112,7 +113,7 @@ export async function getFixtureImportDataAction(): Promise<
         collection: 'grounds',
         depth: 0,
         pagination: false,
-        select: { name: true },
+        select: { name: true, address: true, clubCode: true },
         user,
         overrideAccess: false,
       }),
@@ -129,13 +130,38 @@ export async function getFixtureImportDataAction(): Promise<
           })),
         ),
         teams: teams.docs.map((team) => team.shortName),
-        grounds: grounds.docs.map((ground) => ground.name),
+        grounds: grounds.docs.map(toClubGround),
       },
     }
   } catch (error) {
     payload.logger.error({ err: error }, 'Could not load the fixtures import')
     return { status: 'error' }
   }
+}
+
+function toClubGround(ground: {
+  name: string
+  address?: string | null
+  clubCode?: string | null
+}): ClubGround {
+  return { name: ground.name, address: ground.address ?? null, clubCode: ground.clubCode ?? null }
+}
+
+/** Fills in home teams' grounds, from the grounds we have saved. */
+async function withHomeGrounds(
+  { payload, user }: Editor,
+  fixtures: readonly ImportedFixture[],
+): Promise<ImportedFixture[]> {
+  const { docs } = await payload.find({
+    collection: 'grounds',
+    where: { clubCode: { exists: true } },
+    depth: 0,
+    pagination: false,
+    select: { name: true, address: true, clubCode: true },
+    user,
+    overrideAccess: false,
+  })
+  return applyHomeGrounds(fixtures, docs.map(toClubGround))
 }
 
 /**
@@ -206,16 +232,17 @@ export async function importFixturesAction(formData: FormData): Promise<ImportFi
 
   const { payload, user } = editor
   try {
+    const fixtures = await withHomeGrounds(editor, schedule.fixtures)
     const competitionId = await resolveCompetition(editor, form.target)
     const [teams, grounds, existing] = await Promise.all([
       resolveTeams(
         editor,
-        schedule.fixtures.flatMap((fixture) => [fixture.homeShortName, fixture.awayShortName]),
+        fixtures.flatMap((fixture) => [fixture.homeShortName, fixture.awayShortName]),
       ),
-      resolveGrounds(editor, schedule.fixtures),
+      resolveGrounds(editor, fixtures),
       findImportedFixtures(editor, competitionId),
     ])
-    const diff = diffFixtures(existing, schedule.fixtures, {
+    const diff = diffFixtures(existing, fixtures, {
       teams: new Set(teams.ids.keys()),
       grounds: new Set(grounds.ids.keys()),
     })

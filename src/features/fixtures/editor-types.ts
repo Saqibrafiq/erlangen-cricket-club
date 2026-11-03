@@ -2,6 +2,7 @@ import type { NewCompetitionFieldErrors, TargetCompetition } from '@/features/co
 
 import type { FixturesCsvError } from './domain/fixtures-csv'
 import type { ExistingImportedFixture } from './domain/fixtures-diff'
+import type { ClubGround } from './domain/home-grounds'
 
 /** A competition a schedule can go into, with the fixtures earlier imports created. */
 export type FixtureImportCompetition = TargetCompetition & {
@@ -13,8 +14,8 @@ export type FixtureImportData = {
   competitions: FixtureImportCompetition[]
   /** Short names of the teams we have. */
   teams: string[]
-  /** Names of the grounds we have. */
-  grounds: string[]
+  /** The grounds we have, with the club playing at home there. */
+  grounds: ClubGround[]
 }
 
 /** The session ended (or never existed): the editor has to sign in again. */

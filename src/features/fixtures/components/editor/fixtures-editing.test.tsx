@@ -54,7 +54,13 @@ function makeEditing(actions: Partial<FixtureEditorActions> = {}): FixtureEditin
               { id: 1, name: 'BCV Regionalliga Bayern', season: '2026', fixtures: [] },
             ],
             teams: ['ECC-I', 'NCC-I'],
-            grounds: ['Erlangen Cricket Ground'],
+            grounds: [
+              {
+                name: 'Erlangen Cricket Ground',
+                address: 'Siedlerstraße 1, 91056 Erlangen',
+                clubCode: 'ECC',
+              },
+            ],
           },
         }),
       ),
@@ -132,13 +138,15 @@ describe('importing fixtures', { timeout: FLOW_TIMEOUT_MS }, () => {
     await userEvent.upload(
       within(sheet).getByLabelText(/^Schedule \(CSV\)/),
       csvFile(
-        '16.05.2027,11:00,ECC-I,NCC-I,Erlangen Cricket Ground,,League',
+        // No ground: ECC-I plays at home, at the Erlangen Cricket Ground.
+        '16.05.2027,11:00,ECC-I,NCC-I,,,League',
         '23.05.2027,,SKCC,ECC-I,Tennenlohe,,',
       ),
     )
 
     expect(await within(sheet).findByText('1 new · 1 changed · 0 removed')).toBeInTheDocument()
     expect(within(sheet).getByText('Changed: time')).toBeInTheDocument()
+    expect(within(sheet).getByText('Erlangen Cricket Ground · home ground')).toBeInTheDocument()
     expect(within(sheet).getByText('New teams: SKCC. New grounds: Tennenlohe.')).toBeInTheDocument()
 
     await userEvent.click(within(sheet).getByRole('button', { name: 'Import 2 fixtures' }))
