@@ -8,7 +8,7 @@ import { renderWithIntl } from '@/shared/testing/render-with-intl'
 import type { FixtureEditing, FixtureEditorActions } from '../../editor-types'
 import { VANISH_TIMEOUT_MS } from '@/shared/lib/use-vanishing'
 
-import { FixtureEditable, FixturesEditingProvider } from './fixtures-editing'
+import { FixtureEditActions, FixturesEditingProvider, FixtureVanish } from './fixtures-editing'
 
 const refresh = vi.fn()
 vi.mock('next/navigation', async (importOriginal) => ({
@@ -108,9 +108,12 @@ function renderPage(editing = makeEditing()) {
   renderWithIntl(
     <FixturesEditingProvider editing={editing}>
       <p>Fixtures list</p>
-      <FixtureEditable id={60} title="ECC-I v NCC-I">
-        <article>ECC-I v NCC-I, 16 May</article>
-      </FixtureEditable>
+      <FixtureVanish id={60}>
+        <article>
+          ECC-I v NCC-I, 16 May
+          <FixtureEditActions id={60} title="ECC-I v NCC-I" />
+        </article>
+      </FixtureVanish>
     </FixturesEditingProvider>,
   )
   return editing

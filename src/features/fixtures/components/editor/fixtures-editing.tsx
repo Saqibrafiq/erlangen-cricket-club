@@ -124,19 +124,17 @@ export function FixturesEditingProvider({
   )
 }
 
-export type FixtureEditableProps = {
+export type FixtureEditActionsProps = {
   id: number
   /** "ECC-I v NCC-I": names the buttons and the delete dialog. */
   title: string
-  children: ReactNode
 }
 
 /**
- * A fixture card with edit and delete buttons in edit mode, dissolving when deleted. Outside edit
- * mode it is just the card. Keeps the card's subgrid, so cards in a row still line up.
+ * Lets a fixture card dissolve when it is deleted; just the card outside edit mode. Keeps the
+ * card's subgrid, so cards in a row still line up.
  */
-export function FixtureEditable({ id, title, children }: FixtureEditableProps) {
-  const t = useTranslations('fixtures.editor')
+export function FixtureVanish({ id, children }: { id: number; children: ReactNode }) {
   const context = use(FixturesEditingContext)
   if (!context) {
     return children
@@ -149,17 +147,30 @@ export function FixtureEditable({ id, title, children }: FixtureEditableProps) {
       className="row-span-4 grid grid-rows-subgrid"
     >
       {children}
-      <EditActions
-        editLabel={t('edit', { match: title })}
-        deleteLabel={t('delete', { match: title })}
-        onEdit={() => {
-          context.open({ kind: 'edit', id })
-        }}
-        onDelete={() => {
-          context.open({ kind: 'delete', id, title })
-        }}
-        className="absolute -top-3 right-3"
-      />
     </Vanish>
+  )
+}
+
+/** Edit and delete buttons for the card's bottom row; nothing outside edit mode. */
+export function FixtureEditActions({ id, title }: FixtureEditActionsProps) {
+  const t = useTranslations('fixtures.editor')
+  const context = use(FixturesEditingContext)
+  if (!context) {
+    return null
+  }
+
+  return (
+    <EditActions
+      variant="inline"
+      editLabel={t('edit', { match: title })}
+      deleteLabel={t('delete', { match: title })}
+      onEdit={() => {
+        context.open({ kind: 'edit', id })
+      }}
+      onDelete={() => {
+        context.open({ kind: 'delete', id, title })
+      }}
+      className="-my-2 -mr-2"
+    />
   )
 }
