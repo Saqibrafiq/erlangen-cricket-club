@@ -191,7 +191,7 @@
       "loading": "Loading competitions…",
       "newCompetitionPlaceholder": "New competition",
       "file": "Schedule (CSV)",
-      "fileHint": "Columns: Date, Time, Home, Away, Ground, Address, Stage. Only Date, Home and Away are required. Nothing is saved until you confirm below.",
+      "fileHint": "Columns: Date, Time, Home, Away, Ground, Address, Stage. Only Date, Home and Away are required: without a Ground, the match is at the home team's ground. Nothing is saved until you confirm below.",
       "choose": "Choose CSV file",
       "drop": "or drop it here",
       "chooseAnother": "Choose another file",
@@ -214,7 +214,8 @@
         "newTeams": "New teams: {teams}.",
         "newGrounds": "New grounds: {grounds}.",
         "removed": "No longer in the file, will be removed: {fixtures}.",
-        "upToDate": "These fixtures are already up to date: nothing to import."
+        "upToDate": "These fixtures are already up to date: nothing to import.",
+        "homeGround": "home ground"
       },
       "fileErrors": {
         "summary": "{count, plural, one {This file has # problem} other {This file has # problems}}. Please check it against the template.",

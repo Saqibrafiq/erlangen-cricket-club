@@ -32,6 +32,8 @@ Option 1. PDF layouts differ per league and year, so parsing them would break si
   - The import creates grounds it doesn't know.
   - An address in the file fills in a ground without one, but never overwrites an address someone saved.
   - Fixtures show the ground; "Directions" links to Google Maps (a link only, nothing is loaded from Google).
+- **Home grounds:** leagues publish home and away teams, not grounds. Each ground has an optional club code (`ECC`, `NCC`, …), and a fixture without a Ground is played at the home club's ground (`ECC-II` → `ECC` → Erlangen Cricket Ground). A Ground in the file wins (e.g. a neutral final). The preview marks these as "home ground".
+  - A migration loads the 45 grounds of the Bayerischer Cricket Verband (from its CricClubs grounds list, supplied by the club) with their club codes, so production has them too. For Erlangen it uses the pitch (Siedlerstraße 1) instead of the club's postal address that CricClubs lists.
 - **Matching across uploads:** an imported fixture's `importKey` is `csv-{competition}-{home}|{away}|{n}`, where n counts how often the pair meets.
   - A match moved to another day keeps its key, so a re-upload shows it as "Changed: date".
   - Upcoming imported fixtures that are no longer in the file are removed.
@@ -44,5 +46,6 @@ Option 1. PDF layouts differ per league and year, so parsing them would break si
 
 - Good: a season's schedule goes online in one step, with grounds and directions, and can be corrected by uploading the file again.
 - Good: results are safe from imports by design.
-- Bad: someone has to type the schedule into Excel once per competition.
+- Bad: someone has to type the schedule into Excel once per competition (dates and teams; grounds come from the home team).
+- Bad: a club new to the league has no ground until an editor adds it (with its club code) in the admin; until then its home fixtures show no ground.
 - Bad: renaming a team code in the file makes its fixtures look new (the old ones are removed and the new ones added), which the preview shows.

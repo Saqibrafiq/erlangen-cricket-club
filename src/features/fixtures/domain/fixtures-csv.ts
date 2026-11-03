@@ -16,6 +16,8 @@ export type ImportedFixture = {
   homeShortName: string
   awayShortName: string
   ground: FixtureGround | null
+  /** The ground was filled in from the home team (see `applyHomeGrounds`), not the file. */
+  isHomeGround?: true
   stage: FixtureStage
 }
 

@@ -27,6 +27,7 @@ import {
   parseFixturesCsv,
 } from '../../domain/fixtures-csv'
 import { diffFixtures } from '../../domain/fixtures-diff'
+import { applyHomeGrounds } from '../../domain/home-grounds'
 import type {
   FixtureEditing,
   FixtureEditorResult,
@@ -104,9 +105,9 @@ function ImportForm({
       : data.competitions.find((candidate) => String(candidate.id) === target.target)
   const parsed = csv?.result
   const diff = parsed?.success
-    ? diffFixtures(competition?.fixtures ?? [], parsed.fixtures, {
+    ? diffFixtures(competition?.fixtures ?? [], applyHomeGrounds(parsed.fixtures, data.grounds), {
         teams: new Set(data.teams),
-        grounds: new Set(data.grounds),
+        grounds: new Set(data.grounds.map((ground) => ground.name)),
       })
     : null
 

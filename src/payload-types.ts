@@ -368,6 +368,10 @@ export interface Ground {
    * Street, postcode and town, e.g. "Siedlerstraße 1, 91056 Erlangen".
    */
   address?: string | null;
+  /**
+   * The home club's code as in its team codes, e.g. NCC for NCC-I and NCC-II. Their home games are played here unless a fixture says otherwise.
+   */
+  clubCode?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -697,6 +701,7 @@ export interface FixturesSelect<T extends boolean = true> {
 export interface GroundsSelect<T extends boolean = true> {
   name?: T;
   address?: T;
+  clubCode?: T;
   updatedAt?: T;
   createdAt?: T;
 }

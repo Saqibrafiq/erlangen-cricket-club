@@ -48,7 +48,14 @@ function importedDoc(key: string, overrides: Record<string, unknown> = {}) {
 /** Answers each `find` by collection; fixtures are the ones earlier imports created. */
 function givenDatabase({
   teams = [ECC, NCC],
-  grounds = [{ id: 3, name: 'Erlangen Cricket Ground', address: null as string | null }],
+  grounds = [
+    {
+      id: 3,
+      name: 'Erlangen Cricket Ground',
+      address: null as string | null,
+      clubCode: null as string | null,
+    },
+  ],
   fixtures = [] as unknown[],
 } = {}) {
   payload.find.mockImplementation(({ collection }: { collection: string }) => {
@@ -131,7 +138,7 @@ describe('fixtures import actions', () => {
           },
         ],
         teams: ['ECC-I', 'NCC-I'],
-        grounds: ['Erlangen Cricket Ground'],
+        grounds: [{ name: 'Erlangen Cricket Ground', address: null, clubCode: null }],
       },
     })
   })
@@ -185,8 +192,8 @@ describe('fixtures import actions', () => {
     givenDatabase({
       teams: [ECC, NCC, { id: 9, shortName: 'SKCC' }],
       grounds: [
-        { id: 3, name: 'Erlangen Cricket Ground', address: 'Siedlerstraße 1' },
-        { id: 4, name: 'Tennenlohe', address: null },
+        { id: 3, name: 'Erlangen Cricket Ground', address: 'Siedlerstraße 1', clubCode: null },
+        { id: 4, name: 'Tennenlohe', address: null, clubCode: null },
       ],
       fixtures: [
         importedDoc('ECC-I|NCC-I|1', { startTime: '13:00' }),
@@ -206,6 +213,28 @@ describe('fixtures import actions', () => {
     )
     expect(payload.delete).toHaveBeenCalledWith({ collection: 'fixtures', id: 52, ...AS_EDITOR })
     expect(payload.create).not.toHaveBeenCalled()
+  })
+
+  it("saves the home team's ground when the file names none", async () => {
+    givenDatabase({
+      grounds: [
+        { id: 3, name: 'Erlangen Cricket Ground', address: 'Siedlerstraße 1', clubCode: 'ECC' },
+      ],
+    })
+
+    await importFixturesAction(
+      formData({
+        competition: String(COMPETITION_ID),
+        csv: ['Date,Home,Away', '16.05.2027,ECC-II,NCC-I'].join('\n'),
+      }),
+    )
+
+    expect(payload.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'fixtures',
+        data: expect.objectContaining({ ground: 3 }) as unknown,
+      }),
+    )
   })
 
   it('starts a new competition for a new season first', async () => {

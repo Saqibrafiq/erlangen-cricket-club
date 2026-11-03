@@ -131,7 +131,10 @@ export function FixturesImportPreview({ diff }: FixturesImportPreviewProps) {
                 {fixture.ground && (
                   <>
                     <MapPin aria-hidden="true" className="size-3 shrink-0" />
-                    <span className="truncate">{fixture.ground.name}</span>
+                    <span className="truncate">
+                      {fixture.ground.name}
+                      {fixture.isHomeGround && ` · ${t('homeGround')}`}
+                    </span>
                   </>
                 )}
               </span>

@@ -12,7 +12,7 @@ export const grounds: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Matches',
-    defaultColumns: ['name', 'address'],
+    defaultColumns: ['name', 'clubCode', 'address'],
     description: 'Cricket grounds. Fixtures show the name; the address powers "Directions".',
   },
   access: {
@@ -36,6 +36,16 @@ export const grounds: CollectionConfig = {
       type: 'text',
       admin: {
         description: 'Street, postcode and town, e.g. "Siedlerstraße 1, 91056 Erlangen".',
+      },
+    },
+    {
+      name: 'clubCode',
+      type: 'text',
+      unique: true,
+      index: true,
+      admin: {
+        description:
+          "The home club's code as in its team codes, e.g. NCC for NCC-I and NCC-II. Their home games are played here unless a fixture says otherwise.",
       },
     },
   ],
