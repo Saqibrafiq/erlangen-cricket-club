@@ -153,7 +153,17 @@ export function NextMatchWidget({ fixture, links, nextSeason }: NextMatchWidgetP
             label={t('venue')}
             className="col-span-2"
           >
-            {fixture?.ground?.name ?? tbd}
+            {fixture?.ground ? (
+              <>
+                {/* The host club's code (ECC, NCC) players know grounds by; the name for others. */}
+                {fixture.ground.clubCode ?? fixture.ground.name}
+                {fixture.ground.address && (
+                  <span className="font-normal opacity-80"> · {fixture.ground.address}</span>
+                )}
+              </>
+            ) : (
+              tbd
+            )}
           </Detail>
         </dl>
 

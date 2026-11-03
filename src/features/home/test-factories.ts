@@ -20,7 +20,11 @@ export const NEXT_FIXTURE: FixtureSummary = {
   id: 100,
   date: '2027-05-15T12:00:00.000Z',
   startTime: '11:00',
-  ground: { name: 'Erlangen Cricket Ground', address: 'Siedlerstraße 1, Erlangen' },
+  ground: {
+    name: 'Erlangen Cricket Ground',
+    address: 'Siedlerstraße 1, 91056 Erlangen',
+    clubCode: 'ECC',
+  },
   stage: 'league',
   status: 'scheduled',
   competition: COMPETITION,

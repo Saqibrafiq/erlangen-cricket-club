@@ -87,7 +87,7 @@ function toResultInput(doc: Fixture, innings: FixtureInnings[]): ResultInput<num
 /** The ground, when one is set and populated (queried with depth >= 1). */
 function mapGround(ground: number | Ground | null | undefined): FixtureGround | null {
   return typeof ground === 'object' && ground !== null
-    ? { name: ground.name, address: ground.address ?? null }
+    ? { name: ground.name, address: ground.address ?? null, clubCode: ground.clubCode ?? null }
     : null
 }
 
