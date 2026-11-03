@@ -3,8 +3,10 @@ import { getTranslations } from 'next-intl/server'
 
 import {
   buildFixturesJsonLd,
+  FIXTURE_EDITING,
   FIXTURES_PATH,
-  FixturesOverview,
+  FixturesEditingProvider,
+  FixturesSeasonView,
   getFixturesOverview,
 } from '@/features/fixtures'
 import { resolveLocale } from '@/i18n/locale'
@@ -36,7 +38,9 @@ export default async function FixturesPage({ params }: PageProps<'/[locale]/fixt
   return (
     <Container className="space-y-8 py-10">
       <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{t('heading')}</h1>
-      <FixturesOverview overview={overview} />
+      <FixturesEditingProvider editing={FIXTURE_EDITING}>
+        <FixturesSeasonView overview={overview} />
+      </FixturesEditingProvider>
       <JsonLd data={buildFixturesJsonLd(overview.fixtures)} />
     </Container>
   )

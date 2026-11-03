@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     news: News;
     fixtures: Fixture;
+    grounds: Ground;
     teams: Team;
     players: Player;
     competitions: Competition;
@@ -86,6 +87,7 @@ export interface Config {
   collectionsSelect: {
     news: NewsSelect<false> | NewsSelect<true>;
     fixtures: FixturesSelect<false> | FixturesSelect<true>;
+    grounds: GroundsSelect<false> | GroundsSelect<true>;
     teams: TeamsSelect<false> | TeamsSelect<true>;
     players: PlayersSelect<false> | PlayersSelect<true>;
     competitions: CompetitionsSelect<false> | CompetitionsSelect<true>;
@@ -235,9 +237,9 @@ export interface Fixture {
    */
   startTime?: string | null;
   /**
-   * Ground name (optional).
+   * Where the match is played (optional).
    */
-  venue?: string | null;
+  ground?: (number | null) | Ground;
   team1: number | Team;
   team2: number | Team;
   status: 'scheduled' | 'completed' | 'abandoned' | 'cancelled';
@@ -347,6 +349,25 @@ export interface Team {
    * Tick for Erlangen Cricket Club teams; results are shown from their perspective.
    */
   isClubTeam?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Cricket grounds. Fixtures show the name; the address powers "Directions".
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "grounds".
+ */
+export interface Ground {
+  id: number;
+  /**
+   * As players know it, e.g. "Erlangen Cricket Ground".
+   */
+  name: string;
+  /**
+   * Street, postcode and town, e.g. "Siedlerstraße 1, 91056 Erlangen".
+   */
+  address?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -539,6 +560,10 @@ export interface PayloadLockedDocument {
         value: number | Fixture;
       } | null)
     | ({
+        relationTo: 'grounds';
+        value: number | Ground;
+      } | null)
+    | ({
         relationTo: 'teams';
         value: number | Team;
       } | null)
@@ -639,7 +664,7 @@ export interface FixturesSelect<T extends boolean = true> {
   stage?: T;
   date?: T;
   startTime?: T;
-  venue?: T;
+  ground?: T;
   team1?: T;
   team2?: T;
   status?: T;
@@ -662,6 +687,16 @@ export interface FixturesSelect<T extends boolean = true> {
         marginUnit?: T;
       };
   importKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "grounds_select".
+ */
+export interface GroundsSelect<T extends boolean = true> {
+  name?: T;
+  address?: T;
   updatedAt?: T;
   createdAt?: T;
 }

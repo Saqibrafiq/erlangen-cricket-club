@@ -10,6 +10,7 @@ import sharp from 'sharp'
 import { competitions } from './cms/collections/competitions'
 import { documents } from './cms/collections/documents'
 import { fixtures } from './cms/collections/fixtures'
+import { grounds } from './cms/collections/grounds'
 import { media } from './cms/collections/media'
 import { contactMessages } from './cms/collections/contact-messages'
 import { news } from './cms/collections/news'
@@ -37,6 +38,7 @@ export default buildConfig({
   collections: [
     news,
     fixtures,
+    grounds,
     teams,
     players,
     competitions,

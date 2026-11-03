@@ -2,13 +2,13 @@ import { CalendarDays, CalendarPlus, Clock, MapPin, Navigation } from 'lucide-re
 import { useFormatter, useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 
-import { FIXTURES_PATH, type FixtureSummary, getVenueKind } from '@/features/fixtures'
+import { FIXTURES_PATH, type FixtureSummary, formatGround, getVenueKind } from '@/features/fixtures'
+import { getDirectionsUrl } from '@/shared/lib/directions'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button'
 import { TeamMonogram } from '@/shared/ui/team-monogram'
 
-import { getDirectionsUrl } from '../domain/home'
 import type { NextMatchLinks } from '../types'
 import { MatchCountdown } from './match-countdown'
 
@@ -78,7 +78,7 @@ function Detail({ icon, label, children, className }: DetailProps) {
 export function NextMatchWidget({ fixture, links, nextSeason }: NextMatchWidgetProps) {
   const t = useTranslations('home.nextMatch')
   const format = useFormatter()
-  const venueKind = fixture ? getVenueKind(fixture.venue) : null
+  const venueKind = fixture ? getVenueKind(formatGround(fixture.ground)) : null
   const tbd = t('tbd')
   const [left, right] = fixture
     ? fixture.teams
@@ -153,7 +153,7 @@ export function NextMatchWidget({ fixture, links, nextSeason }: NextMatchWidgetP
             label={t('venue')}
             className="col-span-2"
           >
-            {fixture?.venue ?? tbd}
+            {fixture?.ground?.name ?? tbd}
           </Detail>
         </dl>
 
@@ -165,13 +165,13 @@ export function NextMatchWidget({ fixture, links, nextSeason }: NextMatchWidgetP
                 {t('addToCalendar')}
               </a>
             </Button>
-            {fixture.venue && (
+            {fixture.ground && (
               <Button asChild variant="on-media-outline">
                 <a
-                  href={getDirectionsUrl(fixture.venue)}
+                  href={getDirectionsUrl(fixture.ground.address ?? fixture.ground.name)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={t('directionsTo', { venue: fixture.venue })}
+                  aria-label={t('directionsTo', { venue: fixture.ground.name })}
                 >
                   <Navigation aria-hidden="true" />
                   {t('directions')}

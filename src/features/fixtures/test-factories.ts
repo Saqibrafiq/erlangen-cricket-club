@@ -39,7 +39,7 @@ export function makeCompletedFixture(overrides: Partial<FixtureSummary> = {}): F
     id: 1,
     date: '2026-09-06T12:00:00.000Z',
     startTime: null,
-    venue: null,
+    ground: null,
     stage: 'final',
     status: 'completed',
     competition: {
@@ -62,7 +62,7 @@ export function makeScheduledFixture(overrides: Partial<FixtureSummary> = {}): F
     id: 100,
     date: '2027-05-15T12:00:00.000Z',
     startTime: '11:00',
-    venue: 'Erlangen Cricket Ground',
+    ground: { name: 'Erlangen Cricket Ground', address: null },
     stage: 'league',
     status: 'scheduled',
     competition: {

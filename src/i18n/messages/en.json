@@ -182,7 +182,66 @@
     "versus": "v",
     "when": "When",
     "where": "Where",
-    "competition": "Competition"
+    "competition": "Competition",
+    "import": {
+      "open": "Import fixtures",
+      "title": "Import fixtures",
+      "description": "From your CSV of the league schedule. Played matches and results are never changed.",
+      "close": "Close",
+      "loading": "Loading competitions…",
+      "newCompetitionPlaceholder": "New competition",
+      "file": "Schedule (CSV)",
+      "fileHint": "Columns: Date, Time, Home, Away, Ground, Address, Stage. Only Date, Home and Away are required. Nothing is saved until you confirm below.",
+      "choose": "Choose CSV file",
+      "drop": "or drop it here",
+      "chooseAnother": "Choose another file",
+      "template": "Download the template (CSV for Excel)",
+      "confirm": "{count, plural, =0 {Import fixtures} one {Import # fixture} other {Import # fixtures}}",
+      "importing": "Importing…",
+      "cancel": "Cancel",
+      "preview": {
+        "unchanged": "Unchanged",
+        "summary": "{created} new · {updated} changed · {removed} removed",
+        "new": "New",
+        "changed": "Changed: {fields}",
+        "played": "Played",
+        "fields": {
+          "day": "date",
+          "startTime": "time",
+          "ground": "ground",
+          "stage": "stage"
+        },
+        "newTeams": "New teams: {teams}.",
+        "newGrounds": "New grounds: {grounds}.",
+        "removed": "No longer in the file, will be removed: {fixtures}.",
+        "upToDate": "These fixtures are already up to date: nothing to import."
+      },
+      "fileErrors": {
+        "summary": "{count, plural, one {This file has # problem} other {This file has # problems}}. Please check it against the template.",
+        "line": "Line {line}:",
+        "empty": "The file is empty.",
+        "tooLarge": "The file is too large for a schedule.",
+        "missingColumn": "Column \"{column}\" is missing.",
+        "noRows": "The file has headings but no fixtures.",
+        "notDate": "{column} should be a date like 16.05.2027, not \"{value}\".",
+        "notTime": "{column} should be a time like 11:00, not \"{value}\".",
+        "missingTeam": "{column} team is missing.",
+        "sameTeams": "Home and away are both \"{value}\".",
+        "unknownStage": "{column} should be League, Qualifier, Semi-final or Final, not \"{value}\".",
+        "addressWithoutGround": "There is an address but no ground name."
+      },
+      "notice": "{competition}: {created} new, {updated} changed, {removed} removed{added, plural, =0 {} one {, # new team or ground added} other {, # new teams and grounds added}}.",
+      "errors": {
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Importing is not possible right now. Please try again.",
+        "load": "The competitions could not be loaded. Please try again.",
+        "retry": "Try again"
+      }
+    },
+    "seasons": "Seasons",
+    "seasonTitle": "Fixtures & Results {season}",
+    "seasonMetaDescription": "Every fixture and result of Erlangen Cricket Club's {season} season."
   },
   "error": {
     "heading": "Something went wrong",
@@ -302,17 +361,6 @@
       "description": "From CricClubs: Points Table → Export to Excel (CSV).",
       "close": "Close",
       "loading": "Loading competitions…",
-      "competition": "Competition",
-      "newCompetition": {
-        "option": "New competition…",
-        "legend": "New competition",
-        "name": "Name",
-        "nameHint": "As the league calls it, without the year, e.g. \"BCV Regionalliga Bayern\".",
-        "placeholder": "New competition",
-        "season": "Season",
-        "format": "Format",
-        "overs": "{overs} overs"
-      },
       "file": "Points table (CSV)",
       "fileHint": "Nothing is saved until you confirm below.",
       "choose": "Choose CSV file",
@@ -350,16 +398,13 @@
         "importedWithTeams": "{competition} updated: {count} teams, {added, plural, one {# new team} other {# new teams}} added."
       },
       "errors": {
-        "required": "Please fill in this field.",
-        "tooLong": "This is too long.",
-        "season": "Please enter a year between 2000 and 2100.",
-        "maxOvers": "Please choose a format.",
         "unauthorized": "Your session has ended. Please sign in again.",
         "signIn": "Sign in again",
         "server": "Importing is not possible right now. Please try again.",
         "load": "The competitions could not be loaded. Please try again.",
         "retry": "Try again"
-      }
+      },
+      "newCompetitionPlaceholder": "New competition"
     },
     "seasons": "Seasons",
     "seasonTitle": "Standings {season}",
@@ -993,5 +1038,23 @@
     "cancel": "Cancel",
     "undo": "Undo",
     "redo": "Redo"
+  },
+  "competitions": {
+    "target": {
+      "competition": "Competition",
+      "option": "New competition…",
+      "legend": "New competition",
+      "name": "Name",
+      "nameHint": "As the league calls it, without the year, e.g. \"BCV Regionalliga Bayern\".",
+      "season": "Season",
+      "format": "Format",
+      "overs": "{overs} overs",
+      "errors": {
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "season": "Please enter a year between 2000 and 2100.",
+        "maxOvers": "Please choose a format."
+      }
+    }
   }
 }

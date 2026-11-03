@@ -1,3 +1,4 @@
+import { formatGround } from './ground'
 import type { FixtureSummary } from '../types'
 
 // Match days run 11:00–18:00 (club schedule); used as the event length when the start is known.
@@ -51,6 +52,7 @@ export function buildFixtureCalendar(
 ): string {
   const { kickoff, day, url, host, now } = options
   const [team1, team2] = fixture.teams
+  const location = formatGround(fixture.ground)
   const when = kickoff
     ? [
         `DTSTART:${toUtcStamp(kickoff)}`,
@@ -73,7 +75,7 @@ export function buildFixtureCalendar(
     ...when,
     `SUMMARY:${escapeText(`${team1.name} vs ${team2.name}`)}`,
     `DESCRIPTION:${escapeText(`${fixture.competition.name}\n${url}`)}`,
-    ...(fixture.venue ? [`LOCATION:${escapeText(fixture.venue)}`] : []),
+    ...(location ? [`LOCATION:${escapeText(location)}`] : []),
     `URL:${url}`,
     'END:VEVENT',
     'END:VCALENDAR',

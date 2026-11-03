@@ -7,7 +7,13 @@ import type { JSX } from 'react'
 import sharp from 'sharp'
 
 import { getContactInfo } from '@/features/contact'
-import { describeResult, type FixtureSummary, getFixture, getVenueKind } from '@/features/fixtures'
+import {
+  describeResult,
+  type FixtureSummary,
+  formatGround,
+  getFixture,
+  getVenueKind,
+} from '@/features/fixtures'
 import { getPlayer, type Player } from '@/features/players'
 import { type Locale, TIME_ZONE } from '@/i18n/routing'
 import { siteConfig } from '@/shared/config/site'
@@ -102,7 +108,7 @@ async function renderFixture(
   const teams = [toTeam(fixture.teams[0]), toTeam(fixture.teams[1])] as const
 
   if (kind === 'match') {
-    const venueKind = getVenueKind(fixture.venue)
+    const venueKind = getVenueKind(formatGround(fixture.ground))
     return {
       label: t('match'),
       body: (
@@ -113,7 +119,7 @@ async function renderFixture(
           venueKind={venueKind && tNext(venueKind)}
           date={date}
           time={fixture.startTime && tNext('kickoff', { time: fixture.startTime })}
-          venue={fixture.venue}
+          venue={fixture.ground?.name ?? null}
         />
       ),
     }

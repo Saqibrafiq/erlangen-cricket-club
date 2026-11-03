@@ -12,25 +12,22 @@ import {
   useTransition,
 } from 'react'
 
+import {
+  CompetitionTargetFields,
+  getInitialTarget,
+  getTargetTitle,
+  NEW_COMPETITION,
+} from '@/features/competitions'
 import { Link } from '@/i18n/navigation'
-import { cn } from '@/shared/lib/cn'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
 import { Button } from '@/shared/ui/button'
 import { FileDropZone } from '@/shared/ui/file-drop-zone'
-import { FormField, formControlClassName } from '@/shared/ui/form-field'
+import { FormField } from '@/shared/ui/form-field'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
 
 import { parseStandingsCsv, type StandingsCsvResult } from '../../domain/standings-csv'
 import { diffStandings } from '../../domain/standings-diff'
-import {
-  COMPETITION_NAME_MAX_LENGTH,
-  FIRST_SEASON,
-  LAST_SEASON,
-  MAX_OVERS_OPTIONS,
-  NEW_COMPETITION,
-  type NewCompetitionField,
-} from '../../domain/standings-import-form'
 import type {
   ImportStandingsResult,
   StandingsEditing,
@@ -58,7 +55,6 @@ type LoadState = { status: 'loading' } | StandingsEditorResult<StandingsImportDa
 type CsvFile = { name: string; result: StandingsCsvResult }
 
 const CSV_ACCEPT = '.csv,text/csv'
-const DEFAULT_MAX_OVERS = MAX_OVERS_OPTIONS[0]
 
 function Alert({ children }: { children: ReactNode }) {
   return (
@@ -91,12 +87,6 @@ type ImportFormProps = {
   isFinishing: boolean
 }
 
-/** The season after the newest one we have: what an editor starts in spring. */
-function nextSeason(data: StandingsImportData): string {
-  const newest = Math.max(...data.competitions.map((competition) => Number(competition.season)))
-  return String(Number.isFinite(newest) ? newest + 1 : new Date().getFullYear())
-}
-
 function ImportForm({
   data,
   competitionId,
@@ -108,37 +98,22 @@ function ImportForm({
 }: ImportFormProps) {
   const t = useTranslations('standings.import')
   const id = useId()
-  const [target, setTarget] = useState(
-    String(competitionId ?? data.competitions[0]?.id ?? NEW_COMPETITION),
-  )
-  const [newName, setNewName] = useState('')
-  const [newSeason, setNewSeason] = useState(() => nextSeason(data))
+  const [target, setTarget] = useState(() => getInitialTarget(data.competitions, competitionId))
   const [csv, setCsv] = useState<(CsvFile & { text: string }) | null>(null)
   const [result, setResult] = useState<ImportStandingsResult | null>(null)
   const [isImporting, startTransition] = useTransition()
   const isPending = isImporting || isFinishing
 
-  // Only the current season (and the table this was opened for): last season's are done.
-  const currentSeason = data.competitions[0]?.season
-  const options = data.competitions.filter(
-    (option) => option.season === currentSeason || option.id === competitionId,
-  )
-  const isNew = target === NEW_COMPETITION
-  const competition = data.competitions.find((candidate) => String(candidate.id) === target)
-  const caption = isNew
-    ? `${newName || t('newCompetition.placeholder')} ${newSeason}`
-    : `${competition?.name ?? ''} ${competition?.season ?? ''}`
+  const competition =
+    target.target === NEW_COMPETITION
+      ? undefined
+      : data.competitions.find((candidate) => String(candidate.id) === target.target)
+  const caption = getTargetTitle(data.competitions, target, t('newCompetitionPlaceholder'))
   const knownTeams = new Set(data.teams.map((team) => team.shortName))
   const parsed = csv?.result
   const diff = parsed?.success
     ? diffStandings(competition?.rows ?? [], parsed.rows, knownTeams)
     : null
-  const fieldErrors = result?.status === 'invalid' ? result.fieldErrors : {}
-  const fieldId = (field: NewCompetitionField) => `${id}-${field}`
-  const errorFor = (field: NewCompetitionField) => {
-    const code = fieldErrors[field]
-    return code ? t(`errors.${code}`) : undefined
-  }
 
   async function chooseFile(file: File) {
     const text = await file.text()
@@ -176,102 +151,13 @@ function ImportForm({
       )}
       {result?.status === 'invalidFile' && <StandingsCsvErrors errors={result.errors} />}
 
-      <FormField id={`${id}-competition`} label={t('competition')}>
-        {(control) => (
-          <select
-            {...control}
-            name="competition"
-            value={target}
-            onChange={(event) => {
-              setTarget(event.target.value)
-            }}
-            className={formControlClassName}
-          >
-            {options.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name} {option.season}
-              </option>
-            ))}
-            <option value={NEW_COMPETITION}>{t('newCompetition.option')}</option>
-          </select>
-        )}
-      </FormField>
-
-      {isNew && (
-        <fieldset className="space-y-4 rounded-2xl border border-border-default p-4">
-          <legend className="px-1 text-sm font-semibold">{t('newCompetition.legend')}</legend>
-          <FormField
-            id={fieldId('name')}
-            label={t('newCompetition.name')}
-            hint={t('newCompetition.nameHint')}
-            error={errorFor('name')}
-          >
-            {(control) => (
-              <input
-                {...control}
-                name="name"
-                required
-                autoComplete="off"
-                maxLength={COMPETITION_NAME_MAX_LENGTH}
-                value={newName}
-                onChange={(event) => {
-                  setNewName(event.target.value)
-                }}
-                className={formControlClassName}
-              />
-            )}
-          </FormField>
-          <div className="grid gap-4 sm:grid-cols-aside-content">
-            <FormField
-              id={fieldId('season')}
-              label={t('newCompetition.season')}
-              error={errorFor('season')}
-            >
-              {(control) => (
-                <input
-                  {...control}
-                  name="season"
-                  type="number"
-                  inputMode="numeric"
-                  required
-                  min={FIRST_SEASON}
-                  max={LAST_SEASON}
-                  value={newSeason}
-                  onChange={(event) => {
-                    setNewSeason(event.target.value)
-                  }}
-                  className={cn(formControlClassName, 'tabular-nums')}
-                />
-              )}
-            </FormField>
-            <fieldset className="space-y-1.5">
-              <legend className="text-sm font-medium">{t('newCompetition.format')}</legend>
-              <div className="flex gap-2">
-                {MAX_OVERS_OPTIONS.map((overs) => (
-                  <label
-                    key={overs}
-                    className="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-lg border border-border-default px-3 font-medium transition-colors duration-150 has-checked:border-brand-primary has-checked:bg-surface-highlight has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring"
-                  >
-                    <input
-                      type="radio"
-                      name="maxOvers"
-                      value={overs}
-                      defaultChecked={overs === DEFAULT_MAX_OVERS}
-                      className="sr-only"
-                    />
-                    {t('newCompetition.overs', { overs })}
-                  </label>
-                ))}
-              </div>
-              {errorFor('maxOvers') && (
-                <p className="text-sm font-medium text-status-danger-text">
-                  {errorFor('maxOvers')}
-                </p>
-              )}
-            </fieldset>
-          </div>
-        </fieldset>
-      )}
+      <CompetitionTargetFields
+        competitions={data.competitions}
+        alwaysIncludeId={competitionId}
+        value={target}
+        onChange={setTarget}
+        fieldErrors={result?.status === 'invalid' ? result.fieldErrors : undefined}
+      />
 
       <FormField id={`${id}-file`} label={t('file')} hint={t('fileHint')}>
         {(control) => (
