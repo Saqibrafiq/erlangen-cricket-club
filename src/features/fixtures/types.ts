@@ -24,6 +24,8 @@ export type FixtureCompetition = {
 export type FixtureGround = {
   name: string
   address: string | null
+  /** The club playing home games there, e.g. "ECC"; unset for halls and neutral grounds. */
+  clubCode?: string | null
 }
 
 export type FixtureInnings = {
