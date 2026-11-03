@@ -57,10 +57,13 @@ const COLUMNS = {
 } as const
 const REQUIRED_COLUMNS = [COLUMNS.date, COLUMNS.home, COLUMNS.away]
 
-/** What editors download and fill in; the example row shows every format the import reads. */
+/**
+ * What editors download and fill in: what the league schedule says. The ground follows from the
+ * home team (`applyHomeGrounds`); Ground, Address and Stage columns may be added for exceptions.
+ */
 export const FIXTURES_CSV_TEMPLATE = [
-  'Date,Time,Home,Away,Ground,Address,Stage',
-  '16.05.2027,11:00,ECC-I,NCC-I,Erlangen Cricket Ground,"Siedlerstraße 1, 91056 Erlangen",League',
+  'Date,Time,Home,Away',
+  '16.05.2027,11:00,ECC-I,NCC-I',
   '',
 ].join('\r\n')
 

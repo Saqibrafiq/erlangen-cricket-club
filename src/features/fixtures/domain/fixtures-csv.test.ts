@@ -16,7 +16,8 @@ describe('parseFixturesCsv', () => {
           startTime: '11:00',
           homeShortName: 'ECC-I',
           awayShortName: 'NCC-I',
-          ground: { name: 'Erlangen Cricket Ground', address: 'Siedlerstraße 1, 91056 Erlangen' },
+          // The template leaves the ground to the home team.
+          ground: null,
           stage: 'league',
         },
       ],

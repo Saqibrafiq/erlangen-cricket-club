@@ -6,7 +6,9 @@ import { EDIT_MODE_COOKIE } from '@/shared/config/edit-mode'
 import { renderWithIntl } from '@/shared/testing/render-with-intl'
 
 import type { FixtureEditing, FixtureEditorActions } from '../../editor-types'
-import { FixturesEditingProvider } from './fixtures-editing'
+import { VANISH_TIMEOUT_MS } from '@/shared/lib/use-vanishing'
+
+import { FixtureEditable, FixturesEditingProvider } from './fixtures-editing'
 
 const refresh = vi.fn()
 vi.mock('next/navigation', async (importOriginal) => ({
@@ -75,6 +77,28 @@ function makeEditing(actions: Partial<FixtureEditorActions> = {}): FixtureEditin
           groundsAdded: 1,
         }),
       ),
+      getFixture: vi.fn(() =>
+        Promise.resolve({
+          status: 'ok' as const,
+          data: {
+            draft: {
+              id: 60,
+              title: 'ECC-I v NCC-I',
+              day: '2027-05-16',
+              startTime: '11:00',
+              groundId: 3,
+              stage: 'league' as const,
+              status: 'scheduled' as const,
+            },
+            grounds: [
+              { id: 3, name: 'Erlangen Cricket Ground' },
+              { id: 4, name: 'Taufkirchen' },
+            ],
+          },
+        }),
+      ),
+      saveFixture: vi.fn(() => Promise.resolve({ status: 'saved' as const })),
+      deleteFixture: vi.fn(() => Promise.resolve({ status: 'deleted' as const })),
       ...actions,
     },
   }
@@ -84,6 +108,9 @@ function renderPage(editing = makeEditing()) {
   renderWithIntl(
     <FixturesEditingProvider editing={editing}>
       <p>Fixtures list</p>
+      <FixtureEditable id={60} title="ECC-I v NCC-I">
+        <article>ECC-I v NCC-I, 16 May</article>
+      </FixtureEditable>
     </FixturesEditingProvider>,
   )
   return editing
@@ -179,5 +206,48 @@ describe('importing fixtures', { timeout: FLOW_TIMEOUT_MS }, () => {
     expect(alert).toHaveTextContent('This file has 2 problems')
     expect(alert).toHaveTextContent('Line 2: DATE should be a date like 16.05.2027, not "soon".')
     expect(within(sheet).getByRole('button', { name: 'Import fixtures' })).toBeDisabled()
+  })
+
+  it("edits a fixture's time and ground, then reports it", async () => {
+    document.cookie = `${EDIT_MODE_COOKIE}=1; path=/`
+    const editing = renderPage()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Edit ECC-I v NCC-I' }))
+    const sheet = await screen.findByRole(
+      'dialog',
+      { name: 'Edit ECC-I v NCC-I' },
+      { timeout: EDITOR_LOAD_TIMEOUT_MS },
+    )
+    expect(await within(sheet).findByLabelText('Date')).toHaveValue('2027-05-16')
+    await userEvent.selectOptions(within(sheet).getByLabelText(/^Ground/), 'Taufkirchen')
+    await userEvent.selectOptions(within(sheet).getByLabelText('Status'), 'Cancelled')
+    await userEvent.click(within(sheet).getByRole('button', { name: 'Save' }))
+
+    await waitFor(() => {
+      expect(editing.actions.saveFixture).toHaveBeenCalledOnce()
+    })
+    const [sent] = vi.mocked(editing.actions.saveFixture).mock.calls[0] ?? []
+    expect(sent?.get('id')).toBe('60')
+    expect(sent?.get('ground')).toBe('4')
+    expect(sent?.get('status')).toBe('cancelled')
+    expect(await screen.findByText('ECC-I v NCC-I saved.')).toBeInTheDocument()
+  })
+
+  it('asks before deleting a fixture, lets it vanish and reports it', async () => {
+    document.cookie = `${EDIT_MODE_COOKIE}=1; path=/`
+    const editing = renderPage()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Delete ECC-I v NCC-I' }))
+    const dialog = await screen.findByRole(
+      'alertdialog',
+      { name: 'Delete ECC-I v NCC-I?' },
+      { timeout: EDITOR_LOAD_TIMEOUT_MS },
+    )
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Delete' }))
+
+    expect(editing.actions.deleteFixture).toHaveBeenCalledWith(60)
+    expect(
+      await screen.findByText('ECC-I v NCC-I deleted.', {}, { timeout: VANISH_TIMEOUT_MS }),
+    ).toBeInTheDocument()
   })
 })

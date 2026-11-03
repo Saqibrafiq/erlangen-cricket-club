@@ -24,8 +24,8 @@ For 2027 the whole season's fixtures must go on the website, with where each mat
 
 Option 1. PDF layouts differ per league and year, so parsing them would break silently.
 
-- **Template:** downloadable from the import panel (`FIXTURES_CSV_TEMPLATE`), with the columns Date, Time, Home, Away, Ground, Address and Stage.
-  - Only Date, Home and Away are required.
+- **Template:** downloadable from the import panel (`FIXTURES_CSV_TEMPLATE`), with only what a league schedule says: Date, Time, Home, Away.
+  - Optional extra columns Ground, Address and Stage cover exceptions (e.g. a neutral final).
   - Dates are read as written in Excel (`16.05.2027`, `16/05/2027`, `2027-05-16`), and so are times (`11:00`, `11:00:00`).
   - Teams are their codes, as in the standings (`ECC-I`).
 - **Grounds:** a `grounds` collection (name, address) replaces the fixture's free-text `venue`. The migration moves any existing venue text into grounds.
@@ -39,6 +39,7 @@ Option 1. PDF layouts differ per league and year, so parsing them would break si
   - Upcoming imported fixtures that are no longer in the file are removed.
   - Played, abandoned or cancelled fixtures, and anything entered in the admin, are never changed or removed.
 - **Preview and confirm, as for standings (ADR-0018):** the server parses and compares again.
+- **Editing on the website:** in edit mode every fixture card has edit and delete buttons. Editors can change the date, time, ground (from the saved grounds), stage and, before it is played, the status: scheduled, cancelled, abandoned. Results stay in the admin. Deleting asks first and dissolves the card (shared `Vanish`).
 - **Seasons:** the fixtures page shows the current season, the newest one with a competition. Past seasons are at `/fixtures/season/{year}`, linked from the season switcher.
 - **Competitions:** choosing or starting a competition moved into a small `features/competitions` slice, used by both imports. It holds the target form, `CompetitionTargetFields`, `resolveCompetition` and `resolveTeams`.
 

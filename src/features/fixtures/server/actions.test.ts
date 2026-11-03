@@ -1,6 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { getFixtureImportDataAction, importFixturesAction } from './actions'
+import {
+  deleteFixtureAction,
+  getFixtureEditorDataAction,
+  getFixtureImportDataAction,
+  importFixturesAction,
+  saveFixtureAction,
+} from './actions'
 
 const mocks = vi.hoisted(() => ({
   payload: {
@@ -278,5 +284,89 @@ describe('fixtures import actions', () => {
     })
     expect(await getFixtureImportDataAction()).toEqual({ status: 'error' })
     expect(payload.logger.error).toHaveBeenCalledTimes(2)
+  })
+
+  describe('editing one fixture', () => {
+    const EDIT = {
+      id: '60',
+      day: '2027-05-23',
+      startTime: '13:30',
+      ground: '4',
+      stage: 'league',
+      status: 'cancelled',
+    }
+
+    it('loads the fixture with the grounds to pick from', async () => {
+      payload.findByID.mockResolvedValue(importedDoc('ECC-I|NCC-I|1', { id: 60 }))
+      payload.find.mockResolvedValue({ docs: [{ id: 3, name: 'Erlangen Cricket Ground' }] })
+
+      expect(await getFixtureEditorDataAction(60)).toEqual({
+        status: 'ok',
+        data: {
+          draft: {
+            id: 60,
+            title: 'ECC-I v NCC-I',
+            day: '2027-05-16',
+            startTime: '11:00',
+            groundId: 3,
+            stage: 'league',
+            status: 'scheduled',
+          },
+          grounds: [{ id: 3, name: 'Erlangen Cricket Ground' }],
+        },
+      })
+    })
+
+    it('saves date, time, ground, stage and status as the editor', async () => {
+      payload.findByID.mockResolvedValue({ status: 'scheduled' })
+
+      expect(await saveFixtureAction(formData(EDIT))).toEqual({ status: 'saved' })
+      expect(payload.update).toHaveBeenCalledWith({
+        collection: 'fixtures',
+        id: 60,
+        data: {
+          date: '2027-05-23T12:00:00.000Z',
+          startTime: '13:30',
+          ground: 4,
+          stage: 'league',
+          status: 'cancelled',
+        },
+        ...AS_EDITOR,
+      })
+    })
+
+    it("never changes a played fixture's status", async () => {
+      payload.findByID.mockResolvedValue({ status: 'completed' })
+
+      await saveFixtureAction(formData(EDIT))
+
+      const [update] = payload.update.mock.calls[0] as [{ data: Record<string, unknown> }]
+      expect(update.data).not.toHaveProperty('status')
+    })
+
+    it('rejects invalid input and needs a session', async () => {
+      expect(await saveFixtureAction(formData({ ...EDIT, day: 'soon' }))).toEqual({
+        status: 'invalid',
+        fieldErrors: { day: 'date' },
+      })
+      expect(await deleteFixtureAction(-1)).toEqual({ status: 'error' })
+      expect(await getFixtureEditorDataAction(0)).toEqual({ status: 'error' })
+      payload.auth.mockResolvedValue({ user: null })
+      expect(await saveFixtureAction(formData(EDIT))).toEqual({ status: 'unauthorized' })
+      expect(await deleteFixtureAction(60)).toEqual({ status: 'unauthorized' })
+      expect(await getFixtureEditorDataAction(60)).toEqual({ status: 'unauthorized' })
+      expect(payload.update).not.toHaveBeenCalled()
+    })
+
+    it('deletes a fixture, and reports failures', async () => {
+      payload.delete.mockResolvedValue({})
+      expect(await deleteFixtureAction(60)).toEqual({ status: 'deleted' })
+
+      payload.delete.mockRejectedValue(new Error('database down'))
+      payload.findByID.mockRejectedValue(new Error('database down'))
+      expect(await deleteFixtureAction(60)).toEqual({ status: 'error' })
+      expect(await saveFixtureAction(formData(EDIT))).toEqual({ status: 'error' })
+      expect(await getFixtureEditorDataAction(60)).toEqual({ status: 'error' })
+    })
   })
 })

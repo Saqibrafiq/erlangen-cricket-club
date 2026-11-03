@@ -191,7 +191,7 @@
       "loading": "Loading competitions…",
       "newCompetitionPlaceholder": "New competition",
       "file": "Schedule (CSV)",
-      "fileHint": "Columns: Date, Time, Home, Away, Ground, Address, Stage. Only Date, Home and Away are required: without a Ground, the match is at the home team's ground. Nothing is saved until you confirm below.",
+      "fileHint": "Columns: Date, Time, Home, Away. The ground is the home team's; change it on a fixture afterwards if needed. Nothing is saved until you confirm below.",
       "choose": "Choose CSV file",
       "drop": "or drop it here",
       "chooseAnother": "Choose another file",
@@ -242,7 +242,56 @@
     },
     "seasons": "Seasons",
     "seasonTitle": "Fixtures & Results {season}",
-    "seasonMetaDescription": "Every fixture and result of Erlangen Cricket Club's {season} season."
+    "seasonMetaDescription": "Every fixture and result of Erlangen Cricket Club's {season} season.",
+    "editor": {
+      "edit": "Edit {match}",
+      "delete": "Delete {match}",
+      "title": "Edit {match}",
+      "loadingTitle": "Edit fixture",
+      "description": "Changes appear on the website right away.",
+      "close": "Close",
+      "loading": "Loading fixture…",
+      "day": "Date",
+      "startTime": "Start time",
+      "optional": "(optional)",
+      "ground": "Ground",
+      "groundHint": "Imported fixtures start at the home team's ground.",
+      "noGround": "Not known yet",
+      "stage": "Stage",
+      "status": "Status",
+      "statuses": {
+        "scheduled": "Will be played",
+        "cancelled": "Cancelled",
+        "abandoned": "Abandoned (e.g. rain)"
+      },
+      "playedHint": "Already played: the result is managed in the admin.",
+      "save": "Save",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "notice": {
+        "saved": "{match} saved.",
+        "deleted": "{match} deleted."
+      },
+      "deleteDialog": {
+        "title": "Delete {match}?",
+        "description": "The fixture is removed from the website. If it is still in your schedule CSV, the next import adds it again.",
+        "confirm": "Delete",
+        "deleting": "Deleting…",
+        "cancel": "Cancel",
+        "error": "Could not delete. Please try again."
+      },
+      "errors": {
+        "summary": "Please check the highlighted fields.",
+        "required": "Please choose a value.",
+        "date": "Please enter a valid date.",
+        "time": "Please enter a time like 11:00.",
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Saving is not possible right now. Please try again.",
+        "load": "The fixture could not be loaded. Please try again.",
+        "retry": "Try again"
+      }
+    }
   },
   "error": {
     "heading": "Something went wrong",
