@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 
 import { getFixtureCategory } from '../domain/fixture-filters'
 import type { FixtureSummary } from '../types'
+import { FixtureEditable } from './editor/fixtures-editing'
 import { FixtureCard } from './fixture-card'
 import {
   FixtureFilters,
@@ -32,7 +33,14 @@ export function FilterableFixtures({
     competition: fixture.competition.slug,
     category: getFixtureCategory(fixture),
     outcome: fixture.clubOutcome,
-    card: <FixtureCard fixture={fixture} showCompetition={showCompetition} />,
+    card: (
+      <FixtureEditable
+        id={fixture.id}
+        title={`${fixture.teams[0].shortName} v ${fixture.teams[1].shortName}`}
+      >
+        <FixtureCard fixture={fixture} showCompetition={showCompetition} />
+      </FixtureEditable>
+    ),
   }))
 
   return (

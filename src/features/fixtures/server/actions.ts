@@ -11,10 +11,18 @@ import {
 } from '@/features/competitions'
 import type { Fixture } from '@/payload-types'
 
+import { parseFixtureForm } from '../domain/fixture-form'
 import { type ImportedFixture, parseFixturesCsv } from '../domain/fixtures-csv'
 import { diffFixtures, type ExistingImportedFixture } from '../domain/fixtures-diff'
 import { applyHomeGrounds, type ClubGround } from '../domain/home-grounds'
-import type { FixtureEditorResult, FixtureImportData, ImportFixturesResult } from '../editor-types'
+import type {
+  DeleteFixtureResult,
+  FixtureEditorData,
+  FixtureEditorResult,
+  FixtureImportData,
+  ImportFixturesResult,
+  SaveFixtureResult,
+} from '../editor-types'
 
 /*
  * Import actions for signed-in editors. Server actions are public endpoints, so each one checks
@@ -313,6 +321,122 @@ export async function importFixturesAction(formData: FormData): Promise<ImportFi
     }
   } catch (error) {
     payload.logger.error({ err: error }, 'Could not import fixtures')
+    return { status: 'error' }
+  }
+}
+
+function isId(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value > 0
+}
+
+/** One fixture for the edit form, with the grounds to pick from. */
+export async function getFixtureEditorDataAction(
+  id: number,
+): Promise<FixtureEditorResult<FixtureEditorData>> {
+  const editor = await getEditor()
+  if (!editor) {
+    return { status: 'unauthorized' }
+  }
+  if (!isId(id)) {
+    return { status: 'error' }
+  }
+  const { payload, user } = editor
+
+  try {
+    const [doc, grounds] = await Promise.all([
+      payload.findByID({ collection: 'fixtures', id, depth: 1, user, overrideAccess: false }),
+      payload.find({
+        collection: 'grounds',
+        sort: 'name',
+        depth: 0,
+        pagination: false,
+        select: { name: true },
+        user,
+        overrideAccess: false,
+      }),
+    ])
+    return {
+      status: 'ok',
+      data: {
+        draft: {
+          id: doc.id,
+          title: `${shortNameOf(doc.team1)} v ${shortNameOf(doc.team2)}`,
+          day: doc.date.slice(0, 10),
+          startTime: doc.startTime ?? null,
+          groundId:
+            typeof doc.ground === 'object' ? (doc.ground?.id ?? null) : (doc.ground ?? null),
+          stage: doc.stage,
+          status: doc.status,
+        },
+        grounds: grounds.docs.map((ground) => ({ id: ground.id, name: ground.name })),
+      },
+    }
+  } catch (error) {
+    payload.logger.error({ err: error }, `Could not load fixture ${String(id)}`)
+    return { status: 'error' }
+  }
+}
+
+/**
+ * Saves a fixture's date, time, ground and stage, and for one not yet played its status (e.g.
+ * rained off). A played fixture's status and result are left to the admin.
+ */
+export async function saveFixtureAction(formData: FormData): Promise<SaveFixtureResult> {
+  const editor = await getEditor()
+  if (!editor) {
+    return { status: 'unauthorized' }
+  }
+  const parsed = parseFixtureForm(formData)
+  if (!parsed.success) {
+    return { status: 'invalid', fieldErrors: parsed.fieldErrors }
+  }
+  const { payload, user } = editor
+  const { id, day, startTime, ground, stage, status } = parsed.fixture
+
+  try {
+    const current = await payload.findByID({
+      collection: 'fixtures',
+      id,
+      depth: 0,
+      user,
+      overrideAccess: false,
+    })
+    const canChangeStatus = current.status !== 'completed' && status !== undefined
+    await payload.update({
+      collection: 'fixtures',
+      id,
+      data: {
+        date: `${day}${NOON_UTC}`,
+        startTime,
+        ground,
+        stage,
+        ...(canChangeStatus ? { status } : {}),
+      },
+      user,
+      overrideAccess: false,
+    })
+    return { status: 'saved' }
+  } catch (error) {
+    payload.logger.error({ err: error }, `Could not save fixture ${String(id)}`)
+    return { status: 'error' }
+  }
+}
+
+export async function deleteFixtureAction(id: number): Promise<DeleteFixtureResult> {
+  const editor = await getEditor()
+  if (!editor) {
+    return { status: 'unauthorized' }
+  }
+  if (!isId(id)) {
+    return { status: 'error' }
+  }
+  const { payload, user } = editor
+
+  try {
+    await payload.delete({ collection: 'fixtures', id, depth: 0, user, overrideAccess: false })
+    return { status: 'deleted' }
+  } catch (error) {
+    payload.logger.error({ err: error }, `Could not delete fixture ${String(id)}`)
     return { status: 'error' }
   }
 }

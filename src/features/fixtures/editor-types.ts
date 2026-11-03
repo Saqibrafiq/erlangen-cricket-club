@@ -1,8 +1,10 @@
 import type { NewCompetitionFieldErrors, TargetCompetition } from '@/features/competitions'
 
+import type { FixtureFieldErrors } from './domain/fixture-form'
 import type { FixturesCsvError } from './domain/fixtures-csv'
 import type { ExistingImportedFixture } from './domain/fixtures-diff'
 import type { ClubGround } from './domain/home-grounds'
+import type { FixtureStage, FixtureStatus } from './types'
 
 /** A competition a schedule can go into, with the fixtures earlier imports created. */
 export type FixtureImportCompetition = TargetCompetition & {
@@ -40,10 +42,43 @@ export type ImportFixturesResult =
   | Unauthorized
   | Failed
 
-/** The server actions the import calls, passed in by the route. */
+/** A fixture as the edit form sees it. */
+export type FixtureDraft = {
+  id: number
+  /** "ECC-I v NCC-I", for the panel's title. */
+  title: string
+  day: string
+  startTime: string | null
+  groundId: number | null
+  stage: FixtureStage
+  status: FixtureStatus
+}
+
+export type GroundOption = {
+  id: number
+  name: string
+}
+
+export type FixtureEditorData = {
+  draft: FixtureDraft
+  grounds: GroundOption[]
+}
+
+export type SaveFixtureResult =
+  | { status: 'saved' }
+  | { status: 'invalid'; fieldErrors: FixtureFieldErrors }
+  | Unauthorized
+  | Failed
+
+export type DeleteFixtureResult = { status: 'deleted' } | Unauthorized | Failed
+
+/** The server actions the import and edit controls call, passed in by the route. */
 export type FixtureEditorActions = {
   getImportData: () => Promise<FixtureEditorResult<FixtureImportData>>
   importFixtures: (formData: FormData) => Promise<ImportFixturesResult>
+  getFixture: (id: number) => Promise<FixtureEditorResult<FixtureEditorData>>
+  saveFixture: (formData: FormData) => Promise<SaveFixtureResult>
+  deleteFixture: (id: number) => Promise<DeleteFixtureResult>
 }
 
 /** Everything the import needs besides the fixtures on the page. */
