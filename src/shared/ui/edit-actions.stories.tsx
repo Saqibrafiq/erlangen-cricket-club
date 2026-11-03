@@ -26,3 +26,16 @@ type Story = StoryObj<typeof meta>
 
 /** As over a player card or news card. */
 export const OnCard: Story = {}
+
+/** In a card's own row, as on fixture cards. */
+export const Inline: Story = {
+  args: { variant: 'inline', editLabel: 'Edit ECC-I v NCC-I', deleteLabel: 'Delete ECC-I v NCC-I' },
+  decorators: [
+    (Story) => (
+      <div className="flex w-80 items-center justify-between rounded-lg border border-border-default bg-surface-default p-4">
+        <span className="text-xs text-text-muted">Erlangen Cricket Ground</span>
+        <Story />
+      </div>
+    ),
+  ],
+}
