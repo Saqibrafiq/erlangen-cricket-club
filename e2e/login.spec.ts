@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { accountMenuButton, openSignInPanel, signIn } from './auth'
 
 // The seed creates this account only when both variables are set (CI does; see seed-e2e-user.ts).
 const ADMIN_EMAIL = process.env.E2E_ADMIN_EMAIL
@@ -9,14 +10,22 @@ const ADMIN_PASSWORD = process.env.E2E_ADMIN_PASSWORD
 const ADMIN_LOAD_TIMEOUT_MS = 60_000
 
 test.describe('admin login', () => {
-  test('opens from the header icon and passes axe', async ({ page }) => {
-    await page.goto('/')
-    await page.getByRole('link', { name: 'Admin login' }).click()
+  test('opens a sign-in panel from the header icon, on the page, and passes axe', async ({
+    page,
+  }) => {
+    await page.goto('/fixtures')
+    const panel = await openSignInPanel(page)
 
-    await expect(page).toHaveURL(/\/login$/)
+    await expect(panel.getByLabel('Email')).toBeVisible()
+    await expect(page).toHaveURL(/\/fixtures$/)
+    await expectNoAxeViolations(page)
+  })
+
+  test('keeps a full sign-in page for Payload and expired sessions', async ({ page }) => {
+    await page.goto('/login')
+
     await expect(page).toHaveTitle('Club admin | Erlangen Cricket Club')
     await expect(page.getByRole('heading', { level: 1, name: 'Club admin' })).toBeVisible()
-    await expectNoAxeViolations(page)
   })
 
   test('says so when the email or password is wrong', async ({ page }) => {
@@ -50,13 +59,30 @@ test.describe('admin login with the test account', () => {
   })
 
   test('signs an editor in to the website in edit mode, and out again', async ({ page }) => {
-    await page.goto('/login')
-    await page.getByLabel('Email').fill(ADMIN_EMAIL ?? '')
-    await page.getByLabel('Password', { exact: true }).fill(ADMIN_PASSWORD ?? '')
-    await page.getByRole('button', { name: 'Sign in' }).click()
+    // Signing in from the header keeps the editor on the page they were on.
+    await signIn(page, '/fixtures')
+    await expect(page).toHaveURL(/\/fixtures$/)
+    await expect(page.getByRole('status').filter({ hasText: /^Welcome back,/ })).toBeVisible()
 
-    await expect(page).toHaveURL(/\/$/, { timeout: ADMIN_LOAD_TIMEOUT_MS })
-    await expect(page.getByText('Edit mode: you can add, edit and delete content')).toBeVisible()
+    // Signed in: the account icon became the editor's avatar, with a menu.
+    await accountMenuButton(page).click()
+    const menu = page.getByRole('menu')
+    await expect(menu).toContainText(ADMIN_EMAIL ?? '')
+    await expect(menu.getByRole('menuitem', { name: 'Admin panel' })).toHaveAttribute(
+      'href',
+      '/admin',
+    )
+    await expectNoAxeViolations(page)
+
+    // The editor names themselves; the avatar shows the initials.
+    await menu.getByRole('menuitem', { name: 'Edit profile' }).click()
+    const profile = page.getByRole('dialog', { name: 'Your profile' })
+    await profile.getByLabel(/^Name/).fill('E2E Admin')
+    await profile.getByRole('button', { name: 'Save' }).click()
+    await expect(page.getByRole('button', { name: 'Account menu for E2E Admin' })).toHaveText(
+      'EA',
+      { timeout: ADMIN_LOAD_TIMEOUT_MS },
+    )
 
     // Coming back to the login page while signed in offers edit mode instead of the form.
     await page.goto('/login')
@@ -64,10 +90,13 @@ test.describe('admin login with the test account', () => {
     await page.getByRole('button', { name: 'Open edit mode' }).click()
     await expect(page).toHaveURL(/\/$/, { timeout: ADMIN_LOAD_TIMEOUT_MS })
 
-    await page.getByRole('button', { name: 'Sign out' }).click()
-    await expect(page.getByText('Edit mode: you can add, edit and delete content')).toBeHidden({
+    await accountMenuButton(page).click()
+    await page.getByRole('menuitem', { name: 'Sign out' }).click()
+    await expect(page.getByRole('button', { name: 'Admin login' })).toBeVisible({
       timeout: ADMIN_LOAD_TIMEOUT_MS,
     })
+    await expect(accountMenuButton(page)).toHaveCount(0)
+    await expect(page.getByRole('status').filter({ hasText: "You're signed out." })).toBeVisible()
   })
 
   test('takes Payload admin pages back to where the editor was going', async ({ page }) => {

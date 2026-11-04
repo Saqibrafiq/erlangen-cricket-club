@@ -4,7 +4,8 @@
   },
   "common": {
     "skipToContent": "Zum Hauptinhalt springen",
-    "loading": "Wird geladen …"
+    "loading": "Wird geladen …",
+    "close": "Schließen"
   },
   "navigation": {
     "label": "Hauptnavigation",
@@ -21,8 +22,7 @@
     "journey": "Geschichte",
     "sponsors": "Sponsoren",
     "menu": "Menü",
-    "closeMenu": "Menü schließen",
-    "adminLogin": "Admin-Anmeldung"
+    "closeMenu": "Menü schließen"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -959,12 +959,8 @@
         "credentials": "E-Mail oder Passwort ist falsch.",
         "locked": "Zu viele Fehlversuche. Zu deiner Sicherheit ist das Konto für 10 Minuten gesperrt.",
         "server": "Die Anmeldung ist gerade nicht möglich. Bitte versuche es in ein paar Minuten noch einmal."
-      }
-    },
-    "editorBar": {
-      "status": "Bearbeitungsmodus: Du kannst Inhalte hinzufügen, ändern und löschen",
-      "admin": "Verwaltung",
-      "signOut": "Abmelden"
+      },
+      "signedIn": "Angemeldet"
     },
     "signedIn": {
       "title": "Du bist angemeldet",
@@ -972,6 +968,44 @@
       "editMode": "Bearbeitungsmodus öffnen",
       "signOut": "Abmelden",
       "expired": "Deine Sitzung ist gerade abgelaufen. Bitte melde dich ab und erneut an."
+    },
+    "account": {
+      "signIn": "Admin-Anmeldung",
+      "open": "Kontomenü von {name}",
+      "openLoading": "Kontomenü",
+      "noName": "Noch kein Name",
+      "profile": "Profil bearbeiten",
+      "admin": "Admin-Bereich",
+      "signOut": "Abmelden",
+      "signingOut": "Wird abgemeldet…",
+      "signInTitle": "Vereins-Admin",
+      "signInText": "Melde dich an, um die Website zu bearbeiten.",
+      "signedOut": "Du bist abgemeldet.",
+      "profileSaved": "Profil gespeichert.",
+      "welcome": "Willkommen zurück, {name}. Du kannst die Website jetzt bearbeiten."
+    },
+    "profile": {
+      "title": "Dein Profil",
+      "description": "Dein Name erscheint im Kontomenü.",
+      "close": "Schließen",
+      "name": "Name",
+      "nameHint": "Vor- und Nachname, für die Initialen in deinem Avatar.",
+      "email": "E-Mail",
+      "emailHint": "Mit dieser Adresse meldest du dich an.",
+      "password": "Neues Passwort?",
+      "passwordLink": "Im Admin-Bereich ändern",
+      "save": "Speichern",
+      "saving": "Wird gespeichert…",
+      "cancel": "Abbrechen",
+      "errors": {
+        "required": "Bitte fülle dieses Feld aus.",
+        "tooLong": "Das ist zu lang.",
+        "email": "Bitte gib eine gültige E-Mail-Adresse ein.",
+        "emailTaken": "Diese E-Mail wird schon von einem anderen Konto verwendet.",
+        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+        "signIn": "Erneut anmelden",
+        "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal."
+      }
     }
   },
   "richTextEditor": {

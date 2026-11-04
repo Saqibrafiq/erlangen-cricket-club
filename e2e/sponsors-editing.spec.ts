@@ -1,10 +1,8 @@
-import { expect, type Page, test } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 import { expectNoAxeViolations } from './a11y'
+import { ADMIN_EMAIL, ADMIN_PASSWORD, signIn } from './auth'
 
-// The seed creates this account only when both variables are set (CI does; see seed-e2e-user.ts).
-const ADMIN_EMAIL = process.env.E2E_ADMIN_EMAIL
-const ADMIN_PASSWORD = process.env.E2E_ADMIN_PASSWORD
 // Signing in loads the site in full; under `pnpm dev` the first load compiles for a while.
 const PAGE_LOAD_TIMEOUT_MS = 60_000
 const NAME = 'E2E Bakery'
@@ -16,16 +14,6 @@ const LOGO = {
     'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
     'base64',
   ),
-}
-
-async function signIn(page: Page): Promise<void> {
-  await page.goto('/login')
-  await page.getByLabel('Email').fill(ADMIN_EMAIL ?? '')
-  await page.getByLabel('Password', { exact: true }).fill(ADMIN_PASSWORD ?? '')
-  await page.getByRole('button', { name: 'Sign in' }).click()
-  await expect(page.getByText('Edit mode: you can add, edit and delete content')).toBeVisible({
-    timeout: PAGE_LOAD_TIMEOUT_MS,
-  })
 }
 
 test.describe('editing sponsors on the website', () => {

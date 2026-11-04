@@ -1,8 +1,7 @@
-import { CircleUserRound } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+import type { ReactNode } from 'react'
 
-import { Link } from '@/i18n/navigation'
 import logo from '@/shared/assets/ecc-logo.png'
 import { siteConfig } from '@/shared/config/site'
 
@@ -21,15 +20,15 @@ const LOGO_HEIGHT = 192
 
 export type SiteHeaderProps = {
   items: readonly SiteNavigationItem[]
-  /** Editors' sign-in page; shown as a small icon next to the language switch. */
-  loginHref?: string
+  /** The account control next to the language switch: a sign-in icon, or the signed-in menu. */
+  account?: ReactNode
 }
 
 /**
  * One slim sticky row: crest and club name (crest only on phones), navigation, languages. From xl the navigation sits in the row; below
  * that it moves into the menu panel, so the header never wraps (nine items, long German labels).
  */
-export function SiteHeader({ items, loginHref }: SiteHeaderProps) {
+export function SiteHeader({ items, account }: SiteHeaderProps) {
   const t = useTranslations('navigation')
 
   return (
@@ -65,16 +64,7 @@ export function SiteHeader({ items, loginHref }: SiteHeaderProps) {
         </nav>
         <div className="flex items-center gap-1">
           <LocaleSwitcher />
-          {loginHref && (
-            <Link
-              href={loginHref}
-              aria-label={t('adminLogin')}
-              title={t('adminLogin')}
-              className="inline-flex size-11 items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-muted hover:text-text-default"
-            >
-              <CircleUserRound aria-hidden="true" className="size-5" />
-            </Link>
-          )}
+          {account}
           <div className="xl:hidden">
             <MobileMenu items={items} />
           </div>
