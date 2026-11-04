@@ -1027,5 +1027,15 @@
     "cancel": "Cancel",
     "undo": "Undo",
     "redo": "Redo"
+  },
+  "theme": {
+    "label": "Theme",
+    "open": "Theme: {theme}",
+    "choices": {
+      "auto": "Auto",
+      "light": "Light",
+      "dark": "Dark",
+      "ecc": "ECC"
+    }
   }
 }
