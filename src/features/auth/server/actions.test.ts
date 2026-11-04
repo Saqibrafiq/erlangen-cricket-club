@@ -1,17 +1,43 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { INITIAL_SIGN_IN_STATE } from '../sign-in-state'
-import { enterEditModeAction, signInAction, signOutAction } from './actions'
+import {
+  enterEditModeAction,
+  getAccountAction,
+  saveAccountAction,
+  signInAction,
+  signOutAction,
+} from './actions'
 
 const mocks = vi.hoisted(() => {
-  class AuthenticationError extends Error {}
-  class LockedAuth extends Error {}
+  // Shaped like Payload's: the action recognises them by status and message, not by class.
+  class AuthenticationError extends Error {
+    status = 401
+    constructor() {
+      super('The email or password provided is incorrect.')
+    }
+  }
+  class LockedAuth extends Error {
+    status = 401
+    constructor() {
+      super('This user is locked due to having too many failed login attempts.')
+    }
+  }
+  class ValidationError extends Error {
+    data: { errors: { path: string }[] }
+    constructor(paths: string[]) {
+      super('invalid')
+      this.data = { errors: paths.map((path) => ({ path })) }
+    }
+  }
   return {
     AuthenticationError,
     LockedAuth,
+    ValidationError,
     payload: {
       login: vi.fn(),
       auth: vi.fn(),
+      update: vi.fn(),
       logger: { error: vi.fn() },
       config: { cookiePrefix: 'payload' },
       collections: {
@@ -33,6 +59,7 @@ vi.mock('payload', () => ({
   getPayload: () => Promise.resolve(mocks.payload),
   AuthenticationError: mocks.AuthenticationError,
   LockedAuth: mocks.LockedAuth,
+  ValidationError: mocks.ValidationError,
 }))
 vi.mock('payload/shared', () => ({ getCookieExpiration: () => new Date('2026-10-11T20:00:00Z') }))
 vi.mock('next/headers', () => ({
@@ -179,5 +206,84 @@ describe('enterEditModeAction', () => {
 
     expect(await enterEditModeAction()).toEqual({ status: 'unauthorized' })
     expect(mocks.setCookie).not.toHaveBeenCalled()
+  })
+})
+
+describe('account actions', () => {
+  const USER = { id: 4, email: 'saqib@example.com', name: 'Saqib Rafiq' }
+
+  function formData(fields: Record<string, string>): FormData {
+    const data = new FormData()
+    for (const [key, value] of Object.entries(fields)) {
+      data.append(key, value)
+    }
+    return data
+  }
+
+  beforeEach(() => {
+    mocks.payload.auth.mockReset()
+    mocks.payload.update.mockReset()
+    mocks.payload.logger.error.mockReset()
+    mocks.payload.auth.mockResolvedValue({ user: USER })
+  })
+
+  it("loads the signed-in editor's name and email", async () => {
+    expect(await getAccountAction()).toEqual({
+      status: 'ok',
+      account: { name: 'Saqib Rafiq', email: 'saqib@example.com' },
+    })
+  })
+
+  it('changes nothing without a session', async () => {
+    mocks.payload.auth.mockResolvedValue({ user: null })
+
+    expect(await getAccountAction()).toEqual({ status: 'unauthorized' })
+    expect(await saveAccountAction(formData({ name: 'X', email: 'x@example.com' }))).toEqual({
+      status: 'unauthorized',
+    })
+    expect(mocks.payload.update).not.toHaveBeenCalled()
+  })
+
+  it('saves only the own account, as that user', async () => {
+    mocks.payload.update.mockResolvedValue({ ...USER, name: 'Saqib A. Rafiq' })
+
+    const result = await saveAccountAction(
+      formData({ id: '1', name: 'Saqib A. Rafiq', email: 'Saqib@Example.com' }),
+    )
+
+    expect(result).toEqual({
+      status: 'saved',
+      account: { name: 'Saqib A. Rafiq', email: 'saqib@example.com' },
+    })
+    expect(mocks.payload.update).toHaveBeenCalledWith({
+      collection: 'users',
+      id: 4,
+      data: { name: 'Saqib A. Rafiq', email: 'saqib@example.com' },
+      user: USER,
+      overrideAccess: false,
+    })
+  })
+
+  it('reports invalid fields and an email another account uses', async () => {
+    expect(await saveAccountAction(formData({ name: '', email: 'nope' }))).toEqual({
+      status: 'invalid',
+      fieldErrors: { name: 'required', email: 'email' },
+    })
+
+    mocks.payload.update.mockRejectedValue(new mocks.ValidationError(['email']))
+    expect(
+      await saveAccountAction(formData({ name: 'Saqib', email: 'taken@example.com' })),
+    ).toEqual({ status: 'invalid', fieldErrors: { email: 'emailTaken' } })
+  })
+
+  it('reports failures', async () => {
+    mocks.payload.update.mockRejectedValue(new Error('database down'))
+    expect(
+      await saveAccountAction(formData({ name: 'Saqib', email: 'saqib@example.com' })),
+    ).toEqual({ status: 'error' })
+
+    mocks.payload.auth.mockRejectedValue(new Error('database down'))
+    expect(await getAccountAction()).toEqual({ status: 'error' })
+    expect(mocks.payload.logger.error).toHaveBeenCalledTimes(2)
   })
 })

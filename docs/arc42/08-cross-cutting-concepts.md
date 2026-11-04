@@ -66,12 +66,15 @@
   - Payload locks an account for 10 minutes after 5 wrong passwords, and the error never says whether the email or the password was wrong;
   - `?redirect=` only accepts paths on this site, so the login can't be used as an open redirect; without one, editors land on the website in edit mode;
   - Payload's `/admin/login` forwards to `/login`;
-  - the header's admin icon is a static link, so no page reads the session cookie and the public pages stay static.
+  - visitors sign in from the header: the account icon opens a sign-in panel (Radix Popover) and the page refreshes in place, in edit mode. `/login` remains for Payload's admin redirects and expired sessions. The header renders the same for everyone, so the public pages stay static;
+  - signed in, the icon becomes an avatar with the editor's initials (users have a `name`) and a menu: name and email, edit profile (name, email; the password is changed in the admin), admin panel, sign out;
+  - menus, panels and toasts animate with Motion (`shared/lib/floating-panel-motion.ts`, `shared/ui/Toast`); sign-in, sign-out and profile changes each confirm with a toast.
 - **Editing on the website** ([ADR-0015](09-architecture-decisions/0015-edit-content-on-the-website.md)):
   - signing in also sets a readable hint cookie (`ecc-editor`, `shared/config/edit-mode.ts`); static pages read it in the browser (`useIsEditMode`) and only then load their editing controls via `next/dynamic`, so visitors download no editing code;
   - the hint grants nothing: every editing server action checks the Payload session itself and writes as that user with access control on (`overrideAccess: false`); IDs, locales and form fields are validated with Zod, and photos by type and size;
   - player photos are cut out in the editor's browser like the existing squad photos: MODNet matting, edge colour clean-up, head and shoulders, 720 px WebP. The model and ONNX runtime are served from our own domain ([ADR-0016](09-architecture-decisions/0016-player-photo-background-removal-in-the-browser.md)). Other photos are shrunk (`resizeImage`, WebP, at most 1200 px). Server actions accept up to 4 MB, below Vercel's 4.5 MB request limit;
-  - the admin bar under the header signs out through Payload's `logout`, which also ends the session server-side;
+  - signing out (account menu) goes through Payload's `logout`, which also ends the session server-side;
+  - Payload's errors are recognised by shape, not `instanceof` (`shared/lib/payload-errors.ts`): a production build can bundle Payload's error classes into several chunks, and `instanceof` then fails depending on which page loaded first;
   - routes pass the server actions to the editing components as props (`PLAYER_EDITING`), like the contact form.
 - **Editing news** ([ADR-0017](09-architecture-decisions/0017-edit-news-on-the-website.md)):
   - a visual editor (`shared/ui/RichTextEditor`, Lexical 0.50.0 like Payload) writes Payload-compatible rich text; links are converted between the two shapes in `features/news/domain/rich-text.ts`;

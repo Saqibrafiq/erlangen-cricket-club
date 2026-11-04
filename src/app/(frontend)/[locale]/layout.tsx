@@ -10,7 +10,7 @@ import {
   getCompetitionNavigation,
   getCompetitionPath,
 } from '@/features/fixtures'
-import { EditorBar, LOGIN_PATH, signOutAction } from '@/features/auth'
+import { ACCOUNT_ACTIONS, AccountMenu, LOGIN_PATH } from '@/features/auth'
 import { CONTACT_PATH, getContactInfo, GROUND_SECTION_ID } from '@/features/contact'
 import { JOURNEY_PATH } from '@/features/journey'
 import { LEGAL_PATHS } from '@/features/legal'
@@ -32,6 +32,7 @@ import {
   SiteFooter,
   type SocialLink,
 } from '@/shared/ui/site-footer'
+import { Toaster } from '@/shared/ui/toast'
 import { SiteHeader, type SiteNavigationItem } from '@/shared/ui/site-header'
 import { MAIN_CONTENT_ID, SkipLink } from '@/shared/ui/skip-link'
 
@@ -156,11 +157,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
         <SkipLink>{t('skipToContent')}</SkipLink>
         <NextIntlClientProvider>
           <MotionProvider>
-            <SiteHeader items={navigationItems} loginHref={LOGIN_PATH} />
-            <EditorBar signOut={signOutAction} />
+            <SiteHeader
+              items={navigationItems}
+              account={<AccountMenu loginHref={LOGIN_PATH} actions={ACCOUNT_ACTIONS} />}
+            />
             <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex-1 focus:outline-none">
               {children}
             </main>
+            <Toaster closeLabel={t('close')} />
             <SiteFooter
               year={new Date().getFullYear()}
               socialLinks={socialLinks}

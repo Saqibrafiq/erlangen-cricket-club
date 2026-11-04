@@ -3,14 +3,21 @@
 import config from '@payload-config'
 import { logout } from '@payloadcms/next/auth'
 import { cookies, headers } from 'next/headers'
-import { AuthenticationError, getPayload, LockedAuth, type Payload } from 'payload'
+import { getPayload, type Payload } from 'payload'
 import { getCookieExpiration } from 'payload/shared'
 
 import { EDIT_MODE_COOKIE } from '@/shared/config/edit-mode'
+import { getSignInRejection, isValidationErrorFor } from '@/shared/lib/payload-errors'
 
+import { parseAccountForm } from '../domain/account'
 import { getSafeRedirectPath, parseSignIn } from '../domain/sign-in'
 import { REDIRECT_PARAM } from '../paths'
-import type { EditModeResult, SignInState } from '../sign-in-state'
+import type {
+  AccountResult,
+  EditModeResult,
+  SaveAccountResult,
+  SignInState,
+} from '../sign-in-state'
 
 const USERS_COLLECTION = 'users'
 
@@ -47,11 +54,9 @@ export async function signInAction(
   try {
     ;({ token } = await payload.login({ collection: USERS_COLLECTION, data: result.credentials }))
   } catch (error) {
-    if (error instanceof LockedAuth) {
-      return { status: 'rejected', reason: 'locked', email }
-    }
-    if (error instanceof AuthenticationError) {
-      return { status: 'rejected', reason: 'credentials', email }
+    const rejection = getSignInRejection(error)
+    if (rejection) {
+      return { status: 'rejected', reason: rejection, email }
     }
     payload.logger.error({ err: error }, 'Sign-in failed')
     return { status: 'error', email }
@@ -99,4 +104,52 @@ export async function signOutAction(): Promise<void> {
   await logout({ config })
   const cookieStore = await cookies()
   cookieStore.delete(EDIT_MODE_COOKIE)
+}
+
+/** The signed-in editor's name and email, for the account menu. */
+export async function getAccountAction(): Promise<AccountResult> {
+  const payload = await getPayload({ config })
+  try {
+    const { user } = await payload.auth({ headers: await headers() })
+    if (!user) {
+      return { status: 'unauthorized' }
+    }
+    return { status: 'ok', account: { name: user.name ?? null, email: user.email } }
+  } catch (error) {
+    payload.logger.error({ err: error }, 'Could not load the account')
+    return { status: 'error' }
+  }
+}
+
+/**
+ * Saves the signed-in editor's own name and email, as that user with access control on. Only the
+ * own account: the id comes from the session, never from the form.
+ */
+export async function saveAccountAction(formData: FormData): Promise<SaveAccountResult> {
+  const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers: await headers() })
+  if (!user) {
+    return { status: 'unauthorized' }
+  }
+  const parsed = parseAccountForm(formData)
+  if (!parsed.success) {
+    return { status: 'invalid', fieldErrors: parsed.fieldErrors }
+  }
+
+  try {
+    const doc = await payload.update({
+      collection: USERS_COLLECTION,
+      id: user.id,
+      data: parsed.account,
+      user,
+      overrideAccess: false,
+    })
+    return { status: 'saved', account: { name: doc.name ?? null, email: doc.email } }
+  } catch (error) {
+    if (isValidationErrorFor(error, 'email')) {
+      return { status: 'invalid', fieldErrors: { email: 'emailTaken' } }
+    }
+    payload.logger.error({ err: error }, 'Could not save the account')
+    return { status: 'error' }
+  }
 }
