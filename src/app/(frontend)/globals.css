@@ -86,6 +86,8 @@
   --color-surface-highlight: oklch(0.93 0.08 100);
   /* Behind third-party logos, which are designed for light backgrounds: a soft cream in every theme. */
   --color-surface-logo: oklch(0.96 0.015 85);
+  /* Text on the logo panel (e.g. a sponsor without a logo): dark navy, as the panel is cream everywhere. */
+  --color-text-on-logo: oklch(0.25 0.06 267);
   /* Dark bands (hero, toasts) and the overlay over photos, with text-on-media on top. */
   --color-media-overlay: oklch(0.88 0.09 130);
   /* The brand colour behind text-on-media (e.g. hero panels). */
