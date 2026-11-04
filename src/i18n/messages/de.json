@@ -1027,5 +1027,15 @@
     "cancel": "Abbrechen",
     "undo": "Rückgängig",
     "redo": "Wiederholen"
+  },
+  "theme": {
+    "label": "Design",
+    "open": "Design: {theme}",
+    "choices": {
+      "auto": "Automatisch",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "ecc": "ECC"
+    }
   }
 }

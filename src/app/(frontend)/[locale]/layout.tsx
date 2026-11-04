@@ -32,6 +32,7 @@ import {
   SiteFooter,
   type SocialLink,
 } from '@/shared/ui/site-footer'
+import { THEME_SCRIPT } from '@/shared/config/theme'
 import { Toaster } from '@/shared/ui/toast'
 import { SiteHeader, type SiteNavigationItem } from '@/shared/ui/site-header'
 import { MAIN_CONTENT_ID, SkipLink } from '@/shared/ui/skip-link'
@@ -152,7 +153,16 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
   ]
 
   return (
-    <html lang={locale} className={`${inter.variable} ${barlowCondensed.variable}`}>
+    // The theme script sets data-theme before React hydrates, so the attribute differs on purpose.
+    <html
+      lang={locale}
+      className={`${inter.variable} ${barlowCondensed.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Inline and first: applies the chosen theme before the page paints (no flash). */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="flex min-h-svh flex-col">
         <SkipLink>{t('skipToContent')}</SkipLink>
         <NextIntlClientProvider>
