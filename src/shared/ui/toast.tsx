@@ -101,9 +101,9 @@ export function Toaster({ closeLabel, duration = TOAST_DURATION_MS }: ToasterPro
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96, transition: { duration: 0.15 } }}
             transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-            className="pointer-events-auto flex min-h-12 w-full max-w-sm items-center gap-3 rounded-xl bg-media-overlay py-2 pr-2 pl-4 text-sm font-medium text-text-on-media shadow-xl"
+            className="pointer-events-auto flex min-h-12 w-full max-w-sm items-center gap-3 rounded-xl bg-surface-toast py-2 pr-2 pl-4 text-sm font-medium text-text-on-toast shadow-xl ring-1 ring-text-on-toast/15"
           >
-            <CircleCheck aria-hidden="true" className="size-5 shrink-0 text-text-on-media" />
+            <CircleCheck aria-hidden="true" className="size-5 shrink-0 text-text-on-toast" />
             <span className="flex-1">{item.message}</span>
             <button
               type="button"

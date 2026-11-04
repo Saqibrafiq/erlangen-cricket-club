@@ -459,7 +459,7 @@ export interface Sponsor {
   id: number;
   name: string;
   /**
-   * Shown whole on a white panel; transparent PNG or SVG works best.
+   * Shown whole on a light cream panel; transparent PNG or SVG works best.
    */
   logo: number | Media;
   tier: 'title' | 'sponsor';
