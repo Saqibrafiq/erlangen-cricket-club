@@ -33,7 +33,7 @@ export function LogoDropZone({
       control={control}
       accept={IMAGE_UPLOAD_TYPES.join(',')}
       onFile={onChoose}
-      className="bg-surface-logo text-media-overlay"
+      className="bg-surface-logo text-text-on-logo"
     >
       <AnimatePresence mode="wait" initial={false}>
         {previewUrl && (
@@ -50,7 +50,7 @@ export function LogoDropZone({
           />
         )}
       </AnimatePresence>
-      <span className="inline-flex items-center gap-2 rounded-full bg-media-overlay/5 px-3 py-1.5 text-sm font-medium">
+      <span className="inline-flex items-center gap-2 rounded-full bg-text-on-logo/5 px-3 py-1.5 text-sm font-medium">
         <ImageUp aria-hidden="true" className="size-4" />
         {previewUrl ? changeLabel : chooseLabel}
       </span>

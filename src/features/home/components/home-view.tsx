@@ -154,7 +154,7 @@ export function HomeView({ data }: HomeViewProps) {
                           className="max-h-14 w-auto object-contain"
                         />
                       ) : (
-                        <span className="font-semibold text-media-overlay">{sponsor.name}</span>
+                        <span className="font-semibold text-text-on-logo">{sponsor.name}</span>
                       )}
                     </Link>
                   </li>

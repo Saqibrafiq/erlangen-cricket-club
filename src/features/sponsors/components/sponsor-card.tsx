@@ -40,7 +40,7 @@ export function SponsorCard({ sponsor }: SponsorCardProps) {
             className="max-h-28 w-auto object-contain"
           />
         ) : (
-          <span className="font-display text-3xl font-bold text-media-overlay">{sponsor.name}</span>
+          <span className="font-display text-3xl font-bold text-text-on-logo">{sponsor.name}</span>
         )}
       </div>
 
