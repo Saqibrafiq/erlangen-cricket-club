@@ -9,8 +9,9 @@ import { Container } from './container'
 import { HomeLink } from './home-link'
 import { LocaleSwitcher } from './locale-switcher'
 import { MobileMenu } from './mobile-menu'
-import { NavLink } from './nav-link'
-import { NavMenu, type SiteNavigationItem } from './nav-menu'
+import { DesktopNav } from './desktop-nav'
+import { HeaderShell } from './header-shell'
+import type { SiteNavigationItem } from './nav-menu'
 import { ThemeSwitcher } from './theme-switcher'
 
 export type { SiteNavigationItem } from './nav-menu'
@@ -23,18 +24,21 @@ export type SiteHeaderProps = {
   items: readonly SiteNavigationItem[]
   /** The account control next to the language switch: a sign-in icon, or the signed-in menu. */
   account?: ReactNode
+  /** The page whose first screen is a video: the header lies on it at the top (HeaderShell). */
+  mediaHeroPath?: string
 }
 
 /**
- * One slim sticky row: crest and club name (crest only on phones), navigation, languages. From xl the navigation sits in the row; below
+ * One slim sticky row: crest and club name (crest only on phones), navigation, languages; once
+ * scrolled it floats as a glass pill (HeaderShell). From xl the navigation sits in the row; below
  * that it moves into the menu panel, so the header never wraps (nine items, long German labels).
  */
-export function SiteHeader({ items, account }: SiteHeaderProps) {
+export function SiteHeader({ items, account, mediaHeroPath }: SiteHeaderProps) {
   const t = useTranslations('navigation')
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border-default bg-surface-default/85 backdrop-blur-md">
-      <Container className="flex items-center justify-between gap-x-4 py-2 2xl:gap-x-6">
+    <HeaderShell mediaHeroPath={mediaHeroPath}>
+      <Container className="flex items-center justify-between gap-x-4 py-2 transition-[padding] duration-200 group-data-[floating=true]/header:py-1 2xl:gap-x-6">
         <HomeLink className="inline-flex min-h-11 shrink-0 items-center gap-3 rounded-md font-display text-xl font-bold tracking-tight whitespace-nowrap uppercase">
           {/* Decorative: the club name next to it names the link (visually hidden on phones). */}
           <Image
@@ -43,26 +47,14 @@ export function SiteHeader({ items, account }: SiteHeaderProps) {
             width={LOGO_WIDTH}
             height={LOGO_HEIGHT}
             priority
-            className="h-12 w-auto"
+            className="h-12 w-auto transition-[height] duration-200 group-data-[floating=true]/header:h-9"
           />
-          <span className="max-sm:sr-only">{siteConfig.name}</span>
+          {/* Folds away in the floating pill (visually only: it still names the link). */}
+          <span className="group-data-[floating=true]/header:sr-only max-sm:sr-only">
+            {siteConfig.name}
+          </span>
         </HomeLink>
-        <nav aria-label={t('label')} className="ml-auto hidden xl:block">
-          <ul className="flex">
-            {items.map((item) => (
-              <li key={item.href}>
-                {item.groups ? (
-                  <NavMenu label={item.label} href={item.href} groups={item.groups} />
-                ) : (
-                  // Tighter between xl and 2xl so nine items with German labels fit one row at 1280 px.
-                  <NavLink href={item.href} section className="px-1.5 whitespace-nowrap 2xl:px-3">
-                    {item.label}
-                  </NavLink>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <DesktopNav label={t('label')} items={items} />
         <div className="flex items-center gap-2">
           <LocaleSwitcher />
           {/* Icon buttons together, apart from the language pill. */}
@@ -75,7 +67,6 @@ export function SiteHeader({ items, account }: SiteHeaderProps) {
           </div>
         </div>
       </Container>
-      <div aria-hidden="true" className="kit-stripe" />
-    </header>
+    </HeaderShell>
   )
 }

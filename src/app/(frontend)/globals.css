@@ -13,6 +13,8 @@
 
 @theme {
   /* Widest page content: on large monitors the page stays together instead of spreading out. */
+  /* The header pill at the top of the page with its top margin: 1rem + 1px + 0.5rem + 3rem + 0.5rem + 1px. */
+  --spacing-header-offset: 5.125rem;
   --container-page: 100rem;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   /* Condensed display face for headings, scores and stats (generates font-display). */
@@ -209,16 +211,6 @@
 }
 
 /* The shirt's red-to-gold gradient: a thin line under the header in the ECC theme only. */
-@utility kit-stripe {
-  display: none;
-  height: 3px;
-  background: linear-gradient(90deg, oklch(0.55 0.21 30), oklch(0.68 0.19 50), oklch(0.83 0.16 82));
-
-  :root[data-theme='ecc'] & {
-    display: block;
-  }
-}
-
 /* A theme switch: Motion reveals the new page over the old one (use-theme.ts), so the browser's
    default cross-fade of the two snapshots is switched off. */
 ::view-transition-old(root),
@@ -237,6 +229,16 @@
       color 200ms ease,
       fill 200ms ease !important;
   }
+}
+
+/* The floating header pill: as wide as the content column, with a gap to the screen edges. */
+/* The header pill at the top of the page: wider than the floating one it shrinks into. */
+@utility w-header {
+  width: min(var(--container-page), calc(100% - 2rem));
+}
+
+@utility w-floating-header {
+  width: min(88rem, calc(100% - 1.5rem));
 }
 
 /* Subtle dot grid, e.g. behind placeholders such as the map before it is loaded. */
@@ -266,15 +268,21 @@
   filter: drop-shadow(0 0 0.18em color-mix(in oklab, var(--color-led) 55%, transparent));
 }
 
-/* A first screen that fills the viewport below the sticky header (4rem), up to 60rem: on tall
+/* A first screen that fills the viewport below the sticky header, up to 60rem: on tall
    monitors the next section shows instead of empty space around the hero. */
 @utility min-h-hero {
-  min-height: min(calc(100svh - 4rem), 60rem);
+  min-height: min(calc(100svh - var(--spacing-header-offset)), 60rem);
+}
+
+/* The video hero: always the whole first screen with the header pill lying on it, on any monitor
+   (no cap, unlike min-h-hero: the film should fill the screen, not stop above a gap). */
+@utility min-h-video-hero {
+  min-height: calc(100svh - var(--spacing-header-offset));
 }
 
 /* Exactly the visible height below the sticky header, e.g. a pinned scroll scene. */
 @utility h-hero {
-  height: calc(100svh - 4rem);
+  height: calc(100svh - var(--spacing-header-offset));
 }
 
 /* Scroll room for a pinned, scroll-driven scene (e.g. the word-by-word statement). */
@@ -347,4 +355,53 @@
       @apply text-brand-primary underline underline-offset-4 hover:text-brand-primary-hover;
     }
   }
+}
+
+/*
+ * The video hero, in every theme: a cinematic dark scene with cream text. Its tokens are fixed so
+ * the overlay, buttons and next-match card read the same on the footage whatever the theme.
+ * Cream on the scrimmed footage stays above 7:1.
+ */
+@utility on-video {
+  --color-text-on-media: oklch(0.96 0.02 85);
+  --color-media-overlay: oklch(0.19 0.05 265);
+  --color-brand-surface: oklch(0.26 0.08 262);
+}
+
+/*
+ * The header lying on the video hero at the top of the home page (HeaderShell): light text and a
+ * dark glass capsule. Dropdowns inside it (NavMenu) become dark glass panels with it; the other
+ * menus are portalled and keep the theme.
+ */
+[data-over-media='true'] {
+  --color-surface-default: oklch(0.2 0.05 265);
+  --color-surface-muted: color-mix(in oklab, oklch(0.96 0.02 85) 16%, transparent);
+  --color-border-default: color-mix(in oklab, oklch(0.96 0.02 85) 24%, transparent);
+  --color-text-default: oklch(0.97 0.015 85);
+  --color-text-muted: oklch(0.88 0.02 85);
+  --color-brand-primary: oklch(0.83 0.16 82);
+  --color-focus-ring: oklch(0.88 0.12 85);
+}
+
+/* Fades a contained film's four edges into the blurred still behind it, so no bars show. */
+@utility video-edge-fade {
+  mask-image:
+    linear-gradient(to right, transparent, black 8%, black 92%, transparent),
+    linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+  mask-composite: intersect;
+}
+
+/* The first screen below the header pill, as a size container for video-crest-fit. */
+@utility video-crest-stage {
+  height: calc(100svh - var(--spacing-header-offset));
+  container-type: size;
+}
+
+/*
+ * Sizes the 16:9 hero film so the crest it ends on always shows whole: the full frame height where
+ * the screen allows (landscape), else as wide as needed for the crest, which spans the middle ~37%
+ * of the frame's width, with room to spare (portrait phones crop only the field at the sides). 177.78 = 100 × 16/9.
+ */
+@utility video-crest-fit {
+  width: min(200cqw, 177.78cqh);
 }
