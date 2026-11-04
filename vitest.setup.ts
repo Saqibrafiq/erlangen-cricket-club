@@ -21,6 +21,20 @@ class MockResizeObserver {
 }
 vi.stubGlobal('ResizeObserver', MockResizeObserver)
 
+// jsdom has no matchMedia (the theme follows prefers-color-scheme): a light-mode device by default.
+// Assigned, not stubbed, so tests that stub their own and then unstub get this one back.
+window.matchMedia = (query: string) =>
+  ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    dispatchEvent: vi.fn(() => false),
+  }) satisfies MediaQueryList
+
 afterEach(() => {
   cleanup()
 })

@@ -11,6 +11,7 @@ import { LocaleSwitcher } from './locale-switcher'
 import { MobileMenu } from './mobile-menu'
 import { NavLink } from './nav-link'
 import { NavMenu, type SiteNavigationItem } from './nav-menu'
+import { ThemeSwitcher } from './theme-switcher'
 
 export type { SiteNavigationItem } from './nav-menu'
 
@@ -62,14 +63,19 @@ export function SiteHeader({ items, account }: SiteHeaderProps) {
             ))}
           </ul>
         </nav>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <LocaleSwitcher />
-          {account}
+          {/* Icon buttons together, apart from the language pill. */}
+          <div className="flex items-center">
+            <ThemeSwitcher />
+            {account}
+          </div>
           <div className="xl:hidden">
             <MobileMenu items={items} />
           </div>
         </div>
       </Container>
+      <div aria-hidden="true" className="kit-stripe" />
     </header>
   )
 }

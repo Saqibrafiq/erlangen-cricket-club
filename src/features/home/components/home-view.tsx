@@ -95,7 +95,7 @@ export function HomeView({ data }: HomeViewProps) {
             >
               <CardRail
                 labelledBy="matches-heading"
-                gridClassName="md:grid-cols-3"
+                gridClassName="md:grid-cols-2 lg:grid-cols-3"
                 // Each card spans its four section rows, so sections line up across the grid.
                 itemClassName="md:row-span-4 md:grid md:grid-rows-subgrid md:gap-y-0"
               >
