@@ -10,6 +10,8 @@ export type NavLinkProps = Omit<ComponentProps<typeof Link>, 'href'> & {
   href: string
   /** Also mark the link on pages below it (e.g. "/news" on "/news/some-article"). */
   section?: boolean
+  /** Underline the current link; off where something else marks it (the desktop row's bar). */
+  showCurrent?: boolean
 }
 
 const HOME_PATH = '/'
@@ -18,7 +20,14 @@ const HOME_PATH = '/'
  * Navigation link that marks the current page with aria-current="page", or — with `section` —
  * the current section with aria-current="true" on the pages below it.
  */
-export function NavLink({ href, section = false, className, onClick, ...props }: NavLinkProps) {
+export function NavLink({
+  href,
+  section = false,
+  showCurrent = true,
+  className,
+  onClick,
+  ...props
+}: NavLinkProps) {
   const pathname = usePathname()
   const isPage = pathname === href
   const isInSection = section && href !== HOME_PATH && pathname.startsWith(`${href}/`)
@@ -35,8 +44,10 @@ export function NavLink({ href, section = false, className, onClick, ...props }:
       }}
       className={cn(
         'inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium text-text-muted transition-colors duration-150 hover:bg-surface-muted hover:text-text-default',
+        isCurrent && 'text-text-default',
         isCurrent &&
-          'text-text-default underline decoration-brand-primary decoration-2 underline-offset-8',
+          showCurrent &&
+          'underline decoration-brand-primary decoration-2 underline-offset-8',
         className,
       )}
       {...props}

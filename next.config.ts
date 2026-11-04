@@ -11,7 +11,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 const nextConfig: NextConfig = {
   images: {
-    localPatterns: [{ pathname: '/api/media/file/**' }],
+    // CMS uploads, and the hero film's stills in public/videos (HeroVideo).
+    localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/videos/**' }],
     // Instagram posts on the home page: the optimizer fetches them server-side, so visitors never
     // connect to Meta (ADR-0011).
     remotePatterns: [

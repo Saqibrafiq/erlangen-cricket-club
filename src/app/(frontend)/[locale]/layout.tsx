@@ -12,6 +12,7 @@ import {
 } from '@/features/fixtures'
 import { ACCOUNT_ACTIONS, AccountMenu, LOGIN_PATH } from '@/features/auth'
 import { CONTACT_PATH, getContactInfo, GROUND_SECTION_ID } from '@/features/contact'
+import { HOME_PATH } from '@/features/home'
 import { JOURNEY_PATH } from '@/features/journey'
 import { LEGAL_PATHS } from '@/features/legal'
 import { getMembershipInfo, getWeekdayDate, MEMBERSHIP_PATH } from '@/features/membership'
@@ -170,6 +171,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
             <SiteHeader
               items={navigationItems}
               account={<AccountMenu loginHref={LOGIN_PATH} actions={ACCOUNT_ACTIONS} />}
+              mediaHeroPath={HOME_PATH}
             />
             <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex-1 focus:outline-none">
               {children}
