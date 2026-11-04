@@ -1,22 +1,17 @@
 import { Dumbbell, Medal, Trophy } from 'lucide-react'
-import Image from 'next/image'
 import { useFormatter, useTranslations } from 'next-intl'
 
 import { FIXTURES_PATH, type Matchday } from '@/features/fixtures'
 import { MEMBERSHIP_PATH } from '@/features/membership'
 import { Link } from '@/i18n/navigation'
-import logo from '@/shared/assets/ecc-logo.png'
 import { Button } from '@/shared/ui/button'
 import { Container } from '@/shared/ui/container'
 
 import { getNextSeason } from '../domain/countdown'
 import type { NextMatchLinks, TrainingTime } from '../types'
 import { HeroScroll } from './hero-scroll'
+import { HeroVideo } from './hero-video'
 import { NextMatchWidget } from './next-match-widget'
-
-// Intrinsic size of the crest asset (see SiteHeader).
-const LOGO_WIDTH = 150
-const LOGO_HEIGHT = 192
 
 export type MatchdayHeroProps = {
   matchday: Matchday
@@ -29,7 +24,9 @@ const CHIP_CLASS =
 
 /**
  * The first screen: who we are, our titles and how to join on the left, the next match on the
- * right. It stays pinned while the page slides up over it (HeroScroll).
+ * right, over a film of the ground that ends on the club crest (HeroVideo; so no crest image
+ * here). It starts under the header pill and stays pinned while the page slides up
+ * over it (HeroScroll).
  */
 export function MatchdayHero({ matchday, nextMatch, training }: MatchdayHeroProps) {
   const t = useTranslations('home')
@@ -37,27 +34,24 @@ export function MatchdayHero({ matchday, nextMatch, training }: MatchdayHeroProp
   const { next } = matchday
 
   return (
-    <HeroScroll>
+    <HeroScroll className="-mt-header-offset">
       <section
         aria-labelledby="home-heading"
-        className="relative isolate overflow-hidden bg-linear-to-br from-brand-surface via-media-overlay to-media-overlay text-text-on-media"
+        className="relative isolate overflow-hidden bg-linear-to-br from-brand-surface via-media-overlay to-media-overlay pt-header-offset text-text-on-media on-video"
       >
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-dots-on-media" />
+        <HeroVideo />
+        {/* Scrims: the text side and the header strip darker, the crest in the middle clear. */}
         <div
           aria-hidden="true"
-          className="absolute -top-40 -left-32 -z-10 size-144 rounded-full bg-brand-primary/40 blur-3xl"
+          className="absolute inset-0 -z-10 bg-linear-to-r from-media-overlay/90 via-media-overlay/45 to-media-overlay/75 max-lg:bg-linear-to-b max-lg:from-media-overlay/60 max-lg:via-media-overlay/75 max-lg:to-media-overlay/95"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 -z-10 h-40 bg-linear-to-b from-media-overlay/80 to-transparent"
         />
 
-        <Container className="grid items-center gap-10 py-12 sm:py-16 lg:min-h-hero lg:grid-cols-content-aside lg:gap-16 2xl:gap-24 short:lg:py-8">
+        <Container className="grid items-center gap-10 py-12 sm:py-16 lg:min-h-video-hero lg:grid-cols-content-aside lg:gap-16 2xl:gap-24 short:lg:py-8">
           <div className="space-y-7 motion-safe:animate-fade-in short:lg:space-y-5">
-            <Image
-              src={logo}
-              alt=""
-              width={LOGO_WIDTH}
-              height={LOGO_HEIGHT}
-              priority
-              className="h-20 w-auto drop-shadow-lg sm:h-24 2xl:h-28 short:lg:h-16"
-            />
             <div className="space-y-4">
               <h1
                 id="home-heading"

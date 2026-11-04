@@ -3,8 +3,11 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { type ReactNode, useLayoutEffect, useRef, useState } from 'react'
 
+import { cn } from '@/shared/lib/cn'
+
 export type HeroScrollProps = {
   children: ReactNode
+  className?: string
 }
 
 /**
@@ -13,7 +16,7 @@ export type HeroScrollProps = {
  * a hero taller than the screen (phones) is seen in full first. Under "reduce motion" it is a
  * normal, unpinned section.
  */
-export function HeroScroll({ children }: HeroScrollProps) {
+export function HeroScroll({ children, className }: HeroScrollProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [top, setTop] = useState(0)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['end end', 'end start'] })
@@ -38,7 +41,11 @@ export function HeroScroll({ children }: HeroScrollProps) {
   }, [])
 
   return (
-    <div ref={ref} style={{ top }} className="sticky z-0 overflow-hidden motion-reduce:static">
+    <div
+      ref={ref}
+      style={{ top }}
+      className={cn('sticky z-0 overflow-hidden motion-reduce:static', className)}
+    >
       <motion.div style={{ scale }} className="origin-top motion-reduce:transform-none!">
         {children}
       </motion.div>
