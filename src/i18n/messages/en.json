@@ -4,7 +4,8 @@
   },
   "common": {
     "skipToContent": "Skip to main content",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "close": "Close"
   },
   "navigation": {
     "label": "Main",
@@ -21,8 +22,7 @@
     "journey": "Journey",
     "sponsors": "Sponsors",
     "menu": "Menu",
-    "closeMenu": "Close menu",
-    "adminLogin": "Admin login"
+    "closeMenu": "Close menu"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -959,12 +959,8 @@
         "credentials": "The email or password is incorrect.",
         "locked": "Too many wrong attempts. For your security this account is locked for 10 minutes.",
         "server": "Signing in is not possible right now. Please try again in a few minutes."
-      }
-    },
-    "editorBar": {
-      "status": "Edit mode: you can add, edit and delete content",
-      "admin": "Admin panel",
-      "signOut": "Sign out"
+      },
+      "signedIn": "Signed in"
     },
     "signedIn": {
       "title": "You’re signed in",
@@ -972,6 +968,44 @@
       "editMode": "Open edit mode",
       "signOut": "Sign out",
       "expired": "Your session has just ended. Please sign out and sign in again."
+    },
+    "account": {
+      "signIn": "Admin login",
+      "open": "Account menu for {name}",
+      "openLoading": "Account menu",
+      "noName": "No name yet",
+      "profile": "Edit profile",
+      "admin": "Admin panel",
+      "signOut": "Sign out",
+      "signingOut": "Signing out…",
+      "signInTitle": "Club admin",
+      "signInText": "Sign in to edit the website.",
+      "signedOut": "You're signed out.",
+      "profileSaved": "Profile saved.",
+      "welcome": "Welcome back, {name}. You can edit the website now."
+    },
+    "profile": {
+      "title": "Your profile",
+      "description": "Your name appears in the account menu.",
+      "close": "Close",
+      "name": "Name",
+      "nameHint": "First and last name, for the initials on your avatar.",
+      "email": "Email",
+      "emailHint": "You sign in with this address.",
+      "password": "Want a new password?",
+      "passwordLink": "Change it in the admin panel",
+      "save": "Save",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "errors": {
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "email": "Please enter a valid email address.",
+        "emailTaken": "Another account already uses this email.",
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Saving is not possible right now. Please try again."
+      }
     }
   },
   "richTextEditor": {

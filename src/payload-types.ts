@@ -486,6 +486,10 @@ export interface Sponsor {
  */
 export interface User {
   id: number;
+  /**
+   * Shown in the account menu on the website, e.g. "Saqib Rafiq".
+   */
+  name?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -802,6 +806,7 @@ export interface SponsorsSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

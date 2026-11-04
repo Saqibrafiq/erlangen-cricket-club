@@ -2,7 +2,9 @@
 
 import config from '@payload-config'
 import { headers } from 'next/headers'
-import { getPayload, type Payload, type TypedUser, ValidationError } from 'payload'
+import { getPayload, type Payload, type TypedUser } from 'payload'
+
+import { isValidationErrorFor } from '@/shared/lib/payload-errors'
 
 import { routing, type Locale } from '@/i18n/routing'
 import { slugify } from '@/shared/lib/slugify'
@@ -108,7 +110,7 @@ async function resolvePhoto(
 }
 
 function isDuplicateSlug(error: unknown): boolean {
-  return error instanceof ValidationError && error.data.errors.some(({ path }) => path === 'slug')
+  return isValidationErrorFor(error, 'slug')
 }
 
 /** Club teams to pick from, and the player to edit (`id`) or `null` for a new one. */
