@@ -50,7 +50,6 @@ export async function generateMetadata({ params }: NewsArticlePageProps): Promis
       description: article.excerpt,
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
-      ...(article.image ? { images: [{ url: article.image.url, alt: article.image.alt }] } : {}),
     },
   }
 }

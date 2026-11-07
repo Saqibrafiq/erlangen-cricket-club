@@ -86,6 +86,9 @@ Close the terminal afterwards, so later commands don't hit production. Don't del
 - **Roll back:** Vercel → Deployments → a previous one → "Promote to Production". Migrations are additive, so the older code still works with the newer schema.
 - **New migration:** `pnpm db:migrate:create <name>` locally. Keep it additive: add a column now, remove the old one in a later release.
 - **Usage limits:** check Vercel → Usage and the Neon dashboard once a month (risk R-1).
+- **Analytics and Speed Insights (ADR-0023):** switch both on once in Vercel → your project → **Analytics** → Enable and **Speed Insights** → Enable. The code is already in place and only runs on Vercel. The live privacy policy is edited in the admin (the seed only fills an empty page), so copy section 2 from `src/cms/seed/data/legal.ts` (English and German) into Admin → Globals → Privacy policy.
+- **SonarCloud:** sign in at [sonarcloud.io](https://sonarcloud.io) with GitHub, import this repository (organisation `saqibrafiq`, as in `sonar-project.properties`), turn off its "Automatic Analysis", and add the token it shows as the repository secret `SONAR_TOKEN` (GitHub → Settings → Secrets and variables → Actions). The CI step runs from then on.
+- **Changelog:** `CHANGELOG.md` is generated from the Conventional Commits history.
 - **Player season records (once, after the career stats release is deployed):** load the 2025/2026 league records into production from your machine. The script writes no files, so no Blob token or upload folders are needed. Run it again whenever the data file changes; it updates records instead of duplicating them (ADR-0022). Next seasons are entered by editors on each profile in edit mode.
 
   ```sh

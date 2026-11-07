@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Barlow_Condensed, Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
@@ -49,6 +51,9 @@ const barlowCondensed = Barlow_Condensed({
   display: 'swap',
   variable: '--font-barlow-condensed',
 })
+
+// Set by Vercel on its builds and functions.
+const IS_ON_VERCEL = process.env.VERCEL === '1'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -190,6 +195,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
           </MotionProvider>
         </NextIntlClientProvider>
         <JsonLd data={buildSportsOrganizationJsonLd()} />
+        {/* Cookieless page views and real Core Web Vitals (ADR-0023). Their scripts exist only on
+            Vercel, so elsewhere (local, CI) they would just fail to load. */}
+        {IS_ON_VERCEL && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   )

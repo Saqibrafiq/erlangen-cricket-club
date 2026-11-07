@@ -1343,5 +1343,17 @@
       "dark": "Dark",
       "ecc": "ECC"
     }
+  },
+  "share": {
+    "site": {
+      "eyebrow": "Cricket in Erlangen since 2010",
+      "subtitle": "Seven-time champions of Bavarian cricket. Everyone who loves the game is welcome."
+    },
+    "player": {
+      "eyebrow": "Player profile"
+    },
+    "news": {
+      "eyebrow": "Club news"
+    }
   }
 }
