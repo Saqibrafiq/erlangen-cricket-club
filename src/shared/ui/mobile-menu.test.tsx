@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -67,7 +67,10 @@ describe('MobileMenu', () => {
     pathname.current = '/standings/bcv-t20'
     const { dialog } = await openMenu()
 
-    expect(within(dialog).getByRole('link', { name: 'BCV T20 Regionalliga' })).toBeVisible()
+    // The panel and its links animate in (Motion).
+    await waitFor(() => {
+      expect(within(dialog).getByRole('link', { name: 'BCV T20 Regionalliga' })).toBeVisible()
+    })
     expect(within(dialog).getByRole('link', { name: 'BCV T20 Regionalliga' })).toHaveAttribute(
       'aria-current',
       'page',
@@ -89,18 +92,27 @@ describe('MobileMenu', () => {
 
     await user.click(within(dialog).getByRole('link', { name: 'News' }))
 
-    expect(screen.queryByRole('dialog')).toBeNull()
+    // Gone once its exit animation has played.
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull()
+    })
   })
 
   it('closes with Escape and the close button, returning focus to the menu button', async () => {
     const { user } = await openMenu()
 
     await user.keyboard('{Escape}')
-    expect(screen.queryByRole('dialog')).toBeNull()
+    // Gone once its exit animation has played.
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull()
+    })
     expect(screen.getByRole('button', { name: 'Menu' })).toHaveFocus()
 
     await user.click(screen.getByRole('button', { name: 'Menu' }))
     await user.click(screen.getByRole('button', { name: 'Close menu' }))
-    expect(screen.queryByRole('dialog')).toBeNull()
+    // Gone once its exit animation has played.
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull()
+    })
   })
 })

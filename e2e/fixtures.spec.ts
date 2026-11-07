@@ -70,7 +70,8 @@ test.describe('all fixtures', () => {
 
     await expect(page).toHaveTitle('Fixtures & Results | Erlangen Cricket Club')
     await expect(page.getByRole('article')).toHaveCount(49)
-    await expect(page.getByRole('status')).toHaveText('49 fixtures')
+    // Scoped to the page: the site-wide toast region is a status too.
+    await expect(page.getByRole('main').getByRole('status')).toHaveText('49 fixtures')
     await expect(page.locator('label', { hasText: 'Forfeit (5)' })).toBeVisible()
     await expect(page.locator('label', { hasText: 'Walkover (2)' })).toBeVisible()
     await expect(page.locator('label', { hasText: 'Completed (42)' })).toBeVisible()

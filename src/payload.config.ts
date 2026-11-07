@@ -15,6 +15,7 @@ import { media } from './cms/collections/media'
 import { contactMessages } from './cms/collections/contact-messages'
 import { news } from './cms/collections/news'
 import { players } from './cms/collections/players'
+import { playerSeasons } from './cms/collections/player-seasons'
 import { sponsors } from './cms/collections/sponsors'
 import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
@@ -41,6 +42,7 @@ export default buildConfig({
     grounds,
     teams,
     players,
+    playerSeasons,
     competitions,
     media,
     documents,

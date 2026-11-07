@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -47,7 +47,10 @@ describe('NavMenu', () => {
     await user.click(button)
 
     expect(button).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('link', { name: 'All fixtures & results' })).toBeVisible()
+    // The panel fades in (Motion).
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: 'All fixtures & results' })).toBeVisible()
+    })
   })
 
   it('labels each group of links by its heading', async () => {

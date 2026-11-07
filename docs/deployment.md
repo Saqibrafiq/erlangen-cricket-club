@@ -86,3 +86,13 @@ Close the terminal afterwards, so later commands don't hit production. Don't del
 - **Roll back:** Vercel → Deployments → a previous one → "Promote to Production". Migrations are additive, so the older code still works with the newer schema.
 - **New migration:** `pnpm db:migrate:create <name>` locally. Keep it additive: add a column now, remove the old one in a later release.
 - **Usage limits:** check Vercel → Usage and the Neon dashboard once a month (risk R-1).
+- **Player season records (once, after the career stats release is deployed):** load the 2025/2026 league records into production from your machine. The script writes no files, so no Blob token or upload folders are needed. Run it again whenever the data file changes; it updates records instead of duplicating them (ADR-0022). Next seasons are entered by editors on each profile in edit mode.
+
+  ```sh
+  # PowerShell; the variables only live in this terminal.
+  $env:DATABASE_URI = '<Neon pooled connection string>'
+  $env:PAYLOAD_SECRET = '<the production secret>'
+  pnpm db:import:player-seasons
+  ```
+
+  Pages update on the next deploy, or right away with Vercel → Deployments → Redeploy.

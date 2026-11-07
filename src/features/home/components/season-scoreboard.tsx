@@ -35,7 +35,7 @@ export function SeasonScoreboard({ season, record }: SeasonScoreboardProps) {
   ]
 
   return (
-    <section aria-labelledby="season-heading" className="bg-scoreboard text-text-on-media">
+    <section aria-labelledby="season-heading" className="bg-scoreboard text-text-on-scoreboard">
       <Container className="grid gap-8 py-12 sm:py-16 lg:grid-cols-hero lg:items-center lg:gap-16">
         <div className="space-y-2">
           <h2

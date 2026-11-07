@@ -6,5 +6,5 @@ export { buildPlayerJsonLd, buildPlayersJsonLd, pickTeammates } from './domain/p
 export type { PlayerEditing, PlayerEditorActions } from './editor-types'
 export { getPlayerPath, PLAYERS_PATH } from './paths'
 export { PLAYER_EDITING } from './server/editing'
-export { getPlayer, getPlayerEntries, getPlayers } from './server/queries'
+export { getPlayer, getPlayerEntries, getPlayers, getPlayerSeasons } from './server/queries'
 export type { Player } from './types'

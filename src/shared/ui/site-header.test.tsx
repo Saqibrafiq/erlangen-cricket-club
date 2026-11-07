@@ -21,16 +21,10 @@ const ITEMS: SiteNavigationItem[] = [
 ]
 
 describe('SiteHeader', () => {
-  it('offers editors a small, named sign-in link when given one', () => {
-    renderWithIntl(<SiteHeader items={ITEMS} loginHref="/login" />)
+  it('shows the account control it is given next to the language switch', () => {
+    renderWithIntl(<SiteHeader items={ITEMS} account={<button type="button">Account</button>} />)
 
-    expect(screen.getByRole('link', { name: 'Admin login' })).toHaveAttribute('href', '/login')
-  })
-
-  it('has no sign-in link without one', () => {
-    renderWithIntl(<SiteHeader items={ITEMS} />)
-
-    expect(screen.queryByRole('link', { name: 'Admin login' })).toBeNull()
+    expect(screen.getByRole('button', { name: 'Account' })).toBeInTheDocument()
   })
 
   it('links the club name to the home page', () => {

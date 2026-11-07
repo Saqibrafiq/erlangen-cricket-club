@@ -29,7 +29,7 @@ export function ClubStandingCard({ row, teamCount, competition }: ClubStandingCa
 
   return (
     // Container query: lays out in one row when the card itself is wide, wherever it is placed.
-    <article className="@container relative overflow-hidden rounded-2xl border border-border-default bg-linear-to-br from-surface-highlight to-surface-default p-5 shadow-sm transition-shadow duration-150 has-[a:hover]:shadow-md">
+    <article className="@container relative h-full overflow-hidden rounded-2xl border border-border-default bg-linear-to-br from-surface-highlight to-surface-default p-5 shadow-sm transition-shadow duration-150 has-[a:hover]:shadow-md">
       <div className="flex h-full flex-col gap-5 @2xl:flex-row @2xl:items-center @2xl:gap-10">
         <header className="flex items-center gap-3 @2xl:min-w-64">
           <TeamMonogram shortName={row.team.shortName} tone="club" size="lg" />

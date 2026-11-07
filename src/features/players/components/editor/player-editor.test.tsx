@@ -32,6 +32,9 @@ function makeEditing(actions: Partial<PlayerEditorActions> = {}): PlayerEditing 
         }),
       ),
       deletePlayer: vi.fn(() => Promise.resolve({ status: 'deleted' as const })),
+      getSeasonEditorData: vi.fn(),
+      saveSeason: vi.fn(),
+      deleteSeason: vi.fn(),
       ...actions,
     },
   }
