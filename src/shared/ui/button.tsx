@@ -1,13 +1,9 @@
-'use client'
-
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion } from 'motion/react'
 import { Slot } from 'radix-ui'
-import type { ComponentProps } from 'react'
 
 import { cn } from '@/shared/lib/cn'
 
-import { SPRING } from './motion-presets'
+import { PressableButton, type PressableButtonProps } from './pressable-button'
 
 export const buttonVariants = cva(
   'inline-flex shrink-0 items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0',
@@ -38,31 +34,27 @@ export const buttonVariants = cva(
   },
 )
 
-// Motion's own handlers share these names with different signatures; buttons don't use them.
-type NativeButtonProps = Omit<
-  ComponentProps<'button'>,
-  'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'
->
-
-export type ButtonProps = NativeButtonProps &
+export type ButtonProps = PressableButtonProps &
   VariantProps<typeof buttonVariants> & {
     /** Render the single child (e.g. a link) with button styling instead of a `<button>`. */
     asChild?: boolean
   }
 
-const MotionSlot = motion.create(Slot.Root)
-/** Pressing gives way a little, on the site's spring (no movement under reduced motion). */
-const PRESS = { scale: 0.97 } as const
+/**
+ * Links styled as buttons (`asChild`) press the same way with a short CSS transition: Radix's Slot
+ * stays here, in a server-compatible component, to merge onto its one server-rendered child.
+ */
+const SLOT_PRESS =
+  'transition-[color,background-color,border-color,transform] active:scale-97 motion-reduce:active:scale-100'
 
 export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
-  const Component = asChild ? MotionSlot : motion.button
-
-  return (
-    <Component
-      whileTap={PRESS}
-      transition={SPRING}
-      className={cn(buttonVariants({ variant, size }), className)}
-      {...props}
-    />
-  )
+  if (asChild) {
+    return (
+      <Slot.Root
+        className={cn(buttonVariants({ variant, size }), SLOT_PRESS, className)}
+        {...props}
+      />
+    )
+  }
+  return <PressableButton className={cn(buttonVariants({ variant, size }), className)} {...props} />
 }
