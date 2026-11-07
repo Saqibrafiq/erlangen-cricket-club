@@ -52,8 +52,10 @@ const barlowCondensed = Barlow_Condensed({
   variable: '--font-barlow-condensed',
 })
 
-// Set by Vercel on its builds and functions.
-const IS_ON_VERCEL = process.env.VERCEL === '1'
+// The analytics scripts are served by Vercel only. CI (GitHub Actions) opts out, so Lighthouse and
+// the E2E tests see no failed script loads. Not keyed on VERCEL: Vercel sets that only when the
+// project exposes system environment variables, which this one does not.
+const LOADS_VERCEL_INSIGHTS = process.env.DISABLE_VERCEL_INSIGHTS !== '1'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -195,9 +197,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
           </MotionProvider>
         </NextIntlClientProvider>
         <JsonLd data={buildSportsOrganizationJsonLd()} />
-        {/* Cookieless page views and real Core Web Vitals (ADR-0023). Their scripts exist only on
-            Vercel, so elsewhere (local, CI) they would just fail to load. */}
-        {IS_ON_VERCEL && (
+        {/* Cookieless page views and real Core Web Vitals (ADR-0023). */}
+        {LOADS_VERCEL_INSIGHTS && (
           <>
             <Analytics />
             <SpeedInsights />
