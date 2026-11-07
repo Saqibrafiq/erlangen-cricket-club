@@ -30,6 +30,7 @@ export const getNewsList = serverOnly('getNewsList')
 export const getPlayer = serverOnly('getPlayer')
 export const getPlayerEntries = serverOnly('getPlayerEntries')
 export const getPlayers = serverOnly('getPlayers')
+export const getPlayerSeasons = serverOnly('getPlayerSeasons')
 export const getSponsors = serverOnly('getSponsors')
 export const getStandingsOverview = serverOnly('getStandingsOverview')
 // Stories pass their own editing actions; this only keeps Payload out of the browser bundle.
