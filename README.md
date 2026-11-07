@@ -5,6 +5,8 @@
 **A production website and content platform for a German cricket club. One developer, built to
 team standards: architecture records, a strict test pipeline and a €0 running cost.**
 
+**[Live site: erlangen-cricket-club.vercel.app](https://erlangen-cricket-club.vercel.app/)**
+
 [![CI](https://github.com/Saqibrafiq/erlangen-cricket-club/actions/workflows/ci.yml/badge.svg)](https://github.com/Saqibrafiq/erlangen-cricket-club/actions/workflows/ci.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs)
 ![React 19](https://img.shields.io/badge/React-19-149eca?logo=react)
