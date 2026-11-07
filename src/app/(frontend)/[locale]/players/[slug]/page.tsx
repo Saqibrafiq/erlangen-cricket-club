@@ -56,7 +56,6 @@ export async function generateMetadata({ params }: PlayerProfilePageProps): Prom
       type: 'profile',
       title: player.name,
       description,
-      ...(player.photo ? { images: [{ url: player.photo.url, alt: player.photo.alt }] } : {}),
     },
   }
 }

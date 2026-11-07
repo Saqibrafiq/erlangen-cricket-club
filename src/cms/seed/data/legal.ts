@@ -75,10 +75,15 @@ export const SEED_PRIVACY_POLICY: LegalText = {
         'Ein Datenschutzbeauftragter ist nicht benannt, da die gesetzlichen Voraussetzungen dafür nicht vorliegen.',
       ],
     },
-    { heading: '2. Keine Cookies, kein Tracking' },
+    { heading: '2. Keine Cookies, anonyme Statistik' },
     {
       paragraph: [
-        'Diese Website setzt für Besucher keine Cookies, verwendet keine Analyse- oder Werbedienste und bindet keine Inhalte Dritter ein, solange Sie das nicht ausdrücklich anfordern (siehe Karte). Schriften werden von unserem eigenen Server geladen. Nur Redakteure, die sich im Verwaltungsbereich anmelden, erhalten ein technisch notwendiges Anmelde-Cookie (§ 25 Abs. 2 TDDDG).',
+        'Diese Website setzt für Besucher keine Cookies, verwendet keine Werbedienste und bindet keine Inhalte Dritter ein, solange Sie das nicht ausdrücklich anfordern (siehe Karte). Schriften werden von unserem eigenen Server geladen. Nur Redakteure, die sich im Verwaltungsbereich anmelden, erhalten ein technisch notwendiges Anmelde-Cookie (§ 25 Abs. 2 TDDDG).',
+      ],
+    },
+    {
+      paragraph: [
+        'Um zu sehen, welche Seiten gelesen werden und wie schnell sie laden, nutzen wir Vercel Web Analytics und Vercel Speed Insights unseres Hosters Vercel Inc. (siehe Abschnitt 3). Beide arbeiten ohne Cookies und speichern nichts auf Ihrem Gerät. Besuche werden als anonyme, zusammengefasste Statistik gezählt: aufgerufene Seite, vorherige Seite, Land sowie Art von Browser, Betriebssystem und Gerät; Speed Insights misst zusätzlich, wie schnell die Seite lädt und reagiert. Ihre IP-Adresse wird nicht gespeichert und es entsteht kein Profil von Ihnen; Besuche werden nur über einen Hashwert unterschieden, der nach 24 Stunden verworfen wird. Rechtsgrundlage ist unser berechtigtes Interesse an einer gut funktionierenden, schnellen Website (Art. 6 Abs. 1 lit. f DSGVO).',
       ],
     },
     { heading: '3. Hosting und Server-Logdateien' },
@@ -155,10 +160,15 @@ export const SEED_PRIVACY_POLICY: LegalText = {
         'We have not appointed a data protection officer because the legal requirements for one are not met.',
       ],
     },
-    { heading: '2. No cookies, no tracking' },
+    { heading: '2. No cookies, anonymous statistics' },
     {
       paragraph: [
-        'This website sets no cookies for visitors, uses no analytics or advertising services and loads no third-party content unless you explicitly request it (see the map). Fonts are served from our own server. Only editors who sign in to the admin area receive a strictly necessary sign-in cookie (§ 25 (2) TDDDG).',
+        'This website sets no cookies for visitors, uses no advertising services and loads no third-party content unless you explicitly request it (see the map). Fonts are served from our own server. Only editors who sign in to the admin area receive a strictly necessary sign-in cookie (§ 25 (2) TDDDG).',
+      ],
+    },
+    {
+      paragraph: [
+        'To see which pages are read and how fast they load, we use Vercel Web Analytics and Vercel Speed Insights from our host, Vercel Inc. (see section 3). Both work without cookies and store nothing on your device. Visits are counted as anonymous, aggregated statistics: the page visited, the page you came from, your country, and the type of browser, operating system and device; Speed Insights also measures how fast the page loaded and reacted. Your IP address is not stored and no profile of you is created; visits are told apart only by a hash that is discarded after 24 hours. The legal basis is our legitimate interest in a website that works well and loads fast (Art. 6 (1) (f) GDPR).',
       ],
     },
     { heading: '3. Hosting and server log files' },

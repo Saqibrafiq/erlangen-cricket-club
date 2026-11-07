@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
   // The Instagram graphics read fonts and the crest from disk at request time.
   outputFileTracingIncludes: {
     '/instagram/[locale]/[file]': ['./src/shared/assets/**/*'],
+    // Share images (opengraph-image routes) draw with the club's fonts and crest.
+    '/**/opengraph-image*': ['./src/shared/assets/**/*'],
   },
   experimental: {
     // Player photos are shrunk in the browser first (see resize-image.ts) and capped at 3 MB on the
