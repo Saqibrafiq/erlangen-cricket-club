@@ -27,3 +27,17 @@ describe('matchPlayerName', () => {
     expect(matchPlayerName('Arun Chaudhary', PLAYERS)?.id).toBe(2)
   })
 })
+
+describe('the club’s alias table', () => {
+  it('maps the live squad’s short names to their league names', () => {
+    const squad = [
+      { id: 1, name: 'Jimmy Joshi' },
+      { id: 2, name: 'Shiv Govind' },
+      { id: 3, name: 'Vatsal Pujara' },
+    ]
+    expect(matchPlayerName('Gaurav Joshi', squad)?.id).toBe(1)
+    expect(matchPlayerName('Shivgovind Nandlal Gupta', squad)?.id).toBe(2)
+    expect(matchPlayerName('Vatsal Rajnikant Pujara', squad)?.id).toBe(3)
+    expect(matchPlayerName('Nithin Nagaraja Vaidya Sujatha', squad)).toBeNull()
+  })
+})

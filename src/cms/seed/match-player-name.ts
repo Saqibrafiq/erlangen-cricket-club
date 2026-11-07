@@ -3,10 +3,24 @@
  * are league names, values the site's names.
  */
 export const SITE_NAMES_BY_LEAGUE_NAME: Readonly<Record<string, string>> = {
+  'Abid Afg': 'Abid',
+  'Ali Shaan': 'Ali Shan',
   'Arun Chaudhary': 'Arun',
-  'Tarang Parikh': 'Tarang',
-  'Ullas Bharadwaj Deverakonda Ravi Babu': 'Ullas',
+  // Confirmed by the club: the same player.
+  'Gaurav Joshi': 'Jimmy Joshi',
+  'Ganesh Venkata Rao Yerravarapu': 'Ganesh',
+  'Jatin Kuknoor': 'Jatin',
+  'Karthikeyan Balaji': 'Karthikeyan',
+  'Manjunath Reddy Pasuvula': 'Manjunath',
+  'Manojkumar Senthilkumar': 'Manoj',
   'Parikshit Kulkarni': 'Parikshhit Kulkarni',
+  'Rohit Venkata': 'Rohit',
+  'Shivgovind Nandlal Gupta': 'Shiv Govind',
+  'Siddhesh Chitnis': 'Siddhesh Chitesh',
+  'Tarang Parikh': 'Tarang',
+  'Tawananyasha Nathan Mwashita': 'Tawana',
+  'Ullas Bharadwaj Deverakonda Ravi Babu': 'Ullas',
+  'Vatsal Rajnikant Pujara': 'Vatsal Pujara',
 }
 
 type NamedPlayer = { id: number; name: string }
