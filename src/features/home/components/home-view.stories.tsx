@@ -31,7 +31,7 @@ export const AwayTimeUnknown: Story = {
         ...HOME_DATA.matchday,
         next: HOME_DATA.matchday.next && {
           ...HOME_DATA.matchday.next,
-          venue: 'Nürnberg',
+          ground: { name: 'Nürnberg', address: null },
           startTime: null,
         },
       },

@@ -73,13 +73,13 @@ export function NextMatch({ fixture }: NextMatchProps) {
               {fixture.startTime && <> · {t('startTime', { time: fixture.startTime })}</>}
             </dd>
           </div>
-          {fixture.venue && (
+          {fixture.ground && (
             <div className="flex items-center gap-2">
               <dt>
                 <MapPin aria-hidden="true" className="size-4 text-text-muted" />
                 <span className="sr-only">{t('where')}</span>
               </dt>
-              <dd>{fixture.venue}</dd>
+              <dd>{fixture.ground.name}</dd>
             </div>
           )}
           <div className="text-text-muted">

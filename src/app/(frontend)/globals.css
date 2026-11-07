@@ -72,6 +72,8 @@
   --grid-template-columns-media-content: auto minmax(0, 1fr);
   /* Main content with a narrower aside (3:2), e.g. a form next to contact details. */
   --grid-template-columns-content-aside: minmax(0, 3fr) minmax(0, 2fr);
+  /* A list row: date, the item, a badge (e.g. the fixtures import preview). */
+  --grid-template-columns-dated-row: auto minmax(0, 1fr) auto;
   /* The mirror image (2:3), e.g. a logo panel next to its description. */
   --grid-template-columns-aside-content: minmax(0, 2fr) minmax(0, 3fr);
   /* Timeline: a year column next to the line and its entries. */

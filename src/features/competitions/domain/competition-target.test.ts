@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { NEW_COMPETITION, parseStandingsImportForm } from './standings-import-form'
+import { NEW_COMPETITION, parseCompetitionImportForm } from './competition-target'
 
 function formData(fields: Record<string, string>): FormData {
   const data = new FormData()
@@ -10,9 +10,9 @@ function formData(fields: Record<string, string>): FormData {
   return data
 }
 
-describe('parseStandingsImportForm', () => {
+describe('parseCompetitionImportForm', () => {
   it('targets an existing competition', () => {
-    expect(parseStandingsImportForm(formData({ competition: '3', csv: 'TEAM' }))).toEqual({
+    expect(parseCompetitionImportForm(formData({ competition: '3', csv: 'TEAM' }))).toEqual({
       success: true,
       target: { kind: 'existing', id: 3 },
       csv: 'TEAM',
@@ -20,14 +20,14 @@ describe('parseStandingsImportForm', () => {
   })
 
   it('rejects a missing or malformed competition id', () => {
-    expect(parseStandingsImportForm(formData({ competition: 'x' }))).toEqual({
+    expect(parseCompetitionImportForm(formData({ competition: 'x' }))).toEqual({
       success: false,
       fieldErrors: { name: 'required' },
     })
   })
 
   it('creates a new competition for a season, trimming its name', () => {
-    const result = parseStandingsImportForm(
+    const result = parseCompetitionImportForm(
       formData({
         competition: NEW_COMPETITION,
         name: ' BCV Regionalliga Bayern ',
@@ -49,7 +49,7 @@ describe('parseStandingsImportForm', () => {
 
   it('reports each invalid field of a new competition', () => {
     expect(
-      parseStandingsImportForm(
+      parseCompetitionImportForm(
         formData({ competition: NEW_COMPETITION, name: '', season: '27', maxOvers: '40' }),
       ),
     ).toEqual({
@@ -60,10 +60,10 @@ describe('parseStandingsImportForm', () => {
 
   it('treats a missing season and format as invalid, and a missing file as empty', () => {
     expect(
-      parseStandingsImportForm(formData({ competition: NEW_COMPETITION, name: 'Cup' })),
+      parseCompetitionImportForm(formData({ competition: NEW_COMPETITION, name: 'Cup' })),
     ).toEqual({ success: false, fieldErrors: { season: 'season', maxOvers: 'maxOvers' } })
     expect(
-      parseStandingsImportForm(
+      parseCompetitionImportForm(
         formData({
           competition: NEW_COMPETITION,
           name: 'x'.repeat(101),

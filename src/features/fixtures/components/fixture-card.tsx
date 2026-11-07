@@ -1,4 +1,5 @@
 import { useFormatter, useTranslations } from 'next-intl'
+import type { ReactNode } from 'react'
 
 import { getWinnerTeamId, type TeamOutcome } from '@/domain/cricket'
 import { cn } from '@/shared/lib/cn'
@@ -76,15 +77,17 @@ export type FixtureCardProps = {
   fixture: FixtureSummary
   /** Hide the competition line when the card already sits under a competition heading. */
   showCompetition?: boolean
+  /** Controls at the end of the bottom row, e.g. an editor's edit and delete buttons. */
+  actions?: ReactNode
 }
 
-export function FixtureCard({ fixture, showCompetition = true }: FixtureCardProps) {
+export function FixtureCard({ fixture, showCompetition = true, actions }: FixtureCardProps) {
   const t = useTranslations('fixtures')
   const format = useFormatter()
   const [team1, team2] = fixture.teams
   // Forfeits and walkovers have a result but no innings, so no scores are shown.
   const showScores = fixture.status === 'completed' && fixture.innings.length > 0
-  const hasMeta = showCompetition || Boolean(fixture.venue)
+  const hasMeta = showCompetition || fixture.ground !== null
   const winnerTeamId = fixture.result ? getWinnerTeamId(fixture.result) : null
   const inningsFor = (team: FixtureTeam) =>
     fixture.innings.find((innings) => innings.battingTeamId === team.id)
@@ -149,11 +152,16 @@ export function FixtureCard({ fixture, showCompetition = true }: FixtureCardProp
         )}
       </div>
 
-      <p className={cn('text-xs text-text-muted', hasMeta && 'mt-2')}>
-        {showCompetition && `${fixture.competition.name} ${fixture.competition.season}`}
-        {showCompetition && fixture.venue && ' · '}
-        {fixture.venue}
-      </p>
+      <div
+        className={cn('flex items-center justify-between gap-3', (hasMeta || actions) && 'mt-2')}
+      >
+        <p className="text-xs text-text-muted">
+          {showCompetition && `${fixture.competition.name} ${fixture.competition.season}`}
+          {showCompetition && fixture.ground && ' · '}
+          {fixture.ground?.name}
+        </p>
+        {actions}
+      </div>
     </article>
   )
 }

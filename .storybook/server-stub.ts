@@ -38,4 +38,5 @@ export const PLAYER_EDITING = undefined
 export const NEWS_EDITING = undefined
 export const SPONSOR_EDITING = undefined
 export const STANDINGS_EDITING = undefined
+export const FIXTURE_EDITING = undefined
 export const submitContactMessageAction = serverOnly('submitContactMessageAction')
