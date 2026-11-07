@@ -5,6 +5,8 @@ import { getFormatter, getTranslations } from 'next-intl/server'
 import {
   buildFixturesJsonLd,
   CompetitionFixtures,
+  FIXTURE_EDITING,
+  FixturesEditingProvider,
   FIXTURES_PATH,
   getCompetitionDetail,
   getCompetitionPath,
@@ -64,7 +66,9 @@ export default async function CompetitionPage({ params }: CompetitionPageProps) 
         items={[{ label: tNavigation('fixtures'), href: FIXTURES_PATH }, { label: title }]}
       />
       <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
-      <CompetitionFixtures detail={detail} />
+      <FixturesEditingProvider editing={FIXTURE_EDITING} canImport={false}>
+        <CompetitionFixtures detail={detail} />
+      </FixturesEditingProvider>
       <JsonLd data={buildFixturesJsonLd(detail.fixtures)} />
       <JsonLd
         data={buildBreadcrumbJsonLd(

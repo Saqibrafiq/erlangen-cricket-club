@@ -18,6 +18,8 @@ vi.mock('next/navigation', async (importOriginal) => ({
 }))
 
 const EDITOR_LOAD_TIMEOUT_MS = 10_000
+// A flow loads the editor on demand, then fills and saves it: longer than one wait.
+const FLOW_TIMEOUT_MS = 3 * EDITOR_LOAD_TIMEOUT_MS
 
 function makeEditing(actions: Partial<SponsorEditorActions> = {}): SponsorEditing {
   return {
@@ -67,7 +69,7 @@ afterEach(() => {
   refresh.mockClear()
 })
 
-describe('sponsors in edit mode', () => {
+describe('sponsors in edit mode', { timeout: FLOW_TIMEOUT_MS }, () => {
   it('shows visitors the plain list, with no editing controls', () => {
     renderView()
 

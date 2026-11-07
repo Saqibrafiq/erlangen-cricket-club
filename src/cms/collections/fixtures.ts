@@ -121,7 +121,12 @@ export const fixtures: CollectionConfig = {
         },
       ],
     },
-    { name: 'venue', type: 'text', admin: { description: 'Ground name (optional).' } },
+    {
+      name: 'ground',
+      type: 'relationship',
+      relationTo: 'grounds',
+      admin: { description: 'Where the match is played (optional).' },
+    },
     {
       type: 'row',
       fields: [

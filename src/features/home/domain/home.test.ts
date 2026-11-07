@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { makePlayer } from '../test-factories'
-import { getDirectionsUrl, pickFeaturedPlayers } from './home'
+import { pickFeaturedPlayers } from './home'
 
 describe('pickFeaturedPlayers', () => {
   it('shows the players editors picked, in squad order, and only them', () => {
@@ -27,13 +27,5 @@ describe('pickFeaturedPlayers', () => {
     const players = [makePlayer(1, 'Arun', false), makePlayer(2, 'Ullas')]
 
     expect(pickFeaturedPlayers(players).map((player) => player.id)).toEqual([2, 1])
-  })
-})
-
-describe('getDirectionsUrl', () => {
-  it('links to Google Maps directions to the ground', () => {
-    expect(getDirectionsUrl('Siedlerstraße 1, Erlangen')).toBe(
-      'https://www.google.com/maps/dir/?api=1&destination=Siedlerstra%C3%9Fe%201%2C%20Erlangen',
-    )
   })
 })

@@ -18,6 +18,8 @@ vi.mock('next/navigation', async (importOriginal) => ({
 }))
 
 const EDITOR_LOAD_TIMEOUT_MS = 10_000
+// A flow loads the editor on demand, then fills and saves it: longer than one wait.
+const FLOW_TIMEOUT_MS = 3 * EDITOR_LOAD_TIMEOUT_MS
 const HEADER = 'SNO,TEAM,MAT,WON,LOST,N/R,TIE,PTS,WIN%,NET RR,FOR,AGAINST'
 const ECC_ROW = '1,ECC-I,14,9,3,0,2,80.0,75.00%,1.1694,1954/243.4,1596/233'
 const SKCC_ROW = '2,SKCC,14,1,13,0,0,8.0,7.14%,-4.0217,1378/271,1624/178.2'
@@ -103,7 +105,7 @@ afterEach(() => {
   refresh.mockClear()
 })
 
-describe('importing standings', () => {
+describe('importing standings', { timeout: FLOW_TIMEOUT_MS }, () => {
   it('shows visitors no import controls', () => {
     renderPage()
 

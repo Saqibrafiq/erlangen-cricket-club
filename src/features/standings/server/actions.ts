@@ -4,13 +4,14 @@ import config from '@payload-config'
 import { headers } from 'next/headers'
 import { getPayload, type Payload, type TypedUser } from 'payload'
 
+import {
+  parseCompetitionImportForm,
+  resolveCompetition,
+  resolveTeams,
+} from '@/features/competitions'
 import type { Competition } from '@/payload-types'
 
 import { type ImportedStandingsRow, parseStandingsCsv } from '../domain/standings-csv'
-import {
-  parseStandingsImportForm,
-  type StandingsImportTarget,
-} from '../domain/standings-import-form'
 import type {
   ImportStandingsResult,
   StandingsEditorResult,
@@ -105,53 +106,6 @@ export async function getStandingsImportDataAction(): Promise<
   }
 }
 
-/** Team ids by short name, adding the teams we don't have yet (opponents new to the league). */
-async function resolveTeams(
-  { payload, user }: Editor,
-  shortNames: readonly string[],
-): Promise<{ ids: Map<string, number>; added: number }> {
-  const { docs } = await payload.find({
-    collection: 'teams',
-    where: { shortName: { in: shortNames } },
-    depth: 0,
-    pagination: false,
-    select: { shortName: true },
-    user,
-    overrideAccess: false,
-  })
-  const ids = new Map(docs.map((team) => [team.shortName, team.id]))
-  let added = 0
-  for (const shortName of shortNames) {
-    if (ids.has(shortName)) continue
-    // CricClubs only gives the code; editors can add the full name in the admin later.
-    const team = await payload.create({
-      collection: 'teams',
-      data: { name: shortName, shortName },
-      user,
-      overrideAccess: false,
-    })
-    ids.set(shortName, team.id)
-    added++
-  }
-  return { ids, added }
-}
-
-async function resolveCompetition(
-  { payload, user }: Editor,
-  target: StandingsImportTarget,
-): Promise<number> {
-  if (target.kind === 'existing') {
-    return target.id
-  }
-  const competition = await payload.create({
-    collection: 'competitions',
-    data: { ...target.competition, slug: '' },
-    user,
-    overrideAccess: false,
-  })
-  return competition.id
-}
-
 /** Replaces a competition's table with a CricClubs points table export. */
 export async function importStandingsAction(formData: FormData): Promise<ImportStandingsResult> {
   const editor = await getEditor()
@@ -159,7 +113,7 @@ export async function importStandingsAction(formData: FormData): Promise<ImportS
     return { status: 'unauthorized' }
   }
 
-  const form = parseStandingsImportForm(formData)
+  const form = parseCompetitionImportForm(formData)
   if (!form.success) {
     return { status: 'invalid', fieldErrors: form.fieldErrors }
   }

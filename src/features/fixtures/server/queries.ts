@@ -2,6 +2,8 @@ import config from '@payload-config'
 import { getPayload, type Where } from 'payload'
 import { cache } from 'react'
 
+import { pickSeason, sortSeasons } from '@/shared/lib/seasons'
+
 import { buildMatchday, getFixtureDay, type Matchday } from '../domain/matchday'
 import {
   buildCompetitionNavigation,
@@ -11,7 +13,7 @@ import {
 import type {
   CompetitionDetail,
   CompetitionNavigation,
-  FixturesOverview,
+  FixturesSeason,
   FixtureSummary,
 } from '../types'
 import { mapFixture } from './map-fixture'
@@ -48,11 +50,30 @@ async function findFixturesInDisplayOrder(where?: Where): Promise<FixtureSummary
   return [...upcoming, ...past]
 }
 
-/** All fixtures of every competition, with the competitions grouped by team for filtering. */
-export async function getFixturesOverview(): Promise<FixturesOverview> {
-  const fixtures = await findFixturesInDisplayOrder()
+/**
+ * One season's fixtures, with its competitions grouped by team for filtering: the current
+ * (newest) season by default, or `season` for the archive. Seasons come from the competitions,
+ * so a new season counts as current as soon as its first competition exists.
+ */
+export async function getFixturesOverview(season?: string): Promise<FixturesSeason> {
+  const payload = await getPayload({ config })
+  const { docs: competitions } = await payload.find({
+    collection: 'competitions',
+    depth: 0,
+    pagination: false,
+    select: { season: true },
+  })
+  const seasons = sortSeasons(competitions.map((competition) => competition.season))
+  const picked = pickSeason(seasons, season)
+  const ids = competitions
+    .filter((competition) => competition.season === picked.season)
+    .map((competition) => competition.id)
+  const fixtures =
+    ids.length > 0 ? await findFixturesInDisplayOrder({ competition: { in: ids } }) : []
 
   return {
+    ...picked,
+    seasons,
     fixtures,
     competitionsByTeam: groupCompetitionsByTeam(summariseCompetitions(fixtures)),
   }

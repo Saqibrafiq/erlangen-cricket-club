@@ -14,6 +14,7 @@ Decisions follow the [MADR](https://adr.github.io/madr/) template ([`template.md
 | [0008](0008-maps-load-on-request.md)                              | Maps load on request (OpenStreetMap, two-click)                                  | Accepted |
 | [0017](0017-edit-news-on-the-website.md)                          | Edit news on the website with a visual Lexical editor                            | Accepted |
 | [0018](0018-import-league-tables-from-cricclubs-csv.md)           | Update league tables from CricClubs CSV exports on the website                   | Accepted |
+| [0019](0019-import-fixtures-from-a-club-csv-template.md)          | Import fixtures from a club CSV template, with saved grounds                     | Accepted |
 | [0020](0020-three-themes-chosen-in-the-browser.md)                | Three themes (Light, Dark, ECC), chosen in the browser                           | Accepted |
 | [0021](0021-hero-film-served-from-public.md)                      | Hero film served as a static file from `public/`                                 | Accepted |
 | [0022](0022-career-stats-from-league-season-records.md)           | Career stats from the league's season records                                    | Accepted |

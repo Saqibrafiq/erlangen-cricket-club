@@ -47,6 +47,12 @@ export default defineConfig({
       testMatch: /standings-editing\.spec\.ts$/,
       dependencies: ['editing-sponsors'],
     },
+    {
+      name: 'editing-fixtures',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /fixtures-editing\.spec\.ts$/,
+      dependencies: ['editing-standings'],
+    },
   ],
   webServer: {
     command: `${isCi ? 'pnpm start' : 'pnpm dev'} --port ${PORT}`,
