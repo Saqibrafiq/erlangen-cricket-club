@@ -71,6 +71,7 @@ export interface Config {
     fixtures: Fixture;
     teams: Team;
     players: Player;
+    'player-seasons': PlayerSeason;
     competitions: Competition;
     media: Media;
     documents: Document;
@@ -88,6 +89,7 @@ export interface Config {
     fixtures: FixturesSelect<false> | FixturesSelect<true>;
     teams: TeamsSelect<false> | TeamsSelect<true>;
     players: PlayersSelect<false> | PlayersSelect<true>;
+    'player-seasons': PlayerSeasonsSelect<false> | PlayerSeasonsSelect<true>;
     competitions: CompetitionsSelect<false> | CompetitionsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
@@ -351,7 +353,7 @@ export interface Team {
   createdAt: string;
 }
 /**
- * Only players whose consent is recorded appear on the website. Stats will come from match scorecards.
+ * Only players whose consent is recorded appear on the website. Stats come from their season records (Player seasons).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "players".
@@ -402,6 +404,63 @@ export interface Player {
    */
   hasPublishConsent?: boolean | null;
   consentNote?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Season records per player (from the league’s season stats). Career totals on the profile add these up.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "player-seasons".
+ */
+export interface PlayerSeason {
+  id: number;
+  player: number | Player;
+  season: number;
+  competition: 'club' | 'district';
+  /**
+   * Career totals add up "All matches"; T20, 50-over and the per-team records are its parts.
+   */
+  format: 'all' | 't20' | 'fifty-over' | 'league';
+  /**
+   * Only for a record of one team (format "League matches for one team"); leave empty for the whole season.
+   */
+  team?: (number | null) | Team;
+  /**
+   * Leave empty if the player did not bat that season.
+   */
+  batting?: {
+    matches?: number | null;
+    innings?: number | null;
+    notOuts?: number | null;
+    runs?: number | null;
+    balls?: number | null;
+    highestScore?: number | null;
+    isHighestScoreNotOut?: boolean | null;
+    hundreds?: number | null;
+    fifties?: number | null;
+    fours?: number | null;
+    sixes?: number | null;
+  };
+  /**
+   * Leave empty if the player did not bowl that season.
+   */
+  bowling?: {
+    matches?: number | null;
+    innings?: number | null;
+    overs?: string | null;
+    maidens?: number | null;
+    runsConceded?: number | null;
+    wickets?: number | null;
+    bestWickets?: number | null;
+    bestRuns?: number | null;
+    dotBalls?: number | null;
+    fourWicketHauls?: number | null;
+    fiveWicketHauls?: number | null;
+    hatTricks?: number | null;
+    wides?: number | null;
+    noBalls?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -551,6 +610,10 @@ export interface PayloadLockedDocument {
         value: number | Player;
       } | null)
     | ({
+        relationTo: 'player-seasons';
+        value: number | PlayerSeason;
+      } | null)
+    | ({
         relationTo: 'competitions';
         value: number | Competition;
       } | null)
@@ -697,6 +760,52 @@ export interface PlayersSelect<T extends boolean = true> {
   isFeaturedOnHome?: T;
   hasPublishConsent?: T;
   consentNote?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "player-seasons_select".
+ */
+export interface PlayerSeasonsSelect<T extends boolean = true> {
+  player?: T;
+  season?: T;
+  competition?: T;
+  format?: T;
+  team?: T;
+  batting?:
+    | T
+    | {
+        matches?: T;
+        innings?: T;
+        notOuts?: T;
+        runs?: T;
+        balls?: T;
+        highestScore?: T;
+        isHighestScoreNotOut?: T;
+        hundreds?: T;
+        fifties?: T;
+        fours?: T;
+        sixes?: T;
+      };
+  bowling?:
+    | T
+    | {
+        matches?: T;
+        innings?: T;
+        overs?: T;
+        maidens?: T;
+        runsConceded?: T;
+        wickets?: T;
+        bestWickets?: T;
+        bestRuns?: T;
+        dotBalls?: T;
+        fourWicketHauls?: T;
+        fiveWicketHauls?: T;
+        hatTricks?: T;
+        wides?: T;
+        noBalls?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

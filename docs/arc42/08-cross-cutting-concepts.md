@@ -25,6 +25,15 @@
 
 ## 8.4 Design system
 
+- **One motion for every dropdown and expander** (`shared/ui/motion-presets.ts`, `shared/ui/disclosure.tsx`):
+  - one spring for opening, sliding and rotating;
+  - dropdown panels spring open, with their items following one after another;
+  - sections grow into place (`Collapse`);
+  - the chevron turns (`DisclosureChevron`);
+  - `Disclosure` replaces static `<details>`.
+
+  Menus, the theme, language and account menus, the mobile menu and the stats dropdowns all use these instead of local variants. Table rows cannot grow, so they slide in one after another. Under reduced motion, `MotionProvider` makes every change instant.
+
 - Tailwind CSS v4 with tokens in `@theme` (`src/app/(frontend)/globals.css`), named `--{category}-{role}-{variant}`.
 - Dark mode reassigns token values under `prefers-color-scheme: dark`; components never need `dark:` variants.
 - Components in `src/shared/ui/` follow shadcn/ui conventions: `cva` variants, `cn()` merging, Radix primitives, a story and a test for each.

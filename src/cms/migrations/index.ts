@@ -13,6 +13,7 @@ import * as migration_20261010_100420_instagram_feed from './20261010_100420_ins
 import * as migration_20261010_181911_featured_players from './20261010_181911_featured_players';
 import * as migration_20261011_153938_blob_storage_fields from './20261011_153938_blob_storage_fields';
 import * as migration_20261103_225430_user_name from './20261103_225430_user_name';
+import * as migration_20261105_230129_player_seasons from './20261105_230129_player_seasons';
 
 export const migrations = [
   {
@@ -88,6 +89,11 @@ export const migrations = [
   {
     up: migration_20261103_225430_user_name.up,
     down: migration_20261103_225430_user_name.down,
-    name: '20261103_225430_user_name'
+    name: '20261103_225430_user_name',
+  },
+  {
+    up: migration_20261105_230129_player_seasons.up,
+    down: migration_20261105_230129_player_seasons.down,
+    name: '20261105_230129_player_seasons'
   },
 ];
