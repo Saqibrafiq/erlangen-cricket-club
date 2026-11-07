@@ -22,7 +22,8 @@
     "journey": "Journey",
     "sponsors": "Sponsors",
     "menu": "Menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "adminLogin": "Admin login"
   },
   "home": {
     "heading": "Erlangen Cricket Club",
@@ -182,7 +183,116 @@
     "versus": "v",
     "when": "When",
     "where": "Where",
-    "competition": "Competition"
+    "competition": "Competition",
+    "import": {
+      "open": "Import fixtures",
+      "title": "Import fixtures",
+      "description": "From your CSV of the league schedule. Played matches and results are never changed.",
+      "close": "Close",
+      "loading": "Loading competitions…",
+      "newCompetitionPlaceholder": "New competition",
+      "file": "Schedule (CSV)",
+      "fileHint": "Columns: Date, Time, Home, Away. The ground is the home team's; change it on a fixture afterwards if needed. Nothing is saved until you confirm below.",
+      "choose": "Choose CSV file",
+      "drop": "or drop it here",
+      "chooseAnother": "Choose another file",
+      "template": "Download the template (CSV for Excel)",
+      "confirm": "{count, plural, =0 {Import fixtures} one {Import # fixture} other {Import # fixtures}}",
+      "importing": "Importing…",
+      "cancel": "Cancel",
+      "preview": {
+        "unchanged": "Unchanged",
+        "summary": "{created} new · {updated} changed · {removed} removed",
+        "new": "New",
+        "changed": "Changed: {fields}",
+        "played": "Played",
+        "fields": {
+          "day": "date",
+          "startTime": "time",
+          "ground": "ground",
+          "stage": "stage"
+        },
+        "newTeams": "New teams: {teams}.",
+        "newGrounds": "New grounds: {grounds}.",
+        "removed": "No longer in the file, will be removed: {fixtures}.",
+        "upToDate": "These fixtures are already up to date: nothing to import.",
+        "homeGround": "home ground"
+      },
+      "fileErrors": {
+        "summary": "{count, plural, one {This file has # problem} other {This file has # problems}}. Please check it against the template.",
+        "line": "Line {line}:",
+        "empty": "The file is empty.",
+        "tooLarge": "The file is too large for a schedule.",
+        "missingColumn": "Column \"{column}\" is missing.",
+        "noRows": "The file has headings but no fixtures.",
+        "notDate": "{column} should be a date like 16.05.2027, not \"{value}\".",
+        "notTime": "{column} should be a time like 11:00, not \"{value}\".",
+        "missingTeam": "{column} team is missing.",
+        "sameTeams": "Home and away are both \"{value}\".",
+        "unknownStage": "{column} should be League, Qualifier, Semi-final or Final, not \"{value}\".",
+        "addressWithoutGround": "There is an address but no ground name."
+      },
+      "notice": "{competition}: {created} new, {updated} changed, {removed} removed{added, plural, =0 {} one {, # new team or ground added} other {, # new teams and grounds added}}.",
+      "errors": {
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Importing is not possible right now. Please try again.",
+        "load": "The competitions could not be loaded. Please try again.",
+        "retry": "Try again"
+      }
+    },
+    "seasons": "Seasons",
+    "seasonTitle": "Fixtures & Results {season}",
+    "seasonMetaDescription": "Every fixture and result of Erlangen Cricket Club's {season} season.",
+    "editor": {
+      "edit": "Edit {match}",
+      "delete": "Delete {match}",
+      "title": "Edit {match}",
+      "loadingTitle": "Edit fixture",
+      "description": "Changes appear on the website right away.",
+      "close": "Close",
+      "loading": "Loading fixture…",
+      "day": "Date",
+      "startTime": "Start time",
+      "optional": "(optional)",
+      "ground": "Ground",
+      "groundHint": "Imported fixtures start at the home team's ground.",
+      "noGround": "Not known yet",
+      "stage": "Stage",
+      "status": "Status",
+      "statuses": {
+        "scheduled": "Will be played",
+        "cancelled": "Cancelled",
+        "abandoned": "Abandoned (e.g. rain)"
+      },
+      "playedHint": "Already played: the result is managed in the admin.",
+      "save": "Save",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "notice": {
+        "saved": "{match} saved.",
+        "deleted": "{match} deleted."
+      },
+      "deleteDialog": {
+        "title": "Delete {match}?",
+        "description": "The fixture is removed from the website. If it is still in your schedule CSV, the next import adds it again.",
+        "confirm": "Delete",
+        "deleting": "Deleting…",
+        "cancel": "Cancel",
+        "error": "Could not delete. Please try again."
+      },
+      "errors": {
+        "summary": "Please check the highlighted fields.",
+        "required": "Please choose a value.",
+        "date": "Please enter a valid date.",
+        "time": "Please enter a time like 11:00.",
+        "unauthorized": "Your session has ended. Please sign in again.",
+        "signIn": "Sign in again",
+        "server": "Saving is not possible right now. Please try again.",
+        "load": "The fixture could not be loaded. Please try again.",
+        "retry": "Try again"
+      }
+    }
   },
   "error": {
     "heading": "Something went wrong",
@@ -302,17 +412,6 @@
       "description": "From CricClubs: Points Table → Export to Excel (CSV).",
       "close": "Close",
       "loading": "Loading competitions…",
-      "competition": "Competition",
-      "newCompetition": {
-        "option": "New competition…",
-        "legend": "New competition",
-        "name": "Name",
-        "nameHint": "As the league calls it, without the year, e.g. \"BCV Regionalliga Bayern\".",
-        "placeholder": "New competition",
-        "season": "Season",
-        "format": "Format",
-        "overs": "{overs} overs"
-      },
       "file": "Points table (CSV)",
       "fileHint": "Nothing is saved until you confirm below.",
       "choose": "Choose CSV file",
@@ -350,15 +449,27 @@
         "importedWithTeams": "{competition} updated: {count} teams, {added, plural, one {# new team} other {# new teams}} added."
       },
       "errors": {
-        "required": "Please fill in this field.",
-        "tooLong": "This is too long.",
-        "season": "Please enter a year between 2000 and 2100.",
-        "maxOvers": "Please choose a format.",
         "unauthorized": "Your session has ended. Please sign in again.",
         "signIn": "Sign in again",
         "server": "Importing is not possible right now. Please try again.",
         "load": "The competitions could not be loaded. Please try again.",
-        "retry": "Try again"
+        "retry": "Try again",
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "season": "Please enter a year between 2000 and 2100.",
+        "maxOvers": "Please choose a format."
+      },
+      "newCompetitionPlaceholder": "New competition",
+      "competition": "Competition",
+      "newCompetition": {
+        "option": "New competition…",
+        "legend": "New competition",
+        "name": "Name",
+        "nameHint": "As the league calls it, without the year, e.g. \"BCV Regionalliga Bayern\".",
+        "placeholder": "New competition",
+        "season": "Season",
+        "format": "Format",
+        "overs": "{overs} overs"
       }
     },
     "seasons": "Seasons",
@@ -809,12 +920,16 @@
         "teams": "Teams"
       },
       "stats": {
+        "eyebrow": "Coming soon",
         "heading": "Career stats",
-        "source": "From the league’s season records (CricClubs).",
-        "empty": "No season records for {name} yet.",
+        "text": "Stats are calculated from match scorecards and will appear here once the club records them.",
         "matches": "Matches",
         "runs": "Runs",
         "wickets": "Wickets",
+        "catches": "Catches",
+        "notRecorded": "Not recorded yet",
+        "source": "From the league’s season records (CricClubs).",
+        "empty": "No season records for {name} yet.",
         "highestScore": "Highest score",
         "batting": "Batting",
         "bowling": "Bowling",
@@ -1130,6 +1245,11 @@
       },
       "signedIn": "Signed in"
     },
+    "editorBar": {
+      "status": "Edit mode: you can add, edit and delete content",
+      "admin": "Admin panel",
+      "signOut": "Sign out"
+    },
     "signedIn": {
       "title": "You’re signed in",
       "intro": "Signed in as {email}.",
@@ -1195,6 +1315,24 @@
     "cancel": "Cancel",
     "undo": "Undo",
     "redo": "Redo"
+  },
+  "competitions": {
+    "target": {
+      "competition": "Competition",
+      "option": "New competition…",
+      "legend": "New competition",
+      "name": "Name",
+      "nameHint": "As the league calls it, without the year, e.g. \"BCV Regionalliga Bayern\".",
+      "season": "Season",
+      "format": "Format",
+      "overs": "{overs} overs",
+      "errors": {
+        "required": "Please fill in this field.",
+        "tooLong": "This is too long.",
+        "season": "Please enter a year between 2000 and 2100.",
+        "maxOvers": "Please choose a format."
+      }
+    }
   },
   "theme": {
     "label": "Theme",

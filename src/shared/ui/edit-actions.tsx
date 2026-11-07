@@ -1,8 +1,25 @@
+import { cva, type VariantProps } from 'class-variance-authority'
 import { PencilLine, Trash2 } from 'lucide-react'
 
 import { cn } from '@/shared/lib/cn'
 
-export type EditActionsProps = {
+const buttonVariants = cva(
+  'inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 [&_svg]:size-4',
+  {
+    variants: {
+      variant: {
+        /** Floating over a photo (player and news cards). */
+        overlay:
+          'bg-surface-default/90 text-text-default shadow-md backdrop-blur-sm hover:bg-surface-default',
+        /** In a card's own row (fixture cards): quiet until hovered. */
+        inline: 'text-text-muted hover:bg-surface-muted hover:text-text-default',
+      },
+    },
+    defaultVariants: { variant: 'overlay' },
+  },
+)
+
+export type EditActionsProps = VariantProps<typeof buttonVariants> & {
   /** Accessible names, e.g. "Edit Saqib Rafiq": the buttons show icons only. */
   editLabel: string
   deleteLabel: string
@@ -10,9 +27,6 @@ export type EditActionsProps = {
   onDelete: () => void
   className?: string
 }
-
-const BUTTON_CLASS =
-  'inline-flex size-9 items-center justify-center rounded-full bg-surface-default/90 text-text-default shadow-md backdrop-blur-sm transition-colors duration-150 hover:bg-surface-default [&_svg]:size-4'
 
 /**
  * Edit and delete buttons for editors, placed over a card or header. They sit above a card's
@@ -23,16 +37,19 @@ export function EditActions({
   deleteLabel,
   onEdit,
   onDelete,
+  variant,
   className,
 }: EditActionsProps) {
   return (
-    <div className={cn('z-10 flex gap-1.5', className)}>
+    <div
+      className={cn('z-10 flex shrink-0', variant === 'inline' ? 'gap-0.5' : 'gap-1.5', className)}
+    >
       <button
         type="button"
         onClick={onEdit}
         aria-label={editLabel}
         title={editLabel}
-        className={BUTTON_CLASS}
+        className={buttonVariants({ variant })}
       >
         <PencilLine aria-hidden="true" />
       </button>
@@ -41,7 +58,7 @@ export function EditActions({
         onClick={onDelete}
         aria-label={deleteLabel}
         title={deleteLabel}
-        className={cn(BUTTON_CLASS, 'text-status-danger-text')}
+        className={cn(buttonVariants({ variant }), 'text-status-danger-text')}
       >
         <Trash2 aria-hidden="true" />
       </button>

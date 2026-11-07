@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 
 import { getFixtureCategory } from '../domain/fixture-filters'
 import type { FixtureSummary } from '../types'
+import { FixtureEditActions, FixtureVanish } from './editor/fixtures-editing'
 import { FixtureCard } from './fixture-card'
 import {
   FixtureFilters,
@@ -21,6 +22,10 @@ export type FilterableFixturesProps = {
  * useSearchParams opts the filters out of static rendering, so the static HTML (crawlers,
  * no-JS visitors) is the fallback: the same layout with the unfiltered list.
  */
+function titleOf(fixture: FixtureSummary): string {
+  return `${fixture.teams[0].shortName} v ${fixture.teams[1].shortName}`
+}
+
 export function FilterableFixtures({
   fixtures,
   competitionGroups,
@@ -32,7 +37,15 @@ export function FilterableFixtures({
     competition: fixture.competition.slug,
     category: getFixtureCategory(fixture),
     outcome: fixture.clubOutcome,
-    card: <FixtureCard fixture={fixture} showCompetition={showCompetition} />,
+    card: (
+      <FixtureVanish id={fixture.id}>
+        <FixtureCard
+          fixture={fixture}
+          showCompetition={showCompetition}
+          actions={<FixtureEditActions id={fixture.id} title={titleOf(fixture)} />}
+        />
+      </FixtureVanish>
+    ),
   }))
 
   return (

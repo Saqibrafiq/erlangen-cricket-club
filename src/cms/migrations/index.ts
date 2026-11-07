@@ -12,8 +12,12 @@ import * as migration_20261010_100051_featured_competitions from './20261010_100
 import * as migration_20261010_100420_instagram_feed from './20261010_100420_instagram_feed';
 import * as migration_20261010_181911_featured_players from './20261010_181911_featured_players';
 import * as migration_20261011_153938_blob_storage_fields from './20261011_153938_blob_storage_fields';
+import * as migration_20261103_202652_grounds from './20261103_202652_grounds';
+import * as migration_20261103_202710_fixture_venue_to_ground from './20261103_202710_fixture_venue_to_ground';
+import * as migration_20261103_220951_ground_club_codes from './20261103_220951_ground_club_codes';
 import * as migration_20261103_225430_user_name from './20261103_225430_user_name';
 import * as migration_20261105_230129_player_seasons from './20261105_230129_player_seasons';
+import * as migration_20261107_120000_merge_fixtures_and_seasons from './20261107_120000_merge_fixtures_and_seasons';
 
 export const migrations = [
   {
@@ -87,6 +91,21 @@ export const migrations = [
     name: '20261011_153938_blob_storage_fields',
   },
   {
+    up: migration_20261103_202652_grounds.up,
+    down: migration_20261103_202652_grounds.down,
+    name: '20261103_202652_grounds',
+  },
+  {
+    up: migration_20261103_202710_fixture_venue_to_ground.up,
+    down: migration_20261103_202710_fixture_venue_to_ground.down,
+    name: '20261103_202710_fixture_venue_to_ground',
+  },
+  {
+    up: migration_20261103_220951_ground_club_codes.up,
+    down: migration_20261103_220951_ground_club_codes.down,
+    name: '20261103_220951_ground_club_codes',
+  },
+  {
     up: migration_20261103_225430_user_name.up,
     down: migration_20261103_225430_user_name.down,
     name: '20261103_225430_user_name',
@@ -94,6 +113,11 @@ export const migrations = [
   {
     up: migration_20261105_230129_player_seasons.up,
     down: migration_20261105_230129_player_seasons.down,
-    name: '20261105_230129_player_seasons'
+    name: '20261105_230129_player_seasons',
+  },
+  {
+    up: migration_20261107_120000_merge_fixtures_and_seasons.up,
+    down: migration_20261107_120000_merge_fixtures_and_seasons.down,
+    name: '20261107_120000_merge_fixtures_and_seasons'
   },
 ];

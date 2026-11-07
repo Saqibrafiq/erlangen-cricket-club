@@ -1,5 +1,5 @@
 import type { ImportedStandingsRow, StandingsCsvError } from './domain/standings-csv'
-import type { NewCompetitionFieldErrors } from './domain/standings-import-form'
+import type { NewCompetitionFieldErrors } from '@/features/competitions'
 import type { StandingsTeam } from './types'
 
 /** A competition an import can update, with its current table to compare against. */
