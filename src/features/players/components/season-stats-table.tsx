@@ -245,11 +245,11 @@ export function SeasonStatsTable({
         <thead className="bg-surface-muted text-xs font-semibold tracking-wide text-text-muted uppercase">
           <tr>
             <th scope="col" className={cn(STICKY_FIRST, 'bg-surface-muted px-3 py-2.5')}>
-              <Abbreviated {...rowHeading} />
+              <Abbreviated short={rowHeading.short} long={rowHeading.long} />
             </th>
             {columns.map((column) => (
               <th key={column.key} scope="col" className="px-3 py-2.5 text-right whitespace-nowrap">
-                <Abbreviated {...column} />
+                <Abbreviated short={column.short} long={column.long} />
               </th>
             ))}
             {hasActions && (
