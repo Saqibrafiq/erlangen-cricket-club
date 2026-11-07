@@ -5,6 +5,7 @@ import { type ReactNode, useId, useState, useTransition } from 'react'
 
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/shared/ui/button'
+import { Collapse } from '@/shared/ui/disclosure'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
 
 import {
@@ -278,24 +279,22 @@ export function SeasonForm({
           />
           <span>{t('fields.hasBatting')}</span>
         </CheckboxRow>
-        {hasBatting && (
-          <>
-            <div className={GRID_CLASS}>
-              {BATTING_FIELDS.map((field) =>
-                countField('batting', field, tColumns(`${field}.long`), draft?.batting?.[field]),
-              )}
-            </div>
-            <CheckboxRow>
-              <input
-                type="checkbox"
-                name="batting.isHighestScoreNotOut"
-                defaultChecked={draft?.batting?.isHighestScoreNotOut}
-                className={CHECKBOX_CLASS}
-              />
-              <span>{t('fields.isHighestScoreNotOut')}</span>
-            </CheckboxRow>
-          </>
-        )}
+        <Collapse isOpen={hasBatting} className="space-y-4 pt-1">
+          <div className={GRID_CLASS}>
+            {BATTING_FIELDS.map((field) =>
+              countField('batting', field, tColumns(`${field}.long`), draft?.batting?.[field]),
+            )}
+          </div>
+          <CheckboxRow>
+            <input
+              type="checkbox"
+              name="batting.isHighestScoreNotOut"
+              defaultChecked={draft?.batting?.isHighestScoreNotOut}
+              className={CHECKBOX_CLASS}
+            />
+            <span>{t('fields.isHighestScoreNotOut')}</span>
+          </CheckboxRow>
+        </Collapse>
       </fieldset>
 
       <fieldset className="space-y-4 rounded-2xl border border-border-default p-4">
@@ -314,7 +313,7 @@ export function SeasonForm({
           />
           <span>{t('fields.hasBowling')}</span>
         </CheckboxRow>
-        {hasBowling && (
+        <Collapse isOpen={hasBowling} className="pt-1">
           <div className={GRID_CLASS}>
             <FormField
               id={fieldId('bowling.overs')}
@@ -337,7 +336,7 @@ export function SeasonForm({
               countField('bowling', field, bowlingLabel(field), draft?.bowling?.[field]),
             )}
           </div>
-        )}
+        </Collapse>
       </fieldset>
 
       <div className="sticky bottom-0 -mx-6 flex gap-3 border-t border-border-default bg-surface-default px-6 py-4">

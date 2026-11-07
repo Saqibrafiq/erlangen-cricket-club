@@ -1,7 +1,6 @@
 'use client'
 
 import { useReducedMotion } from 'motion/react'
-import Image from 'next/image'
 import { useSyncExternalStore } from 'react'
 
 export const HERO_VIDEO_SRC = '/videos/hero.mp4'
@@ -37,12 +36,9 @@ export function HeroVideo() {
   return (
     <div aria-hidden="true" className="absolute inset-0 -z-10">
       {/* Fills whatever the whole film leaves free (screens shaped unlike 16:9, e.g. phones). */}
-      <Image
-        src={HERO_VIDEO_START_POSTER}
-        alt=""
-        fill
-        sizes="100vw"
-        className="scale-110 object-cover blur-2xl"
+      <div
+        style={{ backgroundImage: `url(${HERO_VIDEO_START_POSTER})` }}
+        className="absolute inset-0 scale-110 bg-cover bg-center blur-2xl"
       />
       {/* The film, centred in the first screen below the header pill, sized so the crest it ends
           on is never cut (video-crest-stage). */}

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import type { ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 export type RevealProps = {
   children: ReactNode
@@ -28,5 +28,37 @@ export function Reveal({ children, delay = 0, className }: RevealProps) {
     >
       {children}
     </motion.div>
+  )
+}
+
+/** Later items wait a little longer, up to this many steps, so long lists don't drag. */
+const MAX_STAGGER_STEPS = 6
+const STAGGER_S = 0.06
+
+export type RevealItemProps = Omit<
+  ComponentProps<typeof motion.li>,
+  'initial' | 'whileInView' | 'viewport' | 'transition'
+> & {
+  /** The item's position in its list: items reveal one after another. */
+  index?: number
+}
+
+/**
+ * A list item that rises into view as it scrolls in (once), a little after the one before it.
+ * Use in place of `<li>` for cards in a grid or list.
+ */
+export function RevealItem({ index = 0, ...props }: RevealItemProps) {
+  return (
+    <motion.li
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={VIEWPORT}
+      transition={{
+        duration: 0.5,
+        delay: Math.min(index, MAX_STAGGER_STEPS) * STAGGER_S,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      {...props}
+    />
   )
 }

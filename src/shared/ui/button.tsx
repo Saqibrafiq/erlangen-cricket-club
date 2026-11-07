@@ -1,8 +1,9 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Slot } from 'radix-ui'
-import type { ComponentProps } from 'react'
 
 import { cn } from '@/shared/lib/cn'
+
+import { PressableButton, type PressableButtonProps } from './pressable-button'
 
 export const buttonVariants = cva(
   'inline-flex shrink-0 items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0',
@@ -33,14 +34,27 @@ export const buttonVariants = cva(
   },
 )
 
-export type ButtonProps = ComponentProps<'button'> &
+export type ButtonProps = PressableButtonProps &
   VariantProps<typeof buttonVariants> & {
     /** Render the single child (e.g. a link) with button styling instead of a `<button>`. */
     asChild?: boolean
   }
 
-export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
-  const Component = asChild ? Slot.Root : 'button'
+/**
+ * Links styled as buttons (`asChild`) press the same way with a short CSS transition: Radix's Slot
+ * stays here, in a server-compatible component, to merge onto its one server-rendered child.
+ */
+const SLOT_PRESS =
+  'transition-[color,background-color,border-color,transform] active:scale-97 motion-reduce:active:scale-100'
 
-  return <Component className={cn(buttonVariants({ variant, size }), className)} {...props} />
+export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
+  if (asChild) {
+    return (
+      <Slot.Root
+        className={cn(buttonVariants({ variant, size }), SLOT_PRESS, className)}
+        {...props}
+      />
+    )
+  }
+  return <PressableButton className={cn(buttonVariants({ variant, size }), className)} {...props} />
 }

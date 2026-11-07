@@ -8,6 +8,7 @@ import { useId, useState } from 'react'
 import { cn } from '@/shared/lib/cn'
 import { useIsEditMode } from '@/shared/lib/edit-mode'
 import { useVanishing } from '@/shared/lib/use-vanishing'
+import { AnimatedList, AnimatedListItem } from '@/shared/ui/animated-list'
 import { Button } from '@/shared/ui/button'
 import { formControlClassName } from '@/shared/ui/form-field'
 import { PillGroup } from '@/shared/ui/pill-group'
@@ -189,9 +190,9 @@ export function SquadBrowser({ players, joinHref, editing }: SquadBrowserProps) 
           </Button>
         </div>
       ) : (
-        <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8">
+        <AnimatedList className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8">
           {matches.map((player) => (
-            <li key={player.id} className="relative">
+            <AnimatedListItem key={player.id} className="relative">
               {canEdit ? (
                 <Vanish isVanishing={vanishingId === player.id} onVanished={onVanished}>
                   <PlayerCard player={player} />
@@ -211,14 +212,14 @@ export function SquadBrowser({ players, joinHref, editing }: SquadBrowserProps) 
                   }}
                 />
               )}
-            </li>
+            </AnimatedListItem>
           ))}
           {!hasFilter && (
-            <li>
+            <AnimatedListItem key="join">
               <JoinSquadCard href={joinHref} />
-            </li>
+            </AnimatedListItem>
           )}
-        </ul>
+        </AnimatedList>
       )}
       {canEdit && intent && (
         <PlayerEditor

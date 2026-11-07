@@ -2,7 +2,11 @@
 
 import { type DragEvent, type ReactNode, useState } from 'react'
 
+import { motion } from 'motion/react'
+
 import { cn } from '@/shared/lib/cn'
+
+import { SPRING } from './motion-presets'
 
 import type { FormFieldControlProps } from './form-field'
 
@@ -57,8 +61,10 @@ export function FileDropZone({ control, accept, onFile, className, children }: F
         }}
         className="peer sr-only"
       />
-      <label
+      <motion.label
         htmlFor={control.id}
+        animate={{ scale: isDragging ? 1.02 : 1 }}
+        transition={SPRING}
         className={cn(
           'relative flex min-h-40 cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border-2 border-dashed p-6 text-center transition-colors duration-150',
           'peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus-ring',
@@ -68,7 +74,7 @@ export function FileDropZone({ control, accept, onFile, className, children }: F
         )}
       >
         {children}
-      </label>
+      </motion.label>
     </div>
   )
 }

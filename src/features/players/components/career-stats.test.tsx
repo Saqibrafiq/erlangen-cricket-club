@@ -61,10 +61,13 @@ afterEach(() => {
 describe('CareerStats', () => {
   it('shows the club career in headline figures', () => {
     const stats = renderStats()
-    const figures = stats.getAllByRole('definition').map((value) => value.textContent)
+    const figures = stats
+      .getAllByRole('definition')
+      // What assistive technology reads: the final figure (the visible digits count up).
+      .map((value) => value.querySelector('.sr-only')?.textContent ?? value.textContent)
 
     // Matches 25 + 25; runs 501 + 439; wickets 56 + 31; highest score 83 not out (2025).
-    expect(figures).toEqual(['50', '940', '87', '83*83 not out'])
+    expect(figures).toEqual(['50', '940', '87', '83 not out'])
   })
 
   it('lists batting by season with calculated rates and career totals', () => {
@@ -204,7 +207,10 @@ describe('CareerStats', () => {
 
     await userEvent.click(stats.getByRole('radio', { name: 'T20' }))
 
-    const figures = stats.getAllByRole('definition').map((value) => value.textContent)
+    const figures = stats
+      .getAllByRole('definition')
+      // What assistive technology reads: the final figure (the visible digits count up).
+      .map((value) => value.querySelector('.sr-only')?.textContent ?? value.textContent)
     expect(figures).toEqual(['17', '301', '36', '66'])
     // Teams and the district team belong to all matches only.
     expect(stats.queryByRole('button', { name: /show teams/ })).toBeNull()
