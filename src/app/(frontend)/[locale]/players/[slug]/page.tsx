@@ -8,6 +8,7 @@ import {
   getPlayerEntries,
   getPlayerPath,
   getPlayers,
+  getPlayerSeasons,
   pickTeammates,
   PLAYER_EDITING,
   PlayerProfileView,
@@ -62,7 +63,7 @@ export async function generateMetadata({ params }: PlayerProfilePageProps): Prom
 
 export default async function PlayerProfilePage({ params }: PlayerProfilePageProps) {
   const { locale, player } = await loadPlayer(params)
-  const squad = await getPlayers(locale)
+  const [squad, seasons] = await Promise.all([getPlayers(locale), getPlayerSeasons(player.id)])
   const tNavigation = await getTranslations({ locale, namespace: 'navigation' })
   const path = getPlayerPath(player.slug)
   const club = { name: siteConfig.name, url: siteConfig.url }
@@ -75,6 +76,7 @@ export default async function PlayerProfilePage({ params }: PlayerProfilePagePro
         />
         <PlayerProfileView
           player={player}
+          seasons={seasons}
           teammates={pickTeammates(squad, player.slug, TEAMMATES_SHOWN)}
           playersHref={PLAYERS_PATH}
           editing={PLAYER_EDITING}

@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { PLAYER, PLAYER_WITH_DETAILS, PLAYER_WITHOUT_PHOTO } from '../test-factories'
+import {
+  PLAYER,
+  PLAYER_SEASONS,
+  PLAYER_WITH_DETAILS,
+  PLAYER_WITHOUT_PHOTO,
+} from '../test-factories'
 import { PlayerProfileView } from './player-profile-view'
 
 const meta = {
@@ -8,6 +13,7 @@ const meta = {
   component: PlayerProfileView,
   args: {
     player: PLAYER_WITH_DETAILS,
+    seasons: PLAYER_SEASONS,
     teammates: [PLAYER, PLAYER_WITHOUT_PHOTO],
     playersHref: '/players',
   },
@@ -20,7 +26,9 @@ type Story = StoryObj<typeof meta>
 /** Office, role, teams, bio and playing details; initials instead of a photo. */
 export const WithPlayingDetails: Story = {}
 
-/** As seeded from the old website: photo only. */
-export const PhotoOnly: Story = { args: { player: PLAYER, teammates: [PLAYER_WITH_DETAILS] } }
+/** As seeded from the old website: photo only, no season records yet. */
+export const PhotoOnly: Story = {
+  args: { player: PLAYER, seasons: [], teammates: [PLAYER_WITH_DETAILS] },
+}
 
 export const OnlyPlayer: Story = { args: { player: PLAYER, teammates: [] } }

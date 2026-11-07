@@ -809,14 +809,120 @@
         "teams": "Teams"
       },
       "stats": {
-        "eyebrow": "Coming soon",
         "heading": "Career stats",
-        "text": "Stats are calculated from match scorecards and will appear here once the club records them.",
+        "source": "From the league’s season records (CricClubs).",
+        "empty": "No season records for {name} yet.",
         "matches": "Matches",
         "runs": "Runs",
         "wickets": "Wickets",
-        "catches": "Catches",
-        "notRecorded": "Not recorded yet"
+        "highestScore": "Highest score",
+        "batting": "Batting",
+        "bowling": "Bowling",
+        "career": "Career",
+        "notOut": "not out",
+        "notApplicable": "not applicable",
+        "district": {
+          "row": "District team",
+          "label": "District team (Bezirk League), not in the career totals"
+        },
+        "columns": {
+          "season": {
+            "short": "Season",
+            "long": "Season"
+          },
+          "matches": {
+            "short": "M",
+            "long": "Matches"
+          },
+          "innings": {
+            "short": "Inn",
+            "long": "Innings"
+          },
+          "notOuts": {
+            "short": "NO",
+            "long": "Not outs"
+          },
+          "runs": {
+            "short": "Runs",
+            "long": "Runs"
+          },
+          "balls": {
+            "short": "BF",
+            "long": "Balls faced"
+          },
+          "average": {
+            "short": "Avg",
+            "long": "Average"
+          },
+          "strikeRate": {
+            "short": "SR",
+            "long": "Strike rate"
+          },
+          "highestScore": {
+            "short": "HS",
+            "long": "Highest score"
+          },
+          "hundreds": {
+            "short": "100s",
+            "long": "Hundreds"
+          },
+          "fifties": {
+            "short": "50s",
+            "long": "Fifties"
+          },
+          "fours": {
+            "short": "4s",
+            "long": "Fours"
+          },
+          "sixes": {
+            "short": "6s",
+            "long": "Sixes"
+          },
+          "overs": {
+            "short": "O",
+            "long": "Overs"
+          },
+          "maidens": {
+            "short": "Mdns",
+            "long": "Maidens"
+          },
+          "runsConceded": {
+            "short": "Runs",
+            "long": "Runs conceded"
+          },
+          "wickets": {
+            "short": "Wkts",
+            "long": "Wickets"
+          },
+          "best": {
+            "short": "Best",
+            "long": "Best bowling"
+          },
+          "economy": {
+            "short": "Econ",
+            "long": "Economy rate"
+          },
+          "fourWicketHauls": {
+            "short": "4w",
+            "long": "Four-wicket hauls"
+          },
+          "fiveWicketHauls": {
+            "short": "5w",
+            "long": "Five-wicket hauls"
+          }
+        },
+        "formats": {
+          "legend": "Matches",
+          "all": "All matches",
+          "t20": "T20",
+          "fifty-over": "50-over",
+          "allNote": "All matches includes friendlies, so it can be more than T20 and 50-over together.",
+          "league": "League matches (one team)"
+        },
+        "friendlies": "Friendlies & other",
+        "details": {
+          "toggle": "show teams"
+        }
       },
       "metaDescription": "{name} plays cricket for Erlangen Cricket Club.",
       "teammates": {
@@ -934,6 +1040,68 @@
         "deleting": "Deleting…",
         "cancel": "Cancel",
         "error": "Could not delete. Please try again."
+      }
+    },
+    "seasonEditor": {
+      "add": "Add season",
+      "edit": "Edit season {season}",
+      "delete": "Delete season {season}",
+      "competition": {
+        "club": "Club",
+        "district": "District team"
+      },
+      "sheet": {
+        "addTitle": "Add a season",
+        "editTitle": "Edit season",
+        "description": "Totals for one season, as the league publishes them.",
+        "close": "Close",
+        "loading": "Loading the season"
+      },
+      "fields": {
+        "season": "Season",
+        "competition": "Played for",
+        "hasBatting": "Batted this season",
+        "hasBowling": "Bowled this season",
+        "isHighestScoreNotOut": "Highest score was not out",
+        "oversHint": "Cricket notation: 110.1 = 110 overs and 1 ball.",
+        "bestWickets": "Best: wickets",
+        "bestRuns": "Best: runs",
+        "dotBalls": "Dot balls",
+        "hatTricks": "Hat-tricks",
+        "wides": "Wides",
+        "noBalls": "No balls",
+        "optional": "optional",
+        "format": "Matches counted",
+        "team": "Team",
+        "wholeSeason": "Whole season (all teams)",
+        "teamHint": "Pick a team to record its league matches (T20 and 50-over together)."
+      },
+      "save": "Save season",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "saved": "Season {season} saved",
+      "deleted": "Season {season} deleted",
+      "errors": {
+        "required": "Required.",
+        "invalidSeason": "Enter a year from 2010.",
+        "invalidNumber": "Enter a whole number, 0 or more.",
+        "invalidOvers": "Use cricket notation, e.g. 110.1 (balls 0–5 after the dot).",
+        "notOutsAboveInnings": "Cannot be more than the innings.",
+        "nothingRecorded": "Record batting, bowling or both.",
+        "duplicateSeason": "This player already has this season for this competition.",
+        "unauthorized": "Your session has ended.",
+        "signIn": "Sign in again",
+        "load": "The season could not be loaded.",
+        "save": "The season could not be saved. Please try again.",
+        "retry": "Try again"
+      },
+      "deleteDialog": {
+        "title": "Delete season {season}?",
+        "description": "The season’s batting and bowling are removed from the profile and the career totals.",
+        "confirm": "Delete season",
+        "deleting": "Deleting…",
+        "cancel": "Cancel",
+        "error": "The season could not be deleted. Please try again."
       }
     }
   },

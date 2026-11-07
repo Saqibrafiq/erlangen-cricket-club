@@ -14,3 +14,22 @@ export {
   type TeamOutcome,
 } from './match-result'
 export { BALLS_PER_OVER, formatOvers, isValidOvers, parseOvers } from './overs'
+export {
+  calculateBowlingAverage,
+  calculateBowlingStrikeRate,
+  calculateEconomyRate,
+  formatBowlingFigures,
+  isBetterBowlingFigures,
+  type BowlingFigures,
+} from './bowling'
+export {
+  getDismissals,
+  subtractBattingTotals,
+  subtractBowlingTotals,
+  sumBattingTotals,
+  sumBowlingTotals,
+  type BattingCounts,
+  type BattingTotals,
+  type BowlingCounts,
+  type BowlingTotals,
+} from './season-totals'

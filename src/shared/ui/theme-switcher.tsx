@@ -1,13 +1,15 @@
 'use client'
 
 import { Check, Moon, Shirt, Sun, SunMoon, type LucideIcon } from 'lucide-react'
-import { AnimatePresence, motion, type Variants } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import { DropdownMenu } from 'radix-ui'
 import { useRef, useState } from 'react'
 
 import { THEME_CHOICES, type ThemeChoice } from '@/shared/config/theme'
 import { cn } from '@/shared/lib/cn'
+
+import { DROPDOWN_ITEM_VARIANTS, DROPDOWN_PANEL_VARIANTS } from './motion-presets'
 import { useTheme } from '@/shared/lib/use-theme'
 
 const ICONS: Record<ThemeChoice, LucideIcon> = {
@@ -26,28 +28,6 @@ const SWATCHES: Record<Exclude<ThemeChoice, 'auto'>, readonly [string, string, s
   light: ['#d6f1e2', '#194cb1', '#d4e995'],
   dark: ['#0e141f', '#f79643', '#fdbe45'],
   ecc: ['#101e4b', '#e99f50', '#691214'],
-}
-
-/** The panel springs out of the button; the options follow one after another. */
-const PANEL_VARIANTS: Variants = {
-  closed: { opacity: 0, scale: 0.92, y: -8 },
-  open: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 460,
-      damping: 30,
-      staggerChildren: 0.04,
-      delayChildren: 0.04,
-    },
-  },
-  exit: { opacity: 0, scale: 0.95, y: -6, transition: { duration: 0.14, ease: 'easeIn' } },
-}
-const OPTION_VARIANTS: Variants = {
-  closed: { opacity: 0, x: 8 },
-  open: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 520, damping: 32 } },
 }
 
 function Swatch({ choice }: { choice: ThemeChoice }) {
@@ -126,7 +106,7 @@ export function ThemeSwitcher() {
               collisionPadding={16}
             >
               <motion.div
-                variants={PANEL_VARIANTS}
+                variants={DROPDOWN_PANEL_VARIANTS}
                 initial="closed"
                 animate="open"
                 exit="exit"
@@ -160,7 +140,7 @@ export function ThemeSwitcher() {
                           'transition-colors duration-150 data-highlighted:bg-surface-muted',
                         )}
                       >
-                        <motion.div variants={OPTION_VARIANTS}>
+                        <motion.div variants={DROPDOWN_ITEM_VARIANTS}>
                           {/* The selection glides from the old choice to the new one. */}
                           {option === choice && (
                             <motion.span

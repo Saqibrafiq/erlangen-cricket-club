@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion, type Variants } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import { Dialog } from 'radix-ui'
@@ -8,6 +8,8 @@ import { useId, useState } from 'react'
 
 import { Link, usePathname } from '@/i18n/navigation'
 import { cn } from '@/shared/lib/cn'
+
+import { Collapse, CollapseItem, DisclosureChevron } from './disclosure'
 import { scrollToTop } from '@/shared/lib/scroll-to-top'
 
 import type { NavigationGroup, SiteNavigationItem } from './nav-menu'
@@ -98,57 +100,41 @@ function MenuSection({
         className="flex min-h-12 w-full items-center justify-between rounded-2xl px-4 font-display text-2xl font-bold tracking-tight uppercase transition-colors duration-150 hover:bg-surface-muted"
       >
         {item.label}
-        <motion.span
-          aria-hidden="true"
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={SPRING}
-          className="inline-flex text-text-muted"
-        >
-          <ChevronDown className="size-6" />
-        </motion.span>
+        <DisclosureChevron isOpen={isOpen} className="text-2xl" />
       </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            id={panelId}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={SPRING}
-            className="overflow-hidden"
-          >
-            <div className="mt-1 mb-2 ml-4 space-y-2 border-l-2 border-brand-primary/40 pl-2">
-              {groups.map((group, index) => {
-                const groupId = `${id}-${String(index)}`
-                return (
-                  <div key={group.label ?? index}>
-                    {group.label && (
-                      <p
-                        id={groupId}
-                        className="px-4 pt-2 pb-1 text-xs font-semibold tracking-wide text-text-muted uppercase"
-                      >
-                        {group.label}
-                      </p>
-                    )}
-                    <ul aria-labelledby={group.label ? groupId : undefined}>
-                      {group.links.map((link) => (
-                        <li key={link.href}>
-                          <MenuLink
-                            href={link.href}
-                            label={link.label}
-                            isNested
-                            onNavigate={onNavigate}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Collapse
+        isOpen={isOpen}
+        id={panelId}
+        className="mt-1 mb-2 ml-4 space-y-2 border-l-2 border-brand-primary/40 pl-2"
+      >
+        {groups.map((group, index) => {
+          const groupId = `${id}-${String(index)}`
+          return (
+            <CollapseItem key={group.label ?? index}>
+              {group.label && (
+                <p
+                  id={groupId}
+                  className="px-4 pt-2 pb-1 text-xs font-semibold tracking-wide text-text-muted uppercase"
+                >
+                  {group.label}
+                </p>
+              )}
+              <ul aria-labelledby={group.label ? groupId : undefined}>
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <MenuLink
+                      href={link.href}
+                      label={link.label}
+                      isNested
+                      onNavigate={onNavigate}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </CollapseItem>
+          )
+        })}
+      </Collapse>
     </div>
   )
 }
