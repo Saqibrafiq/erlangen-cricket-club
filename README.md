@@ -60,7 +60,7 @@ team standards: architecture records, a strict test pipeline and a €0 running 
 - **Server-first React:** Server Components by default and Server Actions for writes. Every action checks the session itself and writes through Payload's access control.
 - **Validated at every edge:** Zod for forms, environment variables and search parameters.
 - **Accessibility is a gate, not a goal:** WCAG 2.2 AA, axe runs on every E2E page in every theme, there is full keyboard support, and Motion respects `prefers-reduced-motion`.
-- **Performance and SEO:** static rendering with on-demand revalidation from CMS hooks, self-hosted fonts, per-page metadata, hreflang, a sitemap, JSON-LD (`SportsOrganization`, `SportsEvent`, `NewsArticle`, `BreadcrumbList`).
+- **Performance and SEO:** static rendering with on-demand revalidation from CMS hooks, self-hosted fonts, per-page metadata, hreflang, a sitemap, JSON-LD (`SportsOrganization`, `SportsEvent`, `NewsArticle`, `BreadcrumbList`), and generated share images (Open Graph) for the site, every player and every article.
 - **Privacy by design (Germany):** no tracking cookies and therefore no cookie banner, a recorded consent flag before any player profile is published, and maps that load only on request.
 - **One motion system:** shared Motion presets (springs, panels, collapses, animated lists, scroll reveals) used by every interactive component, instead of per-page animation code.
 
@@ -112,7 +112,9 @@ Every pull request runs:
 2. **Architecture:** dependency-cruiser enforces the layer and slice rules.
 3. **Unit and component tests:** Vitest and React Testing Library, querying by role (as users and assistive technology do). `src/domain` must reach 100% coverage.
 4. **E2E and accessibility:** Playwright on phone and desktop against a production build and a seeded database, with axe checks in every theme.
-5. **Storybook build:** every shared UI component has stories for its variants and states.
+5. **Lighthouse CI:** six key pages; accessibility, best practices and SEO must score at least 95 (they score 100), and performance is tracked as a warning.
+6. **SonarCloud:** quality gate with the unit test coverage.
+7. **Storybook build:** every shared UI component has stories for its variants and states.
 
 Commits follow Conventional Commits (commitlint); staged files are linted and formatted on commit (Husky and lint-staged). Work is trunk-based: short-lived branches, a pull request, squash merge, then automatic deployment.
 
@@ -128,7 +130,8 @@ Commits follow Conventional Commits (commitlint); staged files are linted and fo
 | Motion              | Motion (`motion/react`), with reduced motion respected             |
 | Validation and i18n | Zod, next-intl (en, de)                                            |
 | Testing             | Vitest, React Testing Library, Playwright, axe-core, Storybook     |
-| Delivery            | GitHub Actions, Vercel (Frankfurt)                                 |
+| Delivery            | GitHub Actions, Vercel (Frankfurt), Lighthouse CI, SonarCloud      |
+| Monitoring          | Vercel Web Analytics and Speed Insights (cookieless)               |
 
 ## Running it locally
 

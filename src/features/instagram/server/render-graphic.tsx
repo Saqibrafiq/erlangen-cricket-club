@@ -1,10 +1,6 @@
-import { readFile } from 'node:fs/promises'
-import path from 'node:path'
-
 import { ImageResponse } from 'next/og'
 import { getFormatter, getTranslations } from 'next-intl/server'
 import type { JSX } from 'react'
-import sharp from 'sharp'
 
 import { getContactInfo } from '@/features/contact'
 import {
@@ -17,6 +13,7 @@ import {
 import { getPlayer, type Player } from '@/features/players'
 import { type Locale, TIME_ZONE } from '@/i18n/routing'
 import { siteConfig } from '@/shared/config/site'
+import { loadBrandImageAssets, loadPhotoAsPng } from '@/shared/lib/brand-image-assets'
 
 import {
   type GraphicTeam,
@@ -29,52 +26,9 @@ import { getInstagramHandle } from '../domain/handle'
 import type { GraphicRequest } from '@/shared/lib/instagram-graphic'
 import { GRAPHIC_SIZE } from '../palette'
 
-const ASSETS_DIR = path.join(process.cwd(), 'src/shared/assets')
-
-type Fonts = NonNullable<NonNullable<ConstructorParameters<typeof ImageResponse>[1]>['fonts']>
-
-type Assets = {
-  crestSrc: string
-  fonts: Fonts
-}
-
 type GraphicContent = {
   label: string
   body: JSX.Element
-}
-
-// Loaded once per server instance: fonts and crest never change at runtime.
-let assets: Promise<Assets> | undefined
-
-async function loadAssets(): Promise<Assets> {
-  const read = (file: string) => readFile(path.join(ASSETS_DIR, file))
-  const [crest, condensedBold, condensedSemiBold, medium] = await Promise.all([
-    read('ecc-logo.png'),
-    read('fonts/BarlowCondensed-Bold.ttf'),
-    read('fonts/BarlowCondensed-SemiBold.ttf'),
-    read('fonts/Barlow-Medium.ttf'),
-  ])
-
-  return {
-    crestSrc: `data:image/png;base64,${crest.toString('base64')}`,
-    fonts: [
-      { name: 'Barlow Condensed', data: condensedBold, weight: 700, style: 'normal' },
-      { name: 'Barlow Condensed', data: condensedSemiBold, weight: 600, style: 'normal' },
-      { name: 'Barlow', data: medium, weight: 500, style: 'normal' },
-    ],
-  }
-}
-
-// Satori draws PNG and JPEG, not the WebP cut-outs, so the photo is converted first.
-async function loadPhoto(url: string, origin: string): Promise<string | null> {
-  const response = await fetch(new URL(url, origin))
-  if (!response.ok) {
-    return null
-  }
-  const png = await sharp(Buffer.from(await response.arrayBuffer()))
-    .png()
-    .toBuffer()
-  return `data:image/png;base64,${png.toString('base64')}`
 }
 
 function scoreOf(fixture: FixtureSummary, teamId: number): string | undefined {
@@ -165,7 +119,7 @@ async function renderPlayer(
         firstName={words.length > 0 ? words.join(' ') : null}
         lastName={lastName}
         role={role}
-        photoSrc={player.photo ? await loadPhoto(player.photo.url, origin) : null}
+        photoSrc={player.photo ? await loadPhotoAsPng(player.photo.url, origin) : null}
         initials={`${player.name.charAt(0)}${words.length > 0 ? lastName.charAt(0) : ''}`}
       />
     ),
@@ -202,7 +156,7 @@ export async function renderGraphic(
   }
 
   const [{ crestSrc, fonts }, contact] = await Promise.all([
-    (assets ??= loadAssets()),
+    loadBrandImageAssets(),
     getContactInfo(locale),
   ])
   const handle = contact.instagramUrl ? getInstagramHandle(contact.instagramUrl) : null

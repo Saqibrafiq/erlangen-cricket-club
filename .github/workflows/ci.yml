@@ -26,8 +26,14 @@ jobs:
   quality:
     name: Lint, types, architecture, unit tests
     runs-on: ubuntu-latest
+    env:
+      # Empty until the repository secret exists; the SonarCloud step checks it.
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          # SonarCloud needs the history to tell new code from old.
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
         with:
@@ -39,6 +45,11 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm depcruise
       - run: pnpm test:coverage
+      # Quality gate on SonarCloud (sonar-project.properties), with the coverage above. Skipped until
+      # the repository secret SONAR_TOKEN exists, so forks and a fresh setup stay green.
+      - name: SonarCloud
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@v5
       - uses: actions/upload-artifact@v4
         with:
           name: coverage
@@ -70,6 +81,10 @@ jobs:
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
+      # Lighthouse on the same build (lighthouserc.json): accessibility, best practices and SEO must
+      # score at least 95; performance is reported as a warning (TD-15).
+      - name: Lighthouse CI
+        run: pnpm dlx @lhci/cli@0.16.0 autorun
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

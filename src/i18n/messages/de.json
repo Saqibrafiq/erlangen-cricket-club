@@ -1343,5 +1343,17 @@
       "dark": "Dunkel",
       "ecc": "ECC"
     }
+  },
+  "share": {
+    "site": {
+      "eyebrow": "Cricket in Erlangen seit 2010",
+      "subtitle": "Siebenfacher bayerischer Meister. Alle, die den Sport lieben, sind willkommen."
+    },
+    "player": {
+      "eyebrow": "Spielerprofil"
+    },
+    "news": {
+      "eyebrow": "Vereinsnews"
+    }
   }
 }
