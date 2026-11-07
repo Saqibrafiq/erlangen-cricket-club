@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation'
 
 import { groupByYear, yearAnchor } from '../domain/group-by-year'
 import type { Milestone } from '../types'
+import { RevealItem } from '@/shared/ui/reveal'
 
 export type JourneyTimelineProps = {
   milestones: readonly Milestone[]
@@ -61,8 +62,9 @@ function MilestoneCard({ milestone }: { milestone: Milestone }) {
 export function JourneyTimeline({ milestones }: JourneyTimelineProps) {
   return (
     <ol className="mx-auto max-w-3xl">
-      {groupByYear(milestones).map(({ year, milestones: ofYear }) => (
-        <li
+      {groupByYear(milestones).map(({ year, milestones: ofYear }, index) => (
+        <RevealItem
+          index={index}
           key={year}
           id={yearAnchor(year)}
           className="grid scroll-mt-24 grid-cols-timeline gap-x-4 sm:grid-cols-timeline-wide sm:gap-x-6"
@@ -79,7 +81,7 @@ export function JourneyTimeline({ milestones }: JourneyTimelineProps) {
               <MilestoneCard key={milestone.title} milestone={milestone} />
             ))}
           </div>
-        </li>
+        </RevealItem>
       ))}
     </ol>
   )

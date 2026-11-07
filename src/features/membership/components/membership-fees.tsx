@@ -8,6 +8,7 @@ import { Disclosure } from '@/shared/ui/disclosure'
 import type { MembershipFee } from '../types'
 import { JOIN_SECTION_ID } from './membership-join'
 import { SectionHeading } from '@/shared/ui/section-heading'
+import { RevealItem } from '@/shared/ui/reveal'
 
 export type MembershipFeesProps = {
   fees: readonly MembershipFee[]
@@ -35,8 +36,9 @@ export function MembershipFees({ fees, note, terms }: MembershipFeesProps) {
         <p className="text-center text-text-muted">{t('empty')}</p>
       ) : (
         <ul className="mx-auto grid max-w-6xl items-stretch gap-6 lg:grid-cols-3">
-          {fees.map((fee) => (
-            <li
+          {fees.map((fee, index) => (
+            <RevealItem
+              index={index}
               key={fee.name}
               className={cn(
                 'relative flex flex-col rounded-3xl bg-surface-default p-6 sm:p-8',
@@ -89,7 +91,7 @@ export function MembershipFees({ fees, note, terms }: MembershipFeesProps) {
               >
                 <a href={`#${JOIN_SECTION_ID}`}>{t('choose', { membership: fee.name })}</a>
               </Button>
-            </li>
+            </RevealItem>
           ))}
         </ul>
       )}

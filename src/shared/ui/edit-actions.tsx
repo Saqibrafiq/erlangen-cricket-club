@@ -1,6 +1,14 @@
+'use client'
+
 import { PencilLine, Trash2 } from 'lucide-react'
+import { motion } from 'motion/react'
 
 import { cn } from '@/shared/lib/cn'
+
+import { SPRING } from './motion-presets'
+
+const HOVER = { scale: 1.08 } as const
+const PRESS = { scale: 0.92 } as const
 
 export type EditActionsProps = {
   /** Accessible names, e.g. "Edit Saqib Rafiq": the buttons show icons only. */
@@ -27,24 +35,30 @@ export function EditActions({
 }: EditActionsProps) {
   return (
     <div className={cn('z-10 flex gap-1.5', className)}>
-      <button
+      <motion.button
         type="button"
+        whileHover={HOVER}
+        whileTap={PRESS}
+        transition={SPRING}
         onClick={onEdit}
         aria-label={editLabel}
         title={editLabel}
         className={BUTTON_CLASS}
       >
         <PencilLine aria-hidden="true" />
-      </button>
-      <button
+      </motion.button>
+      <motion.button
         type="button"
+        whileHover={HOVER}
+        whileTap={PRESS}
+        transition={SPRING}
         onClick={onDelete}
         aria-label={deleteLabel}
         title={deleteLabel}
         className={cn(BUTTON_CLASS, 'text-status-danger-text')}
       >
         <Trash2 aria-hidden="true" />
-      </button>
+      </motion.button>
     </div>
   )
 }

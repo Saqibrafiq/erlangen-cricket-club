@@ -7,6 +7,7 @@ import { cn } from '@/shared/lib/cn'
 import { getWeekdayDate, summariseWeek } from '../domain/week'
 import type { ClubSession } from '../types'
 import { SectionHeading } from '@/shared/ui/section-heading'
+import { RevealItem } from '@/shared/ui/reveal'
 
 // Sessions alternate between two looks, so the week strip shows which day belongs to which.
 const SESSION_TONES = [
@@ -54,8 +55,9 @@ export function MembershipSchedule({ sessions, note, directionsHref }: Membershi
 
       {/* Visual summary only; the session cards below carry the same information as text. */}
       <ol aria-hidden="true" className="mx-auto grid max-w-3xl grid-cols-7 gap-1.5 sm:gap-3">
-        {summariseWeek(sessions).map(({ day, sessionIndex }) => (
-          <li
+        {summariseWeek(sessions).map(({ day, sessionIndex }, index) => (
+          <RevealItem
+            index={index}
             key={day}
             className={cn(
               'flex aspect-square flex-col items-center justify-center rounded-2xl text-xs font-semibold uppercase sm:text-sm',
@@ -64,7 +66,7 @@ export function MembershipSchedule({ sessions, note, directionsHref }: Membershi
           >
             {weekdayName(day, 'short')}
             {sessionIndex !== null && <CalendarCheck className="mt-1 size-4" />}
-          </li>
+          </RevealItem>
         ))}
       </ol>
 

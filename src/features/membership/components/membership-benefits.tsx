@@ -2,6 +2,7 @@ import { CalendarDays, Dumbbell, Trophy, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import { SectionHeading } from '@/shared/ui/section-heading'
+import { RevealItem } from '@/shared/ui/reveal'
 
 const BENEFITS = [
   { key: 'league', Icon: Trophy },
@@ -18,8 +19,9 @@ export function MembershipBenefits() {
     <section aria-labelledby="benefits-heading" className="space-y-10">
       <SectionHeading id="benefits-heading" eyebrow={t('eyebrow')} heading={t('heading')} />
       <ul className="mx-auto grid max-w-7xl gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {BENEFITS.map(({ key, Icon }) => (
-          <li
+        {BENEFITS.map(({ key, Icon }, index) => (
+          <RevealItem
+            index={index}
             key={key}
             className="group rounded-3xl border border-border-default bg-surface-default p-6 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
@@ -28,7 +30,7 @@ export function MembershipBenefits() {
             </span>
             <h3 className="mt-5 text-lg font-bold">{t(`${key}.title`)}</h3>
             <p className="mt-2 text-text-muted">{t(`${key}.text`)}</p>
-          </li>
+          </RevealItem>
         ))}
       </ul>
     </section>

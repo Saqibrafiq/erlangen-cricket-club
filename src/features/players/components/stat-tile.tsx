@@ -1,12 +1,17 @@
+import { CountUp } from '@/shared/ui/count-up'
+
 export type StatTileProps = {
   label: string
   value: string
+  /** Counts up to this number as the tile scrolls into view, shown with `format`. */
+  countTo?: number
+  format?: (value: number) => string
   /** Read instead of the value when the value alone would not say it (e.g. "140*"). */
   srValue?: string
 }
 
 /** One figure in a description list: the value large on top, its label below. */
-export function StatTile({ label, value, srValue }: StatTileProps) {
+export function StatTile({ label, value, srValue, countTo, format }: StatTileProps) {
   return (
     // Label first in the markup (as a description list requires); the value is shown on top.
     <div className="flex flex-col gap-1 rounded-2xl bg-surface-muted p-4 sm:p-5">
@@ -17,8 +22,10 @@ export function StatTile({ label, value, srValue }: StatTileProps) {
             <span aria-hidden="true">{value}</span>
             <span className="sr-only">{srValue}</span>
           </>
-        ) : (
+        ) : countTo === undefined ? (
           value
+        ) : (
+          <CountUp value={countTo} format={format} />
         )}
       </dd>
     </div>

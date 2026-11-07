@@ -1,8 +1,13 @@
+'use client'
+
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'motion/react'
 import { Slot } from 'radix-ui'
 import type { ComponentProps } from 'react'
 
 import { cn } from '@/shared/lib/cn'
+
+import { SPRING } from './motion-presets'
 
 export const buttonVariants = cva(
   'inline-flex shrink-0 items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0',
@@ -33,14 +38,31 @@ export const buttonVariants = cva(
   },
 )
 
-export type ButtonProps = ComponentProps<'button'> &
+// Motion's own handlers share these names with different signatures; buttons don't use them.
+type NativeButtonProps = Omit<
+  ComponentProps<'button'>,
+  'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'
+>
+
+export type ButtonProps = NativeButtonProps &
   VariantProps<typeof buttonVariants> & {
     /** Render the single child (e.g. a link) with button styling instead of a `<button>`. */
     asChild?: boolean
   }
 
-export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
-  const Component = asChild ? Slot.Root : 'button'
+const MotionSlot = motion.create(Slot.Root)
+/** Pressing gives way a little, on the site's spring (no movement under reduced motion). */
+const PRESS = { scale: 0.97 } as const
 
-  return <Component className={cn(buttonVariants({ variant, size }), className)} {...props} />
+export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
+  const Component = asChild ? MotionSlot : motion.button
+
+  return (
+    <Component
+      whileTap={PRESS}
+      transition={SPRING}
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  )
 }

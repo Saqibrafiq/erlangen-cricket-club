@@ -10,6 +10,7 @@ import { BECOME_SPONSOR_ID } from '../paths'
 import type { Sponsor } from '../types'
 import { SponsorEditActions, SponsorEditingProvider, SponsorVanish } from './editor/sponsor-editing'
 import { SponsorCard } from './sponsor-card'
+import { RevealItem } from '@/shared/ui/reveal'
 
 export type SponsorsViewProps = {
   sponsors: readonly Sponsor[]
@@ -63,8 +64,8 @@ export function SponsorsView({ sponsors, contactHref, editing }: SponsorsViewPro
             <p className="text-center text-text-muted">{t('list.empty')}</p>
           ) : (
             <ul className="mx-auto max-w-5xl space-y-6">
-              {sponsors.map((sponsor) => (
-                <li key={sponsor.id}>
+              {sponsors.map((sponsor, index) => (
+                <RevealItem index={index} key={sponsor.id}>
                   <SponsorVanish id={sponsor.id}>
                     <SponsorCard sponsor={sponsor} />
                     <SponsorEditActions
@@ -73,7 +74,7 @@ export function SponsorsView({ sponsors, contactHref, editing }: SponsorsViewPro
                       className="absolute top-3 left-3"
                     />
                   </SponsorVanish>
-                </li>
+                </RevealItem>
               ))}
             </ul>
           )}
@@ -92,8 +93,9 @@ export function SponsorsView({ sponsors, contactHref, editing }: SponsorsViewPro
           intro={t('benefits.intro')}
         />
         <ul className="mx-auto grid max-w-6xl gap-5 md:grid-cols-3">
-          {BENEFITS.map(({ key, Icon }) => (
-            <li
+          {BENEFITS.map(({ key, Icon }, index) => (
+            <RevealItem
+              index={index}
               key={key}
               className="rounded-3xl border border-border-default bg-surface-default p-6 shadow-sm sm:p-8"
             >
@@ -102,7 +104,7 @@ export function SponsorsView({ sponsors, contactHref, editing }: SponsorsViewPro
               </span>
               <h3 className="mt-5 text-lg font-bold">{t(`benefits.${key}.title`)}</h3>
               <p className="mt-2 text-text-muted">{t(`benefits.${key}.text`)}</p>
-            </li>
+            </RevealItem>
           ))}
         </ul>
       </section>

@@ -1,6 +1,7 @@
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+import { AnimatedList, AnimatedListItem } from '@/shared/ui/animated-list'
 import { Button } from '@/shared/ui/button'
 
 export type ActiveFilter = {
@@ -26,9 +27,9 @@ export function ActiveFilterChips({ filters, onClearAll }: ActiveFilterChipsProp
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <ul aria-label={t('active')} className="flex flex-wrap gap-2">
+      <AnimatedList aria-label={t('active')} className="flex flex-wrap gap-2">
         {filters.map((filter) => (
-          <li key={filter.key}>
+          <AnimatedListItem key={filter.key}>
             <button
               type="button"
               onClick={filter.onRemove}
@@ -38,9 +39,9 @@ export function ActiveFilterChips({ filters, onClearAll }: ActiveFilterChipsProp
               {filter.label}
               <X aria-hidden="true" className="size-4" />
             </button>
-          </li>
+          </AnimatedListItem>
         ))}
-      </ul>
+      </AnimatedList>
       {filters.length > 1 && (
         <Button variant="ghost" size="sm" onClick={onClearAll}>
           {t('clearAll')}
