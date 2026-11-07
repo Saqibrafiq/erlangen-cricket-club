@@ -1,17 +1,27 @@
 import '@testing-library/jest-dom/vitest'
 
 import { cleanup } from '@testing-library/react'
+import { MotionGlobalConfig } from 'motion/react'
 import { afterEach, vi } from 'vitest'
 
-// jsdom has no IntersectionObserver; Motion's in-view effects need one. Nothing ever scrolls into
-// view in tests, so revealed content keeps its initial state: assert presence, not visibility.
+// jsdom has no IntersectionObserver; Motion's in-view effects need one. Everything counts as in
+// view at once, so content that reveals on scroll (Reveal) is shown in tests like on screen.
 class MockIntersectionObserver {
-  observe = vi.fn()
+  constructor(private readonly callback: IntersectionObserverCallback) {}
+  observe = vi.fn((target: Element) => {
+    this.callback(
+      [{ isIntersecting: true, target, intersectionRatio: 1 } as IntersectionObserverEntry],
+      this as unknown as IntersectionObserver,
+    )
+  })
   unobserve = vi.fn()
   disconnect = vi.fn()
   takeRecords = vi.fn(() => [])
 }
 vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
+
+// Animations finish at once in tests: assertions see the end state, not a frame in between.
+MotionGlobalConfig.skipAnimations = true
 
 // jsdom has no ResizeObserver either (used to measure the pinned hero); nothing ever resizes.
 class MockResizeObserver {

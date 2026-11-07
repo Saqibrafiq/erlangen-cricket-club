@@ -1,7 +1,15 @@
+'use client'
+
 import { cva, type VariantProps } from 'class-variance-authority'
 import { PencilLine, Trash2 } from 'lucide-react'
+import { motion } from 'motion/react'
 
 import { cn } from '@/shared/lib/cn'
+
+import { SPRING } from './motion-presets'
+
+const HOVER = { scale: 1.08 } as const
+const PRESS = { scale: 0.92 } as const
 
 const buttonVariants = cva(
   'inline-flex size-9 items-center justify-center rounded-full transition-colors duration-150 [&_svg]:size-4',
@@ -29,8 +37,9 @@ export type EditActionsProps = VariantProps<typeof buttonVariants> & {
 }
 
 /**
- * Edit and delete buttons for editors, placed over a card or header. They sit above a card's
- * full-size link (z-10), so they stay clickable and keep their own focus outline.
+ * Edit and delete buttons for editors, placed over a card or header (or in a card's own row). They
+ * sit above a card's full-size link (z-10), so they stay clickable and keep their own focus
+ * outline, and respond to hover and press on the site's spring.
  */
 export function EditActions({
   editLabel,
@@ -44,24 +53,30 @@ export function EditActions({
     <div
       className={cn('z-10 flex shrink-0', variant === 'inline' ? 'gap-0.5' : 'gap-1.5', className)}
     >
-      <button
+      <motion.button
         type="button"
+        whileHover={HOVER}
+        whileTap={PRESS}
+        transition={SPRING}
         onClick={onEdit}
         aria-label={editLabel}
         title={editLabel}
         className={buttonVariants({ variant })}
       >
         <PencilLine aria-hidden="true" />
-      </button>
-      <button
+      </motion.button>
+      <motion.button
         type="button"
+        whileHover={HOVER}
+        whileTap={PRESS}
+        transition={SPRING}
         onClick={onDelete}
         aria-label={deleteLabel}
         title={deleteLabel}
         className={cn(buttonVariants({ variant }), 'text-status-danger-text')}
       >
         <Trash2 aria-hidden="true" />
-      </button>
+      </motion.button>
     </div>
   )
 }

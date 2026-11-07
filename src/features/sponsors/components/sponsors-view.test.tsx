@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { renderWithIntl } from '@/shared/testing/render-with-intl'
@@ -21,15 +21,18 @@ describe('SponsorsView', () => {
     )
   })
 
-  it('shows each sponsor with logo, level, year and description, title sponsor first', () => {
+  it('shows each sponsor with logo, level, year and description, title sponsor first', async () => {
     renderView()
 
     const [title, sponsor] = screen.getAllByRole('article')
     expect(title).toHaveTextContent('Title sponsor')
     expect(title).toHaveTextContent('Since 2024')
-    expect(
-      within(title ?? document.body).getByRole('img', { name: 'mein-banker logo' }),
-    ).toBeVisible()
+    // The cards rise into view (Reveal) on the next frame.
+    await waitFor(() => {
+      expect(
+        within(title ?? document.body).getByRole('img', { name: 'mein-banker logo' }),
+      ).toBeVisible()
+    })
     expect(within(title ?? document.body).getByRole('heading', { level: 3 })).toHaveTextContent(
       'mein-banker',
     )

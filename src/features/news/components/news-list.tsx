@@ -1,5 +1,7 @@
 import { useTranslations } from 'next-intl'
 
+import { Reveal } from '@/shared/ui/reveal'
+
 import type { NewsEditing } from '../editor-types'
 import { NEWS_PATH } from '../paths'
 import type { NewsSummary } from '../types'
@@ -25,13 +27,17 @@ export function NewsList({ articles, editing }: NewsListProps) {
       {lead ? (
         <div className="space-y-6">
           <NewsVanish id={lead.id}>
-            <NewsCard article={lead} isLead />
+            <Reveal>
+              <NewsCard article={lead} isLead />
+            </Reveal>
           </NewsVanish>
           {others.length > 0 && (
             <div className="grid grid-cols-cards-fit gap-6">
-              {others.map((article) => (
+              {others.map((article, index) => (
                 <NewsVanish key={article.id} id={article.id} className="grid">
-                  <NewsCard article={article} />
+                  <Reveal delay={Math.min(index, 5) * 0.06} className="grid">
+                    <NewsCard article={article} />
+                  </Reveal>
                 </NewsVanish>
               ))}
             </div>

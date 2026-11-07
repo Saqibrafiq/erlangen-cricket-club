@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useId, type ReactNode } from 'react'
 
+import { AnimatedList, AnimatedListItem } from '@/shared/ui/animated-list'
 import { Button } from '@/shared/ui/button'
 import { PillGroup, type PillOption } from '@/shared/ui/pill-group'
 
@@ -270,14 +271,17 @@ function FixtureFiltersView({
                     {format.dateTime(new Date(month.date), { month: 'long', year: 'numeric' })}
                   </h2>
                   {/* As many ≥20rem columns as fit: 1 on phones up to 5–6 on wide monitors. */}
-                  <ol className="grid grid-cols-cards gap-3">
+                  <AnimatedList as="ol" className="grid grid-cols-cards gap-3">
                     {month.items.map((item) => (
                       // Each item spans the card's four section rows; see FixtureCard.
-                      <li key={item.id} className="row-span-4 grid grid-rows-subgrid gap-y-0">
+                      <AnimatedListItem
+                        key={item.id}
+                        className="row-span-4 grid grid-rows-subgrid gap-y-0"
+                      >
                         {item.card}
-                      </li>
+                      </AnimatedListItem>
                     ))}
-                  </ol>
+                  </AnimatedList>
                 </section>
               )
             })

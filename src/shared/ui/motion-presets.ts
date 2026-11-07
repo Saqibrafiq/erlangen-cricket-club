@@ -46,3 +46,24 @@ export const COLLAPSE_VARIANTS: Variants = {
 
 /** How far each next table row waits when rows open one after another (seconds). */
 export const ROW_STAGGER_S = 0.04
+
+/** The dimmed backdrop behind a sheet or dialog. */
+export const OVERLAY_VARIANTS: Variants = {
+  closed: { opacity: 0 },
+  open: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: EXIT_TRANSITION },
+}
+
+/** A side panel slides in from the right on the spring and slides back out. */
+export const SHEET_VARIANTS: Variants = {
+  closed: { x: '100%' },
+  open: { x: 0, transition: SPRING },
+  exit: { x: '100%', transition: { duration: 0.2, ease: 'easeIn' } },
+}
+
+/** A dialog rises and grows into place. */
+export const DIALOG_VARIANTS: Variants = {
+  closed: { opacity: 0, scale: 0.94, y: 12 },
+  open: { opacity: 1, scale: 1, y: 0, transition: SPRING },
+  exit: { opacity: 0, scale: 0.96, y: 8, transition: EXIT_TRANSITION },
+}

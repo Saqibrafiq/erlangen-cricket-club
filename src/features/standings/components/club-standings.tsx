@@ -1,5 +1,7 @@
 import { useTranslations } from 'next-intl'
 
+import { Reveal } from '@/shared/ui/reveal'
+
 import { ClubStandingCard, type ClubStandingCardProps } from './club-standing-card'
 
 export type ClubStandingsProps = {
@@ -23,8 +25,10 @@ export function ClubStandings({ entries }: ClubStandingsProps) {
         {t('heading')}
       </h2>
       <div className="grid grid-cols-cards-fit gap-4">
-        {entries.map(({ key, ...card }) => (
-          <ClubStandingCard key={key} {...card} />
+        {entries.map(({ key, ...card }, index) => (
+          <Reveal key={key} delay={index * 0.06} className="h-full">
+            <ClubStandingCard {...card} />
+          </Reveal>
         ))}
       </div>
     </section>

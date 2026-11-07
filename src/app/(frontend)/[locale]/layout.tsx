@@ -33,7 +33,7 @@ import {
   SiteFooter,
   type SocialLink,
 } from '@/shared/ui/site-footer'
-import { THEME_SCRIPT } from '@/shared/config/theme'
+import { ThemeScript } from '@/shared/ui/theme-script'
 import { Toaster } from '@/shared/ui/toast'
 import { SiteHeader, type SiteNavigationItem } from '@/shared/ui/site-header'
 import { MAIN_CONTENT_ID, SkipLink } from '@/shared/ui/skip-link'
@@ -161,8 +161,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
       suppressHydrationWarning
     >
       <head>
-        {/* Inline and first: applies the chosen theme before the page paints (no flash). */}
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        {/* First in <head>: applies the chosen theme before the page paints (no flash). */}
+        <ThemeScript />
       </head>
       <body className="flex min-h-svh flex-col">
         <SkipLink>{t('skipToContent')}</SkipLink>

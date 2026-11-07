@@ -1,9 +1,12 @@
 'use client'
 
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'motion/react'
 import { useId } from 'react'
 
 import { cn } from '@/shared/lib/cn'
+
+import { SPRING } from './motion-presets'
 
 const pillListVariants = cva('mt-1.5 flex flex-wrap gap-2', {
   variants: {
@@ -34,7 +37,11 @@ export type PillGroupProps<V extends string> = VariantProps<typeof pillListVaria
   className?: string
 }
 
-/** A single-choice filter rendered as pills: native radios (visually hidden) inside labels. */
+/**
+ * A single-choice filter rendered as pills: native radios (visually hidden) inside labels. The
+ * selected pill's colour slides over to the new choice (one shared Motion layout element per
+ * group), instead of jumping.
+ */
 export function PillGroup<V extends string>({
   legend,
   isLegendHidden = false,
@@ -57,13 +64,24 @@ export function PillGroup<V extends string>({
             <label
               key={option.value}
               className={cn(
-                'inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring',
+                'relative isolate inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors duration-200 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring',
                 layout === 'sidebar' && 'lg:justify-between lg:rounded-md',
                 isChecked
-                  ? 'border-brand-primary bg-brand-primary text-brand-on-primary'
+                  ? 'border-transparent text-brand-on-primary'
                   : 'border-border-default hover:bg-surface-muted',
               )}
             >
+              {isChecked && (
+                <motion.span
+                  aria-hidden="true"
+                  layoutId={`${name}-selected`}
+                  transition={SPRING}
+                  className={cn(
+                    'absolute -inset-px -z-10 rounded-full bg-brand-primary',
+                    layout === 'sidebar' && 'lg:rounded-md',
+                  )}
+                />
+              )}
               <input
                 type="radio"
                 name={name}

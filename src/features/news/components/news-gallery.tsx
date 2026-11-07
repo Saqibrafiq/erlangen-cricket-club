@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
 import type { NewsImage } from '../types'
+import { RevealItem } from '@/shared/ui/reveal'
 
 export type NewsGalleryProps = {
   images: readonly NewsImage[]
@@ -21,8 +22,8 @@ export function NewsGallery({ images }: NewsGalleryProps) {
         {t('gallery')}
       </h2>
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {images.map((image) => (
-          <li key={image.url}>
+        {images.map((image, index) => (
+          <RevealItem index={index} key={image.url}>
             <a
               href={image.url}
               className="group relative block aspect-square overflow-hidden rounded-xl bg-surface-muted"
@@ -35,7 +36,7 @@ export function NewsGallery({ images }: NewsGalleryProps) {
                 className="object-cover motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:scale-105"
               />
             </a>
-          </li>
+          </RevealItem>
         ))}
       </ul>
     </section>

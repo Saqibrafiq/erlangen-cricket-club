@@ -1,7 +1,9 @@
+import { Crown } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import { Link } from '@/i18n/navigation'
 import { siteConfig } from '@/shared/config/site'
+import { cn } from '@/shared/lib/cn'
 
 import { getRoleSummary, splitName } from '../domain/players'
 import { getPlayerPath } from '../paths'
@@ -19,19 +21,25 @@ const PHOTO_SIZES =
   '(min-width: 1280px) 150px, (min-width: 1024px) 180px, (min-width: 768px) 20vw, (min-width: 640px) 25vw, 33vw'
 
 /**
- * A squad card: the player cut out on the club's green, first name above a bold surname, office
- * or role as a chip. The name link covers the whole card.
+ * A squad card: the player cut out on the club's green, first name above a bold surname, the
+ * playing role as a chip. Board members also wear their office as a gold badge, and their card a
+ * gold ring, so the board stands out in the squad. The name link covers the whole card.
  */
 export function PlayerCard({ player, priority = false }: PlayerCardProps) {
   const t = useTranslations('players')
   const { firstName, lastName } = splitName(player.name)
   const roleSummary = getRoleSummary(player)
-  const role = player.clubOffice
-    ? t(`office.${player.clubOffice}`)
-    : roleSummary && t(`roleSummary.${roleSummary}`)
+  const role = roleSummary && t(`roleSummary.${roleSummary}`)
+  const office = player.clubOffice && t(`office.${player.clubOffice}`)
 
   return (
-    <article className="group relative isolate flex aspect-3/4 flex-col overflow-hidden rounded-2xl bg-linear-to-b from-brand-surface to-media-overlay text-text-on-media shadow-sm transition-shadow duration-300 hover:shadow-xl has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring sm:rounded-3xl">
+    <article
+      className={cn(
+        'group relative isolate flex aspect-3/4 flex-col overflow-hidden rounded-2xl bg-linear-to-b from-brand-surface to-media-overlay text-text-on-media shadow-sm transition-shadow duration-300 hover:shadow-xl has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring sm:rounded-3xl',
+        // The board: a gold ring in the kit's amber, in every theme.
+        office && 'ring-2 ring-led',
+      )}
+    >
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-dots-on-media" />
       <span
         aria-hidden="true"
@@ -63,23 +71,31 @@ export function PlayerCard({ player, priority = false }: PlayerCardProps) {
           {role}
         </p>
       )}
-      {/* Not positioned itself: the link's overlay then covers the whole card (photo included),
+      {/* Neither is positioned: the link's overlay then covers the whole card (photo included),
           not just the name. */}
-      <h3 className="mt-auto p-2.5 sm:p-4">
-        <Link
-          href={getPlayerPath(player.slug)}
-          className="block after:absolute after:inset-0 focus-visible:outline-none"
-        >
-          {firstName && (
-            <span className="block truncate text-2xs font-semibold tracking-widest uppercase opacity-80 sm:text-xs">
-              {firstName}
+      <div className="mt-auto p-2.5 sm:p-4">
+        {office && (
+          <p className="mb-1.5 inline-flex max-w-full items-center gap-1 rounded-full bg-led px-2 py-0.5 text-2xs font-bold tracking-wide text-text-on-logo uppercase shadow-sm sm:text-xs">
+            <Crown aria-hidden="true" className="size-3 shrink-0" />
+            <span className="truncate">{office}</span>
+          </p>
+        )}
+        <h3>
+          <Link
+            href={getPlayerPath(player.slug)}
+            className="block after:absolute after:inset-0 focus-visible:outline-none"
+          >
+            {firstName && (
+              <span className="block truncate text-2xs font-semibold tracking-widest uppercase opacity-80 sm:text-xs">
+                {firstName}
+              </span>
+            )}{' '}
+            <span className="block truncate font-display text-lg leading-none font-bold tracking-tight uppercase sm:text-xl">
+              {lastName}
             </span>
-          )}{' '}
-          <span className="block truncate font-display text-lg leading-none font-bold tracking-tight uppercase sm:text-xl">
-            {lastName}
-          </span>
-        </Link>
-      </h3>
+          </Link>
+        </h3>
+      </div>
     </article>
   )
 }

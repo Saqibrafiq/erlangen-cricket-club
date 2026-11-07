@@ -36,6 +36,14 @@ function applyTheme(choice: ThemeChoice) {
   document.documentElement.setAttribute('data-theme', theme)
 }
 
+/**
+ * Applies the stored choice to the page again, e.g. after the browser re-rendered <html> (a
+ * language switch) and the attribute the head script set is gone.
+ */
+export function applyStoredTheme(): void {
+  applyTheme(readChoice())
+}
+
 function subscribe(onChange: () => void) {
   window.addEventListener(CHANGE_EVENT, onChange)
   window.addEventListener('storage', onChange)

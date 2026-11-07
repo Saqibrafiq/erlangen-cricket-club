@@ -1,6 +1,7 @@
 'use client'
 
 import { useFormatter, useTranslations } from 'next-intl'
+import { AnimatePresence, motion } from 'motion/react'
 import { type ReactNode, useState } from 'react'
 
 import {
@@ -22,6 +23,7 @@ import {
 import { useIsEditMode } from '@/shared/lib/edit-mode'
 import { Button } from '@/shared/ui/button'
 import { EditActions } from '@/shared/ui/edit-actions'
+import { EXIT_TRANSITION, SPRING } from '@/shared/ui/motion-presets'
 import { PillGroup } from '@/shared/ui/pill-group'
 import { toast } from '@/shared/ui/toast'
 
@@ -328,6 +330,7 @@ export function CareerStats({ playerId, playerName, seasons, editing }: CareerSt
       )
     : undefined
   const hasRecords = summary.clubSeasons.length > 0 || summary.districtSeasons.length > 0
+  const formatCount = (value: number) => format.number(Math.round(value))
 
   return (
     <section
@@ -370,47 +373,73 @@ export function CareerStats({ playerId, playerName, seasons, editing }: CareerSt
         </div>
       )}
 
-      {summary.clubSeasons.length > 0 && (
-        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatTile label={t('matches')} value={format.number(summary.matches)} />
-          <StatTile label={t('runs')} value={format.number(batting?.runs ?? 0)} />
-          <StatTile label={t('wickets')} value={format.number(bowling?.wickets ?? 0)} />
-          {batting ? (
-            <StatTile
-              label={t('highestScore')}
-              value={`${format.number(batting.highestScore)}${batting.isHighestScoreNotOut ? '*' : ''}`}
-              srValue={
-                batting.isHighestScoreNotOut
-                  ? `${format.number(batting.highestScore)} ${t('notOut')}`
-                  : undefined
-              }
-            />
-          ) : (
-            <StatTile label={t('highestScore')} value="–" srValue={t('notApplicable')} />
+      {/* Switching format crossfades the figures and tables. */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={seasonFormat}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0, transition: SPRING }}
+          exit={{ opacity: 0, y: -4, transition: EXIT_TRANSITION }}
+          className="space-y-6"
+        >
+          {summary.clubSeasons.length > 0 && (
+            <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <StatTile
+                label={t('matches')}
+                value={format.number(summary.matches)}
+                countTo={summary.matches}
+                format={formatCount}
+              />
+              <StatTile
+                label={t('runs')}
+                value={format.number(batting?.runs ?? 0)}
+                countTo={batting?.runs ?? 0}
+                format={formatCount}
+              />
+              <StatTile
+                label={t('wickets')}
+                value={format.number(bowling?.wickets ?? 0)}
+                countTo={bowling?.wickets ?? 0}
+                format={formatCount}
+              />
+              {batting ? (
+                <StatTile
+                  label={t('highestScore')}
+                  value={`${format.number(batting.highestScore)}${batting.isHighestScoreNotOut ? '*' : ''}`}
+                  srValue={
+                    batting.isHighestScoreNotOut
+                      ? `${format.number(batting.highestScore)} ${t('notOut')}`
+                      : undefined
+                  }
+                />
+              ) : (
+                <StatTile label={t('highestScore')} value="–" srValue={t('notApplicable')} />
+              )}
+            </dl>
           )}
-        </dl>
-      )}
 
-      {hasRecords && (
-        <>
-          <SeasonTable
-            discipline="batting"
-            clubSeasons={summary.clubSeasons}
-            teamSeasons={summary.teamSeasons}
-            districtSeasons={summary.districtSeasons}
-            totals={batting}
-            renderActions={renderActions}
-          />
-          <SeasonTable
-            discipline="bowling"
-            clubSeasons={summary.clubSeasons}
-            teamSeasons={summary.teamSeasons}
-            districtSeasons={summary.districtSeasons}
-            totals={bowling}
-            renderActions={renderActions}
-          />
-        </>
-      )}
+          {hasRecords && (
+            <>
+              <SeasonTable
+                discipline="batting"
+                clubSeasons={summary.clubSeasons}
+                teamSeasons={summary.teamSeasons}
+                districtSeasons={summary.districtSeasons}
+                totals={batting}
+                renderActions={renderActions}
+              />
+              <SeasonTable
+                discipline="bowling"
+                clubSeasons={summary.clubSeasons}
+                teamSeasons={summary.teamSeasons}
+                districtSeasons={summary.districtSeasons}
+                totals={bowling}
+                renderActions={renderActions}
+              />
+            </>
+          )}
+        </motion.div>
+      </AnimatePresence>
 
       {isEditMode && intent && (
         <SeasonEditor
