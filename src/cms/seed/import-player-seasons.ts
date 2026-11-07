@@ -219,3 +219,45 @@ export async function importPlayerSeasons(payload: Payload): Promise<ImportSumma
   }
   return summary
 }
+
+export type ImportPlan = {
+  /** League name → the site player it will be attached to. */
+  matched: { leagueName: string; siteName: string }[]
+  /** League names the site does not list yet: the import would add them as players. */
+  newPlayers: string[]
+  /** Club teams the import would create (league codes). */
+  newTeams: string[]
+  seasons: number
+}
+
+/**
+ * What the import would do, without writing anything: run it against production first and check
+ * that every player is matched as intended (an unmatched short name would become a duplicate).
+ */
+export async function planPlayerSeasonImport(payload: Payload): Promise<ImportPlan> {
+  const { seasons } = readData()
+  const { docs: sitePlayers } = await payload.find({
+    collection: 'players',
+    limit: 0,
+    depth: 0,
+    pagination: false,
+  })
+  const plan: ImportPlan = { matched: [], newPlayers: [], newTeams: [], seasons: seasons.length }
+  for (const leagueName of new Set(seasons.map((season) => season.player))) {
+    const match = matchPlayerName(leagueName, sitePlayers)
+    if (match) plan.matched.push({ leagueName, siteName: match.name })
+    else plan.newPlayers.push(leagueName)
+  }
+  const teamCodes = new Set([
+    ...SQUAD_TEAM_CODES,
+    ...seasons.flatMap((season) => (season.team ? [season.team] : [])),
+  ])
+  for (const code of teamCodes) {
+    const { totalDocs } = await payload.count({
+      collection: 'teams',
+      where: { shortName: { equals: code } },
+    })
+    if (totalDocs === 0) plan.newTeams.push(code)
+  }
+  return plan
+}

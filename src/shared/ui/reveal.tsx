@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import type { ComponentProps, ReactNode } from 'react'
 
 export type RevealProps = {
@@ -14,14 +14,16 @@ export type RevealProps = {
 const VIEWPORT = { once: true, margin: '0px 0px -10% 0px' } as const
 
 /**
- * Fades and slides its content up when it scrolls into view (once). Under "reduce motion" only
- * the fade remains (see MotionProvider).
+ * Fades and slides its content up when it scrolls into view (once). Under "reduce motion" the
+ * content is shown as it is, without the fade.
  */
 export function Reveal({ children, delay = 0, className }: RevealProps) {
+  // Reduced motion: no fade either (MotionConfig keeps fades); the content is simply there.
+  const isReduced = useReducedMotion() ?? false
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 32 }}
+      initial={isReduced ? false : { opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={VIEWPORT}
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
@@ -48,9 +50,10 @@ export type RevealItemProps = Omit<
  * Use in place of `<li>` for cards in a grid or list.
  */
 export function RevealItem({ index = 0, ...props }: RevealItemProps) {
+  const isReduced = useReducedMotion() ?? false
   return (
     <motion.li
-      initial={{ opacity: 0, y: 24 }}
+      initial={isReduced ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={VIEWPORT}
       transition={{

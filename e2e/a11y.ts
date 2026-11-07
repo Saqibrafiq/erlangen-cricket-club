@@ -2,6 +2,8 @@ import AxeBuilder from '@axe-core/playwright'
 import { expect, type Page } from '@playwright/test'
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
+/** How long the page must be free of running animations before axe measures it. */
+const ANIMATION_QUIET_MS = 300
 
 /**
  * Fails the test on any WCAG 2.2 AA violation on the current page.
@@ -13,13 +15,25 @@ const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
  */
 export async function expectNoAxeViolations(page: Page): Promise<void> {
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.waitForFunction(() =>
-    document
-      .getAnimations()
-      .every(
-        (animation) =>
-          animation.playState !== 'running' || !(animation.timeline instanceof DocumentTimeline),
-      ),
+  // Quiet for a while, not just for an instant: a reveal can start a frame after a single check.
+  await page.waitForFunction(
+    (quietMs) => {
+      const isRunning = document
+        .getAnimations()
+        .some(
+          (animation) =>
+            animation.playState === 'running' && animation.timeline instanceof DocumentTimeline,
+        )
+      const state = window as Window & { __axeQuietSince?: number }
+      if (isRunning) {
+        state.__axeQuietSince = undefined
+        return false
+      }
+      state.__axeQuietSince ??= performance.now()
+      return performance.now() - state.__axeQuietSince >= quietMs
+    },
+    ANIMATION_QUIET_MS,
+    { polling: 50 },
   )
   const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze()
 
