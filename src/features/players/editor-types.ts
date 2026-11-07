@@ -1,5 +1,6 @@
 import type { PlayerFieldErrors, PlayerInput } from './domain/player-form'
-import type { PlayerPhoto } from './types'
+import type { SeasonFieldErrors, SeasonInput } from './domain/season-form'
+import type { PlayerPhoto, SeasonTeam } from './types'
 
 /** A player as the editor sees them: everything the form edits, consent included. */
 export type PlayerDraft = PlayerInput & {
@@ -39,6 +40,24 @@ export type SavePlayerResult =
 
 export type DeletePlayerResult = { status: 'deleted' } | Unauthorized | Failed
 
+/** A season record as the season form edits it. */
+export type SeasonDraft = SeasonInput & { id: number }
+
+export type SeasonEditorData = {
+  /** `null` when adding a season. */
+  draft: SeasonDraft | null
+  /** The club teams a season can be played for. */
+  teams: SeasonTeam[]
+}
+
+export type SaveSeasonResult =
+  | { status: 'saved' }
+  | { status: 'invalid'; fieldErrors: SeasonFieldErrors }
+  | Unauthorized
+  | Failed
+
+export type DeleteSeasonResult = { status: 'deleted' } | Unauthorized | Failed
+
 /**
  * The server actions the editing controls call, passed in by the route (like the contact form's
  * action), so the components stay testable and never import server code themselves.
@@ -48,6 +67,13 @@ export type PlayerEditorActions = {
   getHiddenPlayers: () => Promise<EditorResult<HiddenPlayer[]>>
   savePlayer: (formData: FormData) => Promise<SavePlayerResult>
   deletePlayer: (id: number) => Promise<DeletePlayerResult>
+  /** Season records on the profile (career stats). */
+  getSeasonEditorData: (
+    playerId: number,
+    seasonId: number | null,
+  ) => Promise<EditorResult<SeasonEditorData>>
+  saveSeason: (formData: FormData) => Promise<SaveSeasonResult>
+  deleteSeason: (id: number) => Promise<DeleteSeasonResult>
 }
 
 /** Everything the editing controls need besides the player. */

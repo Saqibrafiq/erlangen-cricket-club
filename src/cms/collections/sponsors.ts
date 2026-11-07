@@ -34,7 +34,9 @@ export const sponsors: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       required: true,
-      admin: { description: 'Shown whole on a white panel; transparent PNG or SVG works best.' },
+      admin: {
+        description: 'Shown whole on a light cream panel; transparent PNG or SVG works best.',
+      },
     },
     {
       type: 'row',

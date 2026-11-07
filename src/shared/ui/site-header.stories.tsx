@@ -8,7 +8,6 @@ const meta = {
   component: SiteHeader,
   parameters: { layout: 'fullscreen' },
   args: {
-    loginHref: '/login',
     items: [
       { href: '/', label: 'Home' },
       {

@@ -62,7 +62,7 @@ describe('SignInForm', () => {
     expect(screen.getByLabelText('Email')).toHaveValue('admin@example.com')
   })
 
-  it('loads the requested page in full after signing in, staying busy meanwhile', async () => {
+  it('confirms the sign-in and loads the requested page in full, staying busy meanwhile', async () => {
     const assign = vi.fn()
     vi.stubGlobal('location', { assign })
     renderWithIntl(
@@ -77,7 +77,8 @@ describe('SignInForm', () => {
     await waitFor(() => {
       expect(assign).toHaveBeenCalledWith('/players')
     })
-    expect(screen.getByRole('button', { name: 'Signing in…' })).toBeDisabled()
+    // Confirms success while the page loads, still busy.
+    expect(screen.getByRole('button', { name: 'Signed in' })).toBeDisabled()
     vi.unstubAllGlobals()
   })
 

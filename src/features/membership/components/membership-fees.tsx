@@ -3,6 +3,7 @@ import { useFormatter, useTranslations } from 'next-intl'
 
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button'
+import { Disclosure } from '@/shared/ui/disclosure'
 
 import type { MembershipFee } from '../types'
 import { JOIN_SECTION_ID } from './membership-join'
@@ -97,12 +98,13 @@ export function MembershipFees({ fees, note, terms }: MembershipFeesProps) {
         <div className="mx-auto max-w-3xl space-y-4 text-sm text-text-muted">
           {note && <p>{note}</p>}
           {terms && (
-            <details className="rounded-2xl border border-border-default bg-surface-default p-4">
-              <summary className="cursor-pointer font-medium text-text-default">
-                {t('terms')}
-              </summary>
-              <p className="mt-2">{terms}</p>
-            </details>
+            <Disclosure
+              summary={t('terms')}
+              className="rounded-2xl border border-border-default bg-surface-default px-4 py-1"
+              buttonClassName="text-text-default"
+            >
+              <p className="pb-3">{terms}</p>
+            </Disclosure>
           )}
         </div>
       )}

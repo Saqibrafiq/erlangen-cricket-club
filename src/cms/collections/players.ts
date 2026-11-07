@@ -3,6 +3,7 @@ import type { CollectionConfig, FieldHook, Validate } from 'payload'
 import type { Player } from '../../payload-types'
 import { slugify } from '../../shared/lib/slugify'
 import { consentedOrSignedIn } from '../access/consented-or-signed-in'
+import { deletePlayerSeasons } from '../hooks/delete-player-seasons'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 
 // A short introduction for the profile, not a biography.
@@ -26,12 +27,13 @@ export const players: CollectionConfig = {
     group: 'Club',
     defaultColumns: ['name', 'playingRole', 'clubOffice', 'hasPublishConsent'],
     description:
-      'Only players whose consent is recorded appear on the website. Stats will come from match scorecards.',
+      'Only players whose consent is recorded appear on the website. Stats come from their season records (Player seasons).',
   },
   access: {
     read: consentedOrSignedIn,
   },
   hooks: {
+    beforeDelete: [deletePlayerSeasons],
     afterChange: [revalidatePagesAfterChange],
     afterDelete: [revalidatePagesAfterDelete],
   },

@@ -41,7 +41,7 @@ test.describe('players', () => {
     await expect(page).toHaveURL(/\/players\/sunny-kumar$/)
   })
 
-  test('opens a profile with photo, stats placeholder and more players', async ({ page }) => {
+  test('opens a profile with photo, career stats and more players', async ({ page }) => {
     await page.goto('/players')
     await page
       .getByRole('region', { name: 'The squad' })
