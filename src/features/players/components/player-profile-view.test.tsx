@@ -7,7 +7,9 @@ import { PLAYER, PLAYER_WITH_DETAILS, PLAYER_WITHOUT_PHOTO } from '../test-facto
 import { PlayerProfileView } from './player-profile-view'
 
 function renderProfile(player = PLAYER_WITH_DETAILS, teammates = [PLAYER, PLAYER_WITHOUT_PHOTO]) {
-  renderWithIntl(<PlayerProfileView player={player} teammates={teammates} playersHref="/players" />)
+  renderWithIntl(
+    <PlayerProfileView player={player} seasons={[]} teammates={teammates} playersHref="/players" />,
+  )
 }
 
 describe('PlayerProfileView', () => {
@@ -41,13 +43,12 @@ describe('PlayerProfileView', () => {
     expect(screen.queryByRole('region', { name: 'Playing profile' })).toBeNull()
   })
 
-  it('shows the career stats as not recorded yet', () => {
+  it('says when a player has no season records yet', () => {
     renderProfile()
 
     const stats = within(screen.getByRole('region', { name: 'Career stats' }))
-    expect(stats.getByText('Matches').nextSibling).toHaveTextContent('Not recorded yet')
-    expect(stats.getAllByText('Not recorded yet')).toHaveLength(4)
-    expect(stats.queryByRole('link')).toBeNull()
+    expect(stats.getByText('No season records for Jonas Becker yet.')).toBeVisible()
+    expect(stats.queryByRole('table')).toBeNull()
   })
 
   it('links to more players and the whole squad', () => {

@@ -16,6 +16,7 @@ Decisions follow the [MADR](https://adr.github.io/madr/) template ([`template.md
 | [0018](0018-import-league-tables-from-cricclubs-csv.md)           | Update league tables from CricClubs CSV exports on the website                   | Accepted |
 | [0020](0020-three-themes-chosen-in-the-browser.md)                | Three themes (Light, Dark, ECC), chosen in the browser                           | Accepted |
 | [0021](0021-hero-film-served-from-public.md)                      | Hero film served as a static file from `public/`                                 | Accepted |
+| [0022](0022-career-stats-from-league-season-records.md)           | Career stats from the league's season records                                    | Accepted |
 | [0016](0016-player-photo-background-removal-in-the-browser.md)    | Player photos: background removed in the editor's browser, all files self-hosted | Accepted |
 | [0015](0015-edit-content-on-the-website.md)                       | Edit content on the website itself; static pages stay static                     | Accepted |
 | [0014](0014-club-sign-in-page-on-payload-auth.md)                 | Club sign-in page on top of Payload's authentication                             | Accepted |

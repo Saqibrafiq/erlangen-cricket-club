@@ -31,7 +31,7 @@ export function PlayerCard({ player, priority = false }: PlayerCardProps) {
     : roleSummary && t(`roleSummary.${roleSummary}`)
 
   return (
-    <article className="group relative isolate aspect-3/4 overflow-hidden rounded-2xl bg-linear-to-b from-brand-surface to-media-overlay text-text-on-media shadow-sm transition-shadow duration-300 hover:shadow-xl has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring sm:rounded-3xl">
+    <article className="group relative isolate flex aspect-3/4 flex-col overflow-hidden rounded-2xl bg-linear-to-b from-brand-surface to-media-overlay text-text-on-media shadow-sm transition-shadow duration-300 hover:shadow-xl has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring sm:rounded-3xl">
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-dots-on-media" />
       <span
         aria-hidden="true"
@@ -63,7 +63,9 @@ export function PlayerCard({ player, priority = false }: PlayerCardProps) {
           {role}
         </p>
       )}
-      <h3 className="absolute inset-x-0 bottom-0 p-2.5 sm:p-4">
+      {/* Not positioned itself: the link's overlay then covers the whole card (photo included),
+          not just the name. */}
+      <h3 className="mt-auto p-2.5 sm:p-4">
         <Link
           href={getPlayerPath(player.slug)}
           className="block after:absolute after:inset-0 focus-visible:outline-none"
