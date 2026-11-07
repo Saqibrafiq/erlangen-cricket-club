@@ -809,14 +809,120 @@
         "teams": "Teams"
       },
       "stats": {
-        "eyebrow": "Demnächst",
         "heading": "Karrierestatistik",
-        "text": "Die Statistik wird aus den Spielberichten (Scorecards) berechnet und erscheint hier, sobald der Verein sie erfasst.",
+        "source": "Aus den Saisonstatistiken der Liga (CricClubs).",
+        "empty": "Für {name} sind noch keine Saisons erfasst.",
         "matches": "Spiele",
         "runs": "Runs",
         "wickets": "Wickets",
-        "catches": "Catches",
-        "notRecorded": "Noch nicht erfasst"
+        "highestScore": "Höchster Score",
+        "batting": "Batting",
+        "bowling": "Bowling",
+        "career": "Karriere",
+        "notOut": "not out",
+        "notApplicable": "nicht anwendbar",
+        "district": {
+          "row": "Bezirksauswahl",
+          "label": "Bezirksauswahl (Bezirksliga), nicht in der Karrierezeile"
+        },
+        "columns": {
+          "season": {
+            "short": "Saison",
+            "long": "Saison"
+          },
+          "matches": {
+            "short": "Sp",
+            "long": "Spiele"
+          },
+          "innings": {
+            "short": "Inn",
+            "long": "Innings"
+          },
+          "notOuts": {
+            "short": "NO",
+            "long": "Not outs"
+          },
+          "runs": {
+            "short": "Runs",
+            "long": "Runs"
+          },
+          "balls": {
+            "short": "BF",
+            "long": "Bälle gefaced"
+          },
+          "average": {
+            "short": "Avg",
+            "long": "Durchschnitt"
+          },
+          "strikeRate": {
+            "short": "SR",
+            "long": "Strike-Rate"
+          },
+          "highestScore": {
+            "short": "HS",
+            "long": "Höchster Score"
+          },
+          "hundreds": {
+            "short": "100s",
+            "long": "Hunderter"
+          },
+          "fifties": {
+            "short": "50s",
+            "long": "Fünfziger"
+          },
+          "fours": {
+            "short": "4s",
+            "long": "Vierer"
+          },
+          "sixes": {
+            "short": "6s",
+            "long": "Sechser"
+          },
+          "overs": {
+            "short": "O",
+            "long": "Overs"
+          },
+          "maidens": {
+            "short": "Mdns",
+            "long": "Maidens"
+          },
+          "runsConceded": {
+            "short": "Runs",
+            "long": "Runs kassiert"
+          },
+          "wickets": {
+            "short": "Wkts",
+            "long": "Wickets"
+          },
+          "best": {
+            "short": "Best",
+            "long": "Bestes Bowling"
+          },
+          "economy": {
+            "short": "Econ",
+            "long": "Economy-Rate"
+          },
+          "fourWicketHauls": {
+            "short": "4w",
+            "long": "Vier-Wicket-Innings"
+          },
+          "fiveWicketHauls": {
+            "short": "5w",
+            "long": "Fünf-Wicket-Innings"
+          }
+        },
+        "formats": {
+          "legend": "Spiele",
+          "all": "Alle Spiele",
+          "t20": "T20",
+          "fifty-over": "50 Overs",
+          "allNote": "Alle Spiele enthält Freundschaftsspiele und kann daher mehr sein als T20 und 50 Overs zusammen.",
+          "league": "Ligaspiele (ein Team)"
+        },
+        "friendlies": "Freundschaftsspiele & Sonstige",
+        "details": {
+          "toggle": "Teams anzeigen"
+        }
       },
       "metaDescription": "{name} spielt Cricket für den Erlangen Cricket Club.",
       "teammates": {
@@ -934,6 +1040,68 @@
         "deleting": "Wird gelöscht …",
         "cancel": "Abbrechen",
         "error": "Löschen nicht möglich. Bitte versuche es noch einmal."
+      }
+    },
+    "seasonEditor": {
+      "add": "Saison hinzufügen",
+      "edit": "Saison {season} bearbeiten",
+      "delete": "Saison {season} löschen",
+      "competition": {
+        "club": "Verein",
+        "district": "Bezirksauswahl"
+      },
+      "sheet": {
+        "addTitle": "Saison hinzufügen",
+        "editTitle": "Saison bearbeiten",
+        "description": "Summen einer Saison, wie die Liga sie veröffentlicht.",
+        "close": "Schließen",
+        "loading": "Saison wird geladen"
+      },
+      "fields": {
+        "season": "Saison",
+        "competition": "Gespielt für",
+        "hasBatting": "In dieser Saison gebattet",
+        "hasBowling": "In dieser Saison gebowlt",
+        "isHighestScoreNotOut": "Höchster Score war not out",
+        "oversHint": "Cricket-Schreibweise: 110.1 = 110 Overs und 1 Ball.",
+        "bestWickets": "Bestes: Wickets",
+        "bestRuns": "Bestes: Runs",
+        "dotBalls": "Dot Balls",
+        "hatTricks": "Hattricks",
+        "wides": "Wides",
+        "noBalls": "No Balls",
+        "optional": "optional",
+        "format": "Gezählte Spiele",
+        "team": "Team",
+        "wholeSeason": "Ganze Saison (alle Teams)",
+        "teamHint": "Ein Team wählen, um seine Ligaspiele zu erfassen (T20 und 50 Overs zusammen)."
+      },
+      "save": "Saison speichern",
+      "saving": "Wird gespeichert…",
+      "cancel": "Abbrechen",
+      "saved": "Saison {season} gespeichert",
+      "deleted": "Saison {season} gelöscht",
+      "errors": {
+        "required": "Pflichtfeld.",
+        "invalidSeason": "Bitte ein Jahr ab 2010 eingeben.",
+        "invalidNumber": "Bitte eine ganze Zahl ab 0 eingeben.",
+        "invalidOvers": "Cricket-Schreibweise, z. B. 110.1 (Bälle 0–5 nach dem Punkt).",
+        "notOutsAboveInnings": "Darf nicht mehr als die Innings sein.",
+        "nothingRecorded": "Batting, Bowling oder beides erfassen.",
+        "duplicateSeason": "Diese Saison gibt es für diesen Wettbewerb schon.",
+        "unauthorized": "Deine Sitzung ist abgelaufen.",
+        "signIn": "Erneut anmelden",
+        "load": "Die Saison konnte nicht geladen werden.",
+        "save": "Die Saison konnte nicht gespeichert werden. Bitte erneut versuchen.",
+        "retry": "Erneut versuchen"
+      },
+      "deleteDialog": {
+        "title": "Saison {season} löschen?",
+        "description": "Batting und Bowling der Saison verschwinden aus dem Profil und den Karrierewerten.",
+        "confirm": "Saison löschen",
+        "deleting": "Wird gelöscht…",
+        "cancel": "Abbrechen",
+        "error": "Die Saison konnte nicht gelöscht werden. Bitte erneut versuchen."
       }
     }
   },

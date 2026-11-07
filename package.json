@@ -22,6 +22,7 @@
     "db:migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "db:migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "db:seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/cms/seed/run.ts",
+    "db:import:player-seasons": "cross-env NODE_OPTIONS=--no-deprecation payload run src/cms/seed/run-import-player-seasons.ts",
     "lint": "next typegen && eslint .",
     "lint:fix": "next typegen && eslint . --fix",
     "format": "prettier --write .",

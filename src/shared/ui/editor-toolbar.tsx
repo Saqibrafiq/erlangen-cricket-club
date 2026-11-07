@@ -1,6 +1,7 @@
 import { EyeOff, type LucideIcon, PencilLine, Plus } from 'lucide-react'
 
 import { Button } from './button'
+import { Disclosure } from './disclosure'
 
 export type EditorToolbarItem = {
   id: number
@@ -41,11 +42,16 @@ export function EditorToolbar({
     <div className="flex flex-wrap items-start justify-end gap-3">
       {error && <p className="mr-auto text-sm text-status-danger-text">{error}</p>}
       {hidden && hidden.items.length > 0 && (
-        <details className="mr-auto sm:max-w-sm">
-          <summary className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md px-2 font-medium">
-            <EyeOff aria-hidden="true" className="size-4" />
-            {hidden.summary}
-          </summary>
+        <Disclosure
+          className="mr-auto w-full sm:max-w-sm"
+          buttonClassName="px-2 hover:bg-surface-muted"
+          summary={
+            <span className="inline-flex items-center gap-2">
+              <EyeOff aria-hidden="true" className="size-4" />
+              {hidden.summary}
+            </span>
+          }
+        >
           <p className="mt-1 px-2 text-sm text-text-muted">{hidden.hint}</p>
           <ul className="mt-2">
             {hidden.items.map((item) => (
@@ -64,7 +70,7 @@ export function EditorToolbar({
               </li>
             ))}
           </ul>
-        </details>
+        </Disclosure>
       )}
       <Button onClick={onAdd}>
         <AddIcon aria-hidden="true" />

@@ -4,8 +4,9 @@ import { cache } from 'react'
 
 import type { Locale } from '@/i18n/routing'
 
-import type { Player } from '../types'
+import type { Player, PlayerSeasonRecord } from '../types'
 import { mapPlayer } from './map-player'
+import { mapPlayerSeason } from './map-player-season'
 
 // The Local API bypasses access control, so public queries apply the consent rule explicitly.
 const CONSENTED: Where = { hasPublishConsent: { equals: true } }
@@ -61,3 +62,23 @@ export async function getPlayerEntries(): Promise<{ slug: string; updatedAt: str
 
   return docs.map(({ slug, updatedAt }) => ({ slug, updatedAt }))
 }
+
+/**
+ * A player's season records, newest first, with their club teams. Only called for players already
+ * loaded with consent (getPlayer), so it needs no consent filter of its own.
+ */
+export const getPlayerSeasons = cache(async function getPlayerSeasons(
+  playerId: number,
+): Promise<PlayerSeasonRecord[]> {
+  const payload = await getPayload({ config })
+  const { docs } = await payload.find({
+    collection: 'player-seasons',
+    where: { player: { equals: playerId } },
+    sort: '-season',
+    // Populates the team.
+    depth: 1,
+    pagination: false,
+  })
+
+  return docs.map(mapPlayerSeason)
+})

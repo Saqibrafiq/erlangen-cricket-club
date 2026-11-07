@@ -1,11 +1,13 @@
 'use client'
 
-import { ChevronDown } from 'lucide-react'
-import { AnimatePresence, motion, type Variants } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useId, useRef, useState } from 'react'
 
 import { usePathname } from '@/i18n/navigation'
 import { cn } from '@/shared/lib/cn'
+
+import { DisclosureChevron } from './disclosure'
+import { DROPDOWN_ITEM_VARIANTS, DROPDOWN_PANEL_VARIANTS } from './motion-presets'
 
 import { NavLink } from './nav-link'
 
@@ -32,22 +34,6 @@ export type NavMenuProps = {
   groups: readonly NavigationGroup[]
   /** Underline the button on its section; off where something else marks it. */
   showCurrent?: boolean
-}
-
-/** The panel springs down from the button; its links follow one after another. */
-const PANEL_VARIANTS: Variants = {
-  closed: { opacity: 0, y: -6, scale: 0.97 },
-  open: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: 'spring', stiffness: 460, damping: 32, staggerChildren: 0.03 },
-  },
-  exit: { opacity: 0, y: -4, scale: 0.98, transition: { duration: 0.12, ease: 'easeIn' } },
-}
-const LINK_VARIANTS: Variants = {
-  closed: { opacity: 0, x: -6 },
-  open: { opacity: 1, x: 0 },
 }
 
 /**
@@ -111,21 +97,14 @@ export function NavMenu({ label, href, groups, showCurrent = true }: NavMenuProp
         )}
       >
         {label}
-        <motion.span
-          aria-hidden="true"
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-          className="inline-flex"
-        >
-          <ChevronDown className="size-4" />
-        </motion.span>
+        <DisclosureChevron isOpen={isOpen} className="text-base text-current" />
       </button>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
             id={panelId}
-            variants={PANEL_VARIANTS}
+            variants={DROPDOWN_PANEL_VARIANTS}
             initial="closed"
             animate="open"
             exit="exit"
@@ -150,7 +129,7 @@ export function NavMenu({ label, href, groups, showCurrent = true }: NavMenuProp
                   )}
                   <ul aria-labelledby={group.label ? groupId : undefined}>
                     {group.links.map((link) => (
-                      <motion.li key={link.href} variants={LINK_VARIANTS}>
+                      <motion.li key={link.href} variants={DROPDOWN_ITEM_VARIANTS}>
                         <NavLink
                           href={link.href}
                           className="w-full"

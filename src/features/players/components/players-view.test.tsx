@@ -125,6 +125,9 @@ describe('PlayersView in edit mode', () => {
       getHiddenPlayers: vi.fn(() => Promise.resolve({ status: 'ok' as const, data: [] })),
       savePlayer: vi.fn(),
       deletePlayer: vi.fn(),
+      getSeasonEditorData: vi.fn(),
+      saveSeason: vi.fn(),
+      deleteSeason: vi.fn(),
     },
   }
 

@@ -5,49 +5,22 @@ import { siteConfig } from '@/shared/config/site'
 
 import { getRoleSummary, hasPlayingDetails, splitName } from '../domain/players'
 import type { PlayerEditing } from '../editor-types'
-import type { Player } from '../types'
+import type { Player, PlayerSeasonRecord } from '../types'
+import { CareerStats } from './career-stats'
 import { ProfileEditActions } from './editor/profile-edit-actions'
 import { PlayerCard } from './player-card'
 import { PlayerPortrait } from './player-portrait'
+import { StatTile } from './stat-tile'
 
 export type PlayerProfileViewProps = {
   player: Player
+  /** The player's season records (career stats), newest first. */
+  seasons: readonly PlayerSeasonRecord[]
   /** Other players for the "More players" strip. */
   teammates: readonly Player[]
   playersHref: string
   /** Editing actions; the controls show only in a signed-in editor's browser. */
   editing?: PlayerEditing
-}
-
-// Derived from scorecards once they are recorded (CLAUDE.md §4.1); shown empty until then.
-const CAREER_STATS = ['matches', 'runs', 'wickets', 'catches'] as const
-
-type StatTileProps = {
-  label: string
-  value: string
-  /** Read instead of the value when it is only a placeholder. */
-  srValue?: string
-}
-
-function StatTile({ label, value, srValue }: StatTileProps) {
-  return (
-    // Label first in the markup (as a description list requires); the value is shown on top.
-    <div className="flex flex-col gap-1 rounded-2xl bg-surface-muted p-4 sm:p-5">
-      <dt className="text-sm text-text-muted">{label}</dt>
-      <dd className="order-first font-display text-2xl leading-tight font-bold sm:text-3xl">
-        {srValue ? (
-          <>
-            <span aria-hidden="true" className="text-text-muted">
-              {value}
-            </span>
-            <span className="sr-only">{srValue}</span>
-          </>
-        ) : (
-          value
-        )}
-      </dd>
-    </div>
-  )
 }
 
 type ProfileHeaderProps = Pick<PlayerProfileViewProps, 'player' | 'editing' | 'playersHref'>
@@ -120,6 +93,7 @@ function ProfileHeader({ player, editing, playersHref }: ProfileHeaderProps) {
 /** A player's profile: header with photo and name, playing details, career stats, more players. */
 export function PlayerProfileView({
   player,
+  seasons,
   teammates,
   playersHref,
   editing,
@@ -162,30 +136,12 @@ export function PlayerProfileView({
           </section>
         )}
 
-        <section
-          aria-labelledby="career-stats-heading"
-          className="rounded-3xl border border-border-default bg-surface-default p-6 shadow-sm sm:p-8"
-        >
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 id="career-stats-heading" className="text-2xl font-bold">
-              {t('profile.stats.heading')}
-            </h2>
-            <span className="rounded-full bg-surface-highlight px-3 py-1 text-xs font-semibold tracking-wide text-brand-primary uppercase">
-              {t('profile.stats.eyebrow')}
-            </span>
-          </div>
-          <dl className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {CAREER_STATS.map((stat) => (
-              <StatTile
-                key={stat}
-                label={t(`profile.stats.${stat}`)}
-                value="—"
-                srValue={t('profile.stats.notRecorded')}
-              />
-            ))}
-          </dl>
-          <p className="mt-4 text-sm text-text-muted">{t('profile.stats.text')}</p>
-        </section>
+        <CareerStats
+          playerId={player.id}
+          playerName={player.name}
+          seasons={seasons}
+          editing={editing}
+        />
       </article>
 
       {teammates.length > 0 && (
