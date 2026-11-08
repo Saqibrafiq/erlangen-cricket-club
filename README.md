@@ -113,7 +113,7 @@ Every pull request runs:
 3. **Unit and component tests:** Vitest and React Testing Library, querying by role (as users and assistive technology do). `src/domain` must reach 100% coverage.
 4. **E2E and accessibility:** Playwright on phone and desktop against a production build and a seeded database, with axe checks in every theme.
 5. **Lighthouse CI:** six key pages; accessibility, best practices and SEO must score at least 95 (they score 100), and performance is tracked as a warning.
-6. **SonarCloud:** quality gate with the unit test coverage.
+6. **SonarCloud:** quality gate with the unit test coverage (at least 80% on new code). Route pages and layouts only compose features and are covered by the E2E tests, so they are left out of the coverage count.
 7. **Storybook build:** every shared UI component has stories for its variants and states.
 
 Commits follow Conventional Commits (commitlint); staged files are linted and formatted on commit (Husky and lint-staged). Work is trunk-based: short-lived branches, a pull request, squash merge, then automatic deployment.

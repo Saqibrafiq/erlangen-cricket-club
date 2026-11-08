@@ -196,7 +196,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
             />
           </MotionProvider>
         </NextIntlClientProvider>
-        <JsonLd data={buildSportsOrganizationJsonLd()} />
+        <JsonLd data={buildSportsOrganizationJsonLd(socialLinks.map((link) => link.href))} />
         {/* Cookieless page views and real Core Web Vitals (ADR-0023). */}
         {LOADS_VERCEL_INSIGHTS && (
           <>
