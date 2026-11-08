@@ -20,6 +20,10 @@ export async function seedE2eUser(payload: Payload): Promise<void> {
     return
   }
 
-  await payload.create({ collection: 'users', data: { email, password }, context: SEED_CONTEXT })
+  await payload.create({
+    collection: 'users',
+    data: { email, password, role: 'admin' },
+    context: SEED_CONTEXT,
+  })
   payload.logger.info('E2E admin: created.')
 }

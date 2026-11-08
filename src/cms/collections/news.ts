@@ -2,7 +2,8 @@ import type { CollectionConfig, FieldHook } from 'payload'
 
 import type { News } from '../../payload-types'
 import { slugify } from '../../shared/lib/slugify'
-import { publishedOrSignedIn } from '../access/published-or-signed-in'
+import { publishedOrAdmin } from '../access/published-or-admin'
+import { admins } from '../access/roles'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 
 // Long enough for a teaser, short enough for search-result snippets and cards.
@@ -20,7 +21,11 @@ export const news: CollectionConfig = {
     defaultColumns: ['title', 'publishedAt', '_status'],
   },
   access: {
-    read: publishedOrSignedIn,
+    read: publishedOrAdmin,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   versions: { drafts: true },
   defaultSort: '-publishedAt',

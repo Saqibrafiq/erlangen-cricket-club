@@ -18,6 +18,7 @@ import * as migration_20261103_220951_ground_club_codes from './20261103_220951_
 import * as migration_20261103_225430_user_name from './20261103_225430_user_name';
 import * as migration_20261105_230129_player_seasons from './20261105_230129_player_seasons';
 import * as migration_20261107_120000_merge_fixtures_and_seasons from './20261107_120000_merge_fixtures_and_seasons';
+import * as migration_20261108_172207_members_app from './20261108_172207_members_app';
 
 export const migrations = [
   {
@@ -118,6 +119,11 @@ export const migrations = [
   {
     up: migration_20261107_120000_merge_fixtures_and_seasons.up,
     down: migration_20261107_120000_merge_fixtures_and_seasons.down,
-    name: '20261107_120000_merge_fixtures_and_seasons'
+    name: '20261107_120000_merge_fixtures_and_seasons',
+  },
+  {
+    up: migration_20261108_172207_members_app.up,
+    down: migration_20261108_172207_members_app.down,
+    name: '20261108_172207_members_app'
   },
 ];

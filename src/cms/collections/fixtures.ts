@@ -2,6 +2,7 @@ import type { CollectionConfig, Validate } from 'payload'
 
 import { WICKETS_PER_INNINGS } from '../../domain/cricket'
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 import { validateOvers } from '../fields/validate-overs'
 import { validateTime } from '../fields/validate-time'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
@@ -77,6 +78,10 @@ export const fixtures: CollectionConfig = {
   },
   access: {
     read: anyone,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   defaultSort: '-date',
   hooks: {

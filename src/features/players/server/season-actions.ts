@@ -1,11 +1,8 @@
 'use server'
 
-import config from '@payload-config'
-import { headers } from 'next/headers'
-import { getPayload, type Payload, type TypedUser } from 'payload'
-
 import type { PlayerSeason } from '@/payload-types'
 import { isRecordId, readFormId } from '@/shared/lib/form-data'
+import { getEditor } from '@/features/auth'
 
 import {
   BATTING_FIELDS,
@@ -28,14 +25,6 @@ import type {
  * checks the session itself and writes as that user with Payload's access control on
  * (`overrideAccess: false`), like the player actions.
  */
-
-type Editor = { payload: Payload; user: TypedUser }
-
-async function getEditor(): Promise<Editor | null> {
-  const payload = await getPayload({ config })
-  const { user } = await payload.auth({ headers: await headers() })
-  return user ? { payload, user } : null
-}
 
 type BattingGroup = NonNullable<PlayerSeason['batting']>
 type BowlingGroup = NonNullable<PlayerSeason['bowling']>

@@ -1,9 +1,5 @@
 'use server'
 
-import config from '@payload-config'
-import { headers } from 'next/headers'
-import { getPayload, type Payload, type TypedUser } from 'payload'
-
 import {
   parseCompetitionImportForm,
   resolveCompetition,
@@ -11,6 +7,7 @@ import {
 } from '@/features/competitions'
 import type { Fixture } from '@/payload-types'
 import { isRecordId } from '@/shared/lib/form-data'
+import { type Editor, getEditor } from '@/features/auth'
 
 import { parseFixtureForm } from '../domain/fixture-form'
 import { type ImportedFixture, parseFixturesCsv } from '../domain/fixtures-csv'
@@ -34,17 +31,9 @@ import type {
  * removed by a later import, and only while they are still to be played.
  */
 
-type Editor = { payload: Payload; user: TypedUser }
-
 const CSV_KEY_PREFIX = 'csv'
 /** Day-only fixtures are stored at noon UTC, so the day is the same in every time zone. */
 const NOON_UTC = 'T12:00:00.000Z'
-
-async function getEditor(): Promise<Editor | null> {
-  const payload = await getPayload({ config })
-  const { user } = await payload.auth({ headers: await headers() })
-  return user ? { payload, user } : null
-}
 
 function keyPrefix(competitionId: number): string {
   return `${CSV_KEY_PREFIX}-${String(competitionId)}-`

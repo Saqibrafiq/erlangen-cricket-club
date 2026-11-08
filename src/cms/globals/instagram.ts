@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { signedIn } from '../access/signed-in'
+import { admins } from '../access/roles'
 import { revalidatePagesAfterGlobalChange } from '../hooks/revalidate-pages'
 
 /**
@@ -15,7 +15,7 @@ export const instagram: GlobalConfig = {
     description:
       'Shows the latest Instagram posts on the home page. Needs a Professional (Business or Creator) Instagram account.',
   },
-  access: { read: signedIn, update: signedIn },
+  access: { read: admins, update: admins },
   hooks: { afterChange: [revalidatePagesAfterGlobalChange] },
   fields: [
     {

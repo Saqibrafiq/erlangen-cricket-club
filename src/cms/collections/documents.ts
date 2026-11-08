@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 
 /** Downloadable files for visitors, e.g. the membership application form. */
 export const documents: CollectionConfig = {
@@ -11,6 +12,10 @@ export const documents: CollectionConfig = {
   },
   access: {
     read: anyone,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   fields: [
     {

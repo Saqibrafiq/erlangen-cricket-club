@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 
 export const teams: CollectionConfig = {
@@ -11,6 +12,10 @@ export const teams: CollectionConfig = {
   },
   access: {
     read: anyone,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   hooks: {
     afterChange: [revalidatePagesAfterChange],

@@ -78,6 +78,8 @@ function formData(fields: Record<string, string>): FormData {
 
 const VALID = { email: 'admin@example.com', password: 'correct horse' }
 
+const ADMIN = { id: 1, role: 'admin' }
+
 describe('signInAction', () => {
   beforeEach(() => {
     mocks.payload.login.mockReset()
@@ -85,8 +87,8 @@ describe('signInAction', () => {
     mocks.setCookie.mockReset()
   })
 
-  it('sets the session and edit-mode cookies and returns the page to open', async () => {
-    mocks.payload.login.mockResolvedValue({ token: 'jwt-token' })
+  it('sets the session and edit-mode cookies for an admin and returns the page to open', async () => {
+    mocks.payload.login.mockResolvedValue({ token: 'jwt-token', user: ADMIN })
 
     const state = await signInAction(
       INITIAL_SIGN_IN_STATE,
@@ -116,8 +118,18 @@ describe('signInAction', () => {
     })
   })
 
+  it('signs a member of the app in without edit mode', async () => {
+    mocks.payload.login.mockResolvedValue({ token: 'jwt-token', user: { id: 9, role: 'player' } })
+
+    const state = await signInAction(INITIAL_SIGN_IN_STATE, formData(VALID))
+
+    expect(state).toEqual({ status: 'success', redirectTo: '/' })
+    expect(mocks.setCookie).toHaveBeenCalledTimes(1)
+    expect(mocks.setCookie).toHaveBeenCalledWith(expect.objectContaining({ name: 'payload-token' }))
+  })
+
   it('opens the website when no page was requested, and never another site', async () => {
-    mocks.payload.login.mockResolvedValue({ token: 'jwt-token' })
+    mocks.payload.login.mockResolvedValue({ token: 'jwt-token', user: ADMIN })
 
     expect(await signInAction(INITIAL_SIGN_IN_STATE, formData(VALID))).toEqual({
       status: 'success',
@@ -193,12 +205,19 @@ describe('enterEditModeAction', () => {
   })
 
   it('switches edit mode on next to a valid session', async () => {
-    mocks.payload.auth.mockResolvedValue({ user: { id: 1 } })
+    mocks.payload.auth.mockResolvedValue({ user: ADMIN })
 
     expect(await enterEditModeAction()).toEqual({ status: 'ok' })
     expect(mocks.setCookie).toHaveBeenCalledWith(
       expect.objectContaining({ name: 'ecc-editor', value: '1' }),
     )
+  })
+
+  it('refuses a member who is not an admin', async () => {
+    mocks.payload.auth.mockResolvedValue({ user: { id: 9, role: 'captain' } })
+
+    expect(await enterEditModeAction()).toEqual({ status: 'unauthorized' })
+    expect(mocks.setCookie).not.toHaveBeenCalled()
   })
 
   it('refuses without a session', async () => {

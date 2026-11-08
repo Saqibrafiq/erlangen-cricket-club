@@ -1,15 +1,12 @@
 'use server'
 
-import config from '@payload-config'
-import { headers } from 'next/headers'
-import { getPayload, type Payload, type TypedUser } from 'payload'
-
 import {
   parseCompetitionImportForm,
   resolveCompetition,
   resolveTeams,
 } from '@/features/competitions'
 import type { Competition } from '@/payload-types'
+import { getEditor } from '@/features/auth'
 
 import { type ImportedStandingsRow, parseStandingsCsv } from '../domain/standings-csv'
 import type {
@@ -24,14 +21,7 @@ import type {
  * (`overrideAccess: false`). The CSV is parsed again here: the browser's preview is a courtesy.
  */
 
-type Editor = { payload: Payload; user: TypedUser }
 type StoredRow = NonNullable<Competition['standings']>[number]
-
-async function getEditor(): Promise<Editor | null> {
-  const payload = await getPayload({ config })
-  const { user } = await payload.auth({ headers: await headers() })
-  return user ? { payload, user } : null
-}
 
 function toImportedRow(row: StoredRow): ImportedStandingsRow | null {
   if (typeof row.team !== 'object') {

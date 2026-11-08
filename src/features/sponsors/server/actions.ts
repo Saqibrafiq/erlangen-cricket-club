@@ -1,11 +1,8 @@
 'use server'
 
-import config from '@payload-config'
-import { headers } from 'next/headers'
-import { getPayload, type Payload, type TypedUser } from 'payload'
-
 import { slugify } from '@/shared/lib/slugify'
 import { isRecordId } from '@/shared/lib/form-data'
+import { type Editor, getEditor } from '@/features/auth'
 
 import { parseSponsorForm } from '../domain/sponsor-form'
 import type {
@@ -30,14 +27,6 @@ const LOGO_EXTENSIONS: Record<string, string> = {
   'image/jpeg': 'jpg',
   'image/png': 'png',
   'image/webp': 'webp',
-}
-
-type Editor = { payload: Payload; user: TypedUser }
-
-async function getEditor(): Promise<Editor | null> {
-  const payload = await getPayload({ config })
-  const { user } = await payload.auth({ headers: await headers() })
-  return user ? { payload, user } : null
 }
 
 async function uploadLogo({ payload, user }: Editor, file: File, name: string): Promise<number> {
