@@ -2,6 +2,7 @@ import type { CollectionConfig, Field } from 'payload'
 
 import { adminsOrOwnTeam, approvedOrOwnTeam } from '../access/members-app'
 import { adminField, admins } from '../access/roles'
+import { guardSquadChanges } from '../hooks/guard-squad-changes'
 import { setEventTeam } from '../hooks/set-event-team'
 
 const playerList = (name: string, label: string, description: string): Field => ({
@@ -31,7 +32,7 @@ export const squads: CollectionConfig = {
     delete: admins,
   },
   hooks: {
-    beforeChange: [setEventTeam],
+    beforeChange: [guardSquadChanges, setEventTeam],
   },
   fields: [
     {
