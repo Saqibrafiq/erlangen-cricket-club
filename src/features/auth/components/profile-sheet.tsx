@@ -59,13 +59,7 @@ export function ProfileSheet({ account, loginHref, save, onClose, onSaved }: Pro
     >
       <form onSubmit={handleSubmit} noValidate className="space-y-6">
         {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
-        {result?.status === 'unauthorized' && (
-          <SignInRequiredAlert
-            message={t('errors.unauthorized')}
-            signInLabel={t('errors.signIn')}
-            signInHref={loginHref}
-          />
-        )}
+        {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
         <FormField
           id={`${id}-name`}
           label={t('name')}

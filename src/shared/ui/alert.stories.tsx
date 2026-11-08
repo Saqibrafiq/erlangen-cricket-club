@@ -16,17 +16,9 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 export const SignInRequired: Story = {
-  render: () => (
-    <SignInRequiredAlert
-      message="Your session has ended."
-      signInLabel="Sign in again"
-      signInHref="/login"
-    />
-  ),
+  render: () => <SignInRequiredAlert signInHref="/login" />,
 }
 
 export const Retry: Story = {
-  render: () => (
-    <RetryAlert message="The player could not be loaded." retryLabel="Try again" onRetry={fn()} />
-  ),
+  render: () => <RetryAlert message="The player could not be loaded." onRetry={fn()} />,
 }

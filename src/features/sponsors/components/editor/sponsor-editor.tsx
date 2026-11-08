@@ -1,13 +1,14 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
-import { useCallback, useEffect, useState, useTransition } from 'react'
+import { useCallback } from 'react'
 
+import { useEditorLoad } from '@/shared/lib/use-editor-load'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog'
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog'
+import { EditorLoadView } from '@/shared/ui/editor-load-view'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
-import { RetryAlert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import type { SponsorDraft, SponsorEditing, SponsorEditorResult } from '../../editor-types'
 import { type SavedSponsor, SponsorForm } from './sponsor-form'
@@ -28,12 +29,17 @@ export type SponsorEditorProps = {
   vanish?: (id: number) => Promise<void>
 }
 
-type LoadState = { status: 'loading' } | SponsorEditorResult<SponsorDraft | null>
+type EditSponsorSheetProps = {
+  id: number | null
+  editing: SponsorEditing
+  onClose: () => void
+  onSaved: (sponsor: SavedSponsor, name: string) => void
+  /** True while the page is fetched again after the save; the form stays busy meanwhile. */
+  isFinishing: boolean
+}
 
-/** True while the page is fetched again after a change; the form or dialog stays busy meanwhile. */
-type FinishingProps = { isFinishing: boolean }
-
-const NEW_SPONSOR: LoadState = { status: 'ok', data: null }
+/** A new sponsor has nothing to load: the empty form shows at once. */
+const NEW_SPONSOR = { status: 'ok', data: null } as const
 
 function FormSkeleton({ label }: { label: string }) {
   return (
@@ -50,35 +56,16 @@ function FormSkeleton({ label }: { label: string }) {
 }
 
 /** Loads the sponsor (nothing to load for a new one) and shows the form in a side panel. */
-function EditSponsorSheet({
-  id,
-  editing,
-  onClose,
-  onSaved,
-  isFinishing,
-}: { id: number | null } & Omit<SponsorEditorProps, 'intent' | 'onDeleted' | 'vanish'> &
-  FinishingProps) {
+function EditSponsorSheet({ id, editing, onClose, onSaved, isFinishing }: EditSponsorSheetProps) {
   const t = useTranslations('sponsors.editor')
   const locale = useLocale()
-  const [state, setState] = useState<LoadState>(id === null ? NEW_SPONSOR : { status: 'loading' })
   const { getSponsor } = editing.actions
-
-  const load = useCallback(() => {
-    if (id === null) return
-    setState({ status: 'loading' })
-    void getSponsor(id).then(setState)
-  }, [getSponsor, id])
-
-  useEffect(() => {
-    if (id === null) return
-    let isCurrent = true
-    void getSponsor(id).then((result) => {
-      if (isCurrent) setState(result)
-    })
-    return () => {
-      isCurrent = false
-    }
-  }, [getSponsor, id])
+  const loadSponsor = useCallback(
+    (): Promise<SponsorEditorResult<SponsorDraft | null>> =>
+      id === null ? Promise.resolve(NEW_SPONSOR) : getSponsor(id),
+    [getSponsor, id],
+  )
+  const { state, reload } = useEditorLoad(loadSponsor, id === null ? NEW_SPONSOR : undefined)
 
   return (
     <Sheet
@@ -91,115 +78,70 @@ function EditSponsorSheet({
       closeLabel={t('sheet.close')}
       size="wide"
     >
-      {state.status === 'loading' && <FormSkeleton label={t('sheet.loading')} />}
-      {state.status === 'unauthorized' && (
-        <SignInRequiredAlert
-          message={t('errors.unauthorized')}
-          signInLabel={t('errors.signIn')}
-          signInHref={editing.loginHref}
-        />
-      )}
-      {state.status === 'error' && (
-        <RetryAlert message={t('errors.load')} retryLabel={t('errors.retry')} onRetry={load} />
-      )}
-      {state.status === 'ok' && (
-        <SponsorForm
-          draft={state.data}
-          locale={locale}
-          loginHref={editing.loginHref}
-          save={editing.actions.saveSponsor}
-          onSaved={onSaved}
-          onCancel={onClose}
-          isFinishing={isFinishing}
-        />
-      )}
+      <EditorLoadView
+        state={state}
+        skeleton={<FormSkeleton label={t('sheet.loading')} />}
+        loadError={t('errors.load')}
+        signInHref={editing.loginHref}
+        onRetry={reload}
+      >
+        {(draft) => (
+          <SponsorForm
+            draft={draft}
+            locale={locale}
+            loginHref={editing.loginHref}
+            save={editing.actions.saveSponsor}
+            onSaved={onSaved}
+            onCancel={onClose}
+            isFinishing={isFinishing}
+          />
+        )}
+      </EditorLoadView>
     </Sheet>
-  )
-}
-
-/** Asks before deleting; stays open with an error if it fails. */
-function DeleteSponsorDialog({
-  id,
-  name,
-  editing,
-  onClose,
-  onDeleted,
-  vanish,
-  isFinishing,
-}: { id: number; name: string } & Omit<SponsorEditorProps, 'intent' | 'onSaved'> & FinishingProps) {
-  const t = useTranslations('sponsors.editor')
-  const [isDeleting, startTransition] = useTransition()
-  const isPending = isDeleting || isFinishing
-  const [error, setError] = useState<string | undefined>()
-  // Closed while the card vanishes, so the dialog doesn't hide the effect.
-  const [isHidden, setIsHidden] = useState(false)
-
-  return (
-    <ConfirmDialog
-      open={!isHidden}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) onClose()
-      }}
-      title={t('deleteDialog.title', { name })}
-      description={t('deleteDialog.description')}
-      confirmLabel={isPending ? t('deleteDialog.deleting') : t('deleteDialog.confirm')}
-      cancelLabel={t('deleteDialog.cancel')}
-      isPending={isPending}
-      error={error}
-      onConfirm={() => {
-        startTransition(async () => {
-          const result = await editing.actions.deleteSponsor(id)
-          if (result.status === 'deleted') {
-            setIsHidden(true)
-            await vanish?.(id)
-            onDeleted(name)
-            return
-          }
-          setError(
-            result.status === 'unauthorized' ? t('errors.unauthorized') : t('deleteDialog.error'),
-          )
-        })
-      }}
-    />
   )
 }
 
 /** The side panel for adding or editing a sponsor, or the dialog for deleting one. */
 export function SponsorEditor({
   intent,
+  editing,
+  onClose,
   onSaved,
   onDeleted,
   vanish,
-  ...props
 }: SponsorEditorProps) {
+  const t = useTranslations('sponsors.editor')
   const { refreshThen, isFinishing } = useRefreshThen()
 
   if (intent.kind === 'delete') {
+    const { id, name } = intent
     return (
-      <DeleteSponsorDialog
-        id={intent.id}
-        name={intent.name}
-        isFinishing={isFinishing}
-        vanish={vanish}
-        onDeleted={(name) => {
+      <DeleteConfirmDialog
+        title={t('deleteDialog.title', { name })}
+        description={t('deleteDialog.description')}
+        onDelete={() => editing.actions.deleteSponsor(id)}
+        vanish={vanish && (() => vanish(id))}
+        onDeleted={() => {
           refreshThen(() => {
             onDeleted(name)
           })
         }}
-        {...props}
+        onClose={onClose}
+        isFinishing={isFinishing}
       />
     )
   }
   return (
     <EditSponsorSheet
       id={intent.kind === 'edit' ? intent.id : null}
-      isFinishing={isFinishing}
+      editing={editing}
+      onClose={onClose}
       onSaved={(sponsor, name) => {
         refreshThen(() => {
           onSaved(sponsor, name)
         })
       }}
-      {...props}
+      isFinishing={isFinishing}
     />
   )
 }

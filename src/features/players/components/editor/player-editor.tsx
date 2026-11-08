@@ -1,15 +1,16 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
-import { useCallback, useEffect, useState, useTransition } from 'react'
+import { useCallback } from 'react'
 
+import { useEditorLoad } from '@/shared/lib/use-editor-load'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog'
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog'
+import { EditorLoadView } from '@/shared/ui/editor-load-view'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
-import { RetryAlert, SignInRequiredAlert } from '@/shared/ui/alert'
 
-import type { EditorResult, PlayerEditing, PlayerEditorData } from '../../editor-types'
+import type { PlayerEditing } from '../../editor-types'
 import { PlayerForm, type SavedPlayer } from './player-form'
 
 /** What the editor was asked to do. */
@@ -28,10 +29,14 @@ export type PlayerEditorProps = {
   vanish?: (id: number) => Promise<void>
 }
 
-type LoadState = { status: 'loading' } | EditorResult<PlayerEditorData>
-
-/** True while the page is fetched again after a change; the form or dialog stays busy meanwhile. */
-type FinishingProps = { isFinishing: boolean }
+type EditPlayerSheetProps = {
+  id: number | null
+  editing: PlayerEditing
+  onClose: () => void
+  onSaved: (player: SavedPlayer, name: string) => void
+  /** True while the page is fetched again after the save; the form stays busy meanwhile. */
+  isFinishing: boolean
+}
 
 function FormSkeleton({ label }: { label: string }) {
   return (
@@ -48,32 +53,12 @@ function FormSkeleton({ label }: { label: string }) {
 }
 
 /** Loads the player (or team list for a new one) and shows the form in a side panel. */
-function EditPlayerSheet({
-  id,
-  editing,
-  onClose,
-  onSaved,
-  isFinishing,
-}: { id: number | null } & Omit<PlayerEditorProps, 'intent' | 'onDeleted'> & FinishingProps) {
+function EditPlayerSheet({ id, editing, onClose, onSaved, isFinishing }: EditPlayerSheetProps) {
   const t = useTranslations('players.editor')
   const locale = useLocale()
-  const [state, setState] = useState<LoadState>({ status: 'loading' })
   const { getEditorData } = editing.actions
-
-  const load = useCallback(() => {
-    setState({ status: 'loading' })
-    void getEditorData(id, locale).then(setState)
-  }, [getEditorData, id, locale])
-
-  useEffect(() => {
-    let isCurrent = true
-    void getEditorData(id, locale).then((result) => {
-      if (isCurrent) setState(result)
-    })
-    return () => {
-      isCurrent = false
-    }
-  }, [getEditorData, id, locale])
+  const loadPlayer = useCallback(() => getEditorData(id, locale), [getEditorData, id, locale])
+  const { state, reload } = useEditorLoad(loadPlayer)
 
   return (
     <Sheet
@@ -85,109 +70,71 @@ function EditPlayerSheet({
       description={t('sheet.description')}
       closeLabel={t('sheet.close')}
     >
-      {state.status === 'loading' && <FormSkeleton label={t('sheet.loading')} />}
-      {state.status === 'unauthorized' && (
-        <SignInRequiredAlert
-          message={t('errors.unauthorized')}
-          signInLabel={t('errors.signIn')}
-          signInHref={editing.loginHref}
-        />
-      )}
-      {state.status === 'error' && (
-        <RetryAlert message={t('errors.load')} retryLabel={t('errors.retry')} onRetry={load} />
-      )}
-      {state.status === 'ok' && (
-        <PlayerForm
-          draft={state.data.draft}
-          teams={state.data.teams}
-          locale={locale}
-          loginHref={editing.loginHref}
-          save={editing.actions.savePlayer}
-          onSaved={onSaved}
-          onCancel={onClose}
-          isFinishing={isFinishing}
-        />
-      )}
+      <EditorLoadView
+        state={state}
+        skeleton={<FormSkeleton label={t('sheet.loading')} />}
+        loadError={t('errors.load')}
+        signInHref={editing.loginHref}
+        onRetry={reload}
+      >
+        {(data) => (
+          <PlayerForm
+            draft={data.draft}
+            teams={data.teams}
+            locale={locale}
+            loginHref={editing.loginHref}
+            save={editing.actions.savePlayer}
+            onSaved={onSaved}
+            onCancel={onClose}
+            isFinishing={isFinishing}
+          />
+        )}
+      </EditorLoadView>
     </Sheet>
   )
 }
 
-/** Asks before deleting; stays open with an error if it fails. */
-function DeletePlayerDialog({
-  id,
-  name,
+/** The side panel for adding or editing a player, or the dialog for deleting one. */
+export function PlayerEditor({
+  intent,
   editing,
   onClose,
+  onSaved,
   onDeleted,
   vanish,
-  isFinishing,
-}: { id: number; name: string } & Omit<PlayerEditorProps, 'intent' | 'onSaved'> & FinishingProps) {
+}: PlayerEditorProps) {
   const t = useTranslations('players.editor')
-  const [isDeleting, startTransition] = useTransition()
-  const isPending = isDeleting || isFinishing
-  const [error, setError] = useState<string | undefined>()
-  // Closed while the player vanishes, so the dialog doesn't hide the effect.
-  const [isHidden, setIsHidden] = useState(false)
-
-  return (
-    <ConfirmDialog
-      open={!isHidden}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) onClose()
-      }}
-      title={t('deleteDialog.title', { name })}
-      description={t('deleteDialog.description')}
-      confirmLabel={isPending ? t('deleteDialog.deleting') : t('deleteDialog.confirm')}
-      cancelLabel={t('deleteDialog.cancel')}
-      isPending={isPending}
-      error={error}
-      onConfirm={() => {
-        startTransition(async () => {
-          const result = await editing.actions.deletePlayer(id)
-          if (result.status === 'deleted') {
-            setIsHidden(true)
-            await vanish?.(id)
-            onDeleted(name)
-            return
-          }
-          setError(
-            result.status === 'unauthorized' ? t('errors.unauthorized') : t('deleteDialog.error'),
-          )
-        })
-      }}
-    />
-  )
-}
-
-/** The side panel for adding or editing a player, or the dialog for deleting one. */
-export function PlayerEditor({ intent, onSaved, onDeleted, ...props }: PlayerEditorProps) {
   const { refreshThen, isFinishing } = useRefreshThen()
 
   if (intent.kind === 'delete') {
+    const { id, name } = intent
     return (
-      <DeletePlayerDialog
-        id={intent.id}
-        name={intent.name}
-        isFinishing={isFinishing}
-        onDeleted={(name) => {
+      <DeleteConfirmDialog
+        title={t('deleteDialog.title', { name })}
+        description={t('deleteDialog.description')}
+        onDelete={() => editing.actions.deletePlayer(id)}
+        vanish={vanish && (() => vanish(id))}
+        onDeleted={() => {
           refreshThen(() => {
             onDeleted(name)
           })
         }}
-        {...props}
+        onClose={onClose}
+        isFinishing={isFinishing}
       />
     )
   }
   return (
     <EditPlayerSheet
       id={intent.kind === 'edit' ? intent.id : null}
-      isFinishing={isFinishing}
+      editing={editing}
+      onClose={onClose}
       onSaved={(player, name) => {
         refreshThen(() => {
           onSaved(player, name)
         })
       }}
-      {...props}
+      isFinishing={isFinishing}
     />
   )
 }

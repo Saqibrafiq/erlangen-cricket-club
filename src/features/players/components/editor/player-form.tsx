@@ -127,13 +127,7 @@ export function PlayerForm({
     <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'invalid' && <Alert>{t('editor.errors.summary')}</Alert>}
       {result?.status === 'error' && <Alert>{t('editor.errors.server')}</Alert>}
-      {result?.status === 'unauthorized' && (
-        <SignInRequiredAlert
-          message={t('editor.errors.unauthorized')}
-          signInLabel={t('editor.errors.signIn')}
-          signInHref={loginHref}
-        />
-      )}
+      {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
 
       {draft && <input type="hidden" name="id" value={draft.id} />}
       <input type="hidden" name="locale" value={locale} />

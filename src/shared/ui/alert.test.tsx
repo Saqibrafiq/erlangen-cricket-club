@@ -16,13 +16,7 @@ describe('Alert', () => {
 
 describe('SignInRequiredAlert', () => {
   it('links to signing in again', () => {
-    renderWithIntl(
-      <SignInRequiredAlert
-        message="Your session has ended."
-        signInLabel="Sign in again"
-        signInHref="/login?next=/players"
-      />,
-    )
+    renderWithIntl(<SignInRequiredAlert signInHref="/login?next=/players" />)
 
     expect(screen.getByRole('alert')).toHaveTextContent('Your session has ended.')
     expect(screen.getByRole('link', { name: 'Sign in again' })).toHaveAttribute(
@@ -35,13 +29,7 @@ describe('SignInRequiredAlert', () => {
 describe('RetryAlert', () => {
   it('tries again when the button is pressed', async () => {
     const onRetry = vi.fn()
-    renderWithIntl(
-      <RetryAlert
-        message="The player could not be loaded."
-        retryLabel="Try again"
-        onRetry={onRetry}
-      />,
-    )
+    renderWithIntl(<RetryAlert message="The player could not be loaded." onRetry={onRetry} />)
 
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }))
 

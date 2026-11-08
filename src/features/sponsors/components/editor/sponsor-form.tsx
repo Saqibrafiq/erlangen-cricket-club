@@ -157,13 +157,7 @@ export function SponsorForm({
     <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'invalid' && <Alert>{t('errors.summary')}</Alert>}
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
-      {result?.status === 'unauthorized' && (
-        <SignInRequiredAlert
-          message={t('errors.unauthorized')}
-          signInLabel={t('errors.signIn')}
-          signInHref={loginHref}
-        />
-      )}
+      {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
 
       <div className="space-y-2">
         <p className="text-sm font-medium text-text-muted">{t('preview.label')}</p>

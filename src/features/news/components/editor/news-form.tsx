@@ -118,11 +118,7 @@ export function NewsForm({
       {result?.status === 'invalid' && <Alert>{t('errors.summary')}</Alert>}
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
       {(result?.status === 'unauthorized' || images.error === 'unauthorized') && (
-        <SignInRequiredAlert
-          message={t('errors.unauthorized')}
-          signInLabel={t('errors.signIn')}
-          signInHref={loginHref}
-        />
+        <SignInRequiredAlert signInHref={loginHref} />
       )}
 
       <p className="rounded-lg bg-surface-highlight p-3 text-sm">

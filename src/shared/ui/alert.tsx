@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
+import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 
 import { Link } from '@/i18n/navigation'
@@ -36,43 +37,37 @@ export function Alert({ children, className }: AlertProps) {
 }
 
 export type SignInRequiredAlertProps = {
-  /** Why the action stopped, e.g. "Your session has ended." */
-  message: string
-  signInLabel: string
   /** The sign-in page, returning to the current one afterwards. */
   signInHref: string
 }
 
-/** The session has ended: says so and links to signing in again. */
-export function SignInRequiredAlert({
-  message,
-  signInLabel,
-  signInHref,
-}: SignInRequiredAlertProps) {
+/** The session has ended: says so and links to signing in again (the same words everywhere). */
+export function SignInRequiredAlert({ signInHref }: SignInRequiredAlertProps) {
+  const t = useTranslations('alerts')
   return (
     <Alert>
-      {message}{' '}
+      {t('sessionEnded')}{' '}
       <Link href={signInHref} className="underline underline-offset-4">
-        {signInLabel}
+        {t('signIn')}
       </Link>
     </Alert>
   )
 }
 
 export type RetryAlertProps = {
-  /** What could not be loaded or done. */
+  /** What could not be loaded, e.g. "The player could not be loaded. Please try again." */
   message: string
-  retryLabel: string
   onRetry: () => void
 }
 
 /** Loading failed: says so and offers to try again. */
-export function RetryAlert({ message, retryLabel, onRetry }: RetryAlertProps) {
+export function RetryAlert({ message, onRetry }: RetryAlertProps) {
+  const t = useTranslations('alerts')
   return (
     <Alert className="space-y-3">
       <p>{message}</p>
       <Button variant="secondary" onClick={onRetry}>
-        {retryLabel}
+        {t('retry')}
       </Button>
     </Alert>
   )

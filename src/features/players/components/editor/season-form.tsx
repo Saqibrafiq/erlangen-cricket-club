@@ -156,13 +156,7 @@ export function SeasonForm({
       <input type="hidden" name="playerId" value={playerId} />
       {draft && <input type="hidden" name="id" value={draft.id} />}
 
-      {formError === 'unauthorized' && (
-        <SignInRequiredAlert
-          message={t('errors.unauthorized')}
-          signInLabel={t('errors.signIn')}
-          signInHref={loginHref}
-        />
-      )}
+      {formError === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
       {formError === 'save' && <Alert>{t('errors.save')}</Alert>}
 
       <div className="grid gap-4 sm:grid-cols-3">
