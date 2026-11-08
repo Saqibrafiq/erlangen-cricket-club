@@ -2,24 +2,16 @@
 
 import { Download, FileSpreadsheet, LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import {
-  type ReactNode,
-  type SubmitEvent,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-  useTransition,
-} from 'react'
+import { type SubmitEvent, useCallback, useEffect, useId, useState, useTransition } from 'react'
 
 import { CompetitionTargetFields, getInitialTarget, NEW_COMPETITION } from '@/features/competitions'
-import { Link } from '@/i18n/navigation'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
 import { Button } from '@/shared/ui/button'
 import { FileDropZone } from '@/shared/ui/file-drop-zone'
 import { FormField } from '@/shared/ui/form-field'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
+import { Alert, RetryAlert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import {
   FIXTURES_CSV_TEMPLATE,
@@ -52,17 +44,6 @@ const CSV_ACCEPT = '.csv,text/csv'
 const TEMPLATE_FILE_NAME = 'ecc-fixtures-template.csv'
 // A byte order mark makes Excel read the template as UTF-8 (ß, ü in ground addresses).
 const TEMPLATE_HREF = `data:text/csv;charset=utf-8,${encodeURIComponent(`﻿${FIXTURES_CSV_TEMPLATE}`)}`
-
-function Alert({ children }: { children: ReactNode }) {
-  return (
-    <div
-      role="alert"
-      className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-    >
-      {children}
-    </div>
-  )
-}
 
 function ImporterSkeleton({ label }: { label: string }) {
   return (
@@ -138,12 +119,11 @@ function ImportForm({
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
       {result?.status === 'unauthorized' && (
-        <Alert>
-          {t('errors.unauthorized')}{' '}
-          <Link href={loginHref} className="underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </Alert>
+        <SignInRequiredAlert
+          message={t('errors.unauthorized')}
+          signInLabel={t('errors.signIn')}
+          signInHref={loginHref}
+        />
       )}
       {result?.status === 'invalidFile' && <FixturesCsvErrors errors={result.errors} />}
 
@@ -236,20 +216,14 @@ export function FixturesImporter({ editing, onClose, onImported }: FixturesImpor
     >
       {state.status === 'loading' && <ImporterSkeleton label={t('loading')} />}
       {state.status === 'unauthorized' && (
-        <p role="alert" className="space-x-1">
-          <span>{t('errors.unauthorized')}</span>
-          <Link href={editing.loginHref} className="font-medium underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </p>
+        <SignInRequiredAlert
+          message={t('errors.unauthorized')}
+          signInLabel={t('errors.signIn')}
+          signInHref={editing.loginHref}
+        />
       )}
       {state.status === 'error' && (
-        <div role="alert" className="space-y-3">
-          <p>{t('errors.load')}</p>
-          <Button variant="secondary" onClick={load}>
-            {t('errors.retry')}
-          </Button>
-        </div>
+        <RetryAlert message={t('errors.load')} retryLabel={t('errors.retry')} onRetry={load} />
       )}
       {state.status === 'ok' && (
         <ImportForm

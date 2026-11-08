@@ -3,10 +3,10 @@
 import { useTranslations } from 'next-intl'
 import { type SubmitEvent, useId, useState, useTransition } from 'react'
 
-import { Link } from '@/i18n/navigation'
 import { Button } from '@/shared/ui/button'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
 import { Sheet } from '@/shared/ui/sheet'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import { type Account, ACCOUNT_NAME_MAX_LENGTH } from '../domain/account'
 import type { AccountActions, SaveAccountResult } from '../sign-in-state'
@@ -58,24 +58,13 @@ export function ProfileSheet({ account, loginHref, save, onClose, onSaved }: Pro
       closeLabel={t('close')}
     >
       <form onSubmit={handleSubmit} noValidate className="space-y-6">
-        {result?.status === 'error' && (
-          <p
-            role="alert"
-            className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-          >
-            {t('errors.server')}
-          </p>
-        )}
+        {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
         {result?.status === 'unauthorized' && (
-          <p
-            role="alert"
-            className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-          >
-            {t('errors.unauthorized')}{' '}
-            <Link href={loginHref} className="underline underline-offset-4">
-              {t('errors.signIn')}
-            </Link>
-          </p>
+          <SignInRequiredAlert
+            message={t('errors.unauthorized')}
+            signInLabel={t('errors.signIn')}
+            signInHref={loginHref}
+          />
         )}
         <FormField
           id={`${id}-name`}

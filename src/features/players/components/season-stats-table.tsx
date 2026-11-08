@@ -5,6 +5,7 @@ import { Fragment, type ReactNode, useId, useState } from 'react'
 
 import { cn } from '@/shared/lib/cn'
 import { DisclosureChevron } from '@/shared/ui/disclosure'
+import { ScrollRegion } from '@/shared/ui/scroll-region'
 import { COLLAPSE_EXIT_TRANSITION, ROW_STAGGER_S, SPRING } from '@/shared/ui/motion-presets'
 
 export type StatsColumn = {
@@ -233,14 +234,7 @@ export function SeasonStatsTable({
   const hasActions = rows.some((row) => row.actions !== undefined)
 
   return (
-    // Scrolls sideways inside its own region on narrow screens; the page never does.
-    <div
-      role="region"
-      aria-labelledby={labelledBy}
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-reachable (WCAG 2.1.1)
-      tabIndex={0}
-      className="overflow-x-auto rounded-2xl border border-border-default"
-    >
+    <ScrollRegion labelledBy={labelledBy} className="rounded-2xl border border-border-default">
       <table className="w-full text-sm tabular-nums">
         <thead className="bg-surface-muted text-xs font-semibold tracking-wide text-text-muted uppercase">
           <tr>
@@ -278,6 +272,6 @@ export function SeasonStatsTable({
           </tfoot>
         )}
       </table>
-    </div>
+    </ScrollRegion>
   )
 }

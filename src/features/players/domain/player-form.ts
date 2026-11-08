@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { checkImageUpload } from '@/shared/config/image-upload'
+import { readFormId, readFormText } from '@/shared/lib/form-data'
 
 import type { BattingStyle, BowlingStyle, ClubOffice, PlayingRole } from '../types'
 
@@ -116,11 +117,6 @@ function toErrorCode(message: string): PlayerFormErrorCode {
   return ERROR_CODES.find((code) => code === message) ?? 'required'
 }
 
-function readText(formData: FormData, key: string): string {
-  const value = formData.get(key)
-  return typeof value === 'string' ? value : ''
-}
-
 function readPhoto(formData: FormData): PhotoChange | PlayerFormErrorCode {
   if (formData.get('removePhoto') === 'on') {
     return { kind: 'remove' }
@@ -138,24 +134,19 @@ function readPhoto(formData: FormData): PhotoChange | PlayerFormErrorCode {
   return problem === 'size' ? 'photoSize' : { kind: 'replace', file }
 }
 
-function readId(formData: FormData): number | null {
-  const id = Number(readText(formData, 'id'))
-  return Number.isInteger(id) && id > 0 ? id : null
-}
-
 /** Validates the add/edit player form; errors are codes the form translates. */
 export function parsePlayerForm(formData: FormData): PlayerFormParseResult {
   const parsed = playerFormSchema.safeParse({
-    name: readText(formData, 'name'),
-    playingRole: readText(formData, 'playingRole'),
-    battingStyle: readText(formData, 'battingStyle'),
-    bowlingStyle: readText(formData, 'bowlingStyle'),
-    clubOffice: readText(formData, 'clubOffice'),
+    name: readFormText(formData, 'name'),
+    playingRole: readFormText(formData, 'playingRole'),
+    battingStyle: readFormText(formData, 'battingStyle'),
+    bowlingStyle: readFormText(formData, 'bowlingStyle'),
+    clubOffice: readFormText(formData, 'clubOffice'),
     teams: formData.getAll('teams').filter((team) => typeof team === 'string'),
-    bio: readText(formData, 'bio'),
+    bio: readFormText(formData, 'bio'),
     isFeaturedOnHome: formData.get('isFeaturedOnHome') === 'on',
     hasPublishConsent: formData.get('hasPublishConsent') === 'on',
-    consentNote: readText(formData, 'consentNote'),
+    consentNote: readFormText(formData, 'consentNote'),
   })
   const photo = readPhoto(formData)
 
@@ -176,5 +167,5 @@ export function parsePlayerForm(formData: FormData): PlayerFormParseResult {
     return { success: false, fieldErrors }
   }
 
-  return { success: true, player: parsed.data, photo, id: readId(formData) }
+  return { success: true, player: parsed.data, photo, id: readFormId(formData) }
 }

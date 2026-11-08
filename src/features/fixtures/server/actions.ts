@@ -10,6 +10,7 @@ import {
   resolveTeams,
 } from '@/features/competitions'
 import type { Fixture } from '@/payload-types'
+import { isRecordId } from '@/shared/lib/form-data'
 
 import { parseFixtureForm } from '../domain/fixture-form'
 import { type ImportedFixture, parseFixturesCsv } from '../domain/fixtures-csv'
@@ -325,10 +326,6 @@ export async function importFixturesAction(formData: FormData): Promise<ImportFi
   }
 }
 
-function isId(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value > 0
-}
-
 /** One fixture for the edit form, with the grounds to pick from. */
 export async function getFixtureEditorDataAction(
   id: number,
@@ -337,7 +334,7 @@ export async function getFixtureEditorDataAction(
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor
@@ -427,7 +424,7 @@ export async function deleteFixtureAction(id: number): Promise<DeleteFixtureResu
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor

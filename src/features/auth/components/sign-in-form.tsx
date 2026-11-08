@@ -7,6 +7,7 @@ import { useActionState, useEffect, useId, useRef, useState } from 'react'
 
 import { Button } from '@/shared/ui/button'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
+import { Alert } from '@/shared/ui/alert'
 
 import { EMAIL_MAX_LENGTH, PASSWORD_MAX_LENGTH, type SignInField } from '../domain/sign-in'
 import { REDIRECT_PARAM } from '../paths'
@@ -69,14 +70,7 @@ export function SignInForm({ action, redirectTo }: SignInFormProps) {
 
   return (
     <form ref={formRef} action={formAction} noValidate className="space-y-5">
-      {alert && (
-        <p
-          role="alert"
-          className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-        >
-          {t(`errors.${alert}`)}
-        </p>
-      )}
+      {alert && <Alert>{t(`errors.${alert}`)}</Alert>}
 
       <input type="hidden" name={REDIRECT_PARAM} value={redirectTo} />
 

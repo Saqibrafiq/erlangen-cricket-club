@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { readFormText } from '@/shared/lib/form-data'
+
 export const ACCOUNT_NAME_MAX_LENGTH = 80
 const INITIALS_LENGTH = 2
 
@@ -44,16 +46,11 @@ export type AccountFieldErrors = Partial<Record<keyof AccountInput, AccountFormE
 export type AccountFormParseResult =
   { success: true; account: AccountInput } | { success: false; fieldErrors: AccountFieldErrors }
 
-function readText(formData: FormData, key: string): string {
-  const value = formData.get(key)
-  return typeof value === 'string' ? value : ''
-}
-
 /** Validates the edit profile form; errors are codes the form translates. */
 export function parseAccountForm(formData: FormData): AccountFormParseResult {
   const parsed = accountFormSchema.safeParse({
-    name: readText(formData, 'name'),
-    email: readText(formData, 'email'),
+    name: readFormText(formData, 'name'),
+    email: readFormText(formData, 'email'),
   })
   if (parsed.success) {
     return { success: true, account: parsed.data }

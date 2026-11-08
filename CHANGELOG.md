@@ -6,6 +6,7 @@ Generated from the [Conventional Commits](https://www.conventionalcommits.org/) 
 
 ### Features
 
+- share images, cookieless analytics, Lighthouse CI and SonarCloud (#29)
 - motion everywhere (#27)
 - **players:** career stats from the league's 2025/2026 season records
 - **header:** glass pill navbar that shrinks into a floating pill, and a hero film
@@ -18,6 +19,7 @@ Generated from the [Conventional Commits](https://www.conventionalcommits.org/) 
 
 ### Fixes
 
+- **analytics:** render Vercel Analytics and Speed Insights on Vercel (#30)
 - **players:** match the live squad's short names, and add a dry run (#28)
 - **storybook:** stub the player seasons query for the browser build
 - **theme:** keep text on cream logo panels dark in every theme

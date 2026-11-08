@@ -1,17 +1,14 @@
 import { siteConfig } from '@/shared/config/site'
+import { toAbsoluteUrl } from '@/shared/lib/absolute-url'
 
 import type { NewsArticle } from '../types'
-
-function toAbsoluteUrl(url: string): string {
-  return url.startsWith('http') ? url : `${siteConfig.url}${url}`
-}
 
 /** schema.org `NewsArticle` for an article page; `url` is its absolute, localised address. */
 export function buildNewsArticleJsonLd(article: NewsArticle, url: string) {
   const club = { '@type': 'SportsOrganization', name: siteConfig.name, url: siteConfig.url }
   const images = [article.image, ...article.gallery]
     .filter((image) => image !== null)
-    .map((image) => toAbsoluteUrl(image.url))
+    .map((image) => toAbsoluteUrl(image.url, siteConfig.url))
 
   return {
     '@context': 'https://schema.org',

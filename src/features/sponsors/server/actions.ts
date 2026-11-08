@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import { getPayload, type Payload, type TypedUser } from 'payload'
 
 import { slugify } from '@/shared/lib/slugify'
+import { isRecordId } from '@/shared/lib/form-data'
 
 import { parseSponsorForm } from '../domain/sponsor-form'
 import type {
@@ -39,10 +40,6 @@ async function getEditor(): Promise<Editor | null> {
   return user ? { payload, user } : null
 }
 
-function isId(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value > 0
-}
-
 async function uploadLogo({ payload, user }: Editor, file: File, name: string): Promise<number> {
   const extension = LOGO_EXTENSIONS[file.type] ?? 'png'
   const doc = await payload.create({
@@ -66,7 +63,7 @@ export async function getSponsorAction(id: number): Promise<SponsorEditorResult<
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor
@@ -190,7 +187,7 @@ export async function deleteSponsorAction(id: number): Promise<DeleteSponsorResu
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor

@@ -4,6 +4,8 @@ import { ArrowDown, ArrowUp, CircleCheck, Sparkles, TriangleAlert } from 'lucide
 import { motion, useReducedMotion } from 'motion/react'
 import { useTranslations } from 'next-intl'
 
+import { Alert } from '@/shared/ui/alert'
+
 import type { ImportedStandingsRow, StandingsCsvError } from '../../domain/standings-csv'
 import type { StandingsDiff, StandingsRowChange } from '../../domain/standings-diff'
 import type { StandingsTableRow, StandingsTeam } from '../../types'
@@ -141,10 +143,7 @@ export function StandingsCsvErrors({ errors }: StandingsCsvErrorsProps) {
   const t = useTranslations('standings.import.fileErrors')
 
   return (
-    <div
-      role="alert"
-      className="space-y-2 rounded-xl bg-status-danger-surface p-4 text-sm text-status-danger-text"
-    >
+    <Alert className="space-y-2 rounded-xl p-4 font-normal">
       <p className="font-semibold">{t('summary', { count: errors.length })}</p>
       <ul className="list-disc space-y-1 pl-5">
         {errors.map((error) => (
@@ -157,6 +156,6 @@ export function StandingsCsvErrors({ errors }: StandingsCsvErrorsProps) {
           </li>
         ))}
       </ul>
-    </div>
+    </Alert>
   )
 }

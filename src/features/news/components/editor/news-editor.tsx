@@ -3,12 +3,11 @@
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState, useTransition } from 'react'
 
-import { Link } from '@/i18n/navigation'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
-import { Button } from '@/shared/ui/button'
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
+import { RetryAlert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import type { NewsDraft, NewsEditing, NewsEditorResult } from '../../editor-types'
 import { NewsForm, type SavedArticle } from './news-form'
@@ -89,20 +88,14 @@ function EditNewsSheet({
     >
       {state.status === 'loading' && <FormSkeleton label={t('sheet.loading')} />}
       {state.status === 'unauthorized' && (
-        <p role="alert" className="space-x-1">
-          <span>{t('errors.unauthorized')}</span>
-          <Link href={editing.loginHref} className="font-medium underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </p>
+        <SignInRequiredAlert
+          message={t('errors.unauthorized')}
+          signInLabel={t('errors.signIn')}
+          signInHref={editing.loginHref}
+        />
       )}
       {state.status === 'error' && (
-        <div role="alert" className="space-y-3">
-          <p>{t('errors.load')}</p>
-          <Button variant="secondary" onClick={load}>
-            {t('errors.retry')}
-          </Button>
-        </div>
+        <RetryAlert message={t('errors.load')} retryLabel={t('errors.retry')} onRetry={load} />
       )}
       {state.status === 'ok' && (
         <NewsForm

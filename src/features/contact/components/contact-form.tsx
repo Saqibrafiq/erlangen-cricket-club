@@ -8,6 +8,7 @@ import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { Button } from '@/shared/ui/button'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
+import { Alert } from '@/shared/ui/alert'
 
 import { INITIAL_CONTACT_STATE, type ContactFormState } from '../contact-form-state'
 import {
@@ -69,22 +70,8 @@ export function ContactForm({ action, locale, contactEmail, privacyHref }: Conta
 
   return (
     <form ref={formRef} action={formAction} noValidate className="space-y-5">
-      {state.status === 'invalid' && (
-        <p
-          role="alert"
-          className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-        >
-          {t('errors.summary')}
-        </p>
-      )}
-      {state.status === 'error' && (
-        <p
-          role="alert"
-          className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-        >
-          {t('errors.server', { email: contactEmail })}
-        </p>
-      )}
+      {state.status === 'invalid' && <Alert>{t('errors.summary')}</Alert>}
+      {state.status === 'error' && <Alert>{t('errors.server', { email: contactEmail })}</Alert>}
 
       <input type="hidden" name="locale" value={locale} />
 

@@ -2,23 +2,15 @@
 
 import { ImageUp, Images, LoaderCircle, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import {
-  type ReactNode,
-  type SubmitEvent,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  useTransition,
-} from 'react'
+import { type SubmitEvent, useEffect, useId, useRef, useState, useTransition } from 'react'
 
-import { Link } from '@/i18n/navigation'
 import { TIME_ZONE } from '@/i18n/routing'
 import { IMAGE_UPLOAD_TYPES } from '@/shared/config/image-upload'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
 import { RichTextEditor, type RichTextValue } from '@/shared/ui/rich-text-editor'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import {
   EXCERPT_MAX_LENGTH,
@@ -52,17 +44,6 @@ const PICKER_CLASS =
 /** Today in the club's time zone as `YYYY-MM-DD` (en-CA formats dates that way). */
 function getToday(): string {
   return new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }).format(new Date())
-}
-
-function Alert({ children }: { children: ReactNode }) {
-  return (
-    <div
-      role="alert"
-      className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-    >
-      {children}
-    </div>
-  )
 }
 
 /**
@@ -137,12 +118,11 @@ export function NewsForm({
       {result?.status === 'invalid' && <Alert>{t('errors.summary')}</Alert>}
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
       {(result?.status === 'unauthorized' || images.error === 'unauthorized') && (
-        <Alert>
-          {t('errors.unauthorized')}{' '}
-          <Link href={loginHref} className="underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </Alert>
+        <SignInRequiredAlert
+          message={t('errors.unauthorized')}
+          signInLabel={t('errors.signIn')}
+          signInHref={loginHref}
+        />
       )}
 
       <p className="rounded-lg bg-surface-highlight p-3 text-sm">
@@ -207,7 +187,7 @@ export function NewsForm({
             <div className="flex aspect-video w-48 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-muted">
               {images.featured ? (
                 // A stored image from our media library; not worth next/image in the editor.
-                // eslint-disable-next-line @next/next/no-img-element
+                // eslint-disable-next-line @next/next/no-img-element -- editor preview, see the line above
                 <img src={images.featured.url} alt="" className="h-full w-full object-cover" />
               ) : (
                 <ImageUp aria-hidden="true" className="size-8 text-text-muted" />

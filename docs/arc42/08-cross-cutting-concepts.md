@@ -90,7 +90,8 @@
   - articles with content only the admin can edit keep their text read-only on the website;
   - a new article is written in every language; images upload one per request;
   - drafts are listed for editors only;
-  - `EditActions` and `EditorToolbar` (`shared/ui`) serve players, news and sponsors alike.
+  - `EditActions` and `EditorToolbar` (`shared/ui`) serve players, news and sponsors alike;
+  - every editor shows its errors the same way: `Alert`, and for an ended session or a failed load `SignInRequiredAlert` and `RetryAlert` (`shared/ui/alert.tsx`); form fields are read with `shared/lib/form-data.ts`.
 - **Editing sponsors** (same pattern, `SPONSOR_EDITING`):
   - the form shows a live preview of the real `SponsorCard`, and the logo on the same white panel (drop or choose; shrunk to at most 800 px WebP);
   - English and German descriptions are edited together, and a new sponsor is saved in both languages;

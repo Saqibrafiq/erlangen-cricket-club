@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 
 import { cn } from '@/shared/lib/cn'
+import { ScrollRegion } from '@/shared/ui/scroll-region'
 import { TeamMonogram } from '@/shared/ui/team-monogram'
 
 import type { StandingsTableRow } from '../types'
@@ -95,14 +96,9 @@ export function StandingsTable({ rows, caption }: StandingsTableProps) {
   }
 
   return (
-    // Scrolls horizontally inside its own container on narrow screens; the page never does.
-    // Focusable and named so keyboard users can scroll it (the table has no interactive content).
-    <div
-      role="region"
-      aria-label={t('tableRegion', { caption })}
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard-reachable (WCAG 2.1.1)
-      tabIndex={0}
-      className="overflow-x-auto rounded-xl border border-border-default bg-surface-default shadow-sm"
+    <ScrollRegion
+      label={t('tableRegion', { caption })}
+      className="rounded-xl border border-border-default bg-surface-default shadow-sm"
     >
       <table className="w-full min-w-max border-collapse text-sm">
         <caption className="sr-only">{caption}</caption>
@@ -185,6 +181,6 @@ export function StandingsTable({ rows, caption }: StandingsTableProps) {
           })}
         </tbody>
       </table>
-    </div>
+    </ScrollRegion>
   )
 }

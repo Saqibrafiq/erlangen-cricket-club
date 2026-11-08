@@ -1,3 +1,5 @@
+import { toAbsoluteUrl } from '@/shared/lib/absolute-url'
+
 import type { Sponsor, SponsorTier } from '../types'
 
 const TIER_ORDER: Record<SponsorTier, number> = { title: 0, sponsor: 1 }
@@ -13,10 +15,6 @@ export function sortSponsors(sponsors: readonly Sponsor[]): Sponsor[] {
 export type SponsorsJsonLdClub = {
   name: string
   url: string
-}
-
-function toAbsoluteUrl(url: string, siteUrl: string): string {
-  return url.startsWith('http') ? url : `${siteUrl}${url}`
 }
 
 /** schema.org `SportsOrganization` naming its sponsors, for the sponsors page. */

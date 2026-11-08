@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { readFormText } from '@/shared/lib/form-data'
+
 export const COMPETITION_NAME_MAX_LENGTH = 100
 /** Seasons are years; matches the sponsors' range. */
 export const FIRST_SEASON = 2000
@@ -51,15 +53,10 @@ const ERROR_CODES: readonly NewCompetitionErrorCode[] = [
   'maxOvers',
 ]
 
-function readText(formData: FormData, key: string): string {
-  const value = formData.get(key)
-  return typeof value === 'string' ? value : ''
-}
-
 /** Validates an import form's target competition; the CSV itself is checked by the importer. */
 export function parseCompetitionImportForm(formData: FormData): CompetitionImportFormResult {
-  const csv = readText(formData, 'csv')
-  const competition = readText(formData, 'competition')
+  const csv = readFormText(formData, 'csv')
+  const competition = readFormText(formData, 'competition')
   if (competition !== NEW_COMPETITION) {
     const id = Number(competition)
     return Number.isInteger(id) && id > 0
@@ -68,9 +65,9 @@ export function parseCompetitionImportForm(formData: FormData): CompetitionImpor
   }
 
   const parsed = newCompetitionSchema.safeParse({
-    name: readText(formData, 'name'),
-    season: readText(formData, 'season') || undefined,
-    maxOvers: readText(formData, 'maxOvers') || undefined,
+    name: readFormText(formData, 'name'),
+    season: readFormText(formData, 'season') || undefined,
+    maxOvers: readFormText(formData, 'maxOvers') || undefined,
   })
   if (parsed.success) {
     return { success: true, target: { kind: 'new', competition: parsed.data }, csv }

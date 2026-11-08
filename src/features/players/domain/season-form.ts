@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { isValidOvers } from '@/domain/cricket'
+import { readFormText } from '@/shared/lib/form-data'
 
 import type { SeasonCompetition, SeasonFormat } from '../types'
 
@@ -89,10 +90,9 @@ export type SeasonFormResult =
 
 const isChecked = (value: FormDataEntryValue | null) => value === 'on'
 
-/** A text field's trimmed value; files and missing fields read as empty. */
+/** A text field, trimmed: numbers typed with spaces around them still count. */
 function readText(formData: FormData, name: string): string {
-  const value = formData.get(name)
-  return typeof value === 'string' ? value.trim() : ''
+  return readFormText(formData, name).trim()
 }
 
 function readCount(formData: FormData, name: string, errors: SeasonFieldErrors): number {

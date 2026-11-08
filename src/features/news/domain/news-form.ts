@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { readFormId, readFormText } from '@/shared/lib/form-data'
+
 import type { NewsImageStyle } from '../types'
 import {
   isEditableOnWebsite,
@@ -79,11 +81,6 @@ function toErrorCode(message: string): NewsFormErrorCode {
   return ERROR_CODES.find((code) => code === message) ?? 'required'
 }
 
-function readText(formData: FormData, key: string): string {
-  const value = formData.get(key)
-  return typeof value === 'string' ? value : ''
-}
-
 /** The article text from the form: `null` to keep it, a document, or an error code. */
 function readBody(formData: FormData): RichTextDocument | null | NewsFormErrorCode {
   const raw = formData.get('body')
@@ -104,24 +101,19 @@ function readBody(formData: FormData): RichTextDocument | null | NewsFormErrorCo
   return parsed
 }
 
-function readId(formData: FormData): number | null {
-  const id = Number(readText(formData, 'id'))
-  return Number.isInteger(id) && id > 0 ? id : null
-}
-
 /**
  * Validates the article form. The text arrives as the editor's JSON, or not at all when it is
  * read-only (kept as stored). Errors are codes the form translates.
  */
 export function parseNewsForm(formData: FormData): NewsFormParseResult {
   const parsed = newsFormSchema.safeParse({
-    title: readText(formData, 'title'),
-    excerpt: readText(formData, 'excerpt'),
-    publishedAt: readText(formData, 'publishedAt'),
-    featuredImage: readText(formData, 'featuredImage'),
-    featuredImageStyle: readText(formData, 'featuredImageStyle') || 'photo',
+    title: readFormText(formData, 'title'),
+    excerpt: readFormText(formData, 'excerpt'),
+    publishedAt: readFormText(formData, 'publishedAt'),
+    featuredImage: readFormText(formData, 'featuredImage'),
+    featuredImageStyle: readFormText(formData, 'featuredImageStyle') || 'photo',
     gallery: formData.getAll('gallery').filter((image) => typeof image === 'string'),
-    status: readText(formData, 'status'),
+    status: readFormText(formData, 'status'),
   })
   const body = readBody(formData)
 
@@ -141,7 +133,7 @@ export function parseNewsForm(formData: FormData): NewsFormParseResult {
   if (!parsed.success || typeof body === 'string') {
     return { success: false, fieldErrors }
   }
-  return { success: true, article: { ...parsed.data, body }, id: readId(formData) }
+  return { success: true, article: { ...parsed.data, body }, id: readFormId(formData) }
 }
 
 const DAY_LENGTH = 'YYYY-MM-DD'.length
