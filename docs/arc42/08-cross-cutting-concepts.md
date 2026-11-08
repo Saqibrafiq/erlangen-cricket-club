@@ -90,7 +90,8 @@
   - articles with content only the admin can edit keep their text read-only on the website;
   - a new article is written in every language; images upload one per request;
   - drafts are listed for editors only;
-  - `EditActions` and `EditorToolbar` (`shared/ui`) serve players, news and sponsors alike.
+  - `EditActions` and `EditorToolbar` (`shared/ui`) serve players, news and sponsors alike;
+  - every editor is built from the same shared pieces: `useEditorLoad` + `EditorLoadView` load its data and show every state (skeleton, session ended, failed with retry, form); `DeleteConfirmDialog` asks before deleting; `Alert`, `SignInRequiredAlert` and `RetryAlert` show errors in the same words everywhere (`alerts` and `deleteDialog` messages); `CsvFileField` picks the file in both importers; form fields are read with `shared/lib/form-data.ts`.
 - **Editing sponsors** (same pattern, `SPONSOR_EDITING`):
   - the form shows a live preview of the real `SponsorCard`, and the logo on the same white panel (drop or choose; shrunk to at most 800 px WebP);
   - English and German descriptions are edited together, and a new sponsor is saved in both languages;

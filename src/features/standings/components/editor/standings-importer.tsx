@@ -1,16 +1,8 @@
 'use client'
 
-import { FileSpreadsheet, LoaderCircle } from 'lucide-react'
+import { LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import {
-  type ReactNode,
-  type SubmitEvent,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-  useTransition,
-} from 'react'
+import { type SubmitEvent, useId, useState, useTransition } from 'react'
 
 import {
   CompetitionTargetFields,
@@ -18,20 +10,20 @@ import {
   getTargetTitle,
   NEW_COMPETITION,
 } from '@/features/competitions'
-import { Link } from '@/i18n/navigation'
+import { useEditorLoad } from '@/shared/lib/use-editor-load'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
 import { Button } from '@/shared/ui/button'
-import { FileDropZone } from '@/shared/ui/file-drop-zone'
-import { FormField } from '@/shared/ui/form-field'
+import { CsvFileField } from '@/shared/ui/csv-file-field'
+import { EditorLoadView } from '@/shared/ui/editor-load-view'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import { parseStandingsCsv, type StandingsCsvResult } from '../../domain/standings-csv'
 import { diffStandings } from '../../domain/standings-diff'
 import type {
   ImportStandingsResult,
   StandingsEditing,
-  StandingsEditorResult,
   StandingsImportData,
 } from '../../editor-types'
 import {
@@ -51,21 +43,7 @@ export type StandingsImporterProps = {
   onImported: (result: ImportedTable) => void
 }
 
-type LoadState = { status: 'loading' } | StandingsEditorResult<StandingsImportData>
 type CsvFile = { name: string; result: StandingsCsvResult }
-
-const CSV_ACCEPT = '.csv,text/csv'
-
-function Alert({ children }: { children: ReactNode }) {
-  return (
-    <div
-      role="alert"
-      className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-    >
-      {children}
-    </div>
-  )
-}
 
 function ImporterSkeleton({ label }: { label: string }) {
   return (
@@ -141,14 +119,7 @@ function ImportForm({
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
-      {result?.status === 'unauthorized' && (
-        <Alert>
-          {t('errors.unauthorized')}{' '}
-          <Link href={loginHref} className="underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </Alert>
-      )}
+      {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
       {result?.status === 'invalidFile' && <StandingsCsvErrors errors={result.errors} />}
 
       <CompetitionTargetFields
@@ -159,19 +130,13 @@ function ImportForm({
         fieldErrors={result?.status === 'invalid' ? result.fieldErrors : undefined}
       />
 
-      <FormField id={`${id}-file`} label={t('file')} hint={t('fileHint')}>
-        {(control) => (
-          <FileDropZone
-            control={control}
-            accept={CSV_ACCEPT}
-            onFile={(file) => void chooseFile(file)}
-          >
-            <FileSpreadsheet aria-hidden="true" className="size-8 text-brand-primary" />
-            <span className="font-medium">{csv ? csv.name : t('choose')}</span>
-            <span className="text-sm text-text-muted">{csv ? t('chooseAnother') : t('drop')}</span>
-          </FileDropZone>
-        )}
-      </FormField>
+      <CsvFileField
+        id={`${id}-file`}
+        label={t('file')}
+        hint={t('fileHint')}
+        fileName={csv?.name}
+        onFile={(file) => void chooseFile(file)}
+      />
 
       {parsed && !parsed.success && <StandingsCsvErrors errors={parsed.errors} />}
       {parsed?.success && diff && (
@@ -208,24 +173,8 @@ export function StandingsImporter({
   onImported,
 }: StandingsImporterProps) {
   const t = useTranslations('standings.import')
-  const [state, setState] = useState<LoadState>({ status: 'loading' })
   const { refreshThen, isFinishing } = useRefreshThen()
-  const { getImportData } = editing.actions
-
-  const load = useCallback(() => {
-    setState({ status: 'loading' })
-    void getImportData().then(setState)
-  }, [getImportData])
-
-  useEffect(() => {
-    let isCurrent = true
-    void getImportData().then((result) => {
-      if (isCurrent) setState(result)
-    })
-    return () => {
-      isCurrent = false
-    }
-  }, [getImportData])
+  const { state, reload } = useEditorLoad(editing.actions.getImportData)
 
   return (
     <Sheet
@@ -238,38 +187,29 @@ export function StandingsImporter({
       closeLabel={t('close')}
       size="wide"
     >
-      {state.status === 'loading' && <ImporterSkeleton label={t('loading')} />}
-      {state.status === 'unauthorized' && (
-        <p role="alert" className="space-x-1">
-          <span>{t('errors.unauthorized')}</span>
-          <Link href={editing.loginHref} className="font-medium underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </p>
-      )}
-      {state.status === 'error' && (
-        <div role="alert" className="space-y-3">
-          <p>{t('errors.load')}</p>
-          <Button variant="secondary" onClick={load}>
-            {t('errors.retry')}
-          </Button>
-        </div>
-      )}
-      {state.status === 'ok' && (
-        <ImportForm
-          data={state.data}
-          competitionId={competitionId}
-          loginHref={editing.loginHref}
-          importStandings={editing.actions.importStandings}
-          onImported={(imported) => {
-            refreshThen(() => {
-              onImported(imported)
-            })
-          }}
-          onCancel={onClose}
-          isFinishing={isFinishing}
-        />
-      )}
+      <EditorLoadView
+        state={state}
+        skeleton={<ImporterSkeleton label={t('loading')} />}
+        loadError={t('errors.load')}
+        signInHref={editing.loginHref}
+        onRetry={reload}
+      >
+        {(data) => (
+          <ImportForm
+            data={data}
+            competitionId={competitionId}
+            loginHref={editing.loginHref}
+            importStandings={editing.actions.importStandings}
+            onImported={(imported) => {
+              refreshThen(() => {
+                onImported(imported)
+              })
+            }}
+            onCancel={onClose}
+            isFinishing={isFinishing}
+          />
+        )}
+      </EditorLoadView>
     </Sheet>
   )
 }

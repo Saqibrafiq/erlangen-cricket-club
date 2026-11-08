@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { type ReactNode, useId, useState, useTransition } from 'react'
 
-import { Link } from '@/i18n/navigation'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 import { Button } from '@/shared/ui/button'
 import { Collapse } from '@/shared/ui/disclosure'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
@@ -156,16 +156,8 @@ export function SeasonForm({
       <input type="hidden" name="playerId" value={playerId} />
       {draft && <input type="hidden" name="id" value={draft.id} />}
 
-      {formError && (
-        <p role="alert" className="rounded-xl bg-status-danger-surface p-4 text-status-danger-text">
-          {t(`errors.${formError}`)}{' '}
-          {formError === 'unauthorized' && (
-            <Link href={loginHref} className="font-medium underline underline-offset-4">
-              {t('errors.signIn')}
-            </Link>
-          )}
-        </p>
-      )}
+      {formError === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
+      {formError === 'save' && <Alert>{t('errors.save')}</Alert>}
 
       <div className="grid gap-4 sm:grid-cols-3">
         <FormField id={fieldId('season')} label={t('fields.season')} error={errorFor('season')}>

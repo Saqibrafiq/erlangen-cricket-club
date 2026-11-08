@@ -1,25 +1,18 @@
 'use client'
 
-import { Download, FileSpreadsheet, LoaderCircle } from 'lucide-react'
+import { Download, LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import {
-  type ReactNode,
-  type SubmitEvent,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-  useTransition,
-} from 'react'
+import { type SubmitEvent, useId, useState, useTransition } from 'react'
 
 import { CompetitionTargetFields, getInitialTarget, NEW_COMPETITION } from '@/features/competitions'
-import { Link } from '@/i18n/navigation'
+import { useEditorLoad } from '@/shared/lib/use-editor-load'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
 import { Button } from '@/shared/ui/button'
-import { FileDropZone } from '@/shared/ui/file-drop-zone'
-import { FormField } from '@/shared/ui/form-field'
+import { CsvFileField } from '@/shared/ui/csv-file-field'
+import { EditorLoadView } from '@/shared/ui/editor-load-view'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import {
   FIXTURES_CSV_TEMPLATE,
@@ -28,12 +21,7 @@ import {
 } from '../../domain/fixtures-csv'
 import { diffFixtures } from '../../domain/fixtures-diff'
 import { applyHomeGrounds } from '../../domain/home-grounds'
-import type {
-  FixtureEditing,
-  FixtureEditorResult,
-  FixtureImportData,
-  ImportFixturesResult,
-} from '../../editor-types'
+import type { FixtureEditing, FixtureImportData, ImportFixturesResult } from '../../editor-types'
 import { FixturesCsvErrors, FixturesImportPreview } from './fixtures-import-preview'
 
 export type ImportedSchedule = Extract<ImportFixturesResult, { status: 'imported' }>
@@ -45,24 +33,11 @@ export type FixturesImporterProps = {
   onImported: (result: ImportedSchedule) => void
 }
 
-type LoadState = { status: 'loading' } | FixtureEditorResult<FixtureImportData>
 type CsvFile = { name: string; text: string; result: FixturesCsvResult }
 
-const CSV_ACCEPT = '.csv,text/csv'
 const TEMPLATE_FILE_NAME = 'ecc-fixtures-template.csv'
 // A byte order mark makes Excel read the template as UTF-8 (ß, ü in ground addresses).
 const TEMPLATE_HREF = `data:text/csv;charset=utf-8,${encodeURIComponent(`﻿${FIXTURES_CSV_TEMPLATE}`)}`
-
-function Alert({ children }: { children: ReactNode }) {
-  return (
-    <div
-      role="alert"
-      className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-    >
-      {children}
-    </div>
-  )
-}
 
 function ImporterSkeleton({ label }: { label: string }) {
   return (
@@ -137,14 +112,7 @@ function ImportForm({
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
-      {result?.status === 'unauthorized' && (
-        <Alert>
-          {t('errors.unauthorized')}{' '}
-          <Link href={loginHref} className="underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </Alert>
-      )}
+      {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
       {result?.status === 'invalidFile' && <FixturesCsvErrors errors={result.errors} />}
 
       <CompetitionTargetFields
@@ -155,21 +123,13 @@ function ImportForm({
       />
 
       <div className="space-y-2">
-        <FormField id={`${id}-file`} label={t('file')} hint={t('fileHint')}>
-          {(control) => (
-            <FileDropZone
-              control={control}
-              accept={CSV_ACCEPT}
-              onFile={(file) => void chooseFile(file)}
-            >
-              <FileSpreadsheet aria-hidden="true" className="size-8 text-brand-primary" />
-              <span className="font-medium">{csv ? csv.name : t('choose')}</span>
-              <span className="text-sm text-text-muted">
-                {csv ? t('chooseAnother') : t('drop')}
-              </span>
-            </FileDropZone>
-          )}
-        </FormField>
+        <CsvFileField
+          id={`${id}-file`}
+          label={t('file')}
+          hint={t('fileHint')}
+          fileName={csv?.name}
+          onFile={(file) => void chooseFile(file)}
+        />
         <a
           href={TEMPLATE_HREF}
           download={TEMPLATE_FILE_NAME}
@@ -204,24 +164,8 @@ function ImportForm({
  */
 export function FixturesImporter({ editing, onClose, onImported }: FixturesImporterProps) {
   const t = useTranslations('fixtures.import')
-  const [state, setState] = useState<LoadState>({ status: 'loading' })
   const { refreshThen, isFinishing } = useRefreshThen()
-  const { getImportData } = editing.actions
-
-  const load = useCallback(() => {
-    setState({ status: 'loading' })
-    void getImportData().then(setState)
-  }, [getImportData])
-
-  useEffect(() => {
-    let isCurrent = true
-    void getImportData().then((result) => {
-      if (isCurrent) setState(result)
-    })
-    return () => {
-      isCurrent = false
-    }
-  }, [getImportData])
+  const { state, reload } = useEditorLoad(editing.actions.getImportData)
 
   return (
     <Sheet
@@ -234,37 +178,28 @@ export function FixturesImporter({ editing, onClose, onImported }: FixturesImpor
       closeLabel={t('close')}
       size="wide"
     >
-      {state.status === 'loading' && <ImporterSkeleton label={t('loading')} />}
-      {state.status === 'unauthorized' && (
-        <p role="alert" className="space-x-1">
-          <span>{t('errors.unauthorized')}</span>
-          <Link href={editing.loginHref} className="font-medium underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </p>
-      )}
-      {state.status === 'error' && (
-        <div role="alert" className="space-y-3">
-          <p>{t('errors.load')}</p>
-          <Button variant="secondary" onClick={load}>
-            {t('errors.retry')}
-          </Button>
-        </div>
-      )}
-      {state.status === 'ok' && (
-        <ImportForm
-          data={state.data}
-          loginHref={editing.loginHref}
-          importFixtures={editing.actions.importFixtures}
-          onImported={(imported) => {
-            refreshThen(() => {
-              onImported(imported)
-            })
-          }}
-          onCancel={onClose}
-          isFinishing={isFinishing}
-        />
-      )}
+      <EditorLoadView
+        state={state}
+        skeleton={<ImporterSkeleton label={t('loading')} />}
+        loadError={t('errors.load')}
+        signInHref={editing.loginHref}
+        onRetry={reload}
+      >
+        {(data) => (
+          <ImportForm
+            data={data}
+            loginHref={editing.loginHref}
+            importFixtures={editing.actions.importFixtures}
+            onImported={(imported) => {
+              refreshThen(() => {
+                onImported(imported)
+              })
+            }}
+            onCancel={onClose}
+            isFinishing={isFinishing}
+          />
+        )}
+      </EditorLoadView>
     </Sheet>
   )
 }

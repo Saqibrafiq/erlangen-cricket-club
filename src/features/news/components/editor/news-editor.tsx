@@ -1,12 +1,12 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
-import { useCallback, useEffect, useState, useTransition } from 'react'
+import { useCallback } from 'react'
 
-import { Link } from '@/i18n/navigation'
+import { useEditorLoad } from '@/shared/lib/use-editor-load'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
-import { Button } from '@/shared/ui/button'
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog'
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog'
+import { EditorLoadView } from '@/shared/ui/editor-load-view'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
 
@@ -31,8 +31,17 @@ export type NewsEditorProps = {
   vanish?: (id: number) => Promise<void>
 }
 
-type LoadState = { status: 'loading' } | NewsEditorResult<NewsDraft | null>
-type FinishingProps = { isFinishing: boolean }
+type EditNewsSheetProps = {
+  id: number | null
+  editing: NewsEditing
+  onClose: () => void
+  onSaved: (article: SavedArticle, title: string) => void
+  /** True while the page is fetched again after the save; the form stays busy meanwhile. */
+  isFinishing: boolean
+}
+
+/** A new article has nothing to load: the empty form shows at once. */
+const NEW_ARTICLE = { status: 'ok', data: null } as const
 
 function FormSkeleton({ label }: { label: string }) {
   return (
@@ -46,36 +55,16 @@ function FormSkeleton({ label }: { label: string }) {
 }
 
 /** Loads the article (nothing to load for a new one) and shows the form in a wide panel. */
-function EditNewsSheet({
-  id,
-  editing,
-  onClose,
-  onSaved,
-  isFinishing,
-}: { id: number | null } & Omit<NewsEditorProps, 'intent' | 'onDeleted'> & FinishingProps) {
+function EditNewsSheet({ id, editing, onClose, onSaved, isFinishing }: EditNewsSheetProps) {
   const t = useTranslations('news.editor')
   const locale = useLocale()
-  const [state, setState] = useState<LoadState>(
-    id === null ? { status: 'ok', data: null } : { status: 'loading' },
-  )
   const { getArticle } = editing.actions
-
-  const load = useCallback(() => {
-    if (id === null) return
-    setState({ status: 'loading' })
-    void getArticle(id, locale).then(setState)
-  }, [getArticle, id, locale])
-
-  useEffect(() => {
-    if (id === null) return
-    let isCurrent = true
-    void getArticle(id, locale).then((result) => {
-      if (isCurrent) setState(result)
-    })
-    return () => {
-      isCurrent = false
-    }
-  }, [getArticle, id, locale])
+  const loadArticle = useCallback(
+    (): Promise<NewsEditorResult<NewsDraft | null>> =>
+      id === null ? Promise.resolve(NEW_ARTICLE) : getArticle(id, locale),
+    [getArticle, id, locale],
+  )
+  const { state, reload } = useEditorLoad(loadArticle, id === null ? NEW_ARTICLE : undefined)
 
   return (
     <Sheet
@@ -87,117 +76,74 @@ function EditNewsSheet({
       title={id === null ? t('sheet.addTitle') : t('sheet.editTitle')}
       closeLabel={t('sheet.close')}
     >
-      {state.status === 'loading' && <FormSkeleton label={t('sheet.loading')} />}
-      {state.status === 'unauthorized' && (
-        <p role="alert" className="space-x-1">
-          <span>{t('errors.unauthorized')}</span>
-          <Link href={editing.loginHref} className="font-medium underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </p>
-      )}
-      {state.status === 'error' && (
-        <div role="alert" className="space-y-3">
-          <p>{t('errors.load')}</p>
-          <Button variant="secondary" onClick={load}>
-            {t('errors.retry')}
-          </Button>
-        </div>
-      )}
-      {state.status === 'ok' && (
-        <NewsForm
-          draft={state.data}
-          locale={locale}
-          loginHref={editing.loginHref}
-          actions={editing.actions}
-          onSaved={onSaved}
-          onCancel={onClose}
-          isFinishing={isFinishing}
-        />
-      )}
+      <EditorLoadView
+        state={state}
+        skeleton={<FormSkeleton label={t('sheet.loading')} />}
+        loadError={t('errors.load')}
+        signInHref={editing.loginHref}
+        onRetry={reload}
+      >
+        {(draft) => (
+          <NewsForm
+            draft={draft}
+            locale={locale}
+            loginHref={editing.loginHref}
+            actions={editing.actions}
+            onSaved={onSaved}
+            onCancel={onClose}
+            isFinishing={isFinishing}
+          />
+        )}
+      </EditorLoadView>
     </Sheet>
   )
 }
 
-/** Asks before deleting; stays open with an error if it fails. */
-function DeleteNewsDialog({
-  id,
-  title,
+/** The panel for writing or editing an article, or the dialog for deleting one. */
+export function NewsEditor({
+  intent,
   editing,
+  leaveHref,
   onClose,
+  onSaved,
   onDeleted,
   vanish,
-  isFinishing,
-}: { id: number; title: string } & Omit<NewsEditorProps, 'intent' | 'onSaved'> & FinishingProps) {
+}: NewsEditorProps) {
   const t = useTranslations('news.editor')
-  const [isDeleting, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>()
-  // Closed while the article vanishes, so the dialog doesn't hide the effect.
-  const [isHidden, setIsHidden] = useState(false)
-  const isPending = isDeleting || isFinishing
-
-  return (
-    <ConfirmDialog
-      open={!isHidden}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) onClose()
-      }}
-      title={t('deleteDialog.title', { title })}
-      description={t('deleteDialog.description')}
-      confirmLabel={isPending ? t('deleteDialog.deleting') : t('deleteDialog.confirm')}
-      cancelLabel={t('deleteDialog.cancel')}
-      isPending={isPending}
-      error={error}
-      onConfirm={() => {
-        startTransition(async () => {
-          const result = await editing.actions.deleteArticle(id)
-          if (result.status === 'deleted') {
-            setIsHidden(true)
-            await vanish?.(id)
-            onDeleted(title)
-            return
-          }
-          setError(
-            result.status === 'unauthorized' ? t('errors.unauthorized') : t('deleteDialog.error'),
-          )
-        })
-      }}
-    />
-  )
-}
-
-/** The panel for writing or editing an article, or the dialog for deleting one. */
-export function NewsEditor({ intent, leaveHref, onSaved, onDeleted, ...props }: NewsEditorProps) {
   const { refreshThen: refreshOrLeaveThen, isFinishing } = useRefreshThen()
   const refreshThen = (callback: () => void, leavesArticle: boolean) => {
     refreshOrLeaveThen(callback, leavesArticle ? leaveHref : undefined)
   }
 
   if (intent.kind === 'delete') {
+    const { id, title } = intent
     return (
-      <DeleteNewsDialog
-        id={intent.id}
-        title={intent.title}
-        isFinishing={isFinishing}
-        onDeleted={(title) => {
+      <DeleteConfirmDialog
+        title={t('deleteDialog.title', { title })}
+        description={t('deleteDialog.description')}
+        onDelete={() => editing.actions.deleteArticle(id)}
+        vanish={vanish && (() => vanish(id))}
+        onDeleted={() => {
           refreshThen(() => {
             onDeleted(title)
           }, true)
         }}
-        {...props}
+        onClose={onClose}
+        isFinishing={isFinishing}
       />
     )
   }
   return (
     <EditNewsSheet
       id={intent.kind === 'edit' ? intent.id : null}
-      isFinishing={isFinishing}
+      editing={editing}
+      onClose={onClose}
       onSaved={(article, title) => {
         refreshThen(() => {
           onSaved(article, title)
         }, !article.isPublished)
       }}
-      {...props}
+      isFinishing={isFinishing}
     />
   )
 }

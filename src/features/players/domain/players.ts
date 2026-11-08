@@ -1,3 +1,5 @@
+import { toAbsoluteUrl } from '@/shared/lib/absolute-url'
+
 import type { BowlingStyle, Player } from '../types'
 
 /**
@@ -62,10 +64,6 @@ export function pickTeammates(players: readonly Player[], slug: string, count: n
 export type PlayersJsonLdClub = {
   name: string
   url: string
-}
-
-function toAbsoluteUrl(url: string, siteUrl: string): string {
-  return url.startsWith('http') ? url : `${siteUrl}${url}`
 }
 
 function buildPerson(player: Player, profileUrl: string, siteUrl: string) {

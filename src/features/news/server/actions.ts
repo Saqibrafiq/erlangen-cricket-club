@@ -9,6 +9,7 @@ import { isValidationErrorFor } from '@/shared/lib/payload-errors'
 import { routing, type Locale } from '@/i18n/routing'
 import { checkImageUpload } from '@/shared/config/image-upload'
 import { slugify } from '@/shared/lib/slugify'
+import { isRecordId } from '@/shared/lib/form-data'
 
 import { parseNewsForm } from '../domain/news-form'
 import { fromEditorDocument } from '../domain/rich-text'
@@ -46,10 +47,6 @@ function toLocale(value: unknown): Locale {
   return routing.locales.find((locale) => locale === value) ?? routing.defaultLocale
 }
 
-function isId(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value > 0
-}
-
 function isDuplicateSlug(error: unknown): boolean {
   return isValidationErrorFor(error, 'slug')
 }
@@ -63,7 +60,7 @@ export async function getNewsArticleForEditingAction(
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor
@@ -232,7 +229,7 @@ export async function deleteNewsAction(id: number): Promise<DeleteNewsResult> {
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { checkImageUpload } from '@/shared/config/image-upload'
+import { readFormId, readFormText } from '@/shared/lib/form-data'
 
 import type { SponsorTier } from '../types'
 
@@ -80,16 +81,6 @@ function toErrorCode(message: string): SponsorFormErrorCode {
   return ERROR_CODES.find((code) => code === message) ?? 'required'
 }
 
-function readText(formData: FormData, key: string): string {
-  const value = formData.get(key)
-  return typeof value === 'string' ? value : ''
-}
-
-function readId(formData: FormData): number | null {
-  const id = Number(readText(formData, 'id'))
-  return Number.isInteger(id) && id > 0 ? id : null
-}
-
 function readLogo(formData: FormData, isNew: boolean): LogoChange | SponsorFormErrorCode {
   const file = formData.get('logo')
   // An empty file input still submits a nameless, empty file.
@@ -105,15 +96,15 @@ function readLogo(formData: FormData, isNew: boolean): LogoChange | SponsorFormE
 
 /** Validates the add/edit sponsor form; errors are codes the form translates. */
 export function parseSponsorForm(formData: FormData): SponsorFormParseResult {
-  const id = readId(formData)
+  const id = readFormId(formData)
   const parsed = sponsorFormSchema.safeParse({
-    name: readText(formData, 'name'),
-    tier: readText(formData, 'tier'),
+    name: readFormText(formData, 'name'),
+    tier: readFormText(formData, 'tier'),
     // Blank must fail as a year, not coerce to 0 silently passing as "missing".
-    since: readText(formData, 'since') || undefined,
-    descriptionEn: readText(formData, 'descriptionEn'),
-    descriptionDe: readText(formData, 'descriptionDe'),
-    website: readText(formData, 'website'),
+    since: readFormText(formData, 'since') || undefined,
+    descriptionEn: readFormText(formData, 'descriptionEn'),
+    descriptionDe: readFormText(formData, 'descriptionDe'),
+    website: readFormText(formData, 'website'),
     isActive: formData.get('isActive') === 'on',
   })
   const logo = readLogo(formData, id === null)

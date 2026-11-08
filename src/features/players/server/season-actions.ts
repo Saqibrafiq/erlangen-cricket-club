@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import { getPayload, type Payload, type TypedUser } from 'payload'
 
 import type { PlayerSeason } from '@/payload-types'
+import { isRecordId, readFormId } from '@/shared/lib/form-data'
 
 import {
   BATTING_FIELDS,
@@ -34,15 +35,6 @@ async function getEditor(): Promise<Editor | null> {
   const payload = await getPayload({ config })
   const { user } = await payload.auth({ headers: await headers() })
   return user ? { payload, user } : null
-}
-
-function isId(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value > 0
-}
-
-function readId(formData: FormData, name: string): number | null {
-  const value = Number(formData.get(name))
-  return isId(value) ? value : null
 }
 
 type BattingGroup = NonNullable<PlayerSeason['batting']>
@@ -141,7 +133,7 @@ export async function saveSeasonAction(formData: FormData): Promise<SaveSeasonRe
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  const playerId = readId(formData, 'playerId')
+  const playerId = readFormId(formData, 'playerId')
   if (playerId === null) {
     return { status: 'error' }
   }
@@ -151,7 +143,7 @@ export async function saveSeasonAction(formData: FormData): Promise<SaveSeasonRe
   }
 
   const { payload, user } = editor
-  const id = readId(formData, 'id')
+  const id = readFormId(formData, 'id')
   try {
     // One record per player, season, competition, format and team (also a unique index).
     const { docs: clashes } = await payload.find({
@@ -195,7 +187,7 @@ export async function deleteSeasonAction(id: number): Promise<DeleteSeasonResult
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor

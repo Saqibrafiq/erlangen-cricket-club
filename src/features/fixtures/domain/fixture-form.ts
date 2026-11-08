@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { readFormText } from '@/shared/lib/form-data'
+
 import type { FixtureStage, FixtureStatus } from '../types'
 
 export const EDITABLE_STAGES = [
@@ -53,20 +55,15 @@ export type FixtureFormParseResult =
 const FIELDS: readonly FixtureFormField[] = ['day', 'startTime', 'ground', 'stage', 'status']
 const ERROR_CODES: readonly FixtureFormErrorCode[] = ['required', 'date', 'time']
 
-function readText(formData: FormData, key: string): string {
-  const value = formData.get(key)
-  return typeof value === 'string' ? value : ''
-}
-
 /** Validates the edit fixture form; errors are codes the form translates. */
 export function parseFixtureForm(formData: FormData): FixtureFormParseResult {
   const status = formData.get('status')
   const parsed = fixtureFormSchema.safeParse({
-    id: readText(formData, 'id'),
-    day: readText(formData, 'day'),
-    startTime: readText(formData, 'startTime'),
-    ground: readText(formData, 'ground'),
-    stage: readText(formData, 'stage'),
+    id: readFormText(formData, 'id'),
+    day: readFormText(formData, 'day'),
+    startTime: readFormText(formData, 'startTime'),
+    ground: readFormText(formData, 'ground'),
+    stage: readFormText(formData, 'stage'),
     status: typeof status === 'string' ? status : undefined,
   })
   if (parsed.success) {

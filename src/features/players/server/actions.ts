@@ -8,6 +8,7 @@ import { isValidationErrorFor } from '@/shared/lib/payload-errors'
 
 import { routing, type Locale } from '@/i18n/routing'
 import { slugify } from '@/shared/lib/slugify'
+import { isRecordId } from '@/shared/lib/form-data'
 
 import { parsePlayerForm, type PhotoChange } from '../domain/player-form'
 import type {
@@ -43,15 +44,11 @@ function toLocale(value: unknown): Locale {
   return routing.locales.find((locale) => locale === value) ?? routing.defaultLocale
 }
 
-function isId(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value > 0
-}
-
 function getMediaId(photo: unknown): number | null {
   if (typeof photo === 'number') {
     return photo
   }
-  if (typeof photo === 'object' && photo !== null && 'id' in photo && isId(photo.id)) {
+  if (typeof photo === 'object' && photo !== null && 'id' in photo && isRecordId(photo.id)) {
     return photo.id
   }
   return null
@@ -136,7 +133,7 @@ export async function getPlayerEditorDataAction(
         user,
         overrideAccess: false,
       }),
-      isId(id)
+      isRecordId(id)
         ? payload.findByID({
             collection: 'players',
             id,
@@ -259,7 +256,7 @@ export async function deletePlayerAction(id: number): Promise<DeletePlayerResult
   if (!editor) {
     return { status: 'unauthorized' }
   }
-  if (!isId(id)) {
+  if (!isRecordId(id)) {
     return { status: 'error' }
   }
   const { payload, user } = editor

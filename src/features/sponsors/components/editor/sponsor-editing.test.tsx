@@ -143,7 +143,11 @@ describe('sponsors in edit mode', { timeout: FLOW_TIMEOUT_MS }, () => {
     )
     await userEvent.click(within(sheet).getByRole('button', { name: 'Save' }))
 
-    expect(await within(sheet).findByText('Please check the highlighted fields.')).toBeVisible()
+    const summary = await within(sheet).findByText('Please check the highlighted fields.')
+    // The alert fades in.
+    await waitFor(() => {
+      expect(summary).toBeVisible()
+    })
     expect(within(sheet).getByLabelText('Name')).toHaveAccessibleDescription(
       'Please fill in this field.',
     )

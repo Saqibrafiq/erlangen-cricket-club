@@ -193,9 +193,6 @@
       "newCompetitionPlaceholder": "Neuer Wettbewerb",
       "file": "Spielplan (CSV)",
       "fileHint": "Spalten: Date, Time, Home, Away. Der Platz ist der des Heimteams; bei Bedarf danach am Spiel ändern. Gespeichert wird erst, wenn du unten bestätigst.",
-      "choose": "CSV-Datei auswählen",
-      "drop": "oder hier ablegen",
-      "chooseAnother": "Andere Datei auswählen",
       "template": "Vorlage herunterladen (CSV für Excel)",
       "confirm": "{count, plural, =0 {Spielplan importieren} one {# Spiel importieren} other {# Spiele importieren}}",
       "importing": "Wird importiert…",
@@ -234,11 +231,8 @@
       },
       "notice": "{competition}: {created} neu, {updated} geändert, {removed} entfernt{added, plural, =0 {} one {, # neues Team oder neuer Platz hinzugefügt} other {, # neue Teams und Plätze hinzugefügt}}.",
       "errors": {
-        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
-        "signIn": "Erneut anmelden",
         "server": "Importieren ist gerade nicht möglich. Bitte versuche es noch einmal.",
-        "load": "Die Wettbewerbe konnten nicht geladen werden. Bitte versuche es noch einmal.",
-        "retry": "Erneut versuchen"
+        "load": "Die Wettbewerbe konnten nicht geladen werden. Bitte versuche es noch einmal."
       }
     },
     "seasons": "Saisons",
@@ -275,22 +269,15 @@
       },
       "deleteDialog": {
         "title": "{match} löschen?",
-        "description": "Das Spiel wird von der Website entfernt. Steht es noch in deiner Spielplan-CSV, fügt der nächste Import es wieder hinzu.",
-        "confirm": "Löschen",
-        "deleting": "Wird gelöscht…",
-        "cancel": "Abbrechen",
-        "error": "Löschen fehlgeschlagen. Bitte versuche es noch einmal."
+        "description": "Das Spiel wird von der Website entfernt. Steht es noch in deiner Spielplan-CSV, fügt der nächste Import es wieder hinzu."
       },
       "errors": {
         "summary": "Bitte prüfe die markierten Felder.",
         "required": "Bitte wähle einen Wert.",
         "date": "Bitte gib ein gültiges Datum ein.",
         "time": "Bitte gib eine Uhrzeit wie 11:00 ein.",
-        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
-        "signIn": "Erneut anmelden",
         "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal.",
-        "load": "Das Spiel konnte nicht geladen werden. Bitte versuche es noch einmal.",
-        "retry": "Erneut versuchen"
+        "load": "Das Spiel konnte nicht geladen werden. Bitte versuche es noch einmal."
       }
     }
   },
@@ -307,6 +294,23 @@
   },
   "breadcrumbs": {
     "label": "Navigationspfad"
+  },
+  "alerts": {
+    "sessionEnded": "Deine Sitzung ist abgelaufen.",
+    "signIn": "Erneut anmelden",
+    "retry": "Erneut versuchen"
+  },
+  "deleteDialog": {
+    "confirm": "Löschen",
+    "deleting": "Wird gelöscht …",
+    "cancel": "Abbrechen",
+    "error": "Löschen nicht möglich. Bitte versuche es noch einmal.",
+    "sessionEnded": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an."
+  },
+  "csvFile": {
+    "choose": "CSV-Datei auswählen",
+    "chooseAnother": "Andere Datei auswählen",
+    "drop": "oder hier ablegen"
   },
   "footer": {
     "legalLabel": "Rechtliches",
@@ -414,9 +418,6 @@
       "loading": "Wettbewerbe werden geladen…",
       "file": "Punktetabelle (CSV)",
       "fileHint": "Gespeichert wird erst, wenn du unten bestätigst.",
-      "choose": "CSV-Datei auswählen",
-      "drop": "oder hier ablegen",
-      "chooseAnother": "Andere Datei auswählen",
       "confirm": "{count, plural, =0 {Tabelle importieren} one {Tabelle importieren (# Team)} other {Tabelle importieren (# Teams)}}",
       "importing": "Wird importiert…",
       "cancel": "Abbrechen",
@@ -449,11 +450,8 @@
         "importedWithTeams": "{competition} aktualisiert: {count} Teams, {added, plural, one {# neues Team} other {# neue Teams}} hinzugefügt."
       },
       "errors": {
-        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
-        "signIn": "Erneut anmelden",
         "server": "Importieren ist gerade nicht möglich. Bitte versuche es noch einmal.",
         "load": "Die Wettbewerbe konnten nicht geladen werden. Bitte versuche es noch einmal.",
-        "retry": "Erneut versuchen",
         "required": "Bitte fülle dieses Feld aus.",
         "tooLong": "Das ist zu lang.",
         "season": "Bitte gib ein Jahr zwischen 2000 und 2100 ein.",
@@ -541,20 +539,13 @@
         "imageType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
         "imageSize": "Dieses Bild ist zu groß. Bitte wähle ein kleineres.",
         "imageUpload": "Das Bild konnte nicht hochgeladen werden. Bitte versuche es noch einmal.",
-        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
-        "signIn": "Erneut anmelden",
         "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal.",
         "load": "Der Artikel konnte nicht geladen werden. Bitte versuche es noch einmal.",
-        "draftsLoad": "Entwürfe konnten nicht geladen werden.",
-        "retry": "Erneut versuchen"
+        "draftsLoad": "Entwürfe konnten nicht geladen werden."
       },
       "deleteDialog": {
         "title": "„{title}“ löschen?",
-        "description": "Der Artikel wird in allen Sprachen von der Website entfernt. Seine Fotos bleiben in der Mediathek. Das lässt sich nicht rückgängig machen.",
-        "confirm": "Löschen",
-        "deleting": "Wird gelöscht …",
-        "cancel": "Abbrechen",
-        "error": "Löschen nicht möglich. Bitte versuche es noch einmal."
+        "description": "Der Artikel wird in allen Sprachen von der Website entfernt. Seine Fotos bleiben in der Mediathek. Das lässt sich nicht rückgängig machen."
       },
       "languages": {
         "en": "englische",
@@ -854,20 +845,13 @@
         "logoRequired": "Bitte wähle ein Logo aus.",
         "logoType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
         "logoSize": "Dieses Bild ist zu groß. Bitte wähle ein kleineres.",
-        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
-        "signIn": "Erneut anmelden",
         "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal.",
         "load": "Der Sponsor konnte nicht geladen werden. Bitte versuche es noch einmal.",
-        "inactiveLoad": "Ehemalige Sponsoren konnten nicht geladen werden.",
-        "retry": "Erneut versuchen"
+        "inactiveLoad": "Ehemalige Sponsoren konnten nicht geladen werden."
       },
       "deleteDialog": {
         "title": "{name} entfernen?",
-        "description": "Der Sponsor wird von der Website gelöscht. Zum bloßen Ausblenden bearbeiten und „Auf der Website anzeigen“ abwählen.",
-        "confirm": "Löschen",
-        "deleting": "Wird gelöscht…",
-        "cancel": "Abbrechen",
-        "error": "Löschen fehlgeschlagen. Bitte versuche es noch einmal."
+        "description": "Der Sponsor wird von der Website gelöscht. Zum bloßen Ausblenden bearbeiten und „Auf der Website anzeigen“ abwählen."
       }
     }
   },
@@ -1141,20 +1125,13 @@
         "photoType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
         "photoSize": "Dieses Foto ist zu groß. Bitte wähle ein kleineres.",
         "duplicateName": "Ein Spieler mit diesem Namen existiert bereits.",
-        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
-        "signIn": "Erneut anmelden",
         "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal.",
         "load": "Der Spieler konnte nicht geladen werden. Bitte versuche es noch einmal.",
-        "hiddenLoad": "Ausgeblendete Spieler konnten nicht geladen werden.",
-        "retry": "Erneut versuchen"
+        "hiddenLoad": "Ausgeblendete Spieler konnten nicht geladen werden."
       },
       "deleteDialog": {
         "title": "{name} entfernen?",
-        "description": "Profil und Foto werden von der Website gelöscht. Das lässt sich nicht rückgängig machen.",
-        "confirm": "Löschen",
-        "deleting": "Wird gelöscht …",
-        "cancel": "Abbrechen",
-        "error": "Löschen nicht möglich. Bitte versuche es noch einmal."
+        "description": "Profil und Foto werden von der Website gelöscht. Das lässt sich nicht rückgängig machen."
       }
     },
     "seasonEditor": {
@@ -1204,18 +1181,13 @@
         "notOutsAboveInnings": "Darf nicht mehr als die Innings sein.",
         "nothingRecorded": "Batting, Bowling oder beides erfassen.",
         "duplicateSeason": "Diese Saison gibt es für diesen Wettbewerb schon.",
-        "unauthorized": "Deine Sitzung ist abgelaufen.",
-        "signIn": "Erneut anmelden",
         "load": "Die Saison konnte nicht geladen werden.",
-        "save": "Die Saison konnte nicht gespeichert werden. Bitte erneut versuchen.",
-        "retry": "Erneut versuchen"
+        "save": "Die Saison konnte nicht gespeichert werden. Bitte erneut versuchen."
       },
       "deleteDialog": {
         "title": "Saison {season} löschen?",
         "description": "Batting und Bowling der Saison verschwinden aus dem Profil und den Karrierewerten.",
         "confirm": "Saison löschen",
-        "deleting": "Wird gelöscht…",
-        "cancel": "Abbrechen",
         "error": "Die Saison konnte nicht gelöscht werden. Bitte erneut versuchen."
       }
     }
@@ -1290,8 +1262,6 @@
         "tooLong": "Das ist zu lang.",
         "email": "Bitte gib eine gültige E-Mail-Adresse ein.",
         "emailTaken": "Diese E-Mail wird schon von einem anderen Konto verwendet.",
-        "unauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
-        "signIn": "Erneut anmelden",
         "server": "Speichern ist gerade nicht möglich. Bitte versuche es noch einmal."
       }
     }

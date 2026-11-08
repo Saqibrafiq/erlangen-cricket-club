@@ -36,7 +36,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "husky && next typegen",
-    "copy:onnx": "node scripts/copy-onnx-runtime.mjs"
+    "copy:onnx": "node scripts/copy-onnx-runtime.mjs",
+    "changelog": "node scripts/generate-changelog.mjs && prettier --write CHANGELOG.md"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

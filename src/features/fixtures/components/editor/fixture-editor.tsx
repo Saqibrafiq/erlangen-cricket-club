@@ -1,36 +1,25 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import {
-  type ReactNode,
-  type SubmitEvent,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-  useTransition,
-} from 'react'
+import { type SubmitEvent, useCallback, useId, useState, useTransition } from 'react'
 
-import { Link } from '@/i18n/navigation'
 import { cn } from '@/shared/lib/cn'
+import { useEditorLoad } from '@/shared/lib/use-editor-load'
 import { useRefreshThen } from '@/shared/lib/use-refresh-then'
 import { Button } from '@/shared/ui/button'
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog'
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog'
+import { EditorLoadView } from '@/shared/ui/editor-load-view'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
 import { Sheet } from '@/shared/ui/sheet'
 import { Skeleton } from '@/shared/ui/skeleton'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import {
   EDITABLE_STAGES,
   EDITABLE_STATUSES,
   type FixtureFormField,
 } from '../../domain/fixture-form'
-import type {
-  FixtureEditing,
-  FixtureEditorData,
-  FixtureEditorResult,
-  SaveFixtureResult,
-} from '../../editor-types'
+import type { FixtureEditing, FixtureEditorData, SaveFixtureResult } from '../../editor-types'
 
 /** What the editor was asked to do. */
 export type FixtureIntent =
@@ -46,20 +35,6 @@ export type FixtureEditorProps = {
   onDeleted: (title: string) => void
   /** Plays the card's delete effect; deleting waits for it before refreshing the page. */
   vanish?: (id: number) => Promise<void>
-}
-
-type LoadState = { status: 'loading' } | FixtureEditorResult<FixtureEditorData>
-type FinishingProps = { isFinishing: boolean }
-
-function Alert({ children }: { children: ReactNode }) {
-  return (
-    <div
-      role="alert"
-      className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-    >
-      {children}
-    </div>
-  )
 }
 
 type FixtureFormProps = {
@@ -105,14 +80,7 @@ function FixtureForm({ data, loginHref, save, onSaved, onCancel, isFinishing }: 
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'invalid' && <Alert>{t('errors.summary')}</Alert>}
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
-      {result?.status === 'unauthorized' && (
-        <Alert>
-          {t('errors.unauthorized')}{' '}
-          <Link href={loginHref} className="underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </Alert>
-      )}
+      {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
       <input type="hidden" name="id" value={draft.id} />
 
       <div className="grid gap-5 sm:grid-cols-2">
@@ -233,33 +201,20 @@ function FormSkeleton({ label }: { label: string }) {
   )
 }
 
-function EditFixtureSheet({
-  id,
-  editing,
-  onClose,
-  onSaved,
-  isFinishing,
-}: { id: number } & Omit<FixtureEditorProps, 'intent' | 'onDeleted' | 'vanish' | 'onSaved'> & {
-    onSaved: (title: string) => void
-  } & FinishingProps) {
+type EditFixtureSheetProps = {
+  id: number
+  editing: FixtureEditing
+  onClose: () => void
+  onSaved: (title: string) => void
+  /** True while the page is fetched again after the save; the form stays busy meanwhile. */
+  isFinishing: boolean
+}
+
+function EditFixtureSheet({ id, editing, onClose, onSaved, isFinishing }: EditFixtureSheetProps) {
   const t = useTranslations('fixtures.editor')
-  const [state, setState] = useState<LoadState>({ status: 'loading' })
   const { getFixture } = editing.actions
-
-  const load = useCallback(() => {
-    setState({ status: 'loading' })
-    void getFixture(id).then(setState)
-  }, [getFixture, id])
-
-  useEffect(() => {
-    let isCurrent = true
-    void getFixture(id).then((result) => {
-      if (isCurrent) setState(result)
-    })
-    return () => {
-      isCurrent = false
-    }
-  }, [getFixture, id])
+  const loadFixture = useCallback(() => getFixture(id), [getFixture, id])
+  const { state, reload } = useEditorLoad(loadFixture)
 
   return (
     <Sheet
@@ -273,123 +228,71 @@ function EditFixtureSheet({
       description={t('description')}
       closeLabel={t('close')}
     >
-      {state.status === 'loading' && <FormSkeleton label={t('loading')} />}
-      {state.status === 'unauthorized' && (
-        <p role="alert" className="space-x-1">
-          <span>{t('errors.unauthorized')}</span>
-          <Link href={editing.loginHref} className="font-medium underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </p>
-      )}
-      {state.status === 'error' && (
-        <div role="alert" className="space-y-3">
-          <p>{t('errors.load')}</p>
-          <Button variant="secondary" onClick={load}>
-            {t('errors.retry')}
-          </Button>
-        </div>
-      )}
-      {state.status === 'ok' && (
-        <FixtureForm
-          data={state.data}
-          loginHref={editing.loginHref}
-          save={editing.actions.saveFixture}
-          onSaved={() => {
-            onSaved(state.data.draft.title)
-          }}
-          onCancel={onClose}
-          isFinishing={isFinishing}
-        />
-      )}
+      <EditorLoadView
+        state={state}
+        skeleton={<FormSkeleton label={t('loading')} />}
+        loadError={t('errors.load')}
+        signInHref={editing.loginHref}
+        onRetry={reload}
+      >
+        {(data) => (
+          <FixtureForm
+            data={data}
+            loginHref={editing.loginHref}
+            save={editing.actions.saveFixture}
+            onSaved={() => {
+              onSaved(data.draft.title)
+            }}
+            onCancel={onClose}
+            isFinishing={isFinishing}
+          />
+        )}
+      </EditorLoadView>
     </Sheet>
-  )
-}
-
-/** Asks before deleting; stays open with an error if it fails. */
-function DeleteFixtureDialog({
-  id,
-  title,
-  editing,
-  onClose,
-  onDeleted,
-  vanish,
-  isFinishing,
-}: { id: number; title: string } & Omit<FixtureEditorProps, 'intent' | 'onSaved'> &
-  FinishingProps) {
-  const t = useTranslations('fixtures.editor')
-  const [isDeleting, startTransition] = useTransition()
-  const isPending = isDeleting || isFinishing
-  const [error, setError] = useState<string | undefined>()
-  // Closed while the card vanishes, so the dialog doesn't hide the effect.
-  const [isHidden, setIsHidden] = useState(false)
-
-  return (
-    <ConfirmDialog
-      open={!isHidden}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) onClose()
-      }}
-      title={t('deleteDialog.title', { match: title })}
-      description={t('deleteDialog.description')}
-      confirmLabel={isPending ? t('deleteDialog.deleting') : t('deleteDialog.confirm')}
-      cancelLabel={t('deleteDialog.cancel')}
-      isPending={isPending}
-      error={error}
-      onConfirm={() => {
-        startTransition(async () => {
-          const result = await editing.actions.deleteFixture(id)
-          if (result.status === 'deleted') {
-            setIsHidden(true)
-            await vanish?.(id)
-            onDeleted(title)
-            return
-          }
-          setError(
-            result.status === 'unauthorized' ? t('errors.unauthorized') : t('deleteDialog.error'),
-          )
-        })
-      }}
-    />
   )
 }
 
 /** The side panel for editing a fixture, or the dialog for deleting one. */
 export function FixtureEditor({
   intent,
+  editing,
+  onClose,
   onSaved,
   onDeleted,
   vanish,
-  ...props
 }: FixtureEditorProps) {
+  const t = useTranslations('fixtures.editor')
   const { refreshThen, isFinishing } = useRefreshThen()
 
   if (intent.kind === 'delete') {
+    const { id, title } = intent
     return (
-      <DeleteFixtureDialog
-        id={intent.id}
-        title={intent.title}
-        isFinishing={isFinishing}
-        vanish={vanish}
-        onDeleted={(title) => {
+      <DeleteConfirmDialog
+        title={t('deleteDialog.title', { match: title })}
+        description={t('deleteDialog.description')}
+        onDelete={() => editing.actions.deleteFixture(id)}
+        vanish={vanish && (() => vanish(id))}
+        onDeleted={() => {
           refreshThen(() => {
             onDeleted(title)
           })
         }}
-        {...props}
+        onClose={onClose}
+        isFinishing={isFinishing}
       />
     )
   }
   return (
     <EditFixtureSheet
       id={intent.id}
-      isFinishing={isFinishing}
+      editing={editing}
+      onClose={onClose}
       onSaved={(title) => {
         refreshThen(() => {
           onSaved(title)
         })
       }}
-      {...props}
+      isFinishing={isFinishing}
     />
   )
 }

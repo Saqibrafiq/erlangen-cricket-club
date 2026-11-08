@@ -24,7 +24,7 @@ export function CardRail({ labelledBy, gridClassName, itemClassName, children }:
     <div
       role="group"
       aria-labelledby={labelledBy}
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see above: the scrollable rail must be keyboard-reachable
       tabIndex={0}
       // Full-bleed on phones: the rail runs to the screen edge, cards keep the page gutter.
       // Relative, so absolutely positioned content (e.g. sr-only text) is clipped with the rail.

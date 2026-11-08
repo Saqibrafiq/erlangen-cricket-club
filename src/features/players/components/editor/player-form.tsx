@@ -12,11 +12,11 @@ import {
   useTransition,
 } from 'react'
 
-import { Link } from '@/i18n/navigation'
 import { IMAGE_UPLOAD_TYPES } from '@/shared/config/image-upload'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import { getInitials } from '../../domain/players'
 import {
@@ -62,17 +62,6 @@ const CHECKBOX_CLASS = 'mt-0.5 size-5 shrink-0 accent-brand-primary'
 
 function CheckboxRow({ children }: { children: ReactNode }) {
   return <label className="flex min-h-11 items-start gap-3 py-1">{children}</label>
-}
-
-function Alert({ children }: { children: ReactNode }) {
-  return (
-    <div
-      role="alert"
-      className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-    >
-      {children}
-    </div>
-  )
 }
 
 /**
@@ -138,14 +127,7 @@ export function PlayerForm({
     <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'invalid' && <Alert>{t('editor.errors.summary')}</Alert>}
       {result?.status === 'error' && <Alert>{t('editor.errors.server')}</Alert>}
-      {result?.status === 'unauthorized' && (
-        <Alert>
-          {t('editor.errors.unauthorized')}{' '}
-          <Link href={loginHref} className="underline underline-offset-4">
-            {t('editor.errors.signIn')}
-          </Link>
-        </Alert>
-      )}
+      {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
 
       {draft && <input type="hidden" name="id" value={draft.id} />}
       <input type="hidden" name="locale" value={locale} />
@@ -161,7 +143,7 @@ export function PlayerForm({
             <div className="relative flex size-24 shrink-0 items-end justify-center overflow-hidden rounded-2xl bg-linear-to-b from-brand-surface to-media-overlay">
               {photoUrl ? (
                 // A local preview (blob: URL) or the stored photo; not worth next/image here.
-                // eslint-disable-next-line @next/next/no-img-element
+                // eslint-disable-next-line @next/next/no-img-element -- editor preview, see the line above
                 <img src={photoUrl} alt="" className="h-full w-full object-contain object-bottom" />
               ) : (
                 <span

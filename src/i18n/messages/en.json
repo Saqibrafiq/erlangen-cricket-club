@@ -193,9 +193,6 @@
       "newCompetitionPlaceholder": "New competition",
       "file": "Schedule (CSV)",
       "fileHint": "Columns: Date, Time, Home, Away. The ground is the home team's; change it on a fixture afterwards if needed. Nothing is saved until you confirm below.",
-      "choose": "Choose CSV file",
-      "drop": "or drop it here",
-      "chooseAnother": "Choose another file",
       "template": "Download the template (CSV for Excel)",
       "confirm": "{count, plural, =0 {Import fixtures} one {Import # fixture} other {Import # fixtures}}",
       "importing": "Importing…",
@@ -234,11 +231,8 @@
       },
       "notice": "{competition}: {created} new, {updated} changed, {removed} removed{added, plural, =0 {} one {, # new team or ground added} other {, # new teams and grounds added}}.",
       "errors": {
-        "unauthorized": "Your session has ended. Please sign in again.",
-        "signIn": "Sign in again",
         "server": "Importing is not possible right now. Please try again.",
-        "load": "The competitions could not be loaded. Please try again.",
-        "retry": "Try again"
+        "load": "The competitions could not be loaded. Please try again."
       }
     },
     "seasons": "Seasons",
@@ -275,22 +269,15 @@
       },
       "deleteDialog": {
         "title": "Delete {match}?",
-        "description": "The fixture is removed from the website. If it is still in your schedule CSV, the next import adds it again.",
-        "confirm": "Delete",
-        "deleting": "Deleting…",
-        "cancel": "Cancel",
-        "error": "Could not delete. Please try again."
+        "description": "The fixture is removed from the website. If it is still in your schedule CSV, the next import adds it again."
       },
       "errors": {
         "summary": "Please check the highlighted fields.",
         "required": "Please choose a value.",
         "date": "Please enter a valid date.",
         "time": "Please enter a time like 11:00.",
-        "unauthorized": "Your session has ended. Please sign in again.",
-        "signIn": "Sign in again",
         "server": "Saving is not possible right now. Please try again.",
-        "load": "The fixture could not be loaded. Please try again.",
-        "retry": "Try again"
+        "load": "The fixture could not be loaded. Please try again."
       }
     }
   },
@@ -307,6 +294,23 @@
   },
   "breadcrumbs": {
     "label": "Breadcrumb"
+  },
+  "alerts": {
+    "sessionEnded": "Your session has ended.",
+    "signIn": "Sign in again",
+    "retry": "Try again"
+  },
+  "deleteDialog": {
+    "confirm": "Delete",
+    "deleting": "Deleting…",
+    "cancel": "Cancel",
+    "error": "Could not delete. Please try again.",
+    "sessionEnded": "Your session has ended. Please sign in again."
+  },
+  "csvFile": {
+    "choose": "Choose CSV file",
+    "chooseAnother": "Choose another file",
+    "drop": "or drop it here"
   },
   "footer": {
     "legalLabel": "Legal",
@@ -414,9 +418,6 @@
       "loading": "Loading competitions…",
       "file": "Points table (CSV)",
       "fileHint": "Nothing is saved until you confirm below.",
-      "choose": "Choose CSV file",
-      "drop": "or drop it here",
-      "chooseAnother": "Choose another file",
       "confirm": "{count, plural, =0 {Import table} one {Import table (# team)} other {Import table (# teams)}}",
       "importing": "Importing…",
       "cancel": "Cancel",
@@ -449,11 +450,8 @@
         "importedWithTeams": "{competition} updated: {count} teams, {added, plural, one {# new team} other {# new teams}} added."
       },
       "errors": {
-        "unauthorized": "Your session has ended. Please sign in again.",
-        "signIn": "Sign in again",
         "server": "Importing is not possible right now. Please try again.",
         "load": "The competitions could not be loaded. Please try again.",
-        "retry": "Try again",
         "required": "Please fill in this field.",
         "tooLong": "This is too long.",
         "season": "Please enter a year between 2000 and 2100.",
@@ -541,20 +539,13 @@
         "imageType": "Please choose a JPG, PNG or WebP image.",
         "imageSize": "This image is too large. Please choose a smaller one.",
         "imageUpload": "The image could not be uploaded. Please try again.",
-        "unauthorized": "Your session has ended. Please sign in again.",
-        "signIn": "Sign in again",
         "server": "Saving is not possible right now. Please try again.",
         "load": "The article could not be loaded. Please try again.",
-        "draftsLoad": "Drafts could not be loaded.",
-        "retry": "Try again"
+        "draftsLoad": "Drafts could not be loaded."
       },
       "deleteDialog": {
         "title": "Delete “{title}”?",
-        "description": "The article is removed from the website in all languages. Its photos stay in the media library. This cannot be undone.",
-        "confirm": "Delete",
-        "deleting": "Deleting…",
-        "cancel": "Cancel",
-        "error": "Could not delete. Please try again."
+        "description": "The article is removed from the website in all languages. Its photos stay in the media library. This cannot be undone."
       },
       "languages": {
         "en": "English",
@@ -854,20 +845,13 @@
         "logoRequired": "Please choose a logo.",
         "logoType": "Please choose a JPG, PNG or WebP image.",
         "logoSize": "This image is too large. Please choose a smaller one.",
-        "unauthorized": "Your session has ended. Please sign in again.",
-        "signIn": "Sign in again",
         "server": "Saving is not possible right now. Please try again.",
         "load": "The sponsor could not be loaded. Please try again.",
-        "inactiveLoad": "Past sponsors could not be loaded.",
-        "retry": "Try again"
+        "inactiveLoad": "Past sponsors could not be loaded."
       },
       "deleteDialog": {
         "title": "Remove {name}?",
-        "description": "The sponsor is deleted from the website. To only hide it, edit it and untick “Show on the website”.",
-        "confirm": "Delete",
-        "deleting": "Deleting…",
-        "cancel": "Cancel",
-        "error": "Could not delete. Please try again."
+        "description": "The sponsor is deleted from the website. To only hide it, edit it and untick “Show on the website”."
       }
     }
   },
@@ -1141,20 +1125,13 @@
         "photoType": "Please choose a JPG, PNG or WebP image.",
         "photoSize": "This photo is too large. Please choose a smaller one.",
         "duplicateName": "A player with this name already exists.",
-        "unauthorized": "Your session has ended. Please sign in again.",
-        "signIn": "Sign in again",
         "server": "Saving is not possible right now. Please try again.",
         "load": "The player could not be loaded. Please try again.",
-        "hiddenLoad": "Hidden players could not be loaded.",
-        "retry": "Try again"
+        "hiddenLoad": "Hidden players could not be loaded."
       },
       "deleteDialog": {
         "title": "Remove {name}?",
-        "description": "The profile and photo are deleted from the website. This cannot be undone.",
-        "confirm": "Delete",
-        "deleting": "Deleting…",
-        "cancel": "Cancel",
-        "error": "Could not delete. Please try again."
+        "description": "The profile and photo are deleted from the website. This cannot be undone."
       }
     },
     "seasonEditor": {
@@ -1204,18 +1181,13 @@
         "notOutsAboveInnings": "Cannot be more than the innings.",
         "nothingRecorded": "Record batting, bowling or both.",
         "duplicateSeason": "This player already has this season for this competition.",
-        "unauthorized": "Your session has ended.",
-        "signIn": "Sign in again",
         "load": "The season could not be loaded.",
-        "save": "The season could not be saved. Please try again.",
-        "retry": "Try again"
+        "save": "The season could not be saved. Please try again."
       },
       "deleteDialog": {
         "title": "Delete season {season}?",
         "description": "The season’s batting and bowling are removed from the profile and the career totals.",
         "confirm": "Delete season",
-        "deleting": "Deleting…",
-        "cancel": "Cancel",
         "error": "The season could not be deleted. Please try again."
       }
     }
@@ -1290,8 +1262,6 @@
         "tooLong": "This is too long.",
         "email": "Please enter a valid email address.",
         "emailTaken": "Another account already uses this email.",
-        "unauthorized": "Your session has ended. Please sign in again.",
-        "signIn": "Sign in again",
         "server": "Saving is not possible right now. Please try again."
       }
     }

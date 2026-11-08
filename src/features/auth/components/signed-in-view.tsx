@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 
 import { Button } from '@/shared/ui/button'
+import { Alert } from '@/shared/ui/alert'
 
 import type { EditModeResult } from '../sign-in-state'
 import { AuthCard } from './auth-card'
@@ -29,14 +30,7 @@ export function SignedInView({ email, redirectTo, enterEditMode, signOut }: Sign
   return (
     <AuthCard title={t('title')} intro={t('intro', { email })}>
       <div className="space-y-3">
-        {hasFailed && (
-          <p
-            role="alert"
-            className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-          >
-            {t('expired')}
-          </p>
-        )}
+        {hasFailed && <Alert>{t('expired')}</Alert>}
         <Button
           size="lg"
           className="w-full"

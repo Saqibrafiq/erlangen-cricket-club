@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import { useFormatter, useTranslations } from 'next-intl'
 
 import { cn } from '@/shared/lib/cn'
+import { Alert } from '@/shared/ui/alert'
 
 import type { FixturesCsvError } from '../../domain/fixtures-csv'
 import type { FixtureChange, FixturesDiff } from '../../domain/fixtures-diff'
@@ -155,10 +156,7 @@ export function FixturesCsvErrors({ errors }: FixturesCsvErrorsProps) {
   const t = useTranslations('fixtures.import.fileErrors')
 
   return (
-    <div
-      role="alert"
-      className="space-y-2 rounded-xl bg-status-danger-surface p-4 text-sm text-status-danger-text"
-    >
+    <Alert className="space-y-2 rounded-xl p-4 font-normal">
       <p className="font-semibold">{t('summary', { count: errors.length })}</p>
       <ul className="list-disc space-y-1 pl-5">
         {errors.map((error) => (
@@ -171,6 +169,6 @@ export function FixturesCsvErrors({ errors }: FixturesCsvErrorsProps) {
           </li>
         ))}
       </ul>
-    </div>
+    </Alert>
   )
 }

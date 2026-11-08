@@ -2,21 +2,13 @@
 
 import { Handshake, Sparkles } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import {
-  type ReactNode,
-  type SubmitEvent,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  useTransition,
-} from 'react'
+import { type SubmitEvent, useEffect, useId, useRef, useState, useTransition } from 'react'
 
-import { Link } from '@/i18n/navigation'
 import { cn } from '@/shared/lib/cn'
 import { resizeImage } from '@/shared/lib/resize-image'
 import { Button } from '@/shared/ui/button'
 import { FormField, formControlClassName } from '@/shared/ui/form-field'
+import { Alert, SignInRequiredAlert } from '@/shared/ui/alert'
 
 import {
   DESCRIPTION_MAX_LENGTH,
@@ -67,17 +59,6 @@ async function measureImage(file: File): Promise<{ width: number; height: number
   } catch {
     return FALLBACK_LOGO_SIZE
   }
-}
-
-function Alert({ children }: { children: ReactNode }) {
-  return (
-    <div
-      role="alert"
-      className="rounded-lg bg-status-danger-surface p-3 text-sm font-medium text-status-danger-text"
-    >
-      {children}
-    </div>
-  )
 }
 
 /**
@@ -176,14 +157,7 @@ export function SponsorForm({
     <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-6">
       {result?.status === 'invalid' && <Alert>{t('errors.summary')}</Alert>}
       {result?.status === 'error' && <Alert>{t('errors.server')}</Alert>}
-      {result?.status === 'unauthorized' && (
-        <Alert>
-          {t('errors.unauthorized')}{' '}
-          <Link href={loginHref} className="underline underline-offset-4">
-            {t('errors.signIn')}
-          </Link>
-        </Alert>
-      )}
+      {result?.status === 'unauthorized' && <SignInRequiredAlert signInHref={loginHref} />}
 
       <div className="space-y-2">
         <p className="text-sm font-medium text-text-muted">{t('preview.label')}</p>
