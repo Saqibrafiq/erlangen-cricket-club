@@ -7,8 +7,8 @@ type StoredSquad = { status?: SquadStatus; picks?: unknown }
 
 const FORBIDDEN = 403
 
-/** A captain may hand in a squad that is open or was returned, or hand it in again. */
-const CAPTAIN_SUBMITTABLE: readonly SquadStatus[] = ['open', 'returned', 'submitted']
+/** A captain hands in a squad that is open or was returned; once submitted it is the Board's. */
+const CAPTAIN_EDITABLE: readonly SquadStatus[] = ['open', 'returned']
 
 function describePicks(picks: unknown): string {
   if (!Array.isArray(picks)) return ''
@@ -21,8 +21,8 @@ function describePicks(picks: unknown): string {
 
 /**
  * The Board approves, returns and reopens squads; a captain only submits theirs (ADR-0024). Once
- * a squad is announced the selection is the Board's: the captain may still record no-shows.
- * Field access alone cannot express this, since it depends on the old and the new status.
+ * submitted, the selection is the Board's until they reopen it; the captain may still record
+ * no-shows. Field access alone cannot express this, since it depends on the old and new status.
  */
 export const guardSquadChanges: CollectionBeforeChangeHook = ({ data, originalDoc, req }) => {
   if (isAdmin(req.user)) return data
@@ -34,7 +34,7 @@ export const guardSquadChanges: CollectionBeforeChangeHook = ({ data, originalDo
     const isSubmitting =
       status === 'submitted' &&
       stored.status !== undefined &&
-      CAPTAIN_SUBMITTABLE.includes(stored.status)
+      CAPTAIN_EDITABLE.includes(stored.status)
     if (!isSubmitting) {
       throw new APIError('Only the Board can approve, return or reopen a squad.', FORBIDDEN)
     }
@@ -42,8 +42,9 @@ export const guardSquadChanges: CollectionBeforeChangeHook = ({ data, originalDo
 
   const isPicksChange =
     data.picks !== undefined && describePicks(data.picks) !== describePicks(stored.picks)
-  if (stored.status === 'approved' && isPicksChange) {
-    throw new APIError('The squad is announced: only the Board can change it now.', FORBIDDEN)
+  const isHandedIn = stored.status !== undefined && !CAPTAIN_EDITABLE.includes(stored.status)
+  if (isHandedIn && isPicksChange) {
+    throw new APIError('The squad is submitted: only the Board can reopen it.', FORBIDDEN)
   }
   return data
 }

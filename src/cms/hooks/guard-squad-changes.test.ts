@@ -14,8 +14,8 @@ function run(user: object, data: Record<string, unknown>, originalDoc?: object):
 }
 
 describe('guardSquadChanges', () => {
-  it('lets a captain submit an open or returned squad, and submit it again', () => {
-    for (const status of ['open', 'returned', 'submitted']) {
+  it('lets a captain submit an open or returned squad', () => {
+    for (const status of ['open', 'returned']) {
       expect(run(CAPTAIN, { status: 'submitted', picks: PICKS }, { status })).toMatchObject({
         status: 'submitted',
       })
@@ -29,6 +29,19 @@ describe('guardSquadChanges', () => {
       )
     }
     expect(() => run(CAPTAIN, { status: 'submitted' })).toThrow('Only the Board')
+    expect(() => run(CAPTAIN, { status: 'submitted' }, { status: 'approved' })).toThrow(
+      'Only the Board',
+    )
+  })
+
+  it('locks a submitted squad for the captain until the Board reopens it', () => {
+    const submitted = { status: 'submitted', picks: PICKS }
+
+    expect(() => run(CAPTAIN, { picks: [{ player: 32, role: 'playing' }] }, submitted)).toThrow(
+      'The squad is submitted: only the Board can reopen it.',
+    )
+    expect(run(CAPTAIN, { status: 'submitted', picks: PICKS }, submitted)).toBeDefined()
+    expect(run(CAPTAIN, { noShows: [30] }, submitted)).toMatchObject({ noShows: [30] })
     expect(() => run(CAPTAIN, { status: 'submitted' }, { status: 'approved' })).toThrow(
       'Only the Board',
     )
@@ -53,7 +66,7 @@ describe('guardSquadChanges', () => {
       ),
     ).toBeDefined()
     expect(() => run(CAPTAIN, { picks: [{ player: 32, role: 'playing' }] }, announced)).toThrow(
-      'The squad is announced',
+      'The squad is submitted',
     )
   })
 
