@@ -57,13 +57,17 @@ export const createForOwnTeam: Access = ({ req, data }) => {
   return teamId !== null && relationId((data as { team?: unknown } | undefined)?.team) === teamId
 }
 
-/** Approved squads are announced to everyone; drafts are the captain's and the Board's. */
-export const approvedOrOwnTeam: Access = ({ req }) => {
-  if (!req.user) return false
+/**
+ * A squad's selection (picks, exceptions, no-shows, the Board's note): announced to everyone once
+ * approved; before that only the team's captain and the Board see it. Its status and deadline are
+ * open to all members, so players see an extended deadline on their cards.
+ */
+export const squadSelectionReaders: FieldAccess = ({ req, doc }) => {
   if (isAdmin(req.user)) return true
-  const team = ownTeam(req.user)
-  const approved: Where = { status: { equals: 'approved' } }
-  return team === false ? approved : { or: [approved, team] }
+  const squad = doc as { status?: unknown; team?: unknown } | undefined
+  if (squad?.status === 'approved') return Boolean(req.user)
+  const teamId = getCaptainTeamId(req.user)
+  return teamId !== null && relationId(squad?.team) === teamId
 }
 
 /**

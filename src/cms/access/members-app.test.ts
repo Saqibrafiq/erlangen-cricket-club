@@ -5,10 +5,10 @@ import {
   adminsOrOwnPlayer,
   adminsOrOwnTeam,
   adminsOwnTeamOrOwnPlayer,
-  approvedOrOwnTeam,
   createForOwnPlayer,
   createForOwnTeam,
   reasonReaders,
+  squadSelectionReaders,
 } from './members-app'
 import type { SessionUser } from './roles'
 
@@ -72,14 +72,21 @@ describe('createForOwnTeam', () => {
   })
 })
 
-describe('approvedOrOwnTeam', () => {
-  it('shows approved squads to every member and drafts to their captain', () => {
-    expect(call(approvedOrOwnTeam, PLAYER)).toEqual({ status: { equals: 'approved' } })
-    expect(call(approvedOrOwnTeam, CAPTAIN)).toEqual({
-      or: [{ status: { equals: 'approved' } }, { team: { equals: 7 } }],
-    })
-    expect(call(approvedOrOwnTeam, ADMIN)).toBe(true)
-    expect(call(approvedOrOwnTeam, null)).toBe(false)
+describe('squadSelectionReaders', () => {
+  const draft = { status: 'submitted', team: 7 }
+  const announced = { status: 'approved', team: 7 }
+
+  it("shows a draft selection to the team's captain and the Board only", () => {
+    expect(call(squadSelectionReaders, CAPTAIN, { doc: draft })).toBe(true)
+    expect(call(squadSelectionReaders, ADMIN, { doc: draft })).toBe(true)
+    expect(call(squadSelectionReaders, PLAYER, { doc: draft })).toBe(false)
+    expect(call(squadSelectionReaders, { ...CAPTAIN, captainOf: 8 }, { doc: draft })).toBe(false)
+    expect(call(squadSelectionReaders, PLAYER, { doc: undefined })).toBe(false)
+  })
+
+  it('announces an approved selection to every member', () => {
+    expect(call(squadSelectionReaders, PLAYER, { doc: announced })).toBe(true)
+    expect(call(squadSelectionReaders, null, { doc: announced })).toBe(false)
   })
 })
 
