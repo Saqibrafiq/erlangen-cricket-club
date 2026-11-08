@@ -46,8 +46,12 @@ export function buildBreadcrumbJsonLd(entries: readonly BreadcrumbEntry[], local
   }
 }
 
-/** schema.org `SportsOrganization` describing the club, rendered site-wide as JSON-LD. */
-export function buildSportsOrganizationJsonLd() {
+/**
+ * schema.org `SportsOrganization` describing the club, rendered site-wide as JSON-LD: name, sport,
+ * place and crest. `sameAs` lists the club's other profiles (Instagram, Facebook) and its former
+ * website, so search engines recognise them as one club.
+ */
+export function buildSportsOrganizationJsonLd(profileUrls: readonly string[] = []) {
   return {
     '@context': 'https://schema.org',
     '@type': 'SportsOrganization',
@@ -55,6 +59,8 @@ export function buildSportsOrganizationJsonLd() {
     alternateName: siteConfig.shortName,
     sport: 'Cricket',
     url: siteConfig.url,
+    logo: `${siteConfig.url}${siteConfig.logoPath}`,
+    sameAs: [...profileUrls, siteConfig.formerSiteUrl],
     address: {
       '@type': 'PostalAddress',
       addressLocality: siteConfig.address.locality,

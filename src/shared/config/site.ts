@@ -39,6 +39,10 @@ export const siteConfig = {
     region: 'Bavaria',
     countryCode: 'DE',
   },
+  /** The club's previous website; named in structured data so search engines link the two. */
+  formerSiteUrl: 'https://erlangencricketclub.wordpress.com/',
+  /** The crest, served by Next.js from `app/icon.png`. */
+  logoPath: '/icon.png',
   /** Fallback until the contact page is filled in the admin. */
   email: 'erlangencricketclub@gmail.com',
   /** Designed and built the website; owns its code and design (see LICENSE). */

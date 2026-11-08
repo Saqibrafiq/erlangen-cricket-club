@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
+import { siteConfig } from '@/shared/config/site'
+
 import { buildAlternates, buildBreadcrumbJsonLd, buildSportsOrganizationJsonLd } from './seo'
 
 describe('buildBreadcrumbJsonLd', () => {
@@ -50,5 +52,18 @@ describe('buildSportsOrganizationJsonLd', () => {
       sport: 'Cricket',
       address: { addressLocality: 'Erlangen', addressCountry: 'DE' },
     })
+  })
+
+  it('shows the crest as the logo', () => {
+    expect(buildSportsOrganizationJsonLd().logo).toBe(`${siteConfig.url}/icon.png`)
+  })
+
+  it("links the club's profiles and its former website", () => {
+    expect(
+      buildSportsOrganizationJsonLd(['https://www.instagram.com/erlangencricketclub']).sameAs,
+    ).toEqual([
+      'https://www.instagram.com/erlangencricketclub',
+      'https://erlangencricketclub.wordpress.com/',
+    ])
   })
 })

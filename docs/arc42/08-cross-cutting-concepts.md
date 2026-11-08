@@ -21,7 +21,7 @@
 - Title template `%s | Erlangen Cricket Club` in the root layout; every route exports `generateMetadata`.
 - `buildAlternates()` produces canonical + hreflang (`en`, `de`, `x-default`).
 - `sitemap.ts` and `robots.ts` at the app root; `/admin` and `/api` disallowed.
-- Site-wide JSON-LD `SportsOrganization`; per-feature schemas (`SportsEvent`, `Article`, `BreadcrumbList`) to follow.
+- Site-wide JSON-LD `SportsOrganization` with the crest as `logo` and `sameAs` links to the club's Instagram and Facebook (from the contact settings) and its former WordPress site, so search engines treat them as one club; per-feature schemas: `SportsEvent` (fixtures), `NewsArticle` (news), `BreadcrumbList`.
 
 ## 8.4 Design system
 
