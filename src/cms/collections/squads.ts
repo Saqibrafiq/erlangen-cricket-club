@@ -1,7 +1,7 @@
 import type { CollectionConfig, Field } from 'payload'
 
-import { adminsOrOwnTeam, approvedOrOwnTeam } from '../access/members-app'
-import { adminField, admins } from '../access/roles'
+import { adminsOrOwnTeam, squadSelectionReaders } from '../access/members-app'
+import { adminField, admins, members } from '../access/roles'
 import { guardSquadChanges } from '../hooks/guard-squad-changes'
 import { setEventTeam } from '../hooks/set-event-team'
 
@@ -11,6 +11,7 @@ const playerList = (name: string, label: string, description: string): Field => 
   type: 'relationship',
   relationTo: 'players',
   hasMany: true,
+  access: { read: squadSelectionReaders },
   admin: { description },
 })
 
@@ -26,7 +27,8 @@ export const squads: CollectionConfig = {
     defaultColumns: ['fixture', 'team', 'status', 'deadlineDay'],
   },
   access: {
-    read: approvedOrOwnTeam,
+    // Status and deadline for all members; the selection itself per field (squadSelectionReaders).
+    read: members,
     create: admins,
     update: adminsOrOwnTeam,
     delete: admins,
@@ -78,6 +80,7 @@ export const squads: CollectionConfig = {
     {
       name: 'picks',
       type: 'array',
+      access: { read: squadSelectionReaders },
       admin: { description: 'The squad: exactly 11 playing and one 12th man; reserves optional.' },
       fields: [
         {
@@ -119,7 +122,7 @@ export const squads: CollectionConfig = {
         'Exceptions',
         'Players the Board makes selectable for this match despite the rules (R-8).',
       ),
-      access: { update: adminField },
+      access: { read: squadSelectionReaders, update: adminField },
     } as Field,
     playerList(
       'noShows',
@@ -130,7 +133,7 @@ export const squads: CollectionConfig = {
       name: 'note',
       type: 'textarea',
       maxLength: 500,
-      access: { update: adminField },
+      access: { read: squadSelectionReaders, update: adminField },
       admin: { description: 'Why the Board returned the squad to the captain.' },
     },
     {
