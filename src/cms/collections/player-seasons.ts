@@ -1,5 +1,6 @@
 import type { Access, CollectionConfig, Field, Validate } from 'payload'
 
+import { admins } from '../access/roles'
 import { isValidOvers } from '../../domain/cricket/overs'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 
@@ -46,6 +47,10 @@ export const playerSeasons: CollectionConfig = {
   },
   access: {
     read: playerConsentedOrSignedIn,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   hooks: {
     afterChange: [revalidatePagesAfterChange],

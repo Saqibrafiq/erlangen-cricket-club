@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 import { revalidatePagesAfterGlobalChange } from '../hooks/revalidate-pages'
 
 function legalPage(slug: string, label: string, description: string): GlobalConfig {
@@ -8,7 +9,7 @@ function legalPage(slug: string, label: string, description: string): GlobalConf
     slug,
     label,
     admin: { group: 'Legal', description },
-    access: { read: anyone },
+    access: { read: anyone, update: admins },
     hooks: { afterChange: [revalidatePagesAfterGlobalChange] },
     fields: [
       {

@@ -3,6 +3,7 @@ import type { CollectionConfig, FieldHook, Validate } from 'payload'
 import type { Player } from '../../payload-types'
 import { slugify } from '../../shared/lib/slugify'
 import { consentedOrSignedIn } from '../access/consented-or-signed-in'
+import { adminField, admins } from '../access/roles'
 import { deletePlayerSeasons } from '../hooks/delete-player-seasons'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 
@@ -31,6 +32,10 @@ export const players: CollectionConfig = {
   },
   access: {
     read: consentedOrSignedIn,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   hooks: {
     beforeDelete: [deletePlayerSeasons],
@@ -98,6 +103,42 @@ export const players: CollectionConfig = {
       admin: { description: 'Club teams the player plays for.' },
     },
     {
+      type: 'collapsible',
+      label: 'Members’ app',
+      admin: { initCollapsed: false },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'squadTeam',
+              label: 'Team squad',
+              type: 'relationship',
+              relationTo: 'teams',
+              filterOptions: { isClubTeam: { equals: true } },
+              access: { create: adminField, update: adminField },
+              admin: {
+                width: '50%',
+                description: 'The one squad this player belongs to in the app (ECC I or ECC II).',
+              },
+            },
+            {
+              name: 'isEcc1Eligible',
+              label: 'May play for ECC I',
+              type: 'checkbox',
+              defaultValue: false,
+              access: { create: adminField, update: adminField },
+              admin: {
+                width: '50%',
+                description:
+                  'Motion 2024/06: new members without a long-term commitment may not play in an upper league.',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
       name: 'clubOffice',
       type: 'select',
       options: [
@@ -156,7 +197,7 @@ export const players: CollectionConfig = {
       type: 'text',
       validate: validateConsentNote,
       // Internal record: never part of the public API.
-      access: { read: ({ req }) => Boolean(req.user) },
+      access: { read: adminField, update: adminField },
       admin: {
         position: 'sidebar',
         condition: (data) => Boolean(data.hasPublishConsent),

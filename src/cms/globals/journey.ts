@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 import { validateLink } from '../fields/validate-link'
 import { revalidatePagesAfterGlobalChange } from '../hooks/revalidate-pages'
 
@@ -15,7 +16,7 @@ export const journey: GlobalConfig = {
     group: 'Club',
     description: 'The club’s story and timeline, shown on the “Our journey” page.',
   },
-  access: { read: anyone },
+  access: { read: anyone, update: admins },
   hooks: { afterChange: [revalidatePagesAfterGlobalChange] },
   fields: [
     {

@@ -6,6 +6,7 @@ import { cookies, headers } from 'next/headers'
 import { getPayload, type Payload } from 'payload'
 import { getCookieExpiration } from 'payload/shared'
 
+import { isAdmin } from '@/cms/access/roles'
 import { EDIT_MODE_COOKIE } from '@/shared/config/edit-mode'
 import { getSignInRejection, isValidationErrorFor } from '@/shared/lib/payload-errors'
 
@@ -51,8 +52,11 @@ export async function signInAction(
   const { email } = result.credentials
   const payload = await getPayload({ config })
   let token: string | undefined
+  let canEdit = false
   try {
-    ;({ token } = await payload.login({ collection: USERS_COLLECTION, data: result.credentials }))
+    const login = await payload.login({ collection: USERS_COLLECTION, data: result.credentials })
+    token = login.token
+    canEdit = isAdmin(login.user)
   } catch (error) {
     const rejection = getSignInRejection(error)
     if (rejection) {
@@ -75,7 +79,10 @@ export async function signInAction(
     value: token,
     httpOnly: true,
   })
-  cookieStore.set({ ...shared, name: EDIT_MODE_COOKIE, value: '1', httpOnly: false })
+  // Only the Board edits the website; members of the app sign in without edit mode (ADR-0024).
+  if (canEdit) {
+    cookieStore.set({ ...shared, name: EDIT_MODE_COOKIE, value: '1', httpOnly: false })
+  }
 
   return { status: 'success', redirectTo: getSafeRedirectPath(formData.get(REDIRECT_PARAM)) }
 }
@@ -87,7 +94,7 @@ export async function signInAction(
 export async function enterEditModeAction(): Promise<EditModeResult> {
   const payload = await getPayload({ config })
   const { user } = await payload.auth({ headers: await headers() })
-  if (!user) {
+  if (!user || !isAdmin(user)) {
     return { status: 'unauthorized' }
   }
 

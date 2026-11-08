@@ -24,7 +24,7 @@ vi.mock('payload', () => ({ getPayload: () => Promise.resolve(mocks.payload) }))
 vi.mock('next/headers', () => ({ headers: () => Promise.resolve(new Headers()) }))
 
 const { payload } = mocks
-const USER = { id: 1, collection: 'users' }
+const USER = { id: 1, collection: 'users', role: 'admin' }
 const AS_EDITOR = { user: USER, overrideAccess: false }
 const LOGO = new File([new Uint8Array(8)], 'logo.webp', { type: 'image/webp' })
 

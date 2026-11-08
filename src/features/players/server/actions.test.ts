@@ -37,7 +37,7 @@ vi.mock('payload', () => ({
 vi.mock('next/headers', () => ({ headers: () => Promise.resolve(new Headers()) }))
 
 const { payload } = mocks
-const USER = { id: 1, collection: 'users' }
+const USER = { id: 1, collection: 'users', role: 'admin' }
 const AS_EDITOR = { user: USER, overrideAccess: false }
 
 function formData(fields: Record<string, string | File>): FormData {

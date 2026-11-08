@@ -1,15 +1,12 @@
 'use server'
 
-import config from '@payload-config'
-import { headers } from 'next/headers'
-import { getPayload, type Payload, type TypedUser } from 'payload'
-
 import { isValidationErrorFor } from '@/shared/lib/payload-errors'
 
 import { routing, type Locale } from '@/i18n/routing'
 import { checkImageUpload } from '@/shared/config/image-upload'
 import { slugify } from '@/shared/lib/slugify'
 import { isRecordId } from '@/shared/lib/form-data'
+import { getEditor } from '@/features/auth'
 
 import { parseNewsForm } from '../domain/news-form'
 import { fromEditorDocument } from '../domain/rich-text'
@@ -33,14 +30,6 @@ const IMAGE_EXTENSIONS: Record<string, string> = {
   'image/jpeg': 'jpg',
   'image/png': 'png',
   'image/webp': 'webp',
-}
-
-type Editor = { payload: Payload; user: TypedUser }
-
-async function getEditor(): Promise<Editor | null> {
-  const payload = await getPayload({ config })
-  const { user } = await payload.auth({ headers: await headers() })
-  return user ? { payload, user } : null
 }
 
 function toLocale(value: unknown): Locale {

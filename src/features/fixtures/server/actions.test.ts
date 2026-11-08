@@ -25,7 +25,7 @@ vi.mock('payload', () => ({ getPayload: () => Promise.resolve(mocks.payload) }))
 vi.mock('next/headers', () => ({ headers: () => Promise.resolve(new Headers()) }))
 
 const { payload } = mocks
-const USER = { id: 1, collection: 'users' }
+const USER = { id: 1, collection: 'users', role: 'admin' }
 const AS_EDITOR = { user: USER, overrideAccess: false }
 const COMPETITION_ID = 7
 const CSV = `Date,Time,Home,Away,Ground,Address,Stage

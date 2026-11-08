@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { signedIn } from '../access/signed-in'
+import { admins } from '../access/roles'
 
 // Kept short on purpose (data minimisation): enough for the board to reply, nothing more.
 const MESSAGE_MAX_LENGTH = 1000
@@ -21,9 +21,9 @@ export const contactMessages: CollectionConfig = {
   },
   access: {
     create: () => false,
-    read: signedIn,
-    update: signedIn,
-    delete: signedIn,
+    read: admins,
+    update: admins,
+    delete: admins,
   },
   defaultSort: '-createdAt',
   fields: [

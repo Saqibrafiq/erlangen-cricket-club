@@ -1,11 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 
 export const media: CollectionConfig = {
   slug: 'media',
   access: {
     read: anyone,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   fields: [
     {

@@ -79,6 +79,13 @@ export interface Config {
     'contact-messages': ContactMessage;
     sponsors: Sponsor;
     users: User;
+    'practice-sessions': PracticeSession;
+    'availability-responses': AvailabilityResponse;
+    attendance: Attendance;
+    squads: Squad;
+    spielerpasses: Spielerpass;
+    'push-subscriptions': PushSubscription;
+    'notification-log': NotificationLog;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -98,6 +105,13 @@ export interface Config {
     'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'practice-sessions': PracticeSessionsSelect<false> | PracticeSessionsSelect<true>;
+    'availability-responses': AvailabilityResponsesSelect<false> | AvailabilityResponsesSelect<true>;
+    attendance: AttendanceSelect<false> | AttendanceSelect<true>;
+    squads: SquadsSelect<false> | SquadsSelect<true>;
+    spielerpasses: SpielerpassesSelect<false> | SpielerpassesSelect<true>;
+    'push-subscriptions': PushSubscriptionsSelect<false> | PushSubscriptionsSelect<true>;
+    'notification-log': NotificationLogSelect<false> | NotificationLogSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -409,6 +423,14 @@ export interface Player {
    */
   teams?: (number | Team)[] | null;
   /**
+   * The one squad this player belongs to in the app (ECC I or ECC II).
+   */
+  squadTeam?: (number | null) | Team;
+  /**
+   * Motion 2024/06: new members without a long-term commitment may not play in an upper league.
+   */
+  isEcc1Eligible?: boolean | null;
+  /**
    * Board role, if the player holds one.
    */
   clubOffice?: ('president' | 'vice-president' | 'treasurer' | 'secretary') | null;
@@ -565,17 +587,29 @@ export interface Sponsor {
   createdAt: string;
 }
 /**
+ * Accounts for the website and the members’ app. Every member is a player; captains lead a team; admins (the Board) manage both.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
   /**
-   * Shown in the account menu on the website, e.g. "Saqib Rafiq".
+   * Shown in the account menu, e.g. "Saqib Rafiq".
    */
   name?: string | null;
+  role: 'player' | 'captain' | 'admin';
+  /**
+   * The player this account belongs to: their answers and attendance are theirs.
+   */
+  player?: (number | null) | Player;
+  captainOf?: (number | null) | Team;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  hasAPIKey?: boolean | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -593,6 +627,145 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "practice-sessions".
+ */
+export interface PracticeSession {
+  id: number;
+  team: number | Team;
+  date: string;
+  /**
+   * HH:mm, club time.
+   */
+  startTime: string;
+  /**
+   * The match this practice prepares for; empty for an extra practice.
+   */
+  fixture?: (number | null) | Fixture;
+  /**
+   * Cancelled practices never count for attendance (Q-2).
+   */
+  isCancelled?: boolean | null;
+  /**
+   * Set when the captain completes the check-in.
+   */
+  isRecorded?: boolean | null;
+  isManual?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "availability-responses".
+ */
+export interface AvailabilityResponse {
+  id: number;
+  player: number | Player;
+  fixture?: (number | null) | Fixture;
+  practice?: (number | null) | PracticeSession;
+  response: 'going' | 'not-going';
+  reason?: string | null;
+  team?: (number | null) | Team;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendance".
+ */
+export interface Attendance {
+  id: number;
+  practice: number | PracticeSession;
+  player: number | Player;
+  attended?: boolean | null;
+  /**
+   * Came without having answered Going.
+   */
+  isWalkIn?: boolean | null;
+  team: number | Team;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "squads".
+ */
+export interface Squad {
+  id: number;
+  fixture: number | Fixture;
+  status: 'open' | 'submitted' | 'approved' | 'returned';
+  deadlineDay: 'tuesday' | 'wednesday' | 'thursday';
+  /**
+   * The squad: exactly 11 playing and one 12th man; reserves optional.
+   */
+  picks?:
+    | {
+        player: number | Player;
+        role: 'playing' | 'twelfth' | 'reserve';
+        isBorrowed?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Players the Board makes selectable for this match despite the rules (R-8).
+   */
+  exceptions?: (number | Player)[] | null;
+  /**
+   * Selected players who did not appear: they sit out the next match (motion 2023/10).
+   */
+  noShows?: (number | Player)[] | null;
+  /**
+   * Why the Board returned the squad to the captain.
+   */
+  note?: string | null;
+  approvedAt?: string | null;
+  team: number | Team;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "spielerpasses".
+ */
+export interface Spielerpass {
+  id: number;
+  player: number | Player;
+  /**
+   * First and second name exactly as on the pass.
+   */
+  registeredName: string;
+  passNumber: string;
+  validUntil?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-subscriptions".
+ */
+export interface PushSubscription {
+  id: number;
+  user: number | User;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  userAgent?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification-log".
+ */
+export interface NotificationLog {
+  id: number;
+  key: string;
+  kind: string;
+  user: number | User;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -665,6 +838,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'practice-sessions';
+        value: number | PracticeSession;
+      } | null)
+    | ({
+        relationTo: 'availability-responses';
+        value: number | AvailabilityResponse;
+      } | null)
+    | ({
+        relationTo: 'attendance';
+        value: number | Attendance;
+      } | null)
+    | ({
+        relationTo: 'squads';
+        value: number | Squad;
+      } | null)
+    | ({
+        relationTo: 'spielerpasses';
+        value: number | Spielerpass;
+      } | null)
+    | ({
+        relationTo: 'push-subscriptions';
+        value: number | PushSubscription;
+      } | null)
+    | ({
+        relationTo: 'notification-log';
+        value: number | NotificationLog;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -794,6 +995,8 @@ export interface PlayersSelect<T extends boolean = true> {
   battingStyle?: T;
   bowlingStyle?: T;
   teams?: T;
+  squadTeam?: T;
+  isEcc1Eligible?: T;
   clubOffice?: T;
   bio?: T;
   slug?: T;
@@ -956,8 +1159,15 @@ export interface SponsorsSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
+  player?: T;
+  captainOf?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
+  hasAPIKey?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -973,6 +1183,108 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "practice-sessions_select".
+ */
+export interface PracticeSessionsSelect<T extends boolean = true> {
+  team?: T;
+  date?: T;
+  startTime?: T;
+  fixture?: T;
+  isCancelled?: T;
+  isRecorded?: T;
+  isManual?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "availability-responses_select".
+ */
+export interface AvailabilityResponsesSelect<T extends boolean = true> {
+  player?: T;
+  fixture?: T;
+  practice?: T;
+  response?: T;
+  reason?: T;
+  team?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendance_select".
+ */
+export interface AttendanceSelect<T extends boolean = true> {
+  practice?: T;
+  player?: T;
+  attended?: T;
+  isWalkIn?: T;
+  team?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "squads_select".
+ */
+export interface SquadsSelect<T extends boolean = true> {
+  fixture?: T;
+  status?: T;
+  deadlineDay?: T;
+  picks?:
+    | T
+    | {
+        player?: T;
+        role?: T;
+        isBorrowed?: T;
+        id?: T;
+      };
+  exceptions?: T;
+  noShows?: T;
+  note?: T;
+  approvedAt?: T;
+  team?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "spielerpasses_select".
+ */
+export interface SpielerpassesSelect<T extends boolean = true> {
+  player?: T;
+  registeredName?: T;
+  passNumber?: T;
+  validUntil?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-subscriptions_select".
+ */
+export interface PushSubscriptionsSelect<T extends boolean = true> {
+  user?: T;
+  endpoint?: T;
+  p256dh?: T;
+  auth?: T;
+  userAgent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification-log_select".
+ */
+export interface NotificationLogSelect<T extends boolean = true> {
+  key?: T;
+  kind?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

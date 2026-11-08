@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 import { revalidatePagesAfterGlobalChange } from '../hooks/revalidate-pages'
 
 const MAX_LATITUDE = 90
@@ -14,7 +15,7 @@ export const contact: GlobalConfig = {
     group: 'Club',
     description: 'Shown on the contact page.',
   },
-  access: { read: anyone },
+  access: { read: anyone, update: admins },
   hooks: { afterChange: [revalidatePagesAfterGlobalChange] },
   fields: [
     {

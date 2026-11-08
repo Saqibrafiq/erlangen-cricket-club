@@ -1,6 +1,7 @@
 import type { Field, GlobalConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 import { validateTime } from '../fields/validate-time'
 import { revalidatePagesAfterGlobalChange } from '../hooks/revalidate-pages'
 
@@ -41,7 +42,7 @@ export const membership: GlobalConfig = {
     group: 'Club',
     description: 'Fees, training times and the application form, as shown on the membership page.',
   },
-  access: { read: anyone },
+  access: { read: anyone, update: admins },
   hooks: { afterChange: [revalidatePagesAfterGlobalChange] },
   fields: [
     {

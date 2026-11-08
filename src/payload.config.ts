@@ -7,6 +7,8 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
+import { attendance } from './cms/collections/attendance'
+import { availabilityResponses } from './cms/collections/availability-responses'
 import { competitions } from './cms/collections/competitions'
 import { documents } from './cms/collections/documents'
 import { fixtures } from './cms/collections/fixtures'
@@ -14,9 +16,14 @@ import { grounds } from './cms/collections/grounds'
 import { media } from './cms/collections/media'
 import { contactMessages } from './cms/collections/contact-messages'
 import { news } from './cms/collections/news'
+import { notificationLog } from './cms/collections/notification-log'
 import { players } from './cms/collections/players'
 import { playerSeasons } from './cms/collections/player-seasons'
+import { practiceSessions } from './cms/collections/practice-sessions'
+import { pushSubscriptions } from './cms/collections/push-subscriptions'
+import { spielerpasses } from './cms/collections/spielerpasses'
 import { sponsors } from './cms/collections/sponsors'
+import { squads } from './cms/collections/squads'
 import { teams } from './cms/collections/teams'
 import { users } from './cms/collections/users'
 import { contact } from './cms/globals/contact'
@@ -49,6 +56,14 @@ export default buildConfig({
     contactMessages,
     sponsors,
     users,
+    // The members' app (ADR-0024).
+    practiceSessions,
+    availabilityResponses,
+    attendance,
+    squads,
+    spielerpasses,
+    pushSubscriptions,
+    notificationLog,
   ],
   globals: [membership, contact, instagram, journey, impressum, privacyPolicy],
   editor: lexicalEditor(),

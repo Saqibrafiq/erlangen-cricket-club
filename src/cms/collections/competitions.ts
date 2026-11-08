@@ -3,6 +3,7 @@ import type { CollectionConfig, Field, FieldHook } from 'payload'
 import type { Competition } from '../../payload-types'
 import { slugify } from '../../shared/lib/slugify'
 import { anyone } from '../access/anyone'
+import { admins } from '../access/roles'
 import { validateOvers } from '../fields/validate-overs'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 
@@ -24,6 +25,10 @@ export const competitions: CollectionConfig = {
   },
   access: {
     read: anyone,
+    // Website content: only the Board edits it (ADR-0024).
+    create: admins,
+    update: admins,
+    delete: admins,
   },
   hooks: {
     afterChange: [revalidatePagesAfterChange],

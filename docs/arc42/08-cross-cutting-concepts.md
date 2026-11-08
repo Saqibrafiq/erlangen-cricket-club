@@ -67,8 +67,10 @@
 
 ## 8.7 Security
 
+- **Roles** ([ADR-0024](09-architecture-decisions/0024-backend-for-the-members-app.md)): accounts are `player`, `captain` or `admin` (the Board). Only admins edit the website, open the Payload admin and get edit mode; the editing actions share one admin-checking `getEditor` (`features/auth/server/editor.ts`). The members' app collections enforce their rules in Payload itself (`cms/access/members-app.ts`): own answers, own team's records, reasons visible only to the member, their captain and admins.
+
 - **Third-party content:** nothing from another server loads without the visitor asking: the ground map is a two-click OpenStreetMap embed ([ADR-0008](09-architecture-decisions/0008-maps-load-on-request.md)); fonts are self-hosted.
-- **Public forms:** data minimisation (only what is needed to reply), server-side Zod validation, a honeypot instead of a captcha (no cookies, no third-party script), personal data readable by signed-in editors only. Form fields use `shared/ui/FormField` (label, hint and error wired with `aria-describedby`; invalid controls get `aria-invalid`); after a failed submit, focus moves to the first invalid field. See [ADR-0007](09-architecture-decisions/0007-contact-messages-stored-in-cms.md).
+- **Public forms:** data minimisation (only what is needed to reply), server-side Zod validation, a honeypot instead of a captcha (no cookies, no third-party script), personal data readable by admins only. Form fields use `shared/ui/FormField` (label, hint and error wired with `aria-describedby`; invalid controls get `aria-invalid`); after a failed submit, focus moves to the first invalid field. See [ADR-0007](09-architecture-decisions/0007-contact-messages-stored-in-cms.md).
 
 - **Editor sign-in** ([ADR-0014](09-architecture-decisions/0014-club-sign-in-page-on-payload-auth.md)):
   - `/login` (`features/auth`) signs in through Payload's Local API and sets Payload's own session cookie (`payload-token`: `HttpOnly`, `SameSite=Lax`, `Secure` in production, 2 h);
