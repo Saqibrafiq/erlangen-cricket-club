@@ -82,6 +82,7 @@ export interface Config {
     'practice-sessions': PracticeSession;
     'availability-responses': AvailabilityResponse;
     attendance: Attendance;
+    'attendance-corrections': AttendanceCorrection;
     squads: Squad;
     spielerpasses: Spielerpass;
     'push-subscriptions': PushSubscription;
@@ -108,6 +109,7 @@ export interface Config {
     'practice-sessions': PracticeSessionsSelect<false> | PracticeSessionsSelect<true>;
     'availability-responses': AvailabilityResponsesSelect<false> | AvailabilityResponsesSelect<true>;
     attendance: AttendanceSelect<false> | AttendanceSelect<true>;
+    'attendance-corrections': AttendanceCorrectionsSelect<false> | AttendanceCorrectionsSelect<true>;
     squads: SquadsSelect<false> | SquadsSelect<true>;
     spielerpasses: SpielerpassesSelect<false> | SpielerpassesSelect<true>;
     'push-subscriptions': PushSubscriptionsSelect<false> | PushSubscriptionsSelect<true>;
@@ -128,6 +130,7 @@ export interface Config {
     journey: Journey;
     impressum: Impressum;
     'privacy-policy': PrivacyPolicy;
+    'members-app-settings': MembersAppSetting;
   };
   globalsSelect: {
     membership: MembershipSelect<false> | MembershipSelect<true>;
@@ -136,6 +139,7 @@ export interface Config {
     journey: JourneySelect<false> | JourneySelect<true>;
     impressum: ImpressumSelect<false> | ImpressumSelect<true>;
     'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
+    'members-app-settings': MembersAppSettingsSelect<false> | MembersAppSettingsSelect<true>;
   };
   locale: 'en' | 'de';
   widgets: {
@@ -690,6 +694,24 @@ export interface Attendance {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendance-corrections".
+ */
+export interface AttendanceCorrection {
+  id: number;
+  practice: number | PracticeSession;
+  player: number | Player;
+  /**
+   * What the player wrote, e.g. "Came late, after the check-in".
+   */
+  note?: string | null;
+  status: 'requested' | 'accepted' | 'declined';
+  decidedBy?: (number | null) | User;
+  team: number | Team;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "squads".
  */
 export interface Squad {
@@ -850,6 +872,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'attendance';
         value: number | Attendance;
+      } | null)
+    | ({
+        relationTo: 'attendance-corrections';
+        value: number | AttendanceCorrection;
       } | null)
     | ({
         relationTo: 'squads';
@@ -1228,6 +1254,20 @@ export interface AttendanceSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendance-corrections_select".
+ */
+export interface AttendanceCorrectionsSelect<T extends boolean = true> {
+  practice?: T;
+  player?: T;
+  note?: T;
+  status?: T;
+  decidedBy?: T;
+  team?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "squads_select".
  */
 export interface SquadsSelect<T extends boolean = true> {
@@ -1553,6 +1593,19 @@ export interface PrivacyPolicy {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members-app-settings".
+ */
+export interface MembersAppSetting {
+  id: number;
+  /**
+   * Matches before this day do not count for the availability targets (motions 2023/05 and 2023/06), e.g. the day the app went live. Empty: the whole season counts.
+   */
+  targetsStartOn?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "membership_select".
  */
 export interface MembershipSelect<T extends boolean = true> {
@@ -1662,6 +1715,16 @@ export interface ImpressumSelect<T extends boolean = true> {
  */
 export interface PrivacyPolicySelect<T extends boolean = true> {
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members-app-settings_select".
+ */
+export interface MembersAppSettingsSelect<T extends boolean = true> {
+  targetsStartOn?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
