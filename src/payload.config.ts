@@ -32,6 +32,7 @@ import { instagram } from './cms/globals/instagram'
 import { journey } from './cms/globals/journey'
 import { impressum, privacyPolicy } from './cms/globals/legal-pages'
 import { membership } from './cms/globals/membership'
+import { membersAppSettings } from './cms/globals/members-app-settings'
 import { migrations } from './cms/migrations'
 import { routing } from './i18n/routing'
 import { parseServerEnv } from './shared/config/env'
@@ -67,7 +68,7 @@ export default buildConfig({
     pushSubscriptions,
     notificationLog,
   ],
-  globals: [membership, contact, instagram, journey, impressum, privacyPolicy],
+  globals: [membership, contact, instagram, journey, impressum, privacyPolicy, membersAppSettings],
   editor: lexicalEditor(),
   // Content fields opt in with `localized: true`; untranslated German falls back to English.
   localization: {

@@ -130,6 +130,7 @@ export interface Config {
     journey: Journey;
     impressum: Impressum;
     'privacy-policy': PrivacyPolicy;
+    'members-app-settings': MembersAppSetting;
   };
   globalsSelect: {
     membership: MembershipSelect<false> | MembershipSelect<true>;
@@ -138,6 +139,7 @@ export interface Config {
     journey: JourneySelect<false> | JourneySelect<true>;
     impressum: ImpressumSelect<false> | ImpressumSelect<true>;
     'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
+    'members-app-settings': MembersAppSettingsSelect<false> | MembersAppSettingsSelect<true>;
   };
   locale: 'en' | 'de';
   widgets: {
@@ -1591,6 +1593,19 @@ export interface PrivacyPolicy {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members-app-settings".
+ */
+export interface MembersAppSetting {
+  id: number;
+  /**
+   * Matches before this day do not count for the availability targets (motions 2023/05 and 2023/06), e.g. the day the app went live. Empty: the whole season counts.
+   */
+  targetsStartOn?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "membership_select".
  */
 export interface MembershipSelect<T extends boolean = true> {
@@ -1700,6 +1715,16 @@ export interface ImpressumSelect<T extends boolean = true> {
  */
 export interface PrivacyPolicySelect<T extends boolean = true> {
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members-app-settings_select".
+ */
+export interface MembersAppSettingsSelect<T extends boolean = true> {
+  targetsStartOn?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
