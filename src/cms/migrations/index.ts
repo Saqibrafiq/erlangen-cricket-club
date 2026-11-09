@@ -19,6 +19,7 @@ import * as migration_20261103_225430_user_name from './20261103_225430_user_nam
 import * as migration_20261105_230129_player_seasons from './20261105_230129_player_seasons';
 import * as migration_20261107_120000_merge_fixtures_and_seasons from './20261107_120000_merge_fixtures_and_seasons';
 import * as migration_20261108_172207_members_app from './20261108_172207_members_app';
+import * as migration_20261109_212911_attendance_corrections from './20261109_212911_attendance_corrections';
 
 export const migrations = [
   {
@@ -124,6 +125,11 @@ export const migrations = [
   {
     up: migration_20261108_172207_members_app.up,
     down: migration_20261108_172207_members_app.down,
-    name: '20261108_172207_members_app'
+    name: '20261108_172207_members_app',
+  },
+  {
+    up: migration_20261109_212911_attendance_corrections.up,
+    down: migration_20261109_212911_attendance_corrections.down,
+    name: '20261109_212911_attendance_corrections'
   },
 ];

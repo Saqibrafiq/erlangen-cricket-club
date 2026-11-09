@@ -8,6 +8,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
 import { attendance } from './cms/collections/attendance'
+import { attendanceCorrections } from './cms/collections/attendance-corrections'
 import { availabilityResponses } from './cms/collections/availability-responses'
 import { competitions } from './cms/collections/competitions'
 import { documents } from './cms/collections/documents'
@@ -60,6 +61,7 @@ export default buildConfig({
     practiceSessions,
     availabilityResponses,
     attendance,
+    attendanceCorrections,
     squads,
     spielerpasses,
     pushSubscriptions,
