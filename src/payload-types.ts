@@ -320,6 +320,14 @@ export interface Competition {
    */
   maxOvers: number;
   /**
+   * As on the DCB match report sheet, e.g. "BCV Meisterschaft 2026". Empty: the name.
+   */
+  championship?: string | null;
+  /**
+   * As on the DCB match report sheet, e.g. "Regionalliga".
+   */
+  division?: string | null;
+  /**
    * The home page counts down to the next match of the ticked competitions only.
    */
   isFeatured?: boolean | null;
@@ -1161,6 +1169,8 @@ export interface CompetitionsSelect<T extends boolean = true> {
   name?: T;
   season?: T;
   maxOvers?: T;
+  championship?: T;
+  division?: T;
   isFeatured?: T;
   standings?:
     | T

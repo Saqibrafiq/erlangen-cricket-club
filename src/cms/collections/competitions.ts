@@ -57,6 +57,30 @@ export const competitions: CollectionConfig = {
       admin: { description: 'Scheduled overs per innings (20 for T20).' },
     },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'championship',
+          label: 'Meisterschaft',
+          type: 'text',
+          admin: {
+            width: '50%',
+            description:
+              'As on the DCB match report sheet, e.g. "BCV Meisterschaft 2026". Empty: the name.',
+          },
+        },
+        {
+          name: 'division',
+          label: 'Spielklasse',
+          type: 'text',
+          admin: {
+            width: '50%',
+            description: 'As on the DCB match report sheet, e.g. "Regionalliga".',
+          },
+        },
+      ],
+    },
+    {
       name: 'isFeatured',
       label: 'Show next match on the home page',
       type: 'checkbox',

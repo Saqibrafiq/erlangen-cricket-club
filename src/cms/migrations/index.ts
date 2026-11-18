@@ -22,6 +22,7 @@ import * as migration_20261108_172207_members_app from './20261108_172207_member
 import * as migration_20261109_212911_attendance_corrections from './20261109_212911_attendance_corrections';
 import * as migration_20261109_214351_members_app_settings from './20261109_214351_members_app_settings';
 import * as migration_20261118_223632_private_uploads_and_match_sheets from './20261118_223632_private_uploads_and_match_sheets';
+import * as migration_20261118_223912_competition_sheet_fields from './20261118_223912_competition_sheet_fields';
 
 export const migrations = [
   {
@@ -142,6 +143,11 @@ export const migrations = [
   {
     up: migration_20261118_223632_private_uploads_and_match_sheets.up,
     down: migration_20261118_223632_private_uploads_and_match_sheets.down,
-    name: '20261118_223632_private_uploads_and_match_sheets'
+    name: '20261118_223632_private_uploads_and_match_sheets',
+  },
+  {
+    up: migration_20261118_223912_competition_sheet_fields.up,
+    down: migration_20261118_223912_competition_sheet_fields.down,
+    name: '20261118_223912_competition_sheet_fields'
   },
 ];
