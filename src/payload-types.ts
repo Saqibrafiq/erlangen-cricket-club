@@ -83,6 +83,9 @@ export interface Config {
     'availability-responses': AvailabilityResponse;
     attendance: Attendance;
     'attendance-corrections': AttendanceCorrection;
+    'spielerpass-cards': SpielerpassCard;
+    'match-sheets': MatchSheet;
+    'stored-files': StoredFile;
     squads: Squad;
     spielerpasses: Spielerpass;
     'push-subscriptions': PushSubscription;
@@ -110,6 +113,9 @@ export interface Config {
     'availability-responses': AvailabilityResponsesSelect<false> | AvailabilityResponsesSelect<true>;
     attendance: AttendanceSelect<false> | AttendanceSelect<true>;
     'attendance-corrections': AttendanceCorrectionsSelect<false> | AttendanceCorrectionsSelect<true>;
+    'spielerpass-cards': SpielerpassCardsSelect<false> | SpielerpassCardsSelect<true>;
+    'match-sheets': MatchSheetsSelect<false> | MatchSheetsSelect<true>;
+    'stored-files': StoredFilesSelect<false> | StoredFilesSelect<true>;
     squads: SquadsSelect<false> | SquadsSelect<true>;
     spielerpasses: SpielerpassesSelect<false> | SpielerpassesSelect<true>;
     'push-subscriptions': PushSubscriptionsSelect<false> | PushSubscriptionsSelect<true>;
@@ -712,6 +718,59 @@ export interface AttendanceCorrection {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "spielerpass-cards".
+ */
+export interface SpielerpassCard {
+  id: number;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "match-sheets".
+ */
+export interface MatchSheet {
+  id: number;
+  fixture: number | Fixture;
+  team: number | Team;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stored-files".
+ */
+export interface StoredFile {
+  id: number;
+  key: string;
+  mimeType: string;
+  filesize: number;
+  data: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "squads".
  */
 export interface Squad {
@@ -760,6 +819,10 @@ export interface Spielerpass {
   registeredName: string;
   passNumber: string;
   validUntil?: string | null;
+  /**
+   * A photo of the pass, front side. Kept in the club’s database only.
+   */
+  card?: (number | null) | SpielerpassCard;
   updatedAt: string;
   createdAt: string;
 }
@@ -876,6 +939,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'attendance-corrections';
         value: number | AttendanceCorrection;
+      } | null)
+    | ({
+        relationTo: 'spielerpass-cards';
+        value: number | SpielerpassCard;
+      } | null)
+    | ({
+        relationTo: 'match-sheets';
+        value: number | MatchSheet;
+      } | null)
+    | ({
+        relationTo: 'stored-files';
+        value: number | StoredFile;
       } | null)
     | ({
         relationTo: 'squads';
@@ -1268,6 +1343,56 @@ export interface AttendanceCorrectionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "spielerpass-cards_select".
+ */
+export interface SpielerpassCardsSelect<T extends boolean = true> {
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "match-sheets_select".
+ */
+export interface MatchSheetsSelect<T extends boolean = true> {
+  fixture?: T;
+  team?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stored-files_select".
+ */
+export interface StoredFilesSelect<T extends boolean = true> {
+  key?: T;
+  mimeType?: T;
+  filesize?: T;
+  data?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "squads_select".
  */
 export interface SquadsSelect<T extends boolean = true> {
@@ -1299,6 +1424,7 @@ export interface SpielerpassesSelect<T extends boolean = true> {
   registeredName?: T;
   passNumber?: T;
   validUntil?: T;
+  card?: T;
   updatedAt?: T;
   createdAt?: T;
 }

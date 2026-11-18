@@ -3,12 +3,16 @@ import { fileURLToPath } from 'node:url'
 
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
 import { attendance } from './cms/collections/attendance'
 import { attendanceCorrections } from './cms/collections/attendance-corrections'
+import { matchSheets, spielerpassCards } from './cms/collections/private-uploads'
+import { storedFiles } from './cms/collections/stored-files'
+import { databaseStorage } from './cms/storage/database-storage'
 import { availabilityResponses } from './cms/collections/availability-responses'
 import { competitions } from './cms/collections/competitions'
 import { documents } from './cms/collections/documents'
@@ -63,6 +67,9 @@ export default buildConfig({
     availabilityResponses,
     attendance,
     attendanceCorrections,
+    spielerpassCards,
+    matchSheets,
+    storedFiles,
     squads,
     spielerpasses,
     pushSubscriptions,
@@ -88,6 +95,13 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    // Personal images stay in the club's own database, never on a public URL (ADR-0025).
+    cloudStoragePlugin({
+      collections: {
+        [spielerpassCards.slug]: { adapter: databaseStorage, disableLocalStorage: true },
+        [matchSheets.slug]: { adapter: databaseStorage, disableLocalStorage: true },
+      },
+    }),
     // Disabled locally without a token, so uploads go to ./media in development.
     vercelBlobStorage({
       enabled: env.BLOB_READ_WRITE_TOKEN !== undefined,
