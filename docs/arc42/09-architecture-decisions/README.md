@@ -4,8 +4,8 @@ Decisions follow the [MADR](https://adr.github.io/madr/) template ([`template.md
 
 | ADR                                                               | Title                                                                                                  | Status   |
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------- |
-| [0024](0024-backend-for-the-members-app.md)                       | The CMS is also the backend of the members' app; roles separate the Board from members                 | Accepted |
 | [0025](0025-private-uploads-in-the-database.md)                   | Personal images (Spielerpass cards, signed sheets) are stored in the database, not public Blob storage | Accepted |
+| [0024](0024-backend-for-the-members-app.md)                       | The CMS is also the backend of the members' app; roles separate the Board from members                 | Accepted |
 | [0001](0001-modular-monolith-with-next-and-payload.md)            | Modular monolith with Next.js and Payload CMS                                                          | Accepted |
 | [0002](0002-keep-set-request-locale-until-root-params-support.md) | Keep next-intl `setRequestLocale` until root params work                                               | Accepted |
 | [0003](0003-own-match-data-in-payload.md)                         | Own match data in Payload; import from CricClubs, never scrape                                         | Accepted |
