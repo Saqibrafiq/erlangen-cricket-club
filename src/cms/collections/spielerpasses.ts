@@ -14,7 +14,7 @@ export const spielerpasses: CollectionConfig = {
   admin: {
     group: 'Members’ app',
     useAsTitle: 'registeredName',
-    defaultColumns: ['registeredName', 'passNumber', 'player', 'validUntil'],
+    defaultColumns: ['registeredName', 'passNumber', 'player', 'validFrom'],
   },
   access: {
     read: admins,
@@ -42,9 +42,14 @@ export const spielerpasses: CollectionConfig = {
           admin: { width: '25%' },
         },
         {
-          name: 'validUntil',
+          name: 'validFrom',
+          label: 'Valid from',
           type: 'date',
-          admin: { width: '25%', date: { pickerAppearance: 'dayOnly' } },
+          admin: {
+            width: '25%',
+            date: { pickerAppearance: 'dayOnly' },
+            description: '"Gültig ab" on the pass.',
+          },
         },
       ],
     },

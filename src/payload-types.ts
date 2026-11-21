@@ -826,7 +826,10 @@ export interface Spielerpass {
    */
   registeredName: string;
   passNumber: string;
-  validUntil?: string | null;
+  /**
+   * "Gültig ab" on the pass.
+   */
+  validFrom?: string | null;
   /**
    * A photo of the pass, front side. Kept in the club’s database only.
    */
@@ -1433,7 +1436,7 @@ export interface SpielerpassesSelect<T extends boolean = true> {
   player?: T;
   registeredName?: T;
   passNumber?: T;
-  validUntil?: T;
+  validFrom?: T;
   card?: T;
   updatedAt?: T;
   createdAt?: T;

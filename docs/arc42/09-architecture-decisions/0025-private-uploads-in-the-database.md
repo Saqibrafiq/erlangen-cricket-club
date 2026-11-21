@@ -35,5 +35,6 @@ Option 1.
 
 - Good: personal images never leave the club's database and follow the same access rules as their records; deleting a card deletes its bytes.
 - Good: backups of the database include the images; nothing to sync between two stores.
-- Bad: the database grows by the images (about 40 cards and a season of sheets at roughly 200–400 KB each: tens of MB, well within Neon's free 0.5 GB). Base64 adds a third. If volume grows, revisit with option 3.
+- Bad: the database grows by the images. Measured: the club's 47 Spielerpass cards take 8.6 MB including the base64 overhead, about 180 KB each; a season of signed sheets adds a few MB. Well within Neon's free 0.5 GB. If volume grows, revisit with option 3.
+- Neutral: `pnpm db:import:spielerpasses` reads a folder of DCB Spielerpass PDFs (`SPIELERPASS_DIR`), renders each card to an image and writes the pass with it, in one transaction; `DRY_RUN=1` reports first. The folder holds personal data and stays out of the repository. The date of birth is never stored as data: it remains only inside the card image.
 - Bad: every image request goes through the website's server instead of a CDN. Acceptable for a few views per match day.
