@@ -1,6 +1,7 @@
 import type { Payload, PayloadRequest } from 'payload'
 
 import { slugify } from '../../shared/lib/slugify'
+import { relationId } from '../access/roles'
 import type { RevalidateContext } from '../hooks/revalidate-pages'
 import { matchPlayerName } from '../seed/match-player-name'
 import type { PassDetails } from './parse-pass'
@@ -78,13 +79,10 @@ export function nameFromFile(file: string): string {
     .trim()
 }
 
-const relationId = (value: unknown): number | null => {
-  if (typeof value === 'number') return value
-  if (typeof value === 'object' && value !== null && 'id' in value) {
-    const { id } = value
-    return typeof id === 'number' ? id : null
-  }
-  return null
+/** A relationship's id, as this database always numbers them. */
+const numericId = (value: unknown): number | null => {
+  const id = relationId(value)
+  return typeof id === 'number' ? id : null
 }
 
 /**
@@ -100,10 +98,7 @@ export async function planSpielerpassImport(
     payload.find({ collection: 'spielerpasses', limit: 0, depth: 0, pagination: false }),
   ])
   const existingByPlayer = new Map(
-    existing.map((pass) => [
-      relationId(pass.player),
-      { id: pass.id, cardId: relationId(pass.card) },
-    ]),
+    existing.map((pass) => [numericId(pass.player), { id: pass.id, cardId: numericId(pass.card) }]),
   )
 
   const plan: SpielerpassPlan = { matched: [], newPlayers: [], duplicates: [] }

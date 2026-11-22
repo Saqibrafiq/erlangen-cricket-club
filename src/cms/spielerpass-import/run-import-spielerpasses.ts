@@ -15,7 +15,9 @@ const folder = process.env.SPIELERPASS_DIR
 if (!folder) throw new Error('Set SPIELERPASS_DIR to the folder of Spielerpass PDFs.')
 const isDryRun = process.env.DRY_RUN === '1'
 
-const files = (await readdir(folder)).filter((file) => file.toLowerCase().endsWith('.pdf')).sort()
+const files = (await readdir(folder))
+  .filter((file) => file.toLowerCase().endsWith('.pdf'))
+  .sort((a, b) => a.localeCompare(b))
 const passes: PassFile[] = []
 const unreadable: string[] = []
 for (const file of files) {
