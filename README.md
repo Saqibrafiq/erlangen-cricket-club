@@ -147,15 +147,16 @@ pnpm db:seed                    # optional: 2026 fixtures, results, news and pla
 pnpm dev                        # http://localhost:3000 (German: /de, admin: /admin)
 ```
 
-| Script                          | Purpose                                                   |
-| ------------------------------- | --------------------------------------------------------- |
-| `pnpm test` / `test:coverage`   | Unit and component tests (100% required for `src/domain`) |
-| `pnpm test:e2e`                 | Playwright E2E with axe                                   |
-| `pnpm lint` / `typecheck`       | ESLint / TypeScript                                       |
-| `pnpm depcruise`                | Architecture rules                                        |
-| `pnpm storybook`                | Component workshop on http://localhost:6006               |
-| `pnpm db:migrate:create <name>` | New migration after a collection change                   |
-| `pnpm db:import:player-seasons` | Load the league's season records (re-runnable)            |
+| Script                          | Purpose                                                    |
+| ------------------------------- | ---------------------------------------------------------- |
+| `pnpm test` / `test:coverage`   | Unit and component tests (100% required for `src/domain`)  |
+| `pnpm test:e2e`                 | Playwright E2E with axe                                    |
+| `pnpm lint` / `typecheck`       | ESLint / TypeScript                                        |
+| `pnpm depcruise`                | Architecture rules                                         |
+| `pnpm storybook`                | Component workshop on http://localhost:6006                |
+| `pnpm db:migrate:create <name>` | New migration after a collection change                    |
+| `pnpm db:import:player-seasons` | Load the league's season records (re-runnable)             |
+| `pnpm db:import:spielerpasses`  | Load DCB Spielerpass PDFs (`SPIELERPASS_DIR`, re-runnable) |
 
 Deployment and operations: [`docs/deployment.md`](docs/deployment.md).
 

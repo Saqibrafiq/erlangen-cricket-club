@@ -5,8 +5,8 @@ import { admins } from '../access/roles'
 /**
  * A player's Spielerpass details for the DCB match report sheet (ADR-0007 in the app, ADR-0024):
  * the name exactly as registered and the pass number. Personal data, so the Board only; the app
- * shows a captain the passes of an approved squad through its server. The card image follows
- * with its own decision on private storage.
+ * shows a captain the passes of an approved squad through its server, card image included
+ * (stored in the database, ADR-0025).
  */
 export const spielerpasses: CollectionConfig = {
   slug: 'spielerpasses',
@@ -14,7 +14,7 @@ export const spielerpasses: CollectionConfig = {
   admin: {
     group: 'Members’ app',
     useAsTitle: 'registeredName',
-    defaultColumns: ['registeredName', 'passNumber', 'player', 'validUntil'],
+    defaultColumns: ['registeredName', 'passNumber', 'player', 'validFrom'],
   },
   access: {
     read: admins,
@@ -42,11 +42,23 @@ export const spielerpasses: CollectionConfig = {
           admin: { width: '25%' },
         },
         {
-          name: 'validUntil',
+          name: 'validFrom',
+          label: 'Valid from',
           type: 'date',
-          admin: { width: '25%', date: { pickerAppearance: 'dayOnly' } },
+          admin: {
+            width: '25%',
+            date: { pickerAppearance: 'dayOnly' },
+            description: '"Gültig ab" on the pass.',
+          },
         },
       ],
+    },
+    {
+      name: 'card',
+      label: 'Card image',
+      type: 'upload',
+      relationTo: 'spielerpass-cards',
+      admin: { description: 'A photo of the pass, front side. Kept in the club’s database only.' },
     },
   ],
 }
