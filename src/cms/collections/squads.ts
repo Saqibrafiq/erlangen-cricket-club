@@ -130,6 +130,16 @@ export const squads: CollectionConfig = {
       'Selected players who did not appear: they sit out the next match (motion 2023/10).',
     ),
     {
+      name: 'noShowsRecordedAt',
+      label: 'No-shows recorded',
+      type: 'date',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        description: 'When the captain confirmed who appeared; empty means not checked yet.',
+      },
+    },
+    {
       name: 'note',
       type: 'textarea',
       maxLength: 500,
