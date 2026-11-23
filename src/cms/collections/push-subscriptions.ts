@@ -37,5 +37,18 @@ export const pushSubscriptions: CollectionConfig = {
       ],
     },
     { name: 'userAgent', label: 'Device', type: 'text' },
+    {
+      // Scheduled notifications are sent when no request tells the member's language, so each
+      // device keeps the language it was registered in.
+      name: 'locale',
+      label: 'Language',
+      type: 'select',
+      required: true,
+      defaultValue: 'en',
+      options: [
+        { label: 'English', value: 'en' },
+        { label: 'Deutsch', value: 'de' },
+      ],
+    },
   ],
 }

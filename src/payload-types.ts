@@ -861,6 +861,7 @@ export interface PushSubscription {
   p256dh: string;
   auth: string;
   userAgent?: string | null;
+  locale: 'en' | 'de';
   updatedAt: string;
   createdAt: string;
 }
@@ -1466,6 +1467,7 @@ export interface PushSubscriptionsSelect<T extends boolean = true> {
   p256dh?: T;
   auth?: T;
   userAgent?: T;
+  locale?: T;
   updatedAt?: T;
   createdAt?: T;
 }
