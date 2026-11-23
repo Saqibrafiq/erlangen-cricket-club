@@ -1,4 +1,5 @@
-import { getTeamOutcome, resolveMatchResult, type ResultInput } from '@/domain/cricket'
+import { getFixtureResult, relationId } from '@/cms/fields/fixture-result'
+import { getTeamOutcome } from '@/domain/cricket'
 import type { Competition, Fixture, Ground, Team } from '@/payload-types'
 
 import type { FixtureGround, FixtureInnings, FixtureSummary, FixtureTeam } from '../types'
@@ -20,14 +21,6 @@ function requirePopulated<T extends object>(
   }
 
   return value
-}
-
-function relationId(value: number | { id: number } | null | undefined): number | null {
-  if (value === null || value === undefined) {
-    return null
-  }
-
-  return typeof value === 'number' ? value : value.id
 }
 
 function mapTeam(team: Team): FixtureTeam {
@@ -57,33 +50,6 @@ function mapInnings(doc: Fixture): FixtureInnings[] {
   })
 }
 
-function toResultInput(doc: Fixture, innings: FixtureInnings[]): ResultInput<number> {
-  const method = doc.result?.method ?? 'normal'
-  const winnerTeamId = relationId(doc.result?.winner)
-
-  switch (method) {
-    case 'normal':
-      return { method, innings }
-    case 'dls': {
-      const { marginValue, marginUnit } = doc.result ?? {}
-      const margin =
-        typeof marginValue === 'number' && marginUnit
-          ? { value: marginValue, unit: marginUnit }
-          : null
-      return { method, winnerTeamId, margin }
-    }
-    case 'forfeit':
-    case 'walkover':
-      if (winnerTeamId === null) {
-        throw new FixtureMappingError(`Fixture ${doc.id}: ${method} without winner`)
-      }
-      return { method, winnerTeamId }
-    case 'no-result':
-      return { method }
-  }
-}
-
-/** Maps a Payload fixture (queried with depth >= 1) to the view model used by the UI. */
 /** The ground, when one is set and populated (queried with depth >= 1). */
 function mapGround(ground: number | Ground | null | undefined): FixtureGround | null {
   return typeof ground === 'object' && ground !== null
@@ -91,6 +57,7 @@ function mapGround(ground: number | Ground | null | undefined): FixtureGround | 
     : null
 }
 
+/** Maps a Payload fixture (queried with depth >= 1) to the view model used by the UI. */
 export function mapFixture(doc: Fixture): FixtureSummary {
   const competition = requirePopulated<Competition>(doc.competition, 'competition', doc.id)
   const teams = [
@@ -98,7 +65,7 @@ export function mapFixture(doc: Fixture): FixtureSummary {
     mapTeam(requirePopulated<Team>(doc.team2, 'team2', doc.id)),
   ] as const
   const innings = mapInnings(doc)
-  const result = doc.status === 'completed' ? resolveMatchResult(toResultInput(doc, innings)) : null
+  const result = getFixtureResult(doc)
   const clubTeam = teams.find((team) => team.isClubTeam)
 
   return {

@@ -3,6 +3,7 @@ import type { CollectionConfig, Validate } from 'payload'
 import { WICKETS_PER_INNINGS } from '../../domain/cricket'
 import { anyone } from '../access/anyone'
 import { admins } from '../access/roles'
+import { getFixtureResult } from '../fields/fixture-result'
 import { validateOvers } from '../fields/validate-overs'
 import { validateTime } from '../fields/validate-time'
 import { revalidatePagesAfterChange, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
@@ -227,6 +228,15 @@ export const fixtures: CollectionConfig = {
           ],
         },
       ],
+    },
+    {
+      // Derived on every read, never stored: the members' app shows results without its own copy
+      // of the cricket rules (resolveMatchResult stays the single implementation).
+      name: 'matchResult',
+      type: 'json',
+      virtual: true,
+      admin: { hidden: true },
+      hooks: { afterRead: [({ siblingData }) => getFixtureResult(siblingData)] },
     },
     {
       name: 'importKey',
