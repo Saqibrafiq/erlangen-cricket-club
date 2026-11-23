@@ -806,6 +806,10 @@ export interface Squad {
    */
   noShows?: (number | Player)[] | null;
   /**
+   * When the captain confirmed who appeared; empty means not checked yet.
+   */
+  noShowsRecordedAt?: string | null;
+  /**
    * Why the Board returned the squad to the captain.
    */
   note?: string | null;
@@ -1422,6 +1426,7 @@ export interface SquadsSelect<T extends boolean = true> {
       };
   exceptions?: T;
   noShows?: T;
+  noShowsRecordedAt?: T;
   note?: T;
   approvedAt?: T;
   team?: T;

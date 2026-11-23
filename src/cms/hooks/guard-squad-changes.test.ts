@@ -50,9 +50,13 @@ describe('guardSquadChanges', () => {
   it('lets a captain record no-shows on an announced squad, but not change it', () => {
     const announced = { status: 'approved', picks: PICKS }
 
-    expect(run(CAPTAIN, { status: 'approved', noShows: [30] }, announced)).toMatchObject({
-      noShows: [30],
-    })
+    expect(
+      run(
+        CAPTAIN,
+        { status: 'approved', noShows: [30], noShowsRecordedAt: '2026-11-14T18:00:00.000Z' },
+        announced,
+      ),
+    ).toMatchObject({ noShows: [30], noShowsRecordedAt: '2026-11-14T18:00:00.000Z' })
     expect(
       run(
         CAPTAIN,
