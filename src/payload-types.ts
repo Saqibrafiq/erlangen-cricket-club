@@ -294,6 +294,15 @@ export interface Fixture {
     marginValue?: number | null;
     marginUnit?: ('runs' | 'wickets') | null;
   };
+  matchResult?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   /**
    * Set by data imports to avoid duplicates.
    */
@@ -1074,6 +1083,7 @@ export interface FixturesSelect<T extends boolean = true> {
         marginValue?: T;
         marginUnit?: T;
       };
+  matchResult?: T;
   importKey?: T;
   updatedAt?: T;
   createdAt?: T;

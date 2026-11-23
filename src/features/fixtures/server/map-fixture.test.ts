@@ -157,6 +157,11 @@ describe('mapFixture', () => {
     expect(() => mapFixture(makeDoc({ competition: 1 }))).toThrow(FixtureMappingError)
   })
 
+  it('throws for an innings without a batting team', () => {
+    const innings = [{ battingTeam: null as never, runs: 1, wickets: 0, overs: '1', maxOvers: 20 }]
+    expect(() => mapFixture(makeDoc({ innings }))).toThrow(FixtureMappingError)
+  })
+
   it('throws for a forfeit without a winner', () => {
     expect(() => mapFixture(makeDoc({ result: { method: 'forfeit', winner: null } }))).toThrow(
       /forfeit/,

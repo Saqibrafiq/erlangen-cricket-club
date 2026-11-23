@@ -100,13 +100,17 @@ flowchart LR
   pages["app/[locale]/fixtures/*<br/>layout.tsx (header menu)"] --> index["features/fixtures/index.ts"]
   index --> queries["server/queries.ts<br/>Payload Local API"]
   queries --> mapper["server/map-fixture.ts<br/>doc → FixtureSummary"]
-  mapper --> domain["domain/cricket<br/>resolveMatchResult"]
+  mapper --> derive["cms/fields/fixture-result.ts<br/>getFixtureResult"]
+  virtual["fixtures.matchResult<br/>(virtual field, REST)"] --> derive
+  derive --> domain["domain/cricket<br/>resolveMatchResult"]
   queries --> fdomain["domain/<br/>summariseCompetitions, groupCompetitionsByTeam,<br/>fixture-filters (category, URL state)"]
   index --> components["components/<br/>FixturesOverview, CompetitionFixtures,<br/>FilterableFixtures → FixtureFilters (client),<br/>FixtureCard, ClubRecord"]
   index --> menu["domain/build-competition-menu<br/>→ shared/ui NavMenu groups"]
 ```
 
 The mapper is the anti-corruption layer between Payload's document shape and the UI's view model; components never see Payload types.
+
+A fixture's result is derived in one place, `getFixtureResult`: the mapper uses it for the website's pages, and the fixture's read-only `matchResult` virtual field uses it for the members' app, so both always state the same result ([ADR-0026](09-architecture-decisions/0026-derived-match-result-as-a-virtual-field.md)).
 
 `buildCompetitionMenu` is shared with standings: the header's Fixtures and Standings dropdowns list the same competitions, each linking to its own section.
 
