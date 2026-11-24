@@ -822,6 +822,10 @@ export interface Squad {
    * Why the Board returned the squad to the captain.
    */
   note?: string | null;
+  /**
+   * Set by the server on every change of status; the app sends each notice once per change.
+   */
+  statusChangedAt?: string | null;
   approvedAt?: string | null;
   team: number | Team;
   updatedAt: string;
@@ -1439,6 +1443,7 @@ export interface SquadsSelect<T extends boolean = true> {
   noShows?: T;
   noShowsRecordedAt?: T;
   note?: T;
+  statusChangedAt?: T;
   approvedAt?: T;
   team?: T;
   updatedAt?: T;

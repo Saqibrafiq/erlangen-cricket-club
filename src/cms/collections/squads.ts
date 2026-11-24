@@ -4,6 +4,7 @@ import { adminsOrOwnTeam, squadSelectionReaders } from '../access/members-app'
 import { adminField, admins, members } from '../access/roles'
 import { guardSquadChanges } from '../hooks/guard-squad-changes'
 import { setEventTeam } from '../hooks/set-event-team'
+import { stampStatusChange } from '../hooks/stamp-status-change'
 
 const playerList = (name: string, label: string, description: string): Field => ({
   name,
@@ -34,7 +35,7 @@ export const squads: CollectionConfig = {
     delete: admins,
   },
   hooks: {
-    beforeChange: [guardSquadChanges, setEventTeam],
+    beforeChange: [guardSquadChanges, setEventTeam, stampStatusChange],
   },
   fields: [
     {
@@ -145,6 +146,18 @@ export const squads: CollectionConfig = {
       maxLength: 500,
       access: { read: squadSelectionReaders, update: adminField },
       admin: { description: 'Why the Board returned the squad to the captain.' },
+    },
+    {
+      name: 'statusChangedAt',
+      label: 'Status changed',
+      type: 'date',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        date: { pickerAppearance: 'dayAndTime' },
+        description:
+          'Set by the server on every change of status; the app sends each notice once per change.',
+      },
     },
     {
       name: 'approvedAt',
