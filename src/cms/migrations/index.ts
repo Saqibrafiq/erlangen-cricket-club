@@ -26,6 +26,7 @@ import * as migration_20261118_223912_competition_sheet_fields from './20261118_
 import * as migration_20261118_232801_spielerpass_valid_from from './20261118_232801_spielerpass_valid_from';
 import * as migration_20261122_235823_squad_no_shows_recorded from './20261122_235823_squad_no_shows_recorded';
 import * as migration_20261123_220045_push_subscription_locale from './20261123_220045_push_subscription_locale';
+import * as migration_20261123_233740_squad_status_stamp from './20261123_233740_squad_status_stamp';
 
 export const migrations = [
   {
@@ -166,6 +167,11 @@ export const migrations = [
   {
     up: migration_20261123_220045_push_subscription_locale.up,
     down: migration_20261123_220045_push_subscription_locale.down,
-    name: '20261123_220045_push_subscription_locale'
+    name: '20261123_220045_push_subscription_locale',
+  },
+  {
+    up: migration_20261123_233740_squad_status_stamp.up,
+    down: migration_20261123_233740_squad_status_stamp.down,
+    name: '20261123_233740_squad_status_stamp'
   },
 ];
